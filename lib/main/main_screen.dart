@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:stockpj/main/main_system.dart';
 import 'package:stockpj/utils/color.dart';
 
+import '../utils/timer.dart';
+
 class MainScreen extends StatelessWidget {
   final MainController _homeController = Get.put(MainController());
-  final TimerController timerController = Get.put(TimerController());
+  final TimerController _timerController = Get.put(TimerController());
 
   MainScreen({super.key});
 
@@ -15,7 +17,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(
-              '다음 갱신까지 남은 시간: ${timerController.timeDisplay.value}',
+              '다음 갱신까지 남은 시간: ${_timerController.timeDisplay.value}',
               style: const TextStyle(fontSize: 24),
             )),
       ),
