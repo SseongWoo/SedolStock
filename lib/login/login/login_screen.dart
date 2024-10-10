@@ -15,8 +15,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _controllerID = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final ScreenController screenController = Get.put(ScreenController());
-  final LoginController loginController = Get.put(LoginController());
+  final ScreenController _screenController = Get.put(ScreenController());
+  final LoginController _loginController = Get.put(LoginController());
 
   @override
   void dispose() {
@@ -28,19 +28,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    screenController.updateScreenSize(context);
+    _screenController.updateScreenSize(context);
     return Scaffold(
       body: Center(
         child: Container(
-          height: screenController.screenSize.value.getHeightPerSize(40),
-          width: screenController.screenSize.value.getWidthPerSize(90),
+          height: _screenController.screenSize.value.getHeightPerSize(40),
+          width: _screenController.screenSize.value.getWidthPerSize(90),
           decoration: BoxDecoration(
             color: colorStelLiveLight,
             borderRadius: BorderRadius.circular(45),
           ),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(screenController.screenSize.value.getWidthPerSize(5), 0,
-                screenController.screenSize.value.getWidthPerSize(5), 0),
+            padding: EdgeInsets.fromLTRB(_screenController.screenSize.value.getWidthPerSize(5), 0,
+                _screenController.screenSize.value.getWidthPerSize(5), 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textInputAction: TextInputAction.next,
                 ),
                 SizedBox(
-                  height: screenController.screenSize.value.getHeightPerSize(4),
+                  height: _screenController.screenSize.value.getHeightPerSize(4),
                 ),
                 TextField(
                   controller: _controllerPassword,
@@ -67,39 +67,61 @@ class _LoginScreenState extends State<LoginScreen> {
                   textInputAction: TextInputAction.go,
                 ),
                 SizedBox(
-                  height: screenController.screenSize.value.getHeightPerSize(4),
+                  height: _screenController.screenSize.value.getHeightPerSize(4),
                 ),
                 SizedBox(
-                  height: screenController.screenSize.value.getHeightPerSize(5),
-                  width: screenController.screenSize.value.getWidthPerSize(80),
+                  height: _screenController.screenSize.value.getHeightPerSize(5),
+                  width: _screenController.screenSize.value.getWidthPerSize(80),
                   child: ElevatedButton(
-                    onPressed: () async {},
+                    onPressed: () {
+                      _loginController.goHome();
+                    },
                     child: Text(
                       '로그인',
                       style: TextStyle(
                         color: colorStelLive,
-                        fontSize: screenController.screenSize.value.getHeightPerSize(1.5),
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.5),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: screenController.screenSize.value.getHeightPerSize(4),
+                  height: _screenController.screenSize.value.getHeightPerSize(4),
                 ),
-                SizedBox(
-                  height: screenController.screenSize.value.getHeightPerSize(4),
-                  child: TextButton(
-                    onPressed: () {
-                      loginController.goSignUp();
-                    },
-                    child: Text(
-                      '회원 가입',
-                      style: TextStyle(
-                        color: colorStelLive,
-                        fontSize: screenController.screenSize.value.getHeightPerSize(1.4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      height: _screenController.screenSize.value.getHeightPerSize(4),
+                      child: TextButton(
+                        onPressed: () {
+                          _loginController.goFindAccount();
+                        },
+                        child: Text(
+                          '비밀번호 찾기',
+                          style: TextStyle(
+                            color: colorStelLive,
+                            fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: _screenController.screenSize.value.getHeightPerSize(4),
+                      child: TextButton(
+                        onPressed: () {
+                          _loginController.goSignUp();
+                        },
+                        child: Text(
+                          '회원 가입',
+                          style: TextStyle(
+                            color: colorStelLive,
+                            fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

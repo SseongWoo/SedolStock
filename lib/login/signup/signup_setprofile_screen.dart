@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/login/signup/signup_system.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 
@@ -30,7 +31,9 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
         title: const Text('회원가입'),
         backgroundColor: colorStelLive,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            cancelSignUp();
+          },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
@@ -75,9 +78,10 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이를 조절
                   ),
-                  child: const Text(
+                  child: Text(
                     '회원가입 완료',
-                    style: TextStyle(fontSize: 18),
+                    style:
+                        TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
                   ),
                 ),
               ),

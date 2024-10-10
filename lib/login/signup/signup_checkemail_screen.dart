@@ -16,7 +16,11 @@ class SignupCheckemailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorStelLive,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back_ios_new)),
+        leading: IconButton(
+            onPressed: () {
+              cancelSignUp();
+            },
+            icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text('회원가입'),
       ),
       body: Padding(
@@ -59,9 +63,10 @@ class SignupCheckemailScreen extends StatelessWidget {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이를 조절
                   ),
-                  child: const Text(
+                  child: Text(
                     '이메일 주소 인증 완료',
-                    style: TextStyle(fontSize: 18),
+                    style:
+                        TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
                   ),
                 ),
               ),

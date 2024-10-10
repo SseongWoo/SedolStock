@@ -179,9 +179,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이를 조절
                     ),
-                    child: const Text(
+                    child: Text(
                       '회원가입',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
                     ),
                   ),
                 ),
