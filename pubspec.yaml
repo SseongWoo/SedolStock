@@ -38,6 +38,16 @@ dependencies:
   get:
   convex_bottom_bar: ^3.2.0
   auto_size_text: ^3.0.0
+  google_fonts:
+  horizontal_data_table: ^4.3.1
+  dropdown_button2: ^2.3.9
+  http:
+  flutter_secure_storage:
+  flutter_easyloading: ^3.0.5
+  intl:
+  korean_profanity_filter: ^1.0.0
+  profanity_filter: ^2.0.0
+  flutter_spinkit: ^5.2.1
 
 dev_dependencies:
   flutter_test:

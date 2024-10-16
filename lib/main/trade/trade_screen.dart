@@ -12,8 +12,8 @@ class TradeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);
-    return Scaffold(
-      body: SingleChildScrollView(child: TradeItemWidget()),
+    return SingleChildScrollView(
+      child: TradeItemWidget(),
     );
   }
 }

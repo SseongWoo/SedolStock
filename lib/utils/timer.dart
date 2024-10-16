@@ -62,6 +62,7 @@ class TimerController extends GetxController {
         _updateTimeDisplay(); // 남은 시간을 "분:초" 형식으로 업데이트
       } else {
         timer.cancel(); // 시간이 끝나면 타이머 종료
+        secondsRemaining.value = 600;
         _executeTask(); // 5분이 다 되면 작업 실행
       }
     });
@@ -92,7 +93,7 @@ class TimerController extends GetxController {
 }
 
 class TimerWidget extends StatelessWidget {
-  final TimerController _timerController = Get.put(TimerController());
+  final TimerController _timerController = Get.put(TimerController(), permanent: true);
   TimerWidget({super.key});
 
   @override

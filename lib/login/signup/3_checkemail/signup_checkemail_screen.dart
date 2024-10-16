@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/login/signup/signup_system.dart';
-import '../../utils/color.dart';
-import '../../utils/screen_size.dart';
+import 'package:stockpj/login/signup/3_checkemail/signup_checkemail_system.dart';
+import 'package:stockpj/login/signup/3_checkemail/signup_checkemail_widget.dart';
+import '../../../utils/color.dart';
+import '../../../utils/screen_size.dart';
 
 class SignupCheckemailScreen extends StatelessWidget {
-  SignupCheckemailScreen({super.key});
-
   final ScreenController _screenController = Get.put(ScreenController());
+  final SingUpCheckEmailControll _singUpCheckEmailControll = Get.put(SingUpCheckEmailControll());
+  SignupCheckemailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
     final String email = Get.arguments;
+    _screenController.updateScreenSize(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorStelLive,
         leading: IconButton(
             onPressed: () {
-              cancelSignUp();
+              _singUpCheckEmailControll.cancelSignUp();
             },
             icon: const Icon(Icons.arrow_back_ios_new)),
         title: const Text('회원가입'),
@@ -50,26 +51,7 @@ class SignupCheckemailScreen extends StatelessWidget {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(5),
               ),
-              SizedBox(
-                width: _screenController.screenSize.value.getWidthPerSize(50),
-                child: ElevatedButton(
-                  onPressed: () {
-                    goSignUpSetProfile();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorStelLiveLight, // 버튼 배경색
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30), // 버튼을 둥글게 만들어 FAB 느낌을 줌
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이를 조절
-                  ),
-                  child: Text(
-                    '이메일 주소 인증 완료',
-                    style:
-                        TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
-                  ),
-                ),
-              ),
+              const SignUpCheckEmailButtonWidget(),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(5),
               ),
@@ -77,26 +59,7 @@ class SignupCheckemailScreen extends StatelessWidget {
                 color: Colors.grey, // 구분선 색상
                 thickness: 1, // 구분선 두께
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '메일이 도착하지 않았나요? 다시 전송하시겠습니까?',
-                    style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(1.3),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      '재전송',
-                      style: TextStyle(
-                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.3),
-                      ),
-                    ),
-                  ),
-                ],
-              )
+              const SignUpReSendEmailWidget(),
             ],
           ),
         ),

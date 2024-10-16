@@ -13,7 +13,6 @@ class TradeDetailScreen extends StatefulWidget {
 
 class _TradeDetailScreenState extends State<TradeDetailScreen> {
   final ScreenController _screenController = Get.put(ScreenController());
-  final TimerController _timerController = Get.put(TimerController());
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);

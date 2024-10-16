@@ -10,10 +10,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-            child: Padding(
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Padding(
           padding: EdgeInsets.all(_screenController.screenSize.value.getWidthPerSize(2)),
           child: Column(
             children: [
@@ -35,7 +34,7 @@ class HomeScreen extends StatelessWidget {
               HomeStockDataListWidget(titleText: '하강률 top5'),
             ],
           ),
-        )),
+        ),
       ),
     );
   }

@@ -3,23 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/main_system.dart';
 import 'package:stockpj/utils/color.dart';
+import 'package:stockpj/utils/screen_size.dart';
 
 import '../utils/timer.dart';
 
 class MainScreen extends StatelessWidget {
   final MainController _homeController = Get.put(MainController());
-  final TimerController _timerController = Get.put(TimerController());
+  final ScreenController _screenController = Get.put(ScreenController());
 
   MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    _screenController.updateScreenSize(context);
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(
-              '다음 갱신까지 남은 시간: ${_timerController.timeDisplay.value}',
-              style: const TextStyle(fontSize: 24),
-            )),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(2)),
+            child: TimerWidget(),
+          ),
+        ],
       ),
       body: Obx(() => _homeController.pages[_homeController.selectedIndex.value]),
       bottomNavigationBar: ConvexAppBar(
@@ -28,10 +32,10 @@ class MainScreen extends StatelessWidget {
         backgroundColor: colorStelLive,
         items: const [
           TabItem(icon: Icons.home, title: '홈'),
-          TabItem(icon: Icons.map, title: '거래'),
-          TabItem(icon: Icons.add, title: '랭킹'),
-          TabItem(icon: Icons.message, title: '내정보'),
-          TabItem(icon: Icons.people, title: '설정'),
+          TabItem(icon: Icons.show_chart, title: '거래'),
+          TabItem(icon: Icons.emoji_events, title: '랭킹'),
+          TabItem(icon: Icons.wallet, title: '지갑'),
+          TabItem(icon: Icons.info, title: '정보'),
         ],
         onTap: (int i) => _homeController.changeTabIndex(i),
       ),

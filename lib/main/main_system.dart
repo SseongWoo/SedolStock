@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:stockpj/main/ranking/ranking_screen.dart';
 import 'package:stockpj/main/trade/trade_screen.dart';
+import 'package:stockpj/main/wallet/wallet_screen.dart';
 import 'home/home_screen.dart';
+import 'information/information_screen.dart';
 
 class MainController extends GetxController {
   // 현재 선택된 탭 인덱스
@@ -11,9 +14,9 @@ class MainController extends GetxController {
   final List<Widget> pages = [
     HomeScreen(),
     TradeScreen(),
-    const Center(child: Text('랭킹')),
-    const Center(child: Text('내정보')),
-    const Center(child: Text('설정')),
+    RankingScreen(),
+    WalletScreen(),
+    InformationScreen(),
   ];
 
   // 인덱스 변경 함수
