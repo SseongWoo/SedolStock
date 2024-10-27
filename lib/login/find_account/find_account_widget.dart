@@ -4,8 +4,6 @@ import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import 'find_account_system.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
-
 class FindAccountEmailWidget extends StatefulWidget {
   const FindAccountEmailWidget({super.key});
 
@@ -15,6 +13,7 @@ class FindAccountEmailWidget extends StatefulWidget {
 
 class _FindAccountEmailWidgetState extends State<FindAccountEmailWidget> {
   final FindAccountController _findAccountController = Get.find<FindAccountController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -39,7 +38,8 @@ class _FindAccountEmailWidgetState extends State<FindAccountEmailWidget> {
 }
 
 class FindAccountButtonWidget extends StatelessWidget {
-  const FindAccountButtonWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  FindAccountButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

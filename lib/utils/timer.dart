@@ -93,7 +93,7 @@ class TimerController extends GetxController {
 }
 
 class TimerWidget extends StatelessWidget {
-  final TimerController _timerController = Get.put(TimerController(), permanent: true);
+  final TimerController _timerController = Get.find<TimerController>();
   TimerWidget({super.key});
 
   @override

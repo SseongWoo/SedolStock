@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../data/my_data.dart';
 import '../../utils/screen_size.dart';
 import 'package:get/get.dart';
 import 'home_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
     return SingleChildScrollView(
       child: SafeArea(
         child: Padding(
@@ -23,15 +23,18 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),
-              HomeStockDataListWidget(titleText: '관심 종목'),
+              HomeLatestVideoListWidget(),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),
-              HomeStockDataListWidget(titleText: '상승률 top5'),
+              HomeChannelDataWidget(),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),
-              HomeStockDataListWidget(titleText: '하강률 top5'),
+              HomeCafeDataWidget(),
+              SizedBox(
+                height: _screenController.screenSize.value.getHeightPerSize(1.5),
+              ),
             ],
           ),
         ),

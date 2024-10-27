@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:stockpj/data/start_data.dart';
 import 'package:stockpj/login/login/login_screen.dart';
 import 'package:stockpj/utils/http_request.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../login/login/login_system.dart';
-import '../main/main_screen.dart';
-import '../utils/get_data.dart';
-import '../utils/secure_storage.dart';
+import '../data/my_data.dart';
+import '../utils/data_storage.dart';
 
 class SplashController extends GetxController {
   RxString loadingMessage = RxString('로딩');
@@ -25,10 +25,9 @@ class SplashController extends GetxController {
 
   Future<bool> checkServer() async {
     try {
-      // 서버에 간단한 GET 요청 보내기
-      final running = await http.get(Uri.parse('$httpURL/running'));
+      Uri uri = Uri.parse('$httpURL/running');
+      final running = await http.get(uri);
 
-      // 서버가 200 응답을 반환하면 서버가 정상적으로 실행 중임을 확인
       if (running.statusCode == 200) {
         return true;
       } else {
@@ -60,8 +59,10 @@ class SplashController extends GetxController {
         await setUid(jsonData?['uid']);
         await setIdToken(jsonData?['idToken']);
         bool checkMyData = await getUserData();
-        if (checkMyData) {
+        bool checkMyWalletData = await getWalletData();
+        if (checkMyData && checkMyWalletData) {
           loadingMessage.value = '마무리중';
+          await startGetData();
           await Future.delayed(const Duration(seconds: 1));
           goHome();
         } else {

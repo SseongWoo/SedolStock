@@ -4,10 +4,9 @@ import 'package:stockpj/login/signup/3_checkemail/signup_checkemail_system.dart'
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
-
 class SignUpReSendEmailWidget extends StatelessWidget {
-  const SignUpReSendEmailWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  SignUpReSendEmailWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +37,12 @@ class SignUpReSendEmailWidget extends StatelessWidget {
 }
 
 class SignUpCheckEmailButtonWidget extends StatelessWidget {
-  const SignUpCheckEmailButtonWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpCheckEmailControll _singUpCheckEmailControll = Get.find<SingUpCheckEmailControll>();
+  SignUpCheckEmailButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SingUpCheckEmailControll _singUpCheckEmailControll = Get.find<SingUpCheckEmailControll>();
     return SizedBox(
       width: _screenController.screenSize.value.getWidthPerSize(50),
       child: ElevatedButton(

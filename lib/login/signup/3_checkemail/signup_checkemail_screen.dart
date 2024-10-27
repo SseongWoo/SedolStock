@@ -6,14 +6,15 @@ import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
 class SignupCheckemailScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   final SingUpCheckEmailControll _singUpCheckEmailControll = Get.put(SingUpCheckEmailControll());
   SignupCheckemailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String email = Get.arguments;
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorStelLive,
@@ -42,7 +43,7 @@ class SignupCheckemailScreen extends StatelessWidget {
                 height: _screenController.screenSize.value.getHeightPerSize(3),
               ),
               Text(
-                '$email님,\n\n인증 이메일을 발송했습니다. 메일을 확인하시고 링크를 클릭하여 인증을 완료해 주세요. 감사합니다.',
+                '${_singUpCheckEmailControll.email}님,\n\n인증 이메일을 발송했습니다. 메일을 확인하시고 링크를 클릭하여 인증을 완료해 주세요. 감사합니다.',
                 style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
                 ),
@@ -51,7 +52,7 @@ class SignupCheckemailScreen extends StatelessWidget {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(5),
               ),
-              const SignUpCheckEmailButtonWidget(),
+              SignUpCheckEmailButtonWidget(),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(5),
               ),
@@ -59,7 +60,7 @@ class SignupCheckemailScreen extends StatelessWidget {
                 color: Colors.grey, // 구분선 색상
                 thickness: 1, // 구분선 두께
               ),
-              const SignUpReSendEmailWidget(),
+              SignUpReSendEmailWidget(),
             ],
           ),
         ),

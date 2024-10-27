@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../../../utils/http_request.dart';
-import '../../../utils/secure_storage.dart';
+import '../../../utils/data_storage.dart';
 import '../../login/login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:profanity_filter/profanity_filter.dart';

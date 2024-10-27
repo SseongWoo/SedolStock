@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../../utils/http_request.dart';
-import '../../../utils/secure_storage.dart';
+import '../../../utils/data_storage.dart';
 import '../../../utils/simple_widget.dart';
 import '../../login/login_screen.dart';
 import '../4_setdata/signup_setdata_screen.dart';
@@ -18,6 +18,7 @@ class SignUpCheckEmailBinding extends Bindings {
 }
 
 class SingUpCheckEmailControll extends GetxController {
+  late String email;
   Future<void> deleteUserData(String uid) async {
     await http.post(
       Uri.parse('$httpURL/deleteUser/$uid'),
@@ -28,6 +29,13 @@ class SingUpCheckEmailControll extends GetxController {
         'uid': uid,
       }),
     );
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    email = Get.arguments;
   }
 
   void cancelSignUp() async {

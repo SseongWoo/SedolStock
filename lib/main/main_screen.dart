@@ -4,20 +4,25 @@ import 'package:get/get.dart';
 import 'package:stockpj/main/main_system.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
-
+import '../data/my_data.dart';
 import '../utils/timer.dart';
 
 class MainScreen extends StatelessWidget {
   final MainController _homeController = Get.put(MainController());
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
 
   MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
+        title: Obx(
+          () => Text(_homeController.pagesName[_homeController.selectedIndex.value]),
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(2)),

@@ -7,12 +7,14 @@ import '../../utils/screen_size.dart';
 import 'login_system.dart';
 
 class LoginScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       body: Center(
         child: Container(

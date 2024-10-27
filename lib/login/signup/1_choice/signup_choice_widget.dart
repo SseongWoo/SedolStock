@@ -4,15 +4,15 @@ import 'package:stockpj/login/signup/1_choice/signup_choice_system.dart';
 
 import '../../../utils/screen_size.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
 final SingUpChoiceControll _choiceControll = Get.put(SingUpChoiceControll());
 
 class SignUpChoiceButtonWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
   final String title;
   final String value;
   final IconData icon;
   final bool email;
-  const SignUpChoiceButtonWidget({
+  SignUpChoiceButtonWidget({
     super.key,
     required this.title,
     required this.value,

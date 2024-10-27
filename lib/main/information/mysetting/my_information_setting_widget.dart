@@ -1,11 +1,9 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../utils/screen_size.dart';
 import 'my_information_setting_system.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
 final MyInformationSettingController _myInformationSettingController =
     Get.put(MyInformationSettingController());
 

@@ -12,16 +12,18 @@ class SignupSetprofileScreen extends StatefulWidget {
 }
 
 class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('회원가입'),
         backgroundColor: colorStelLive,
-        leading: const SignUpSetDataBackButtonWidget(),
+        leading: SignUpSetDataBackButtonWidget(),
       ),
       body: Padding(
         padding: EdgeInsets.all(_screenController.screenSize.value.getWidthPerSize(10)),
@@ -41,7 +43,7 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
                       fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                     ),
                   ),
-                  const SignUpDropDownWidget(),
+                  SignUpDropDownWidget(),
                   Text(
                     ' 입니다',
                     style: TextStyle(
@@ -53,7 +55,7 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(8),
               ),
-              const SignUpSetDataButtonWidget(),
+              SignUpSetDataButtonWidget(),
             ],
           ),
         ),

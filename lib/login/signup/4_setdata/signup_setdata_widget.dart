@@ -6,10 +6,9 @@ import 'package:stockpj/login/signup/4_setdata/signup_setdata_system.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
-
 class SignUpSetDataBackButtonWidget extends StatelessWidget {
-  const SignUpSetDataBackButtonWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  SignUpSetDataBackButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +30,7 @@ class SignUpSetDataTextWidget extends StatefulWidget {
 }
 
 class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
+  final ScreenController _screenController = Get.find<ScreenController>();
   @override
   Widget build(BuildContext context) {
     final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
@@ -62,7 +62,8 @@ class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
 }
 
 class SignUpSetDataButtonWidget extends StatelessWidget {
-  const SignUpSetDataButtonWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  SignUpSetDataButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,8 @@ class SignUpSetDataButtonWidget extends StatelessWidget {
 }
 
 class SignUpDropDownWidget extends StatelessWidget {
-  const SignUpDropDownWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  SignUpDropDownWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

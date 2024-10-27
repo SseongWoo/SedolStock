@@ -1,12 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/trade/trade_system.dart';
+import '../../data/youtube_data.dart';
 import '../../utils/screen_size.dart';
 
+class TradeItemListWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  TradeItemListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: _screenController.screenSize.value.getHeightPerSize(78),
+      child: ListView.separated(
+        itemCount: channelIdList.length, // 아이템 개수 설정
+        itemBuilder: (context, index) {
+          return TradeItemWidget(
+            channelUID: channelIdList[index],
+            index: index,
+          );
+        },
+        separatorBuilder: (context, index) => SizedBox(
+          height: _screenController.screenSize.value.getHeightPerSize(0.5),
+        ),
+      ),
+    );
+  }
+}
+
 class TradeItemWidget extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final String channelUID;
+  final int index;
   final TradeController _tradeController = Get.put(TradeController());
-  TradeItemWidget({super.key});
+  final YoutubeDataController _youtubeDataController = Get.put(YoutubeDataController());
+  final ScreenController _screenController = Get.find<ScreenController>();
+
+  TradeItemWidget({super.key, required this.channelUID, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -24,32 +53,55 @@ class TradeItemWidget extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            _tradeController.goTradeItem();
+            _tradeController.goTradeItem(channelUID);
           },
           child: Row(
             children: [
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(1),
               ),
-              Container(
+              SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(6),
                 height: _screenController.screenSize.value.getHeightPerSize(6),
-                color: Colors.green,
+                child: Image.network(
+                  _youtubeDataController.youtubeChannelData[channelUID]!.thumbnail,
+                  fit: BoxFit.cover, // 이미지가 부모 컨테이너에 맞도록
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
+                    return const Center(
+                      child: CircularProgressIndicator(), // 로딩 중인 동안 표시
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
+                    );
+                  },
+                ),
               ),
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(1),
               ),
               Text(
-                '종목 이름',
-                style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
+                channelNameList[index],
+                style:
+                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
               ),
               const Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('가격'), Text('변동률')],
+                children: [
+                  Text(
+                    _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice.toString(),
+                    style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+                  ),
+                  differenceTextWidget(
+                      _youtubeDataController.youtubeLiveData[channelUID]!.differenceViewCount),
+                ],
               ),
               SizedBox(
-                width: _screenController.screenSize.value.getHeightPerSize(1),
+                width: _screenController.screenSize.value.getHeightPerSize(3),
               )
             ],
           ),
@@ -57,4 +109,27 @@ class TradeItemWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget differenceTextWidget(int differenceInt) {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  String pm = '';
+  Color textColor;
+
+  if (differenceInt > 0) {
+    pm = '+';
+    textColor = Colors.red;
+  } else if (differenceInt < 0) {
+    pm = '-';
+    textColor = Colors.blue;
+  } else {
+    pm = '';
+    textColor = Colors.grey;
+  }
+
+  return Text(
+    '$pm${differenceInt.toString()}',
+    style: TextStyle(
+        color: textColor, fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+  );
 }

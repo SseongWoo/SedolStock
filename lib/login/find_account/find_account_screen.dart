@@ -6,12 +6,13 @@ import '../../utils/screen_size.dart';
 
 class FindAccountScreen extends StatelessWidget {
   FindAccountScreen({super.key});
-
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('비밀번호 찾기'),
@@ -45,7 +46,7 @@ class FindAccountScreen extends StatelessWidget {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(2),
               ),
-              const FindAccountButtonWidget(),
+              FindAccountButtonWidget(),
             ],
           ),
         ),

@@ -24,11 +24,31 @@ class ScreenSize {
   }
 }
 
-class ScreenController extends GetxController {
-  // 반응형 변수로 ScreenSize를 관리합니다.
+class ScreenController extends GetxController with WidgetsBindingObserver {
   var screenSize = ScreenSize(Size(0.0, 0.0)).obs;
 
-  // 화면 크기를 업데이트하는 메서드
+  // @override
+  // void onInit() {
+  //   WidgetsBinding.instance.addObserver(this);
+  //   super.onInit();
+  // }
+  //
+  // @override
+  // void onClose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.onClose();
+  // }
+  //
+  // @override
+  // void didChangeMetrics() {
+  //   if (Get.context != null) {
+  //     updateScreenSize(Get.context!);
+  //     print('${Get.context!.size?.height}, ${Get.context!.size?.width}');
+  //   } else {
+  //     print('오류');
+  //   }
+  // }
+
   void updateScreenSize(BuildContext context) {
     screenSize.value =
         ScreenSize(Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height));

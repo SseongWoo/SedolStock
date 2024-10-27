@@ -19,6 +19,8 @@ class MainController extends GetxController {
     InformationScreen(),
   ];
 
+  final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '정보'];
+
   // 인덱스 변경 함수
   void changeTabIndex(int index) {
     selectedIndex.value = index;

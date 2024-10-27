@@ -4,12 +4,15 @@ import 'package:stockpj/login/signup/1_choice/signup_choice_widget.dart';
 import '../../../utils/screen_size.dart';
 
 class SignupChoiceScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
 
   SignupChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('회원가입'),
@@ -17,7 +20,7 @@ class SignupChoiceScreen extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: EdgeInsets.only(bottom: _screenController.screenSize.value.getHeightPerSize(10)),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

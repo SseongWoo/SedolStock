@@ -1,7 +1,10 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_storage/get_storage.dart';
 
 // 토큰을 안전하게 저장하기 위한 보안 저장소
 const storage = FlutterSecureStorage();
+
+final box = GetStorage();
 
 // 보안 저장소에 토큰을 저장하는 함수
 Future<void> setTokens(String accessToken, String refreshToken, String uid) async {
@@ -66,3 +69,13 @@ Future<void> deleteIDPW() async {
   await storage.delete(key: 'id');
   await storage.delete(key: 'pw');
 }
+
+void setRankingDate(String date) {
+  box.write('RankingDate', date);
+}
+
+void setVideoDate(String date) {
+  box.write('VideoDate', date);
+}
+
+Future<void> getSystemDate() async {}

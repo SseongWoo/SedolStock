@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/data/youtube_data.dart';
+import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_widget.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/timer.dart';
@@ -12,13 +14,17 @@ class TradeDetailScreen extends StatefulWidget {
 }
 
 class _TradeDetailScreenState extends State<TradeDetailScreen> {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final TradeDetailController _tradeDetailController = Get.put(TradeDetailController());
+
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
-        title: Text('종목 이름'),
+        title: Text(channelMapData[_tradeDetailController.channelUID]!),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(2)),
@@ -36,7 +42,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
                     right: _screenController.screenSize.value.getWidthPerSize(2)),
                 child: Column(
                   children: [
-                    TradeDatailChartWidget(),
+                    const TradeDatailChartWidget(),
                     SizedBox(
                       height: _screenController.screenSize.value.getHeightPerSize(1),
                     ),
@@ -44,7 +50,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
                     SizedBox(
                       height: _screenController.screenSize.value.getHeightPerSize(1),
                     ),
-                    TradeDetailVideoListWidget(),
+                    DetailVideoListWidget(),
                     SizedBox(
                       height: _screenController.screenSize.value.getHeightPerSize(7),
                     )

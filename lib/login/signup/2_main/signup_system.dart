@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:stockpj/utils/simple_widget.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/http_request.dart';
-import '../../../utils/secure_storage.dart';
+import '../../../utils/data_storage.dart';
 import '../../login/login_screen.dart';
 import '../3_checkemail/signup_checkemail_screen.dart';
 import '../3_checkemail/signup_checkemail_system.dart';
@@ -25,6 +25,14 @@ class SingUpEmailControll extends GetxController {
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerPasswordCheck = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  late bool email;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    email = Get.arguments;
+  }
 
   @override
   void onClose() {

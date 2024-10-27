@@ -3,11 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:stockpj/data/start_data.dart';
 import 'package:stockpj/main/main_screen.dart';
 import 'package:stockpj/login/find_account/find_account_screen.dart';
 import 'package:stockpj/utils/http_request.dart';
-import '../../utils/get_data.dart';
-import '../../utils/secure_storage.dart';
+import '../../data/my_data.dart';
+import '../../utils/data_storage.dart';
 import '../../utils/simple_widget.dart';
 import '../find_account/find_account_system.dart';
 import '../signup/1_choice/signup_choice_screen.dart';
@@ -71,8 +72,10 @@ class LoginController extends GetxController {
         accessToken = jsonData['user']['stsTokenManager']['accessToken'];
         await setTokens(accessToken, refreshToken, uid);
         bool checkMyData = await getUserData();
+        bool checkMyWalletData = await getWalletData();
 
-        if (checkMyData) {
+        if (checkMyData && checkMyWalletData) {
+          await startGetData();
           goHome();
         } else {
           throw Exception('MyData is missing.');

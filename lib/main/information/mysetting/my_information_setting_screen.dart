@@ -15,13 +15,15 @@ class MyInformationSettingScreen extends StatefulWidget {
 }
 
 class _MyInformationSettingScreenState extends State<MyInformationSettingScreen> {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   final MyInformationSettingController _myInformationSettingController =
       Get.put(MyInformationSettingController());
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       backgroundColor: Color.lerp(colorIve, Colors.white, 0.6),
       appBar: AppBar(

@@ -4,8 +4,6 @@ import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import 'login_system.dart';
 
-final ScreenController _screenController = Get.put(ScreenController());
-
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
 
@@ -14,6 +12,7 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  final ScreenController _screenController = Get.find<ScreenController>();
   @override
   Widget build(BuildContext context) {
     final LoginController _loginController = Get.find<LoginController>();

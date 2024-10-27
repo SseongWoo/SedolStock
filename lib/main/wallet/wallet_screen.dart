@@ -6,12 +6,11 @@ import 'package:stockpj/main/wallet/stocklist/stocklist_screen.dart';
 import '../../utils/screen_size.dart';
 
 class WalletScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   WalletScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
     return DefaultTabController(
       length: 2, // 탭의 개수
       child: Scaffold(

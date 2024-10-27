@@ -1,9 +1,14 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
+import 'package:stockpj/utils/date_time.dart';
+import 'package:stockpj/utils/format.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../data/my_data.dart';
+import '../../../data/youtube_data.dart';
 import '../../../utils/screen_size.dart';
-
-final ScreenController _screenController = Get.put(ScreenController());
 
 class TradeDatailChartWidget extends StatefulWidget {
   const TradeDatailChartWidget({super.key});
@@ -13,6 +18,18 @@ class TradeDatailChartWidget extends StatefulWidget {
 }
 
 class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,19 +46,49 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '종목 가격',
-              style: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+            Obx(
+              () => Text(
+                formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                ),
               ),
             ),
-            Text(
-              '등락값',
-              style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
+            Obx(
+              () => Text(
+                '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                    color: _tradeDetailController.titleTextColor),
+              ),
             ),
             Expanded(
-              child: Container(
-                color: Colors.green,
+              child: Obx(
+                () => SfCartesianChart(
+                  primaryXAxis: const CategoryAxis(
+                    autoScrollingDelta: 5, // X축에서 5개의 데이터만 보여주고 나머지는 스크롤 가능
+                    autoScrollingMode: AutoScrollingMode.end, // 끝부분에서 스크롤
+                  ),
+                  primaryYAxis: NumericAxis(
+                    minimum: _tradeDetailController.minYValue.value,
+                  ),
+                  zoomPanBehavior: ZoomPanBehavior(
+                    enablePanning: true, // 팬(슬라이드) 기능 활성화
+                  ),
+                  //title: ChartTitle(text: 'Half yearly sales analysis'),
+                  //tooltipBehavior: _tooltipBehavior,
+                  series: <LineSeries<SalesData, String>>[
+                    LineSeries<SalesData, String>(
+                        dataSource: _youtubeDataController
+                            .youtubeChartData[_tradeDetailController.channelUID]?.viewCount.reversed
+                            .toList(),
+                        xValueMapper: (SalesData sales, _) => sales.time,
+                        yValueMapper: (SalesData sales, _) => sales.sales,
+                        // Enable data label
+                        dataLabelSettings: const DataLabelSettings(isVisible: true))
+                  ],
+                ),
               ),
             ),
           ],
@@ -52,12 +99,13 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
 }
 
 class TradeDetailMyStock extends StatelessWidget {
-  const TradeDetailMyStock({super.key});
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
+  TradeDetailMyStock({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      //height: _screenController.screenSize.value.getHeightPerSize(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -83,10 +131,12 @@ class TradeDetailMyStock extends StatelessWidget {
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
                 ),
               ),
-              trailing: Text(
-                '1000원',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+              trailing: Obx(
+                () => Text(
+                  '${formatToCurrency(_tradeDetailController.walletAvg.value)}원',
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  ),
                 ),
               ),
             ),
@@ -97,10 +147,12 @@ class TradeDetailMyStock extends StatelessWidget {
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
                 ),
               ),
-              trailing: Text(
-                '1주',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+              trailing: Obx(
+                () => Text(
+                  '${_tradeDetailController.walletCount}',
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  ),
                 ),
               ),
             ),
@@ -114,19 +166,27 @@ class TradeDetailMyStock extends StatelessWidget {
               trailing: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    '1000원',
-                    style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  Obx(
+                    () => Text(
+                      '${formatToCurrency(_tradeDetailController.walletSum.value)}원',
+                      style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                      ),
+                      textAlign: TextAlign.right,
                     ),
-                    textAlign: TextAlign.right,
                   ),
-                  Text(
-                    '-300(70%)',
-                    style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  Obx(
+                    () => Text(
+                      '${formatToCurrency(_tradeDetailController.walletReturn.value)}(${_tradeDetailController.walletRatio.value.toStringAsFixed(2)}%)',
+                      style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                          color: _tradeDetailController.walletReturn.value > 0
+                              ? Colors.red
+                              : _tradeDetailController.walletReturn.value < 0
+                                  ? Colors.blue
+                                  : Colors.black),
+                      textAlign: TextAlign.right,
                     ),
-                    textAlign: TextAlign.right,
                   ),
                 ],
               ),
@@ -138,85 +198,9 @@ class TradeDetailMyStock extends StatelessWidget {
   }
 }
 
-class TradeDetailVideoListWidget extends StatelessWidget {
-  const TradeDetailVideoListWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      //height: _screenController.screenSize.value.getHeightPerSize(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '오늘의 영상',
-              style: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.photo, size: 50),
-              title: Text(
-                '영상 제목',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                ),
-              ),
-              subtitle: Text(
-                '조회수 1.2만, 좋아요 1000, 댓글 100',
-                style:
-                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
-              ),
-              trailing: IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
-            ),
-            ListTile(
-              leading: Icon(Icons.photo, size: 50),
-              title: Text(
-                '영상 제목',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                ),
-              ),
-              subtitle: Text(
-                '조회수 1.2만, 좋아요 1000, 댓글 100',
-                style:
-                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
-              ),
-              trailing: IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
-            ),
-            ListTile(
-              leading: Icon(Icons.photo, size: 50),
-              title: Text(
-                '영상 제목',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                ),
-              ),
-              subtitle: Text(
-                '조회수 1.2만, 좋아요 1000, 댓글 100',
-                style:
-                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
-              ),
-              trailing: IconButton(onPressed: () {}, icon: Icon(Icons.play_arrow)),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class TradeDetailButtonWidget extends StatelessWidget {
-  final TradeDetailController _tradeDetailController = Get.put(TradeDetailController());
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
   TradeDetailButtonWidget({super.key});
 
   @override
@@ -276,6 +260,125 @@ class TradeDetailButtonWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DetailVideoListWidget extends StatelessWidget {
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
+  DetailVideoListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '최근 업로드된 영상',
+              style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+            ),
+            SizedBox(
+              height: _screenController.screenSize.value.getHeightPerSize(100), // 높이 지정
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                // Null 체크 추가: youtubeVideoData[channelUID]가 null이면 0을 반환
+                itemCount: _youtubeDataController
+                    .youtubeVideoData[_tradeDetailController.channelUID]?.length,
+                itemBuilder: (context, index) {
+                  final videoData =
+                      _youtubeDataController.youtubeVideoData[_tradeDetailController.channelUID];
+                  if (videoData == null || videoData.isEmpty) {
+                    return const Center(
+                      child: Text('영상 데이터를 불러올 수 없습니다.'), // 데이터가 없을 때의 메시지
+                    );
+                  }
+                  return SizedBox(
+                    height: _screenController.screenSize.value.getHeightPerSize(10),
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: _screenController.screenSize.value.getHeightPerSize(8),
+                          width: _screenController.screenSize.value.getWidthPerSize(30),
+                          child: Image.network(
+                            videoData[index].thumbnailurl,
+                            fit: BoxFit.cover, // 이미지가 부모 컨테이너에 맞도록
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
+                              return const Center(
+                                child: CircularProgressIndicator(), // 로딩 중 표시
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: _screenController.screenSize.value.getWidthPerSize(2),
+                        ),
+                        SizedBox(
+                          width: _screenController.screenSize.value.getWidthPerSize(48),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText(
+                                videoData[index].title,
+                                minFontSize: 10,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize:
+                                      _screenController.screenSize.value.getHeightPerSize(1.8),
+                                ),
+                              ),
+                              Text(
+                                formatDateString(videoData[index].publishedat),
+                                style: TextStyle(
+                                  fontSize:
+                                      _screenController.screenSize.value.getHeightPerSize(1.5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: IconButton(
+                            onPressed: () async {
+                              final Uri url = Uri.parse(
+                                'https://www.youtube.com/watch?v=${videoData[index].videoid}',
+                              );
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url);
+                              } else {
+                                // URL을 열 수 없는 경우 처리
+                                print('Could not launch $url');
+                              }
+                            },
+                            icon: const Icon(
+                              Icons.play_arrow,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

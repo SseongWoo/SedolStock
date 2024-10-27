@@ -15,24 +15,22 @@ class SignUpBackWidget extends StatelessWidget {
         onPressed: () {
           _singUpControll.backSignUp();
         },
-        icon: Icon(Icons.arrow_back_ios_new));
+        icon: const Icon(Icons.arrow_back_ios_new));
   }
 }
 
 class SignUpWidget extends StatefulWidget {
-  final bool email;
-  const SignUpWidget({super.key, required this.email});
+  const SignUpWidget({super.key});
 
   @override
   State<SignUpWidget> createState() => _SignUpWidgetState();
 }
 
 class _SignUpWidgetState extends State<SignUpWidget> {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpEmailControll _singUpControll = Get.find<SingUpEmailControll>();
   @override
   Widget build(BuildContext context) {
-    final SingUpEmailControll _singUpControll = Get.find<SingUpEmailControll>();
-    final ScreenController _screenController = Get.find<ScreenController>();
-
     return Form(
       key: _singUpControll.formKey,
       child: Padding(
@@ -43,7 +41,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             TextFormField(
               controller: _singUpControll.controllerID,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: widget.email ? '이메일 아이디' : '아이디'),
+                  border: const OutlineInputBorder(),
+                  labelText: _singUpControll.email ? '이메일 아이디' : '아이디'),
               textInputAction: TextInputAction.next,
               maxLines: 1,
               maxLength: 20,
@@ -55,7 +54,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 if (value.length < 5) {
                   return '5글자 이상 입력해 주세요';
                 }
-                if (!widget.email && RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(value)) {
+                if (!_singUpControll.email &&
+                    RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(value)) {
                   return '아이디에 특수 문자는 사용할 수 없습니다.';
                 }
                 return null; // 유효한 경우 null을 반환
@@ -109,7 +109,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             SizedBox(
               height: _screenController.screenSize.value.getHeightPerSize(2),
             ),
-            const SignUpButtonWidget(),
+            SignUpButtonWidget(),
           ],
         ),
       ),
@@ -118,13 +118,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 }
 
 class SignUpButtonWidget extends StatelessWidget {
-  const SignUpButtonWidget({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpEmailControll _singUpControll = Get.find<SingUpEmailControll>();
+  SignUpButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SingUpEmailControll _singUpControll = Get.find<SingUpEmailControll>();
-    final ScreenController _screenController = Get.find<ScreenController>();
-
     return SizedBox(
       width: double.infinity, // 기기의 전체 너비
       child: ElevatedButton(

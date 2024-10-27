@@ -5,23 +5,21 @@ import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
 class SignUpScreen extends StatelessWidget {
-  final ScreenController _screenController = Get.put(ScreenController());
+  final ScreenController _screenController = Get.find<ScreenController>();
   SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool email = Get.arguments;
-    _screenController.updateScreenSize(context);
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colorStelLive,
         title: const Text('회원가입'),
       ),
       body: SingleChildScrollView(
-        child: SignUpWidget(
-          email: email,
-        ),
+        child: SignUpWidget(),
       ),
     );
   }
