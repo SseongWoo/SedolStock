@@ -227,7 +227,12 @@ Widget rankingChangeWidget(int rank, int beforeRank) {
   Color color = Colors.black;
   Color iconColor = Colors.black;
   IconData icon = Icons.horizontal_rule;
-  if (beforeRank == 0) {
+  if (beforeRank == 0 && rank == 0) {
+    title = '-';
+    color = Colors.black;
+    iconColor = Colors.black;
+    icon = Icons.add;
+  } else if (beforeRank == 0) {
     title = 'NEW!';
     color = Colors.yellow;
     icon = Icons.add;

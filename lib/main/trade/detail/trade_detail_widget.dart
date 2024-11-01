@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/utils/date_time.dart';
 import 'package:stockpj/utils/format.dart';
@@ -9,6 +10,75 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/screen_size.dart';
+
+class TradeDetailAppBarTitleWidget extends StatelessWidget {
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
+  TradeDetailAppBarTitleWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          channelMapData[_tradeDetailController.channelUID]!,
+          style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+        ),
+        Obx(
+          () => Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                ),
+              ),
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(2),
+              ),
+              Text(
+                '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                    color: _tradeDetailController.titleTextColor),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TradeDetailListTileWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final String title;
+  final String trailing;
+  final double fontSize;
+  TradeDetailListTileWidget(
+      {super.key, required this.title, required this.trailing, required this.fontSize});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: _screenController.screenSize.value.getHeightPerSize(fontSize),
+        ),
+      ),
+      trailing: Text(
+        trailing,
+        style: TextStyle(
+          fontSize: _screenController.screenSize.value.getHeightPerSize(fontSize),
+        ),
+      ),
+    );
+  }
+}
 
 class TradeDatailChartWidget extends StatefulWidget {
   const TradeDatailChartWidget({super.key});
@@ -33,7 +103,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: _screenController.screenSize.value.getHeightPerSize(40),
+      height: _screenController.screenSize.value.getHeightPerSize(70),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -43,55 +113,97 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
       ),
       child: Padding(
         padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Obx(
-              () => Text(
-                formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                channelMapData[_tradeDetailController.channelUID]!,
                 style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(2.4),
                 ),
               ),
-            ),
-            Obx(
-              () => Text(
-                '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
-                style: TextStyle(
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(2),
-                    color: _tradeDetailController.titleTextColor),
+              Row(
+                children: [
+                  Text(
+                    formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+                    style: TextStyle(
+                      fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                    ),
+                  ),
+                  SizedBox(
+                    width: _screenController.screenSize.value.getWidthPerSize(2),
+                  ),
+                  Text(
+                    '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                    style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
+                        color: _tradeDetailController.titleTextColor),
+                  ),
+                ],
               ),
-            ),
-            Expanded(
-              child: Obx(
-                () => SfCartesianChart(
+              Expanded(
+                child: SfCartesianChart(
                   primaryXAxis: const CategoryAxis(
                     autoScrollingDelta: 5, // X축에서 5개의 데이터만 보여주고 나머지는 스크롤 가능
                     autoScrollingMode: AutoScrollingMode.end, // 끝부분에서 스크롤
                   ),
                   primaryYAxis: NumericAxis(
-                    minimum: _tradeDetailController.minYValue.value,
+                    numberFormat: NumberFormat.decimalPattern(),
+                    //minimum: _tradeDetailController.minYValue.value,
                   ),
                   zoomPanBehavior: ZoomPanBehavior(
                     enablePanning: true, // 팬(슬라이드) 기능 활성화
                   ),
-                  //title: ChartTitle(text: 'Half yearly sales analysis'),
-                  //tooltipBehavior: _tooltipBehavior,
                   series: <LineSeries<SalesData, String>>[
                     LineSeries<SalesData, String>(
-                        dataSource: _youtubeDataController
-                            .youtubeChartData[_tradeDetailController.channelUID]?.viewCount.reversed
-                            .toList(),
-                        xValueMapper: (SalesData sales, _) => sales.time,
-                        yValueMapper: (SalesData sales, _) => sales.sales,
-                        // Enable data label
-                        dataLabelSettings: const DataLabelSettings(isVisible: true))
+                      dataSource: _youtubeDataController
+                          .youtubeChartData[_tradeDetailController.channelUID]?.viewCount.reversed
+                          .toList(),
+                      xValueMapper: (SalesData sales, _) => sales.time,
+                      yValueMapper: (SalesData sales, _) => sales.sales,
+                      markerSettings: MarkerSettings(
+                        isVisible: true,
+                        width: _screenController.screenSize.value.getHeightPerSize(1),
+                        height: _screenController.screenSize.value.getHeightPerSize(1),
+                        color: Colors.blue, // 포인터 색상
+                      ),
+                      dataLabelSettings: const DataLabelSettings(
+                        isVisible: true,
+                      ),
+                      dataLabelMapper: (SalesData sales, _) =>
+                          NumberFormat('#,###').format(sales.sales),
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
+              TradeDetailListTileWidget(
+                title: '총 조회수',
+                trailing: formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.totalViewCount),
+                fontSize: 1.6,
+              ),
+              TradeDetailListTileWidget(
+                title: '총 좋아요수',
+                trailing: formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.totalLikeCount),
+                fontSize: 1.6,
+              ),
+              TradeDetailListTileWidget(
+                title: '이전 총 조회수',
+                trailing: formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalViewCount),
+                fontSize: 1.6,
+              ),
+              TradeDetailListTileWidget(
+                title: '이전 총 좋아요수',
+                trailing: formatToCurrency(_youtubeDataController
+                    .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalLikeCount),
+                fontSize: 1.6,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -115,68 +227,44 @@ class TradeDetailMyStock extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '보유 주식',
-              style: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                '1주 평균',
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '보유 주식',
                 style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                 ),
               ),
-              trailing: Obx(
-                () => Text(
-                  '${formatToCurrency(_tradeDetailController.walletAvg.value)}원',
+              TradeDetailListTileWidget(
+                title: '1주 평균',
+                trailing: '${formatToCurrency(_tradeDetailController.walletAvg.value)}원',
+                fontSize: 1.8,
+              ),
+              TradeDetailListTileWidget(
+                title: '보유 수량',
+                trailing: '${_tradeDetailController.walletCount}',
+                fontSize: 1.8,
+              ),
+              ListTile(
+                title: Text(
+                  '총 금액',
                   style: TextStyle(
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
                   ),
                 ),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                '보유 수량',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                ),
-              ),
-              trailing: Obx(
-                () => Text(
-                  '${_tradeDetailController.walletCount}',
-                  style: TextStyle(
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                '총 금액',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                ),
-              ),
-              trailing: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Obx(
-                    () => Text(
+                trailing: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
                       '${formatToCurrency(_tradeDetailController.walletSum.value)}원',
                       style: TextStyle(
                         fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
                       ),
                       textAlign: TextAlign.right,
                     ),
-                  ),
-                  Obx(
-                    () => Text(
+                    Text(
                       '${formatToCurrency(_tradeDetailController.walletReturn.value)}(${_tradeDetailController.walletRatio.value.toStringAsFixed(2)}%)',
                       style: TextStyle(
                           fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
@@ -187,11 +275,11 @@ class TradeDetailMyStock extends StatelessWidget {
                                   : Colors.black),
                       textAlign: TextAlign.right,
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:korean_profanity_filter/korean_profanity_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/login/signup/4_setdata/signup_setdata_system.dart';
+import 'package:stockpj/utils/search_name.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
@@ -73,7 +74,8 @@ class SignUpSetDataButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
           EasyLoading.show(status: '이름 중복 체크 중');
-          await _singUpSetDataControll.searchName(_singUpSetDataControll.controllerName.text);
+          _singUpSetDataControll.overlapName =
+              await searchName(_singUpSetDataControll.controllerName.text);
           EasyLoading.dismiss();
           if (_singUpSetDataControll.formKey.currentState!.validate()) {
             _singUpSetDataControll.trySetUserData();

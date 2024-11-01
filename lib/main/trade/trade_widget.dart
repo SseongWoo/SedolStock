@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/trade/trade_system.dart';
+import 'package:stockpj/utils/format.dart';
+import '../../data/public_data.dart';
 import '../../data/youtube_data.dart';
 import '../../utils/screen_size.dart';
 
@@ -90,9 +92,11 @@ class TradeItemWidget extends StatelessWidget {
               const Spacer(),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice.toString(),
+                    formatToCurrency(
+                        _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice),
                     style: TextStyle(
                         fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
                   ),
@@ -112,7 +116,7 @@ class TradeItemWidget extends StatelessWidget {
 }
 
 Widget differenceTextWidget(int differenceInt) {
-  final ScreenController _screenController = Get.find<ScreenController>();
+  final ScreenController screenController = Get.find<ScreenController>();
   String pm = '';
   Color textColor;
 
@@ -120,16 +124,14 @@ Widget differenceTextWidget(int differenceInt) {
     pm = '+';
     textColor = Colors.red;
   } else if (differenceInt < 0) {
-    pm = '-';
     textColor = Colors.blue;
   } else {
-    pm = '';
     textColor = Colors.grey;
   }
 
   return Text(
     '$pm${differenceInt.toString()}',
     style: TextStyle(
-        color: textColor, fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+        color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
   );
 }

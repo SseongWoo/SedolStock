@@ -71,26 +71,6 @@ class SingUpSetDataControll extends GetxController {
     Get.offAll(() => LoginScreen());
   }
 
-  Future<void> searchName(String name) async {
-    final searchNameData = await http.post(
-      Uri.parse('$httpURL/names/$name'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-      }),
-    );
-    if (searchNameData.statusCode == 200) {
-      overlapName = true;
-    } else if (searchNameData.statusCode == 404) {
-      overlapName = false;
-    } else {
-      showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
-      overlapName = true;
-    }
-  }
-
   Future<void> trySetUserData() async {
     String? uid = await getUID();
     EasyLoading.show(status: '사용자 데이터 등록중');

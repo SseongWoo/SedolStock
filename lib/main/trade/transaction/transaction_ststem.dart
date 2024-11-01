@@ -89,16 +89,24 @@ class TransactionController extends GetxController {
   }
 
   void onTapHalf() {
-    calculatorInt.value = (_myDataController.myMoney.value ~/
-            _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice) ~/
-        2;
-    calculatorDisplay.value = calculatorInt.value.toString();
+    if (buying) {
+      calculatorInt.value = (_myDataController.myMoney.value ~/
+              _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice) ~/
+          2;
+      calculatorDisplay.value = calculatorInt.value.toString();
+    } else if (!buying && _myDataController.ownStock['$channelUID$itemType']!.stockCount > 0) {
+      calculatorInt.value = _myDataController.ownStock['$channelUID$itemType']!.stockCount ~/ 2;
+    }
   }
 
   void onTapMax() {
-    calculatorInt.value = (_myDataController.myMoney.value ~/
-        _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice);
-    calculatorDisplay.value = calculatorInt.value.toString();
+    if (buying) {
+      calculatorInt.value = (_myDataController.myMoney.value ~/
+          _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice);
+      calculatorDisplay.value = calculatorInt.value.toString();
+    } else if (!buying && _myDataController.ownStock['$channelUID$itemType']!.stockCount > 0) {
+      calculatorInt.value = _myDataController.ownStock['$channelUID$itemType']!.stockCount;
+    }
   }
 
   bool checkData() {
@@ -154,7 +162,7 @@ class TransactionController extends GetxController {
 
       if (response.statusCode == 200) {
         Get.back();
-        await reflashGetData();
+        await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
         print('Trade data updated successfully');
       } else {

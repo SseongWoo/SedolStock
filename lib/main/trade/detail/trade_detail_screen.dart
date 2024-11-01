@@ -24,7 +24,12 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text(channelMapData[_tradeDetailController.channelUID]!),
+        title: Obx(
+          () => Opacity(
+            opacity: _tradeDetailController.opacity.value,
+            child: TradeDetailAppBarTitleWidget(),
+          ),
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(2)),
@@ -36,6 +41,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
         child: Stack(
           children: [
             SingleChildScrollView(
+              controller: _tradeDetailController.scrollController,
               child: Padding(
                 padding: EdgeInsets.only(
                     left: _screenController.screenSize.value.getWidthPerSize(2),

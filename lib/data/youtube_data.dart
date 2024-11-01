@@ -1,41 +1,12 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:stockpj/data/public_data.dart';
 import 'dart:convert';
 
 import 'package:stockpj/utils/http_request.dart';
 
 import '../main/trade/detail/trade_detail_system.dart';
-
-List<String> channelIdList = [
-  'UC2b4WRE5BZ6SIUWBeJU8rwg',
-  'UCIVFv8AiQLqM9oLHTixrNYw',
-  'UCKzfyYWHQ92z_2jUcSABM8Q',
-  'UClbYIn9LDbbFZ9w2shX3K0g',
-  'UCAHVQ44O81aehLWfy9O6Elw',
-  'UC_eeSpMBz8PG4ssdBPnP07g',
-  'UC1afpiIuBDcjYlmruAa0HiA',
-  'UC7-m6jQLinZQWIbwm9W-1iw',
-  'UCQmcltnre6aG9SkDRYZqFIg',
-  'UCYxLMfeX1CbMBll9MsGlzmw',
-  'UCcA21_PzN1EhNe7xS4MJGsQ',
-  'UCj0c1jUr91dTetIQP2pFeLA'
-];
-
-List<String> channelNameList = [
-  '스텔라이브',
-  '강지',
-  '아이리 칸나',
-  '아야츠노 유니',
-  '아라하시 타비',
-  '네네코 마시로',
-  '시라유키 히나',
-  '아카네 리제',
-  '아오쿠모 린',
-  '텐코 시부키',
-  '하나코 나나',
-  '유즈하 리코'
-];
 
 Map<String, String> channelMapData = Map.fromIterables(channelIdList, channelNameList);
 
@@ -48,6 +19,26 @@ class HomeYoutubeDataClass {
 
   HomeYoutubeDataClass(
       this.title, this.thumbnail, this.publishedAt, this.videoUrl, this.channelName);
+
+  // 객체를 JSON으로 변환
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'thumbnail': thumbnail,
+        'publishedAt': publishedAt,
+        'videoUrl': videoUrl,
+        'channelName': channelName,
+      };
+
+  // JSON을 객체로 변환
+  factory HomeYoutubeDataClass.fromJson(Map<String, dynamic> json) {
+    return HomeYoutubeDataClass(
+      json['title'],
+      json['thumbnail'],
+      json['publishedAt'],
+      json['videoUrl'],
+      json['channelName'],
+    );
+  }
 }
 
 class YoutubeVideoDataClass {
@@ -58,7 +49,32 @@ class YoutubeVideoDataClass {
   String publishedat;
 
   YoutubeVideoDataClass(
-      this.videoid, this.title, this.description, this.thumbnailurl, this.publishedat);
+    this.videoid,
+    this.title,
+    this.description,
+    this.thumbnailurl,
+    this.publishedat,
+  );
+
+  // 객체를 JSON으로 변환
+  Map<String, dynamic> toJson() => {
+        'videoid': videoid,
+        'title': title,
+        'description': description,
+        'thumbnailurl': thumbnailurl,
+        'publishedat': publishedat,
+      };
+
+  // JSON을 객체로 변환
+  factory YoutubeVideoDataClass.fromJson(Map<String, dynamic> json) {
+    return YoutubeVideoDataClass(
+      json['videoid'],
+      json['title'],
+      json['description'],
+      json['thumbnailurl'],
+      json['publishedat'],
+    );
+  }
 }
 
 class YoutubeChannelDataClass {
@@ -75,6 +91,26 @@ class YoutubeChannelDataClass {
     this.description,
     this.subscribercount,
   );
+
+  // 객체를 JSON으로 변환
+  Map<String, dynamic> toJson() => {
+        'title': title,
+        'thumbnail': thumbnail,
+        'birthday': birthday,
+        'description': description,
+        'subscribercount': subscribercount,
+      };
+
+  // JSON을 객체로 변환
+  factory YoutubeChannelDataClass.fromJson(Map<String, dynamic> json) {
+    return YoutubeChannelDataClass(
+      json['title'],
+      json['thumbnail'],
+      json['birthday'],
+      json['description'],
+      json['subscribercount'],
+    );
+  }
 }
 
 // class YoutubeChartDataClass {

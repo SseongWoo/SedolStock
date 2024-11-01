@@ -12,11 +12,12 @@ import 'data/public_data.dart';
 import 'data/youtube_data.dart';
 import 'login/login/login_screen.dart';
 import 'login/login/login_system.dart';
+import 'main/information/information_system.dart';
 import 'main/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setURL();
+  //setURL();
   startController();
   runApp(const MyApp());
   configLoading();

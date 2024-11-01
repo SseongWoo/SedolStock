@@ -13,6 +13,7 @@ class SalesData {
 class TradeDetailController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
+  final ScrollController scrollController = ScrollController();
   String channelUID = '';
   RxInt walletSum = 0.obs;
   RxInt walletReturn = 0.obs;
@@ -24,6 +25,7 @@ class TradeDetailController extends GetxController {
   Color titleTextColor = Colors.black;
   RxInt stockReturn = 0.obs;
   RxDouble stockRatio = 0.0.obs;
+  RxDouble opacity = 0.0.obs;
 
   void goTransaction(bool buying) {
     WidgetsBinding.instance.ensureVisualUpdate();
@@ -41,13 +43,25 @@ class TradeDetailController extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     channelUID = arguments['channelUID'];
     setDetailData();
+
+    scrollController.addListener(() {
+      // 스크롤 위치에 따라 투명도 변경 (최대 100까지 스크롤 시 1.0의 불투명도)
+      double offset = scrollController.position.pixels;
+      opacity.value = (offset / 100).clamp(0.0, 1.0);
+    });
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose(); // 스크롤 컨트롤러 해제
+    super.onClose();
   }
 
   void setDetailData() {
     minYValue.value = _youtubeDataController.youtubeChartData[channelUID]!.viewCount
         .map((data) => data.sales)
         .reduce((a, b) => a < b ? a : b);
-    minYValue.value = (minYValue ~/ 1000) * 1000;
+    minYValue.value = (minYValue ~/ 10) * 10;
 
     stockReturn.value = _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
         _youtubeDataController.youtubeLiveData[channelUID]!.lastViewCountPrice;

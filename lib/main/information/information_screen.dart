@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/color.dart';
+import 'package:stockpj/utils/data_storage.dart';
 import '../../data/my_data.dart';
 import '../../data/public_data.dart';
 import '../../data/youtube_data.dart';
@@ -26,7 +27,7 @@ class InformationScreen extends StatelessWidget {
           Container(
             height: _screenController.screenSize.value.getHeightPerSize(30),
             color: Colors.white,
-            child: TradeDatailChartWidget(),
+            child: const TradeDatailChartWidget(),
           ),
           Container(
             height: _screenController.screenSize.value.getHeightPerSize(30),
@@ -47,44 +48,38 @@ class InformationScreen extends StatelessWidget {
           ),
           settingTitle('정보 설정'),
           InformationButtonWidget(
-            title: '내 정보 수정',
-            function: _informationController.goSetting,
+            title: '내 이름 변경',
+            function: _informationController.nameChange,
           ),
           settingDivider(),
           InformationButtonWidget(
-            title: '파산',
-            function: _informationController.goSetting,
+            title: '선택 채널 변경',
+            function: _informationController.channelChange,
           ),
           SizedBox(
             height: _screenController.screenSize.value.getHeightPerSize(1),
           ),
           settingTitle('계정 설정'),
           InformationButtonWidget(
-            title: '로그아웃',
-            function: _informationController.logOut,
-          ),
-          settingDivider(),
-          InformationButtonWidget(
             title: '비밀번호 변경',
-            function: _informationController.goSetting,
+            function: _informationController.startPWChange,
           ),
           settingDivider(),
           InformationButtonWidget(
-            title: '이메일 인증',
-            function: _myDataController.setTotalMoney,
-          ),
-          settingDivider(),
-          InformationButtonWidget(
-            title: '회원탈퇴',
-            function: getRankData,
+            title: '로그아웃',
+            function: _informationController.startLogOut,
           ),
           SizedBox(
             height: _screenController.screenSize.value.getHeightPerSize(1),
           ),
-          settingTitle('어플 설정'),
+          settingTitle('데이터 및 계정 관리'),
           InformationButtonWidget(
-            title: '설정',
+            title: '관리',
             function: _informationController.goSetting,
+          ),
+          InformationButtonWidget(
+            title: '테스트 버튼',
+            function: _informationController.test,
           ),
           SizedBox(
             height: _screenController.screenSize.value.getHeightPerSize(1),
