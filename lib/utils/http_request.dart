@@ -1,13 +1,11 @@
-import 'check_platform.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-//String httpURL = 'http://43.202.207.235/api/';
-String httpURL = 'http://localhost:3000/api';
-String cafeURL = 'https://cafe.naver.com/tteokbokk1';
+import 'check_list.dart';
 
-// void setURL() {
-//   if (checkPlatform() == 'AOS') {
-//     httpURL = 'http://10.0.2.2:3000';
-//   } else {
-//     httpURL = 'http://localhost:3000';
-//   }
-// }
+late String httpURL = 'http://localhost:3000/api';
+late String cafeURL;
+
+void setURL() {
+  cafeURL = dotenv.env['CAFE_URL'] ?? '';
+  httpURL = dotenv.env['API_URL'] ?? '';
+}

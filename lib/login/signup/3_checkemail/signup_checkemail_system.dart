@@ -19,6 +19,7 @@ class SignUpCheckEmailBinding extends Bindings {
 
 class SingUpCheckEmailControll extends GetxController {
   late String email;
+
   Future<void> deleteUserData(String uid) async {
     await http.post(
       Uri.parse('$httpURL/deleteUser/$uid'),
@@ -54,14 +55,16 @@ class SingUpCheckEmailControll extends GetxController {
     final String id = userID['id']!;
     final String pw = userID['pw']!;
 
-    final sendEmail = await http.post(Uri.parse('$httpURL/users/sendemail'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': id,
-          'password': pw,
-        }));
+    final sendEmail = await http.post(
+      Uri.parse('$httpURL/users/sendemail'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': id,
+        'password': pw,
+      }),
+    );
 
     if (sendEmail.statusCode == 200) {
       showSimpleSnackbar('전송 완료', '이메일 재전송에 성공하였습니다.', SnackPosition.TOP, Colors.black);

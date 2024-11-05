@@ -12,19 +12,16 @@ class TradeItemListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _screenController.screenSize.value.getHeightPerSize(78),
-      child: ListView.separated(
-        itemCount: channelIdList.length, // 아이템 개수 설정
-        itemBuilder: (context, index) {
-          return TradeItemWidget(
-            channelUID: channelIdList[index],
-            index: index,
-          );
-        },
-        separatorBuilder: (context, index) => SizedBox(
-          height: _screenController.screenSize.value.getHeightPerSize(0.5),
-        ),
+    return ListView.separated(
+      itemCount: channelIdList.length, // 아이템 개수 설정
+      itemBuilder: (context, index) {
+        return TradeItemWidget(
+          channelUID: channelIdList[index],
+          index: index,
+        );
+      },
+      separatorBuilder: (context, index) => SizedBox(
+        height: _screenController.screenSize.value.getHeightPerSize(0.5),
       ),
     );
   }
@@ -33,15 +30,14 @@ class TradeItemListWidget extends StatelessWidget {
 class TradeItemWidget extends StatelessWidget {
   final String channelUID;
   final int index;
-  final TradeController _tradeController = Get.put(TradeController());
-  final YoutubeDataController _youtubeDataController = Get.put(YoutubeDataController());
+  final TradeController _tradeController = Get.find<TradeController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final ScreenController _screenController = Get.find<ScreenController>();
 
   TradeItemWidget({super.key, required this.channelUID, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
     return Container(
       height: _screenController.screenSize.value.getHeightPerSize(8),
       decoration: BoxDecoration(
@@ -90,19 +86,22 @@ class TradeItemWidget extends StatelessWidget {
                     TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
               ),
               const Spacer(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    formatToCurrency(
-                        _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice),
-                    style: TextStyle(
-                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
-                  ),
-                  differenceTextWidget(
-                      _youtubeDataController.youtubeLiveData[channelUID]!.differenceViewCount),
-                ],
+              Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      formatToCurrency(
+                          _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice),
+                      style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+                    ),
+                    differenceTextWidget(
+                        _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
+                            _youtubeDataController.youtubeLiveData[channelUID]!.lastViewCountPrice),
+                  ],
+                ),
               ),
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(3),

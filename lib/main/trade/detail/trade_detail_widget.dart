@@ -40,7 +40,7 @@ class TradeDetailAppBarTitleWidget extends StatelessWidget {
                 width: _screenController.screenSize.value.getWidthPerSize(2),
               ),
               Text(
-                '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                '${_tradeDetailController.stockReturn > 0 ? '+${_tradeDetailController.stockReturn}' : _tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
                 style: TextStyle(
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
                     color: _tradeDetailController.titleTextColor),
@@ -136,7 +136,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
                     width: _screenController.screenSize.value.getWidthPerSize(2),
                   ),
                   Text(
-                    '${_tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                    '${_tradeDetailController.stockReturn > 0 ? '+${_tradeDetailController.stockReturn}' : _tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
                     style: TextStyle(
                         fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
                         color: _tradeDetailController.titleTextColor),

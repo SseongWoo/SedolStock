@@ -9,12 +9,7 @@ class TradeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TradeItemListWidget(),
-        ],
-      ),
-    );
+    _screenController.updateScreenSize(context);
+    return TradeItemListWidget();
   }
 }

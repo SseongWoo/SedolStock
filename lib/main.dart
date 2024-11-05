@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/login/login/login_screen_web.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_system.dart';
 import 'package:stockpj/splash/splash_screen.dart';
 import 'package:stockpj/utils/color.dart';
@@ -12,12 +15,17 @@ import 'data/public_data.dart';
 import 'data/youtube_data.dart';
 import 'login/login/login_screen.dart';
 import 'login/login/login_system.dart';
-import 'main/information/information_system.dart';
 import 'main/main_screen.dart';
+import 'main/trade/trade_system.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //setURL();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  await dotenv.load(fileName: '.env');
+  setURL();
   startController();
   runApp(const MyApp());
   configLoading();
@@ -30,6 +38,7 @@ void startController() {
   Get.put(MyDataController());
   Get.put(StockListController());
   Get.put(PublicDataController());
+  Get.put(TradeController());
 }
 
 class MyApp extends StatelessWidget {
@@ -48,6 +57,10 @@ class MyApp extends StatelessWidget {
       // 기본 경로 설정
       initialRoute: '/',
       getPages: [
+        GetPage(
+          name: '/test',
+          page: () => WebLoginScreen(),
+        ),
         GetPage(
           name: '/',
           page: () => SplashScreen(),

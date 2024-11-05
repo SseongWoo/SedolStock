@@ -145,6 +145,18 @@ class SingUpEmailControll extends GetxController {
         showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
       }
     } else {
+      //
+      final response = await http.post(
+        Uri.parse('$httpURL/signin'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'email': email, 'password': password}),
+      );
+      // 로그인이 성공했을때
+
+      //
+
       controllerID.clear();
       controllerPassword.clear();
       controllerPasswordCheck.clear();

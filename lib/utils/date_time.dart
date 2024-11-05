@@ -7,28 +7,29 @@ String formatDateTime(DateTime dateTime) {
 }
 
 String formatDateString(String isoString) {
-  // ISO 형식의 문자열을 DateTime 객체로 변환
   DateTime dateTime = DateTime.parse(isoString);
 
-  // 원하는 형식으로 변환 (MM월 DD일 hh시 mm분)
   DateFormat formatter = DateFormat('MM월 dd일 hh시 mm분');
   return formatter.format(dateTime);
 }
 
 String formatDateString2(String isoString) {
-  // ISO 형식의 문자열을 DateTime 객체로 변환
   DateTime dateTime = DateTime.parse(isoString);
 
-  // 원하는 형식으로 변환 (MM월 DD일 hh시 mm분)
   DateFormat formatter = DateFormat('MM.dd hh:mm');
   return formatter.format(dateTime);
 }
 
 String formatDateString3(String isoString) {
-  // ISO 형식의 문자열을 DateTime 객체로 변환
   DateTime dateTime = DateTime.parse(isoString);
 
-  // 원하는 형식으로 변환 (MM월 DD일 hh시 mm분)
   DateFormat formatter = DateFormat('MM월 dd일');
   return formatter.format(dateTime);
+}
+
+String formatDateString4(String isoString) {
+  List<String> parts = isoString.split('-');
+  String formattedDate = "${parts[0]}년 ${parts[1]}월 ${parts[2]}일";
+
+  return formattedDate;
 }

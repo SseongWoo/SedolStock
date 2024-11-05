@@ -52,6 +52,16 @@ class TradeDetailController extends GetxController {
   }
 
   @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    ever(
+      _myDataController.ownStock,
+      (callback) => setDetailData(),
+    );
+  }
+
+  @override
   void onClose() {
     scrollController.dispose(); // 스크롤 컨트롤러 해제
     super.onClose();

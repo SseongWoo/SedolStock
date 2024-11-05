@@ -31,20 +31,17 @@ Future<void> startGetData() async {
       date != today ||
       (dateTime != null && dateTime.hour < 2 && DateTime.now().hour >= 2)) {
     await fetchDataAndSave(today);
-    print('1번');
   } else {
     await loadLatestYoutubeData();
     await loadYoutubeChannelData();
     await loadYoutubeVideoData();
     await loadRankingData();
-    print('2번');
 
     if (youtubeDataController.latestYoutubeData.isEmpty ||
         youtubeDataController.youtubeChannelData.isEmpty ||
         youtubeDataController.youtubeVideoData.isEmpty ||
         publicDataController.rankingList.isEmpty) {
       await fetchDataAndSave(today);
-      print('3번');
     }
   }
 
@@ -55,7 +52,6 @@ Future<void> startGetData() async {
 
 Future<void> reflashGetData(bool timeReFlash) async {
   final MyDataController myDataController = Get.find<MyDataController>();
-  final TradeDetailController tradeDetailController = Get.find<TradeDetailController>();
   final InformationController informationController = Get.find<InformationController>();
   await getUserData();
   await getWalletData();
@@ -64,9 +60,6 @@ Future<void> reflashGetData(bool timeReFlash) async {
     myDataController.setMoneyData();
     await getTradeHistoryData();
   }
-
-  tradeDetailController.setDetailData();
-
   await updateMyTotalMoney();
   informationController.profitRate();
   informationController.setMoneyChartData();

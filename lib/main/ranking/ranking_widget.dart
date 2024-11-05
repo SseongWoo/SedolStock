@@ -20,13 +20,13 @@ class RankingSubTitleWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          '부자 랭킹',
+          '랭킹',
           style: TextStyle(
             fontSize: _screenController.screenSize.value.getHeightPerSize(2.5),
           ),
         ),
         Text(
-          '${formatDateString3(_publicDataController.updateDate.value)} 01시 00분 기준',
+          '${formatDateString4(_publicDataController.updateDate.value)} 01시 00분 기준',
           style: TextStyle(
               fontSize: _screenController.screenSize.value.getHeightPerSize(1.2),
               color: Colors.grey[700]),

@@ -51,6 +51,7 @@ dependencies:
   url_launcher:
   syncfusion_flutter_charts: ^27.1.53
   get_storage: ^2.1.1
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +69,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - .env
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

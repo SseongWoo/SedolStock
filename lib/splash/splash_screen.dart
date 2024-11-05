@@ -13,7 +13,6 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);
-    _splashController.splash();
     return Container(
       height: double.infinity,
       width: double.infinity,

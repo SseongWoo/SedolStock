@@ -9,10 +9,18 @@ import 'package:stockpj/utils/http_request.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../login/login/login_system.dart';
 import '../data/my_data.dart';
+import '../utils/check_list.dart';
 import '../utils/data_storage.dart';
 
 class SplashController extends GetxController {
   RxString loadingMessage = RxString('로딩');
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    splash();
+  }
 
   void goLogin() {
     Get.offAll(() => LoginScreen(), binding: LoginBinding(), transition: Transition.noTransition);
@@ -21,21 +29,6 @@ class SplashController extends GetxController {
   void goHome() {
     Get.offAllNamed('/main');
     //Get.offAll(() => MainScreen(), transition: Transition.noTransition);
-  }
-
-  Future<bool> checkServer() async {
-    try {
-      Uri uri = Uri.parse('$httpURL/running');
-      final running = await http.get(uri);
-
-      if (running.statusCode == 200) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
   }
 
   Future<void> tryAutoLogin() async {
@@ -77,9 +70,6 @@ class SplashController extends GetxController {
     }
   }
 
-  void checkVersion() {
-    // 추후에 추가 예정
-  }
   void splash() async {
     loadingMessage.value = '서버 상태 확인중';
     bool runnintServer = await checkServer();
