@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/login/signup/4_setdata/signup_setdata_system.dart';
 import 'package:stockpj/utils/search_name.dart';
+import '../../../data/public_data.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
 class SignUpSetDataBackButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
   SignUpSetDataBackButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
     return IconButton(
       onPressed: () {
         _singUpSetDataControll.cancelSignUp();
@@ -31,10 +32,10 @@ class SignUpSetDataTextWidget extends StatefulWidget {
 }
 
 class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
+  final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
   final ScreenController _screenController = Get.find<ScreenController>();
   @override
   Widget build(BuildContext context) {
-    final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
     return Form(
       key: _singUpSetDataControll.formKey,
       child: TextFormField(
@@ -64,11 +65,11 @@ class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
 
 class SignUpSetDataButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
   SignUpSetDataButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
     return SizedBox(
       width: double.infinity, // 기기의 전체 너비
       child: ElevatedButton(
@@ -99,42 +100,94 @@ class SignUpSetDataButtonWidget extends StatelessWidget {
 
 class SignUpDropDownWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
   SignUpDropDownWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
     return Center(
       child: Obx(
-        () => DropdownButton<String>(
-          value: _singUpSetDataControll.selectedName.value,
-          alignment: Alignment.center,
-          onChanged: (String? newValue) {
-            _singUpSetDataControll.updateSelectedName(newValue!);
-          },
-          items: List.generate(_singUpSetDataControll.nameData.length, (index) {
-            return DropdownMenuItem<String>(
-              value: _singUpSetDataControll.nameData[index],
-              child: Row(
-                children: [
-                  Icon(
-                    _singUpSetDataControll.iconData[index],
-                    size: _screenController.screenSize.value.getHeightPerSize(3.5),
-                    color: colorList[index],
-                  ),
-                  SizedBox(width: _screenController.screenSize.value.getWidthPerSize(1.5)),
-                  Text(
-                    _singUpSetDataControll.nameData[index],
-                    style: TextStyle(
-                        fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-                        color: colorList[index]),
-                  ),
-                ],
+        () => Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                if (_singUpSetDataControll.listIndex > 0) {
+                  _singUpSetDataControll.listIndex.value--;
+                } else {
+                  _singUpSetDataControll.listIndex.value = fanNameList.length - 1;
+                }
+              },
+              icon: const Icon(Icons.arrow_back_ios_new),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onLongPress: () {
+                  //_singUpSetDataControll.listIndex.value = fanNameList.length - 1;
+                },
+                child: Text(
+                  fanNameList[_singUpSetDataControll.listIndex.value],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: _screenController.screenSize.value.getHeightPerSize(4),
+                      color: fanColorMap[fanNameList[_singUpSetDataControll.listIndex.value]]),
+                ),
               ),
-            );
-          }),
+            ),
+            IconButton(
+              onPressed: () {
+                if (_singUpSetDataControll.listIndex < fanNameList.length - 1) {
+                  _singUpSetDataControll.listIndex.value++;
+                } else {
+                  _singUpSetDataControll.listIndex.value = 0;
+                }
+              },
+              icon: const Icon(Icons.arrow_forward_ios),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+// class SignUpDropDownWidget extends StatelessWidget {
+//   final ScreenController _screenController = Get.find<ScreenController>();
+//   final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
+//   SignUpDropDownWidget({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Obx(
+//             () => DropdownButton<String>(
+//           value: _singUpSetDataControll.selectedName.value,
+//           alignment: Alignment.center,
+//           onChanged: (String? newValue) {
+//             _singUpSetDataControll.updateSelectedName(newValue!);
+//           },
+//           items: List.generate(fanNameList.length, (index) {
+//             return DropdownMenuItem<String>(
+//               value: fanNameList[index],
+//               child: Row(
+//                 children: [
+//                   Icon(
+//                     _singUpSetDataControll.iconData[index],
+//                     size: _screenController.screenSize.value.getHeightPerSize(3.5),
+//                     color: colorList[index],
+//                   ),
+//                   SizedBox(width: _screenController.screenSize.value.getWidthPerSize(1.5)),
+//                   Text(
+//                     fanNameList[index],
+//                     style: TextStyle(
+//                         fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+//                         color: colorList[index]),
+//                   ),
+//                 ],
+//               ),
+//             );
+//           }),
+//         ),
+//       ),
+//     );
+//   }
+// }

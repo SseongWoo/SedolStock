@@ -10,6 +10,11 @@ class TradeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);
-    return TradeItemListWidget();
+    return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: _screenController.screenSize.value.getHeightPerSize(3),
+          actions: [TradeSelectWidget()],
+        ),
+        body: TradeItemListWidget());
   }
 }

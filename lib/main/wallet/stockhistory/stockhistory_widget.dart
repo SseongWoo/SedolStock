@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:stockpj/data/youtube_data.dart';
+import 'package:stockpj/main/wallet/stockhistory/stockhistory_system.dart';
 import 'package:stockpj/utils/format.dart';
 import '../../../data/my_data.dart';
 import '../../../utils/date_time.dart';
@@ -219,7 +220,7 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
       child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
-              '${formatDateString2(_myDataController.tradeHistoryList[index].tradetime)}\n${channelMapData[_myDataController.tradeHistoryList[index].itemuid]}')),
+              '${formatDateString2(_myDataController.tradeHistoryList[index].tradetime)}\n${channelMapData[_myDataController.tradeHistoryList[index].itemuid]}(${_myDataController.tradeHistoryList[index].itemtype})')),
     );
   }
 
@@ -324,5 +325,131 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
         : const Center(
             child: Text('거래 내역이 없습니다.'),
           );
+  }
+}
+
+class StockHistoryFilterWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  StockHistoryFilterWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _screenController.screenSize.value.getHeightPerSize(3),
+      width: _screenController.screenSize.value.getWidthSize(),
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.only(
+          right: _screenController.screenSize.value.getWidthPerSize(2),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            Get.bottomSheet(StockHistoryBottomSheetWidget());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.tune,
+                size: _screenController.screenSize.value.getHeightPerSize(2),
+              ),
+              Text(
+                '필터 설정',
+                style:
+                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StockHistoryBottomSheetWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final StockHistoryController _stockHistoryController = Get.find<StockHistoryController>();
+  StockHistoryBottomSheetWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: _screenController.screenSize.value.getWidthSize(),
+      padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(2)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        children: [
+          const Text('종목명'),
+          Obx(
+            () => Wrap(
+              spacing: _screenController.screenSize.value.getWidthPerSize(2),
+              runSpacing: 4.0,
+              children: _stockHistoryController.itemList.map(
+                (filter) {
+                  return FilterChip(
+                    label: Text(filter),
+                    selected: _stockHistoryController.selectedFilters.contains(filter),
+                    onSelected: (bool selected) {
+                      if (filter == '전체') {}
+                      _stockHistoryController.toggleFilter(filter);
+                    },
+                  );
+                },
+              ).toList(),
+            ),
+          ),
+          Text('종목유형'),
+          Obx(() => Wrap(
+                spacing: 8.0,
+                runSpacing: 4.0,
+                children: _stockHistoryController.itemTypeList.map((filter) {
+                  return ChoiceChip(
+                    label: Text(filter),
+                    selected: _stockHistoryController.selectItemType.value == filter,
+                    onSelected: (bool selected) {
+                      _stockHistoryController.selectItemTypeFilter(filter);
+                    },
+                    // selectedColor: Colors.blue,
+                    // backgroundColor: Colors.grey[200],
+
+                    labelStyle: TextStyle(
+                      color: _stockHistoryController.selectItemType.value == filter
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  );
+                }).toList(),
+              )),
+          Text('거래유형'),
+          Obx(() => Wrap(
+                spacing: 8.0,
+                runSpacing: 4.0,
+                children: _stockHistoryController.saleTypeList.map((filter) {
+                  return ChoiceChip(
+                    label: Text(filter),
+                    selected: _stockHistoryController.selectSaleType.value == filter,
+                    onSelected: (bool selected) {
+                      _stockHistoryController.selectSaleTypeFilter(filter);
+                    },
+                    // selectedColor: Colors.blue,
+                    // backgroundColor: Colors.grey[200],
+
+                    labelStyle: TextStyle(
+                      color: _stockHistoryController.selectSaleType.value == filter
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  );
+                }).toList(),
+              )),
+        ],
+      ),
+    );
   }
 }

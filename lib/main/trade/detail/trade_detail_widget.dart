@@ -7,7 +7,6 @@ import 'package:stockpj/utils/date_time.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/screen_size.dart';
 
@@ -22,7 +21,7 @@ class TradeDetailAppBarTitleWidget extends StatelessWidget {
     return Column(
       children: [
         Text(
-          channelMapData[_tradeDetailController.channelUID]!,
+          '${channelMapData[_tradeDetailController.channelUID]!} (${_tradeDetailController.type == 'view' ? '조회수' : '좋아요수'})',
           style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
         ),
         Obx(
@@ -30,8 +29,11 @@ class TradeDetailAppBarTitleWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+                formatToCurrency(_tradeDetailController.type == 'view'
+                    ? _youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice
+                    : _youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.likeCountPrice),
                 style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
                 ),
@@ -118,7 +120,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                channelMapData[_tradeDetailController.channelUID]!,
+                '${channelMapData[_tradeDetailController.channelUID]!} (${_tradeDetailController.type == 'view' ? '조회수' : '좋아요수'})',
                 style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(2.4),
                 ),
@@ -126,8 +128,11 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
               Row(
                 children: [
                   Text(
-                    formatToCurrency(_youtubeDataController
-                        .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice),
+                    formatToCurrency(_tradeDetailController.type == 'view'
+                        ? _youtubeDataController
+                            .youtubeLiveData[_tradeDetailController.channelUID]!.viewCountPrice
+                        : _youtubeDataController
+                            .youtubeLiveData[_tradeDetailController.channelUID]!.likeCountPrice),
                     style: TextStyle(
                       fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                     ),
@@ -136,7 +141,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
                     width: _screenController.screenSize.value.getWidthPerSize(2),
                   ),
                   Text(
-                    '${_tradeDetailController.stockReturn > 0 ? '+${_tradeDetailController.stockReturn}' : _tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
+                    '${_tradeDetailController.stockReturn > 0 ? '+${_tradeDetailController.stockReturn}' : _tradeDetailController.stockReturn} (${_tradeDetailController.stockRatio > 0 ? '+' : ''}${_tradeDetailController.stockRatio.toStringAsFixed(2)}%)',
                     style: TextStyle(
                         fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
                         color: _tradeDetailController.titleTextColor),
@@ -158,9 +163,17 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
                   ),
                   series: <LineSeries<SalesData, String>>[
                     LineSeries<SalesData, String>(
-                      dataSource: _youtubeDataController
-                          .youtubeChartData[_tradeDetailController.channelUID]?.viewCount.reversed
-                          .toList(),
+                      dataSource: _tradeDetailController.type == 'view'
+                          ? _youtubeDataController
+                              .youtubeChartData[_tradeDetailController.channelUID]
+                              ?.viewCount
+                              .reversed
+                              .toList()
+                          : _youtubeDataController
+                              .youtubeChartData[_tradeDetailController.channelUID]
+                              ?.likeCount
+                              .reversed
+                              .toList(),
                       xValueMapper: (SalesData sales, _) => sales.time,
                       yValueMapper: (SalesData sales, _) => sales.sales,
                       markerSettings: MarkerSettings(
@@ -179,27 +192,47 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
                 ),
               ),
               TradeDetailListTileWidget(
-                title: '총 조회수',
-                trailing: formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.totalViewCount),
+                title: _tradeDetailController.type == 'view' ? '총 조회수' : '총 좋아요수',
+                trailing: _tradeDetailController.type == 'view'
+                    ? formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.totalViewCount)
+                    : formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.totalLikeCount),
                 fontSize: 1.6,
               ),
               TradeDetailListTileWidget(
-                title: '총 좋아요수',
-                trailing: formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.totalLikeCount),
+                title: _tradeDetailController.type == 'view' ? '서브 채널 총 조회수' : '서브 채널 총 좋아요수',
+                trailing: _tradeDetailController.type == 'view'
+                    ? formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[
+                            channelAndSubChannelMapData[_tradeDetailController.channelUID]]!
+                        .totalViewCount)
+                    : formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[
+                            channelAndSubChannelMapData[_tradeDetailController.channelUID]]!
+                        .totalLikeCount),
                 fontSize: 1.6,
               ),
               TradeDetailListTileWidget(
-                title: '이전 총 조회수',
-                trailing: formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalViewCount),
+                title: _tradeDetailController.type == 'view' ? '이전 총 조회수' : '이전 총 좋아요수',
+                trailing: _tradeDetailController.type == 'view'
+                    ? formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalViewCount)
+                    : formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalLikeCount),
                 fontSize: 1.6,
               ),
               TradeDetailListTileWidget(
-                title: '이전 총 좋아요수',
-                trailing: formatToCurrency(_youtubeDataController
-                    .youtubeLiveData[_tradeDetailController.channelUID]!.lastTotalLikeCount),
+                title: _tradeDetailController.type == 'view' ? '서브 채널 이전 총 조회수' : '서브 채널 이전 총 좋아요수',
+                trailing: _tradeDetailController.type == 'view'
+                    ? formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[
+                            channelAndSubChannelMapData[_tradeDetailController.channelUID]]!
+                        .lastTotalViewCount)
+                    : formatToCurrency(_youtubeDataController
+                        .youtubeLiveData[
+                            channelAndSubChannelMapData[_tradeDetailController.channelUID]]!
+                        .lastTotalLikeCount),
                 fontSize: 1.6,
               ),
             ],
@@ -368,103 +401,130 @@ class DetailVideoListWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '최근 업로드된 영상',
-              style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(
+                  () => Text(
+                    '${_tradeDetailController.typeMain.value ? '메인 채널' : '서브 채널'} 최근 업로드된 영상',
+                    style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _tradeDetailController.typeMain.value = !_tradeDetailController.typeMain.value;
+                  },
+                  child: Obx(
+                    () => Text(
+                      _tradeDetailController.typeMain.value ? '서브' : '메인',
+                      style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.4)),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: _screenController.screenSize.value.getHeightPerSize(100), // 높이 지정
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                // Null 체크 추가: youtubeVideoData[channelUID]가 null이면 0을 반환
-                itemCount: _youtubeDataController
-                    .youtubeVideoData[_tradeDetailController.channelUID]?.length,
-                itemBuilder: (context, index) {
-                  final videoData =
-                      _youtubeDataController.youtubeVideoData[_tradeDetailController.channelUID];
-                  if (videoData == null || videoData.isEmpty) {
-                    return const Center(
-                      child: Text('영상 데이터를 불러올 수 없습니다.'), // 데이터가 없을 때의 메시지
-                    );
-                  }
-                  return SizedBox(
-                    height: _screenController.screenSize.value.getHeightPerSize(10),
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: _screenController.screenSize.value.getHeightPerSize(8),
-                          width: _screenController.screenSize.value.getWidthPerSize(30),
-                          child: Image.network(
-                            videoData[index].thumbnailurl,
-                            fit: BoxFit.cover, // 이미지가 부모 컨테이너에 맞도록
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
-                              return const Center(
-                                child: CircularProgressIndicator(), // 로딩 중 표시
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: _screenController.screenSize.value.getWidthPerSize(2),
-                        ),
-                        SizedBox(
-                          width: _screenController.screenSize.value.getWidthPerSize(48),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AutoSizeText(
-                                videoData[index].title,
-                                minFontSize: 10,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize:
-                                      _screenController.screenSize.value.getHeightPerSize(1.8),
-                                ),
-                              ),
-                              Text(
-                                formatDateString(videoData[index].publishedat),
-                                style: TextStyle(
-                                  fontSize:
-                                      _screenController.screenSize.value.getHeightPerSize(1.5),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: IconButton(
-                            onPressed: () async {
-                              final Uri url = Uri.parse(
-                                'https://www.youtube.com/watch?v=${videoData[index].videoid}',
-                              );
-                              if (await canLaunchUrl(url)) {
-                                await launchUrl(url);
-                              } else {
-                                // URL을 열 수 없는 경우 처리
-                                print('Could not launch $url');
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.play_arrow,
-                              color: Colors.red,
+            Obx(
+              () => SizedBox(
+                height: _screenController.screenSize.value.getHeightPerSize(100), // 높이 지정
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  // Null 체크 추가: youtubeVideoData[channelUID]가 null이면 0을 반환
+                  itemCount: _youtubeDataController
+                      .youtubeVideoData[_tradeDetailController.typeMain.value
+                          ? _tradeDetailController.channelUID
+                          : channelAndSubChannelMapData[_tradeDetailController.channelUID]]
+                      ?.length,
+                  itemBuilder: (context, index) {
+                    final videoData = _youtubeDataController.youtubeVideoData[
+                        _tradeDetailController.typeMain.value
+                            ? _tradeDetailController.channelUID
+                            : channelAndSubChannelMapData[_tradeDetailController.channelUID]];
+                    if (videoData == null || videoData.isEmpty) {
+                      return const Center(
+                        child: Text('영상 데이터를 불러올 수 없습니다.'), // 데이터가 없을 때의 메시지
+                      );
+                    }
+                    return SizedBox(
+                      height: _screenController.screenSize.value.getHeightPerSize(10),
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: _screenController.screenSize.value.getHeightPerSize(8),
+                            width: _screenController.screenSize.value.getWidthPerSize(30),
+                            child: Image.network(
+                              videoData[index].thumbnailurl,
+                              fit: BoxFit.cover, // 이미지가 부모 컨테이너에 맞도록
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
+                                return const Center(
+                                  child: CircularProgressIndicator(), // 로딩 중 표시
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
+                                );
+                              },
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                          SizedBox(
+                            width: _screenController.screenSize.value.getWidthPerSize(2),
+                          ),
+                          SizedBox(
+                            width: _screenController.screenSize.value.getWidthPerSize(48),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AutoSizeText(
+                                  videoData[index].title,
+                                  minFontSize: 10,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize:
+                                        _screenController.screenSize.value.getHeightPerSize(1.8),
+                                  ),
+                                ),
+                                Text(
+                                  formatDateString(videoData[index].publishedat),
+                                  style: TextStyle(
+                                    fontSize:
+                                        _screenController.screenSize.value.getHeightPerSize(1.5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: IconButton(
+                              onPressed: () async {
+                                final Uri url = Uri.parse(
+                                  'https://www.youtube.com/watch?v=${videoData[index].videoid}',
+                                );
+                                if (await canLaunchUrl(url)) {
+                                  await launchUrl(url);
+                                } else {
+                                  // URL을 열 수 없는 경우 처리
+                                  print('Could not launch $url');
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.play_arrow,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),

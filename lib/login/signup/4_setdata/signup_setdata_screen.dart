@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/login/signup/4_setdata/signup_setdata_system.dart';
 import 'package:stockpj/login/signup/4_setdata/signup_setdata_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
@@ -13,6 +14,7 @@ class SignupSetprofileScreen extends StatefulWidget {
 
 class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
   final ScreenController _screenController = Get.find<ScreenController>();
+  final SingUpSetDataControll _singUpSetDataControll = Get.put(SingUpSetDataControll());
 
   @override
   Widget build(BuildContext context) {
@@ -34,23 +36,24 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(4),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '나는 ',
-                    style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-                    ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '나는',
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                   ),
-                  SignUpDropDownWidget(),
-                  Text(
-                    ' 입니다',
-                    style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-                    ),
+                ),
+              ),
+              SignUpDropDownWidget(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '입니다',
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                   ),
-                ],
+                ),
               ),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(8),

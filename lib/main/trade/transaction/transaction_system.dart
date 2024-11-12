@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
-import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../../../data/start_data.dart';
 import '../../../data/youtube_data.dart';
@@ -18,7 +16,7 @@ class TransactionController extends GetxController {
   late bool buying;
   late String channelUID;
   late String transactionText;
-  late String itemType = 'view';
+  late String itemType;
   RxString calculatorDisplay = ''.obs;
   RxInt calculatorInt = 0.obs;
   RxInt calculatorSum = 0.obs;
@@ -33,6 +31,7 @@ class TransactionController extends GetxController {
     buying = arguments['buying'];
     channelUID = arguments['channelUID'];
     stockRatio = arguments['stockRatio'];
+    itemType = arguments['type'];
     setTransactionText(arguments['buying']);
     setTitleTextColor();
   }
@@ -94,8 +93,8 @@ class TransactionController extends GetxController {
               _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice) ~/
           2;
       calculatorDisplay.value = calculatorInt.value.toString();
-    } else if (!buying && _myDataController.ownStock['$channelUID$itemType']!.stockCount > 0) {
-      calculatorInt.value = _myDataController.ownStock['$channelUID$itemType']!.stockCount ~/ 2;
+    } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
+      calculatorInt.value = _myDataController.ownStock['${channelUID}_$itemType']!.stockCount ~/ 2;
     }
   }
 
@@ -104,8 +103,8 @@ class TransactionController extends GetxController {
       calculatorInt.value = (_myDataController.myMoney.value ~/
           _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice);
       calculatorDisplay.value = calculatorInt.value.toString();
-    } else if (!buying && _myDataController.ownStock['$channelUID$itemType']!.stockCount > 0) {
-      calculatorInt.value = _myDataController.ownStock['$channelUID$itemType']!.stockCount;
+    } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
+      calculatorInt.value = _myDataController.ownStock['${channelUID}_$itemType']!.stockCount;
     }
   }
 
@@ -114,7 +113,7 @@ class TransactionController extends GetxController {
       return false;
     }
 
-    if (_myDataController.ownStock['$channelUID$itemType']!.stockCount < calculatorInt.value) {
+    if (_myDataController.ownStock['${channelUID}_$itemType']!.stockCount < calculatorInt.value) {
       return false;
     }
 
@@ -138,13 +137,13 @@ class TransactionController extends GetxController {
     int priceAvg = 0;
 
     if (!buying) {
-      priceAvg = _myDataController.itemHistory['${channelUID}_view']!.itemPriceAvg;
+      priceAvg = _myDataController.itemHistory['${channelUID}_$itemType']!.itemPriceAvg;
     }
 
     // JSON 데이터를 구성
     final Map<String, dynamic> tradeData = {
       'itemuid': channelUID,
-      'itemtype': 'view',
+      'itemtype': itemType,
       'itemcount': count,
       'transactionprice': price,
       'type': type,

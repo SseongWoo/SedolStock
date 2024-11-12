@@ -14,6 +14,7 @@ class StockHistoryScreen extends StatelessWidget {
       children: [
         StockHistoryTable1(),
         StockHistoryTable2(),
+        StockHistoryFilterWidget(),
         const Expanded(child: StockHistoryDataTableWidget()),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/main/trade/transaction/transaction_ststem.dart';
+import 'package:stockpj/main/trade/transaction/transaction_system.dart';
 import 'package:stockpj/main/trade/transaction/transaction_widget.dart';
 import 'package:stockpj/utils/timer.dart';
 import '../../../utils/screen_size.dart';

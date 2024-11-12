@@ -559,6 +559,7 @@ class ChannelChangeDialog extends StatelessWidget {
                   () => Text(
                     fanNameList[_informationController.dialogIndex.value],
                     style: TextStyle(
+                      color: fanColorMap[fanNameList[_informationController.dialogIndex.value]],
                       fontSize: _screenController.screenSize.value.getHeightPerSize(3),
                     ),
                   ),

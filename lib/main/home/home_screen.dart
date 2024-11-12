@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../data/my_data.dart';
+import 'package:stockpj/data/public_data.dart';
 import '../../utils/screen_size.dart';
 import 'package:get/get.dart';
 import 'home_widget.dart';
@@ -28,6 +28,9 @@ class HomeScreen extends StatelessWidget {
                 height: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),
               HomeChannelDataWidget(),
+              SizedBox(
+                height: _screenController.screenSize.value.getHeightPerSize(1.5),
+              ),
               SizedBox(
                 height: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),

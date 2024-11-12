@@ -28,50 +28,56 @@ Color colorYuzuhaRikoLight = Color.lerp(colorYuzuhaRiko, Colors.white, 0.5)!;
 Color colorIve = const Color(0xff282A38);
 Color colorIveLight = Color.lerp(colorIve, Colors.white, 0.6)!;
 
+Color colorWAKGOOD = const Color(0xff1E3F2B);
+Color colorWAKGOODLight = Color.lerp(colorWAKGOOD, Colors.white, 0.5)!;
+Color colorINE = const Color(0xff8A2BE2);
+Color colorINELight = Color.lerp(colorINE, Colors.white, 0.5)!;
+Color colorJINGBURGER = const Color(0xffDBAC4C);
+Color colorJINGBURGERLight = Color.lerp(colorJINGBURGER, Colors.white, 0.5)!;
+Color colorLILPA = const Color(0xff000080);
+Color colorLILPALight = Color.lerp(colorLILPA, Colors.white, 0.5)!;
+Color colorJURURU = const Color(0xffE80086);
+Color colorJURURULight = Color.lerp(colorJURURU, Colors.white, 0.5)!;
+Color colorGOSEGU = const Color(0xff5B5DC0);
+Color colorGOSEGULight = Color.lerp(colorGOSEGU, Colors.white, 0.5)!;
+Color colorVIICHAN = const Color(0xff87CA00);
+Color colorVIICHANLight = Color.lerp(colorVIICHAN, Colors.white, 0.5)!;
+Color colorIfari = const Color(0xff92F17A);
+Color colorIfariLight = Color.lerp(colorIfari, Colors.white, 0.5)!;
+Color colorRoentgenium = const Color(0xffff69b4);
+Color colorRoentgeniumLight = Color.lerp(colorRoentgenium, Colors.white, 0.5)!;
+Color colorISEGYEIDOL = const Color(0xffCE3669);
+Color colorISEGYEIDOLLight = Color.lerp(colorISEGYEIDOL, Colors.white, 0.5)!;
+
 Map<String, Color> streamerColorMap = {
-  'UC2b4WRE5BZ6SIUWBeJU8rwg': colorStelLive,
-  'UCIVFv8AiQLqM9oLHTixrNYw': colorGangZi,
-  'UCKzfyYWHQ92z_2jUcSABM8Q': colorAiriKanna,
-  'UClbYIn9LDbbFZ9w2shX3K0g': colorAyatsunoYuni,
-  'UCAHVQ44O81aehLWfy9O6Elw': colorShirayukiHina,
-  'UC_eeSpMBz8PG4ssdBPnP07g': colorNenekoMashiro,
-  'UC1afpiIuBDcjYlmruAa0HiA': colorAkaneLize,
-  'UC7-m6jQLinZQWIbwm9W-1iw': colorArahashiTabi,
-  'UCQmcltnre6aG9SkDRYZqFIg': colorTenkoShibuki,
-  'UCYxLMfeX1CbMBll9MsGlzmw': colorAokumoRin,
-  'UCcA21_PzN1EhNe7xS4MJGsQ': colorHanakoNana,
-  'UCj0c1jUr91dTetIQP2pFeLA': colorYuzuhaRiko,
-  //'UCj0c1jUr91dTetIQP2pFeLA': colorIve,
+  'UCBkyj16n2snkRg1BAzpovXQ': colorWAKGOOD,
+  'UCroM00J2ahCN6k-0-oAiDxg': colorINE,
+  'UCHE7GBQVtdh-c1m3tjFdevQ': colorJINGBURGER,
+  'UC-oCJP9t47v7-DmsnmXV38Q': colorLILPA,
+  'UCTifMx1ONpElK5x6B4ng8eg': colorJURURU,
+  'UCV9WL7sW6_KjanYkUUaIDfQ': colorGOSEGU,
+  'UCs6EwgxKLY9GG4QNUrP5hoQ': colorVIICHAN,
 };
 
 Map<String, Color> fanColorMap = {
-  '파스텔': colorStelLive,
-  '강도단': colorGangZi,
-  '비늘이': colorAiriKanna,
-  '아르냥': colorAyatsunoYuni,
-  '해둥이': colorShirayukiHina,
-  '마로': colorNenekoMashiro,
-  '피엔나': colorAkaneLize,
-  '뿡댕이': colorArahashiTabi,
-  '이나리': colorTenkoShibuki,
-  '쿠리미': colorAokumoRin,
-  '페토': colorHanakoNana,
-  '치코': colorYuzuhaRiko,
-  '까악이': colorIve,
+  '팬치': colorWAKGOOD,
+  '이파리': colorIfari,
+  '둘기': colorINE,
+  '똥강아지': colorJINGBURGER,
+  '박쥐단': colorLILPA,
+  '주폭도': colorJURURU,
+  '세균단': colorGOSEGU,
+  '라니': colorVIICHAN,
+  '피폭단': colorRoentgenium,
 };
 
 List<Color> colorList = [
-  colorStelLive,
-  colorGangZi,
-  colorAiriKanna,
-  colorAyatsunoYuni,
-  colorShirayukiHina,
-  colorNenekoMashiro,
-  colorAkaneLize,
-  colorArahashiTabi,
-  colorTenkoShibuki,
-  colorAokumoRin,
-  colorHanakoNana,
-  colorYuzuhaRiko,
-  colorIve
+  colorWAKGOOD,
+  colorIfari,
+  colorINE,
+  colorJINGBURGER,
+  colorLILPA,
+  colorJURURU,
+  colorGOSEGU,
+  colorVIICHAN,
 ];

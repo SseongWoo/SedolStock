@@ -175,7 +175,7 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
   final StockListController _stockListController = Get.find<StockListController>();
   List<Widget> _getTitleWidget() {
     return [
-      _getTitleItemWidget('종목명', _screenController.screenSize.value.getWidthPerSize(30)),
+      _getTitleItemWidget('종목명\n종목유형', _screenController.screenSize.value.getWidthPerSize(30)),
       _getTitleItemWidget('손익\n수익률', _screenController.screenSize.value.getWidthPerSize(30)),
       _getTitleItemWidget('잔고수량\n평가금액', _screenController.screenSize.value.getWidthPerSize(30)),
       _getTitleItemWidget('매입가\n현재가', _screenController.screenSize.value.getWidthPerSize(30)),
@@ -188,14 +188,20 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
       height: 56,
       padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
       alignment: Alignment.center,
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+      child: Text(
+        label,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
+    String typeName = _myDataController.stockListItem[index].stockType == 'view' ? '조회수' : '좋아요수';
     return GestureDetector(
       onTap: () {
-        _stockListController.goTradeItem(_myDataController.stockListItem[index].stockUID);
+        _stockListController.goTradeItem(_myDataController.stockListItem[index].stockUID,
+            _myDataController.stockListItem[index].stockType);
       },
       child: Container(
         width: _screenController.screenSize.value.getWidthPerSize(30),
@@ -203,7 +209,12 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
         padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
         alignment: Alignment.center,
         child: FittedBox(
-            fit: BoxFit.scaleDown, child: Text(_myDataController.stockListItem[index].stockName)),
+          fit: BoxFit.scaleDown,
+          child: Text(
+            '${_myDataController.stockListItem[index].stockName}\n$typeName',
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
@@ -211,7 +222,8 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
-        _stockListController.goTradeItem(_myDataController.stockListItem[index].stockUID);
+        _stockListController.goTradeItem(_myDataController.stockListItem[index].stockUID,
+            _myDataController.stockListItem[index].stockType);
       },
       child: Row(
         children: <Widget>[

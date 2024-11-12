@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
-import 'package:stockpj/main/trade/transaction/transaction_ststem.dart';
+import 'package:stockpj/main/trade/transaction/transaction_system.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
@@ -17,7 +17,8 @@ class TransactionTitleWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(channelMapData[channelUID]!),
+        Text(
+            '${channelMapData[channelUID]!}(${_transactionController.itemType == 'view' ? '조회수' : '좋아요수'})'),
         Text(
           ' (${_transactionController.stockRatio.toStringAsFixed(2)}%)',
           style: TextStyle(color: _transactionController.textColor),
@@ -64,7 +65,7 @@ class TransactionPriceWidget extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                '현재 가격 : ${formatToCurrency(_youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.viewCountPrice)}원',
+                '현재 가격 : ${formatToCurrency(_transactionController.itemType == 'view' ? _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.viewCountPrice : _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.likeCountPrice)}원',
                 style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
                 ),
@@ -284,8 +285,11 @@ class TransactionButtonWidget extends StatelessWidget {
               _transactionController.buying,
               channelMapData[_transactionController.channelUID]!,
               _transactionController.calculatorInt.value,
-              _youtubeDataController
-                  .youtubeLiveData[_transactionController.channelUID]!.viewCountPrice);
+              _transactionController.itemType == 'view'
+                  ? _youtubeDataController
+                      .youtubeLiveData[_transactionController.channelUID]!.viewCountPrice
+                  : _youtubeDataController
+                      .youtubeLiveData[_transactionController.channelUID]!.likeCountPrice);
         },
         child: Text(
           '${_transactionController.transactionText} 하기',
@@ -308,6 +312,7 @@ void transactionDialog(
   final TransactionController transactionController = Get.find<TransactionController>();
   final ScreenController screenController = Get.find<ScreenController>();
   String buyingText = buying ? '구매' : '판매';
+  String typeText = transactionController.itemType == 'view' ? '조회수' : '좋아요수';
   Get.dialog(
     Center(
       child: Padding(
@@ -333,6 +338,7 @@ void transactionDialog(
                 ),
                 SizedBox(height: screenController.screenSize.value.getHeightPerSize(2)),
                 transactionTableWidget('종목명', title),
+                transactionTableWidget('종목유형', typeText),
                 transactionTableWidget('거래유형', buying ? '구매' : '판매'),
                 transactionTableWidget('$buyingText수량', '$transactionCount주'),
                 transactionTableWidget('$buyingText단가', '${formatToCurrency(price)}원'),

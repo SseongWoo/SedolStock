@@ -8,65 +8,45 @@ import '../utils/http_request.dart';
 import '../utils/timer.dart';
 
 List<String> channelIdList = [
-  'UC2b4WRE5BZ6SIUWBeJU8rwg',
-  'UCIVFv8AiQLqM9oLHTixrNYw',
-  'UCKzfyYWHQ92z_2jUcSABM8Q',
-  'UClbYIn9LDbbFZ9w2shX3K0g',
-  'UCAHVQ44O81aehLWfy9O6Elw',
-  'UC_eeSpMBz8PG4ssdBPnP07g',
-  'UC1afpiIuBDcjYlmruAa0HiA',
-  'UC7-m6jQLinZQWIbwm9W-1iw',
-  'UCQmcltnre6aG9SkDRYZqFIg',
-  'UCYxLMfeX1CbMBll9MsGlzmw',
-  'UCcA21_PzN1EhNe7xS4MJGsQ',
-  'UCj0c1jUr91dTetIQP2pFeLA'
+  'UCBkyj16n2snkRg1BAzpovXQ',
+  'UCroM00J2ahCN6k-0-oAiDxg',
+  'UCHE7GBQVtdh-c1m3tjFdevQ',
+  'UC-oCJP9t47v7-DmsnmXV38Q',
+  'UCTifMx1ONpElK5x6B4ng8eg',
+  'UCV9WL7sW6_KjanYkUUaIDfQ',
+  'UCs6EwgxKLY9GG4QNUrP5hoQ',
+];
+List<String> subChannelIdList = [
+  'UCZOcwheypMvYN_J2oRBgt2A',
+  'UCmHltryGykfakS-JmaxrNBg',
+  'UC-S9NE-xzcBpxOFSvsmOzAA',
+  'UC8dEJs2kpS5x2vI1X7aaUhA',
+  'UCgGvSg2lscdNUx9ZJIBh9FQ',
+  'UCSSPlgcyDA5eoN3hrkXpvHg',
+  'UCuJUfqThFp5-k-lrHcO1dFg',
 ];
 
 List<String> channelNameList = [
-  '스텔라이브',
-  '강지',
-  '아이리 칸나',
-  '아야츠노 유니',
-  '아라하시 타비',
-  '네네코 마시로',
-  '시라유키 히나',
-  '아카네 리제',
-  '아오쿠모 린',
-  '텐코 시부키',
-  '하나코 나나',
-  '유즈하 리코'
+  '우왁굳',
+  '아이네',
+  '징버거',
+  '릴파',
+  '주르르',
+  '고세구',
+  '비챤',
 ];
 
-List<String> fanNameList = [
-  '파스텔',
-  '강도단',
-  '비늘이',
-  '아르냥',
-  '해둥이',
-  '마로',
-  '피엔나',
-  '뿡댕이',
-  '이나리',
-  '쿠리미',
-  '페토',
-  '치코',
-  '까악이'
-];
+List<String> fanNameList = ['팬치', '이파리', '둘기', '똥강아지', '박쥐단', '주폭도', '세균단', '라니'];
 
 Map<String, int> streamerIndexMap = {
-  '파스텔': 0,
-  '강도단': 1,
-  '비늘이': 2,
-  '아르냥': 3,
-  '해둥이': 4,
-  '마로': 5,
-  '피엔나': 6,
-  '뿡댕이': 7,
-  '이나리': 8,
-  '쿠리미': 9,
-  '페토': 10,
-  '치코': 11,
-  '까악이': 12,
+  '팬치': 0,
+  '이파리': 1,
+  '둘기': 2,
+  '똥강아지': 3,
+  '박쥐단': 4,
+  '주폭도': 5,
+  '세균단': 6,
+  '라니': 7,
 };
 
 class RankingDataClass {

@@ -9,6 +9,8 @@ import 'package:stockpj/utils/http_request.dart';
 import '../main/trade/detail/trade_detail_system.dart';
 
 Map<String, String> channelMapData = Map.fromIterables(channelIdList, channelNameList);
+Map<String, String> channelAndSubChannelMapData =
+    Map.fromIterables(channelIdList, subChannelIdList);
 
 class HomeYoutubeDataClass {
   String title;
@@ -275,6 +277,7 @@ Future<void> getYoutubeLiveData() async {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> countMapData = jsonDecode(response.body)['countMapData'];
+      final Map<String, dynamic> countSubMapData = jsonDecode(response.body)['countSubMapData'];
       final Map<String, dynamic> chartDataList = jsonDecode(response.body)['chartDataList'];
 
       countMapData.forEach((channelId, videoData) {
@@ -301,21 +304,29 @@ Future<void> getYoutubeLiveData() async {
         );
       });
 
-      // chartDataList.forEach((channelId, videoData) {
-      //   youtubeDataController.youtubeChartData[channelId] = YoutubeChartDataClass(
-      //     (videoData['commentCount'] as List<dynamic>?)
-      //             ?.map((e) => int.tryParse(e.toString()) ?? 0)
-      //             .toList() ??
-      //         [0],
-      //     (videoData['likeCount'] as List<dynamic>?)
-      //             ?.map((e) => int.tryParse(e.toString()) ?? 0)
-      //             .toList() ??
-      //         [0],
-      //     (videoData['viewCount'] as List<dynamic>?)
-      //             ?.map((e) => int.tryParse(e.toString()) ?? 0)
-      //             .toList() ??
-      //         [0],
-      //   );
+      countSubMapData.forEach((channelId, videoData) {
+        youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
+          videoData['differenceCommentCount'] ?? 0,
+          videoData['differenceLikeCount'] ?? 0,
+          videoData['differenceViewCount'] ?? 0,
+          videoData['lastDifferenceCommentCount'] ?? 0,
+          videoData['lastDifferenceLikeCount'] ?? 0,
+          videoData['lastDifferenceViewCount'] ?? 0,
+          videoData['lastTotalCommentCount'] ?? 0,
+          videoData['lastTotalLikeCount'] ?? 0,
+          videoData['lastTotalViewCount'] ?? 0,
+          videoData['totalCommentCount'] ?? 0,
+          videoData['totalLikeCount'] ?? 0,
+          videoData['totalViewCount'] ?? 0,
+          videoData['lastCommentCountPrice'] ?? 0,
+          videoData['lastViewCountPrice'] ?? 0,
+          videoData['lastLikeCountPrice'] ?? 0,
+          videoData['commentCountPrice'] ?? 0,
+          videoData['likeCountPrice'] ?? 0,
+          videoData['viewCountPrice'] ?? 0,
+          videoData['updateTime'] ?? '',
+        );
+      });
 
       chartDataList.forEach((channelId, videoData) {
         youtubeDataController.youtubeChartData[channelId] = YoutubeChartDataClass(

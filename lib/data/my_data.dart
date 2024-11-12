@@ -111,9 +111,15 @@ class MyDataController extends GetxController {
     ownStock.forEach((key, value) {
       if (value.stockCount > 0) {
         String keyUID = key.replaceAll(RegExp(r'(_view|_comment|_like)$'), '');
+        String? type = RegExp(r'_([^_]+)$') // 마지막 '_' 뒤의 단어만 매칭
+            .firstMatch(key)
+            ?.group(1);
+
         if (_youtubeDataController.youtubeLiveData[keyUID] != null) {
-          int stockPrice =
-              _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice * value.stockCount;
+          int stockPrice = (type == 'view'
+                  ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
+                  : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice) *
+              value.stockCount;
 
           myStockMoney.value += stockPrice;
 
@@ -130,11 +136,14 @@ class MyDataController extends GetxController {
               value.stockCount,
               stockPrice,
               value.stockPrice ~/ value.stockCount,
-              _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice,
-              'view',
+              type == 'view'
+                  ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
+                  : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice,
+              type ?? '',
               streamerColorMap[keyUID]!));
 
-          itemHistory[key] = ItemHistoryClass(keyUID, 'view', value.stockPrice ~/ value.stockCount);
+          itemHistory[key] =
+              ItemHistoryClass(keyUID, type ?? '', value.stockPrice ~/ value.stockCount);
         }
       }
     });
