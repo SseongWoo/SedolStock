@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/data/start_data.dart';
 import 'package:stockpj/main/main_screen.dart';
 import 'package:stockpj/login/find_account/find_account_screen.dart';
-import 'package:stockpj/utils/http_request.dart';
+import 'package:stockpj/utils/get_env.dart';
 import '../../data/my_data.dart';
 import '../../utils/data_storage.dart';
 import '../../utils/simple_widget.dart';
@@ -21,6 +21,7 @@ class LoginBinding extends Bindings {
 }
 
 class LoginController extends GetxController {
+  final MyDataController _myDataController = Get.find<MyDataController>();
   final TextEditingController controllerID = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
@@ -70,6 +71,7 @@ class LoginController extends GetxController {
         uid = jsonData!['user']['uid'];
         refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
         accessToken = jsonData['user']['stsTokenManager']['accessToken'];
+        _myDataController.myUid.value = uid;
         await setTokens(accessToken, refreshToken, uid);
         bool checkMyData = await getUserData();
         bool checkMyWalletData = await getWalletData();
@@ -87,6 +89,7 @@ class LoginController extends GetxController {
     } catch (error) {
       EasyLoading.dismiss();
       showSimpleDialog(Get.back, '로그인 실패', '입력하신 정보가 일치하지 않습니다.\n다시 시도해 주세요.');
+      //showSimpleDialog(Get.back, '로그인 실패', '입력하신 정보가 일치하지 않습니다.\n다시 시도해 주세요.\n$error');
     }
   }
 }

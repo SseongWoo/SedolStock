@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import '../../../utils/http_request.dart';
+import '../../../utils/get_env.dart';
 import '../../../utils/data_storage.dart';
 import '../../../utils/simple_widget.dart';
 import '../../login/login_screen.dart';
@@ -19,6 +19,7 @@ class SignUpCheckEmailBinding extends Bindings {
 
 class SingUpCheckEmailControll extends GetxController {
   late String email;
+  late String pw;
 
   Future<void> deleteUserData(String uid) async {
     await http.post(
@@ -36,7 +37,9 @@ class SingUpCheckEmailControll extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    email = Get.arguments;
+    final arguments = Get.arguments as Map<String, dynamic>;
+    email = arguments['id'];
+    pw = arguments['pw'];
   }
 
   void cancelSignUp() async {
@@ -51,17 +54,13 @@ class SingUpCheckEmailControll extends GetxController {
 
   Future<void> sendEmail() async {
     EasyLoading.show();
-    final Map<String, String> userID = await getIDPW();
-    final String id = userID['id']!;
-    final String pw = userID['pw']!;
-
     final sendEmail = await http.post(
       Uri.parse('$httpURL/users/sendemail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'email': id,
+        'email': email,
         'password': pw,
       }),
     );
@@ -71,6 +70,7 @@ class SingUpCheckEmailControll extends GetxController {
     } else {
       showSimpleSnackbar('전송 실패', '이메일 재전송에 실패하였습니다. 다시 시도해 주세요', SnackPosition.TOP, Colors.red);
     }
+
     EasyLoading.dismiss();
   }
 

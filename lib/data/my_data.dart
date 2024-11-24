@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/utils/color.dart';
-import 'package:stockpj/utils/http_request.dart';
+import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/data_storage.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/utils/simple_widget.dart';
 
 class OwnStock {
   String stockName;
@@ -123,24 +125,26 @@ class MyDataController extends GetxController {
 
           myStockMoney.value += stockPrice;
 
-          totalBuyPrice += value.stockPrice * value.stockCount;
+          totalBuyPrice += value.stockPrice;
 
           int profit = stockPrice - value.stockPrice;
           myReturnMoney.value += profit;
 
-          stockListItem.add(StockListClass(
-              keyUID,
-              channelMapData[keyUID]!,
-              profit,
-              (profit / value.stockPrice) * 100,
-              value.stockCount,
-              stockPrice,
-              value.stockPrice ~/ value.stockCount,
-              type == 'view'
-                  ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
-                  : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice,
-              type ?? '',
-              streamerColorMap[keyUID]!));
+          stockListItem.add(
+            StockListClass(
+                keyUID,
+                channelMapData[keyUID]!,
+                profit,
+                (profit / value.stockPrice) * 100,
+                value.stockCount,
+                stockPrice,
+                value.stockPrice ~/ value.stockCount,
+                type == 'view'
+                    ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
+                    : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice,
+                type ?? '',
+                streamerColorMap[keyUID]!),
+          );
 
           itemHistory[key] =
               ItemHistoryClass(keyUID, type ?? '', value.stockPrice ~/ value.stockCount);
@@ -162,11 +166,15 @@ class MyDataController extends GetxController {
 
 Future<bool> getUserData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
-
-  myDataController.myUid.value = (await getUID())!;
-  final String apiUrl = '$httpURL/users/${myDataController.myUid.value}'; // 서버 URL과 엔드포인트
-
   try {
+    if (myDataController.myUid.value == '') {
+      if (await getUID() != null) {
+        myDataController.myUid.value = (await getUID())!;
+      } else {
+        throw Exception('Empty My Uid');
+      }
+    }
+    final String apiUrl = '$httpURL/users/${myDataController.myUid.value}'; // 서버 URL과 엔드포인트
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -186,6 +194,7 @@ Future<bool> getUserData() async {
       return false;
     }
   } catch (e) {
+    showSimpleSnackbar('에러', '$e', SnackPosition.BOTTOM, Colors.red);
     return false;
   }
 }
@@ -193,8 +202,13 @@ Future<bool> getUserData() async {
 Future<bool> getWalletData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
 
-  // UID를 가져옴
-  myDataController.myUid.value = (await getUID())!;
+  if (myDataController.myUid.value == '') {
+    if (await getUID() != null) {
+      myDataController.myUid.value = (await getUID())!;
+    } else {
+      throw Exception('Empty My Uid');
+    }
+  }
   final String apiUrl = '$httpURL/users/wallet/${myDataController.myUid.value}'; // 서버 URL과 엔드포인트
   myDataController.myStockCount.value = 0;
   myDataController.myStockList.value = 0;
@@ -243,6 +257,7 @@ Future<bool> getWalletData() async {
   } catch (e) {
     // 예외 발생 시 처리
     print('Error fetching wallet data: $e');
+    showSimpleSnackbar('에러', '$e', SnackPosition.BOTTOM, Colors.red);
     return false;
   }
 }

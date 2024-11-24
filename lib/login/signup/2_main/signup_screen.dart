@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: colorStelLive,
+        backgroundColor: colorISEGYEIDOL,
         title: const Text('회원가입'),
       ),
       body: SingleChildScrollView(

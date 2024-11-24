@@ -16,7 +16,7 @@ class FindAccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('비밀번호 찾기'),
-        backgroundColor: colorStelLive,
+        backgroundColor: colorISEGYEIDOL,
       ),
       body: Center(
         child: Padding(

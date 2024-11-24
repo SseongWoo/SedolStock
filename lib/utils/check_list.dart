@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'http_request.dart';
+import 'get_env.dart';
 
 String checkPlatform() {
   if (GetPlatform.isAndroid) {

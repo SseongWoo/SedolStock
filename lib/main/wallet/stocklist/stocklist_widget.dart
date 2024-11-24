@@ -288,27 +288,29 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _myDataController.stockListItem.isNotEmpty
-        ? HorizontalDataTable(
-            leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: _screenController.screenSize.value.getWidthPerSize(90),
-            isFixedHeader: true,
-            headerWidgets: _getTitleWidget(),
-            leftSideItemBuilder: _generateFirstColumnRow,
-            rightSideItemBuilder: _generateRightHandSideColumnRow,
-            itemCount: _myDataController.stockListItem.length,
-            rowSeparatorWidget: const Divider(
-              color: Colors.black38,
-              height: 1.0,
-              thickness: 0.0,
+    return Obx(
+      () => _myDataController.stockListItem.isNotEmpty
+          ? HorizontalDataTable(
+              leftHandSideColumnWidth: 100,
+              rightHandSideColumnWidth: _screenController.screenSize.value.getWidthPerSize(90),
+              isFixedHeader: true,
+              headerWidgets: _getTitleWidget(),
+              leftSideItemBuilder: _generateFirstColumnRow,
+              rightSideItemBuilder: _generateRightHandSideColumnRow,
+              itemCount: _myDataController.stockListItem.length,
+              rowSeparatorWidget: const Divider(
+                color: Colors.black38,
+                height: 1.0,
+                thickness: 0.0,
+              ),
+              leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+              rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+              itemExtent: 55,
+            )
+          : const Center(
+              child: Text('보유한 주식이 없습니다.'),
             ),
-            leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-            rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-            itemExtent: 55,
-          )
-        : const Center(
-            child: Text('보유한 주식이 없습니다.'),
-          );
+    );
   }
 }
 
@@ -319,32 +321,34 @@ class StockListCustomTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        StockListTable1(
-          title: '총자산',
-          value: formatToCurrency(_myDataController.myTotalMoney.value),
-        ),
-        StockListTable1(
-          title: '가용자산',
-          value: formatToCurrency(_myDataController.myMoney.value),
-        ),
-        StockListTable2(
-          title1: '손익',
-          value1: formatToCurrency(_myDataController.myReturnMoney.value),
-          title2: '수익률',
-          value2: '${_myDataController.myRatioMoney.toStringAsFixed(2)}%',
-          color: _myDataController.myReturnMoney.value > 0
-              ? Colors.red
-              : _myDataController.myReturnMoney.value < 0
-                  ? Colors.blue
-                  : Colors.black,
-        ),
-        StockListTable1(
-          title: '평가금액',
-          value: _myDataController.myStockMoney.string,
-        ),
-      ],
+    return Obx(
+      () => Column(
+        children: [
+          StockListTable1(
+            title: '총자산',
+            value: formatToCurrency(_myDataController.myTotalMoney.value),
+          ),
+          StockListTable1(
+            title: '가용자산',
+            value: formatToCurrency(_myDataController.myMoney.value),
+          ),
+          StockListTable2(
+            title1: '손익',
+            value1: formatToCurrency(_myDataController.myReturnMoney.value),
+            title2: '수익률',
+            value2: '${_myDataController.myRatioMoney.toStringAsFixed(2)}%',
+            color: _myDataController.myReturnMoney.value > 0
+                ? Colors.red
+                : _myDataController.myReturnMoney.value < 0
+                    ? Colors.blue
+                    : Colors.black,
+          ),
+          StockListTable1(
+            title: '평가금액',
+            value: _myDataController.myStockMoney.string,
+          ),
+        ],
+      ),
     );
   }
 }

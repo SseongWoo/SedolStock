@@ -4,9 +4,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/simple_widget.dart';
+import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
 import '../../../data/youtube_data.dart';
-import '../../../utils/http_request.dart';
+import '../../../utils/get_env.dart';
 import 'package:http/http.dart' as http;
 
 class TransactionController extends GetxController {
@@ -90,7 +91,8 @@ class TransactionController extends GetxController {
   void onTapHalf() {
     if (buying) {
       calculatorInt.value = (_myDataController.myMoney.value ~/
-              _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice) ~/
+              (_youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice *
+                  (1 + feeRate))) ~/
           2;
       calculatorDisplay.value = calculatorInt.value.toString();
     } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
@@ -101,7 +103,7 @@ class TransactionController extends GetxController {
   void onTapMax() {
     if (buying) {
       calculatorInt.value = (_myDataController.myMoney.value ~/
-          _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice);
+          (_youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice * (1 + feeRate)));
       calculatorDisplay.value = calculatorInt.value.toString();
     } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
       calculatorInt.value = _myDataController.ownStock['${channelUID}_$itemType']!.stockCount;

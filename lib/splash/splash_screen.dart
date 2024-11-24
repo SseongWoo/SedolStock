@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: colorStelLive,
+      color: colorISEGYEIDOL,
       child: Padding(
         padding: EdgeInsets.only(
             top: _screenController.screenSize.value.getHeightPerSize(20),
@@ -27,7 +27,7 @@ class SplashScreen extends StatelessWidget {
             Container(
               height: _screenController.screenSize.value.getHeightPerSize(20),
               width: _screenController.screenSize.value.getHeightPerSize(20),
-              color: colorAkaneLize,
+              color: colorIfari,
             ),
             const Spacer(),
             SizedBox(

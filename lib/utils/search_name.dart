@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/utils/simple_widget.dart';
 import 'package:get/get.dart';
-import 'http_request.dart';
+import 'get_env.dart';
 
 Future<bool> searchName(String name) async {
   final searchNameData = await http.post(

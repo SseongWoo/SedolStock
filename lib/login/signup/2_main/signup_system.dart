@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/utils/simple_widget.dart';
 import '../../../utils/date_time.dart';
-import '../../../utils/http_request.dart';
+import '../../../utils/get_env.dart';
 import '../../../utils/data_storage.dart';
 import '../../login/login_screen.dart';
 import '../3_checkemail/signup_checkemail_screen.dart';
@@ -45,7 +45,8 @@ class SingUpEmailControll extends GetxController {
 
   void goSignUpCheckEmail() {
     Get.offAll(() => SignupCheckemailScreen(),
-        binding: SignUpCheckEmailBinding(), arguments: controllerID.text);
+        binding: SignUpCheckEmailBinding(),
+        arguments: {'id': controllerID.text, 'pw': controllerPassword.text});
   }
 
   void backSignUp() {
@@ -116,8 +117,6 @@ class SingUpEmailControll extends GetxController {
 
       if (signUpUserData.statusCode == 201) {
         if (checkEmail) {
-          await setIDPW(email, password);
-
           final sendEmail = await http.post(
             Uri.parse('$httpURL/users/sendemail'),
             headers: <String, String>{

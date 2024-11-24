@@ -7,7 +7,7 @@ import 'package:stockpj/utils/simple_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../data/public_data.dart';
 import '../../utils/format.dart';
-import '../../utils/http_request.dart';
+import '../../utils/get_env.dart';
 import '../../utils/screen_size.dart';
 import 'package:get/get.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -32,7 +32,14 @@ class HomeMyDataWidget extends StatelessWidget {
               height: _screenController.screenSize.value.getHeightPerSize(8),
               width: _screenController.screenSize.value.getHeightPerSize(8),
               decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-              child: Center(child: const Text('프사')),
+              child: Obx(
+                () => Center(
+                  child: ClipOval(
+                    child: Image.asset(
+                        'assets/image/fan/${fanImageMap[_myDataController.myChoicechannel.value]}.png'),
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               width: _screenController.screenSize.value.getWidthPerSize(4),

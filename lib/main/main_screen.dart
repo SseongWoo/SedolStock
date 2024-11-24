@@ -33,8 +33,8 @@ class MainScreen extends StatelessWidget {
       body: Obx(() => _homeController.pages[_homeController.selectedIndex.value]),
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.react,
-        color: colorStelLiveLight,
-        backgroundColor: colorStelLive,
+        color: colorISEGYEIDOLLight,
+        backgroundColor: colorISEGYEIDOL,
         items: const [
           TabItem(icon: Icons.home, title: '홈'),
           TabItem(icon: Icons.show_chart, title: '거래'),

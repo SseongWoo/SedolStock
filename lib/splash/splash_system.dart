@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/start_data.dart';
 import 'package:stockpj/login/login/login_screen.dart';
-import 'package:stockpj/utils/http_request.dart';
+import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../login/login/login_system.dart';
 import '../data/my_data.dart';
@@ -23,7 +23,8 @@ class SplashController extends GetxController {
   }
 
   void goLogin() {
-    Get.offAll(() => LoginScreen(), binding: LoginBinding(), transition: Transition.noTransition);
+    Get.offAll(() => GetPlatform.isMobile ? LoginScreen() : DesktopLoginScreen(),
+        binding: LoginBinding(), transition: Transition.noTransition);
   }
 
   void goHome() {
@@ -37,6 +38,10 @@ class SplashController extends GetxController {
       String? refreshToken = await getRefreshToken();
       String? idToken = await getIdToken();
 
+      if (refreshToken == null) {
+        throw Exception('token empty');
+      }
+
       final refreshTokenLogin = await http.post(
         Uri.parse('$httpURL/signin/tokenlogin'),
         headers: {
@@ -44,7 +49,7 @@ class SplashController extends GetxController {
         },
         body: jsonEncode({'idToken': idToken, "refreshToken": refreshToken}),
       );
-      if (refreshTokenLogin.statusCode == 401 || refreshTokenLogin.statusCode == 400) {
+      if (refreshTokenLogin.statusCode == 401 || refreshTokenLogin.statusCode == 500) {
         throw Exception('Token or Refresh Token is missing.');
       } else {
         loadingMessage.value = '로그인중';

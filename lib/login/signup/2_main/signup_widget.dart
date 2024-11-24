@@ -133,7 +133,7 @@ class SignUpButtonWidget extends StatelessWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorStelLiveLight,
+          backgroundColor: colorISEGYEIDOLLight,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),

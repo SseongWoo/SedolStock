@@ -17,7 +17,7 @@ class SignupCheckemailScreen extends StatelessWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: colorStelLive,
+        backgroundColor: colorISEGYEIDOL,
         leading: IconButton(
             onPressed: () {
               _singUpCheckEmailControll.cancelSignUp();

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
-import '../../../utils/http_request.dart';
+import '../../../utils/get_env.dart';
 import '../../../utils/simple_widget.dart';
 
 class WithdrawalController extends GetxController {

@@ -186,6 +186,7 @@ class StockHistoryDataTableWidget extends StatefulWidget {
 class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidget> {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
+  final StockHistoryController _stockHistoryController = Get.find<StockHistoryController>();
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('거래시간\n종목명', _screenController.screenSize.value.getWidthPerSize(30)),
@@ -302,29 +303,27 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
 
   @override
   Widget build(BuildContext context) {
-    return _myDataController.tradeHistoryList.isNotEmpty
-        ? HorizontalDataTable(
-            leftHandSideColumnWidth: 100,
-            rightHandSideColumnWidth: _screenController.screenSize.value.getWidthPerSize(125),
-            isFixedHeader: true,
-            headerWidgets: _getTitleWidget(),
-            // isFixedFooter: true,
-            // footerWidgets: _getTitleWidget(),
-            leftSideItemBuilder: _generateFirstColumnRow,
-            rightSideItemBuilder: _generateRightHandSideColumnRow,
-            itemCount: _myDataController.tradeHistoryList.length,
-            rowSeparatorWidget: const Divider(
-              color: Colors.black38,
-              height: 1.0,
-              thickness: 0.0,
-            ),
-            leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-            rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
-            itemExtent: 55,
-          )
-        : const Center(
-            child: Text('거래 내역이 없습니다.'),
-          );
+    return Obx(
+      () => HorizontalDataTable(
+        leftHandSideColumnWidth: 100,
+        rightHandSideColumnWidth: _screenController.screenSize.value.getWidthPerSize(125),
+        isFixedHeader: true,
+        headerWidgets: _getTitleWidget(),
+        // isFixedFooter: true,
+        // footerWidgets: _getTitleWidget(),
+        leftSideItemBuilder: _generateFirstColumnRow,
+        rightSideItemBuilder: _generateRightHandSideColumnRow,
+        itemCount: _stockHistoryController.historyList.length,
+        rowSeparatorWidget: const Divider(
+          color: Colors.black38,
+          height: 1.0,
+          thickness: 0.0,
+        ),
+        leftHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+        rightHandSideColBackgroundColor: const Color(0xFFFFFFFF),
+        itemExtent: 55,
+      ),
+    );
   }
 }
 
@@ -337,29 +336,46 @@ class StockHistoryFilterWidget extends StatelessWidget {
     return Container(
       height: _screenController.screenSize.value.getHeightPerSize(3),
       width: _screenController.screenSize.value.getWidthSize(),
-      color: Colors.white,
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.grey, width: 0.1),
+          bottom: BorderSide(color: Colors.grey, width: 0.1),
+        ),
+        color: Colors.white,
+      ),
       child: Padding(
         padding: EdgeInsets.only(
           right: _screenController.screenSize.value.getWidthPerSize(2),
+          left: _screenController.screenSize.value.getWidthPerSize(2),
         ),
-        child: GestureDetector(
-          onTap: () {
-            Get.bottomSheet(StockHistoryBottomSheetWidget());
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(
-                Icons.tune,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Tooltip(
+              message: '거래 내역은 최대 100건까지만 표시됩니다.',
+              triggerMode: TooltipTriggerMode.tap,
+              child: Icon(
+                Icons.info_outline,
                 size: _screenController.screenSize.value.getHeightPerSize(2),
               ),
-              Text(
+            ),
+            const Spacer(),
+            Icon(
+              Icons.tune,
+              size: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.bottomSheet(StockHistoryBottomSheetWidget());
+              },
+              child: Text(
                 '필터 설정',
                 style:
                     TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -375,7 +391,9 @@ class StockHistoryBottomSheetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: _screenController.screenSize.value.getWidthSize(),
-      padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(2)),
+      //height: _screenController.screenSize.value.getHeightPerSize(60),
+      padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(2))
+          .copyWith(top: _screenController.screenSize.value.getHeightPerSize(1)),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -384,8 +402,40 @@ class StockHistoryBottomSheetWidget extends StatelessWidget {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('종목명'),
+          Row(
+            children: [
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(5),
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  '필터',
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(5),
+              )
+            ],
+          ),
+          const Divider(),
+          Text(
+            '종목명',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
           Obx(
             () => Wrap(
               spacing: _screenController.screenSize.value.getWidthPerSize(2),
@@ -396,58 +446,132 @@ class StockHistoryBottomSheetWidget extends StatelessWidget {
                     label: Text(filter),
                     selected: _stockHistoryController.selectedFilters.contains(filter),
                     onSelected: (bool selected) {
-                      if (filter == '전체') {}
                       _stockHistoryController.toggleFilter(filter);
                     },
+                    selectedColor: Colors.blue,
+                    backgroundColor: Colors.white,
+                    labelStyle: TextStyle(
+                      color: _stockHistoryController.selectedFilters.contains(filter)
+                          ? Colors.white
+                          : Colors.black,
+                    ),
                   );
                 },
               ).toList(),
             ),
           ),
-          Text('종목유형'),
-          Obx(() => Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                children: _stockHistoryController.itemTypeList.map((filter) {
-                  return ChoiceChip(
-                    label: Text(filter),
-                    selected: _stockHistoryController.selectItemType.value == filter,
-                    onSelected: (bool selected) {
-                      _stockHistoryController.selectItemTypeFilter(filter);
-                    },
-                    // selectedColor: Colors.blue,
-                    // backgroundColor: Colors.grey[200],
-
-                    labelStyle: TextStyle(
-                      color: _stockHistoryController.selectItemType.value == filter
-                          ? Colors.white
-                          : Colors.black,
+          SizedBox(
+            height: _screenController.screenSize.value.getHeightPerSize(2),
+          ),
+          Text(
+            '종목유형',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
+          Obx(
+            () => Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: _stockHistoryController.itemTypeList.map((filter) {
+                return ChoiceChip(
+                  label: Text(filter),
+                  selected: _stockHistoryController.selectItemType.value == filter,
+                  onSelected: (bool selected) {
+                    _stockHistoryController.selectItemTypeFilter(filter);
+                  },
+                  selectedColor: Colors.blue,
+                  backgroundColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: _stockHistoryController.selectItemType.value == filter
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          SizedBox(
+            height: _screenController.screenSize.value.getHeightPerSize(2),
+          ),
+          Text(
+            '거래유형',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
+          Obx(
+            () => Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: _stockHistoryController.saleTypeList.map((filter) {
+                return ChoiceChip(
+                  label: Text(filter),
+                  selected: _stockHistoryController.selectSaleType.value == filter,
+                  onSelected: (bool selected) {
+                    _stockHistoryController.selectSaleTypeFilter(filter);
+                  },
+                  selectedColor: Colors.blue,
+                  backgroundColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: _stockHistoryController.selectSaleType.value == filter
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              SizedBox(
+                height: _screenController.screenSize.value.getHeightPerSize(6),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                }).toList(),
-              )),
-          Text('거래유형'),
-          Obx(() => Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                children: _stockHistoryController.saleTypeList.map((filter) {
-                  return ChoiceChip(
-                    label: Text(filter),
-                    selected: _stockHistoryController.selectSaleType.value == filter,
-                    onSelected: (bool selected) {
-                      _stockHistoryController.selectSaleTypeFilter(filter);
-                    },
-                    // selectedColor: Colors.blue,
-                    // backgroundColor: Colors.grey[200],
-
-                    labelStyle: TextStyle(
-                      color: _stockHistoryController.selectSaleType.value == filter
-                          ? Colors.white
-                          : Colors.black,
+                  ),
+                  onPressed: () {
+                    _stockHistoryController.resetFilter();
+                  },
+                  child: Text(
+                    '초기화',
+                    style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(4),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: _screenController.screenSize.value.getHeightPerSize(6),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  );
-                }).toList(),
-              )),
+                    onPressed: () {
+                      _stockHistoryController.setfilter();
+                      Get.back();
+                    },
+                    child: Text(
+                      '적용하기',
+                      style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

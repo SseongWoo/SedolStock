@@ -24,7 +24,7 @@ class _SignupSetprofileScreenState extends State<SignupSetprofileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('회원가입'),
-        backgroundColor: colorStelLive,
+        backgroundColor: colorISEGYEIDOL,
         leading: SignUpSetDataBackButtonWidget(),
       ),
       body: Padding(

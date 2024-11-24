@@ -56,7 +56,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: Text(
               '로그인',
               style: TextStyle(
-                color: colorStelLive,
+                color: colorISEGYEIDOL,
                 fontSize: _screenController.screenSize.value.getHeightPerSize(1.5),
               ),
             ),
@@ -77,7 +77,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: Text(
                   '비밀번호 찾기',
                   style: TextStyle(
-                    color: colorStelLive,
+                    color: colorISEGYEIDOL,
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
                   ),
                 ),
@@ -92,7 +92,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 child: Text(
                   '회원 가입',
                   style: TextStyle(
-                    color: colorStelLive,
+                    color: colorISEGYEIDOL,
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
                   ),
                 ),

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'dart:convert';
 
-import 'package:stockpj/utils/http_request.dart';
+import 'package:stockpj/utils/get_env.dart';
 
 import '../main/trade/detail/trade_detail_system.dart';
 

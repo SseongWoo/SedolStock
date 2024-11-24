@@ -4,27 +4,13 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import '../utils/data_storage.dart';
-import '../utils/http_request.dart';
+import '../utils/get_env.dart';
 import '../utils/timer.dart';
 
-List<String> channelIdList = [
-  'UCBkyj16n2snkRg1BAzpovXQ',
-  'UCroM00J2ahCN6k-0-oAiDxg',
-  'UCHE7GBQVtdh-c1m3tjFdevQ',
-  'UC-oCJP9t47v7-DmsnmXV38Q',
-  'UCTifMx1ONpElK5x6B4ng8eg',
-  'UCV9WL7sW6_KjanYkUUaIDfQ',
-  'UCs6EwgxKLY9GG4QNUrP5hoQ',
-];
-List<String> subChannelIdList = [
-  'UCZOcwheypMvYN_J2oRBgt2A',
-  'UCmHltryGykfakS-JmaxrNBg',
-  'UC-S9NE-xzcBpxOFSvsmOzAA',
-  'UC8dEJs2kpS5x2vI1X7aaUhA',
-  'UCgGvSg2lscdNUx9ZJIBh9FQ',
-  'UCSSPlgcyDA5eoN3hrkXpvHg',
-  'UCuJUfqThFp5-k-lrHcO1dFg',
-];
+double feeRate = 0.05;
+
+List<String> channelIdList = [];
+List<String> subChannelIdList = [];
 
 List<String> channelNameList = [
   '우왁굳',
@@ -37,16 +23,21 @@ List<String> channelNameList = [
 ];
 
 List<String> fanNameList = ['팬치', '이파리', '둘기', '똥강아지', '박쥐단', '주폭도', '세균단', '라니'];
+List<String> fanEnNameList = [
+  'Penchi',
+  'Ifari',
+  'Dulgi',
+  'Ddonggangaji',
+  'Bakjuidan',
+  'Jupukdo',
+  'Segyundan',
+  'Rani'
+];
+
+Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
 
 Map<String, int> streamerIndexMap = {
-  '팬치': 0,
-  '이파리': 1,
-  '둘기': 2,
-  '똥강아지': 3,
-  '박쥐단': 4,
-  '주폭도': 5,
-  '세균단': 6,
-  '라니': 7,
+  for (int i = 0; i < fanNameList.length; i++) fanNameList[i]: i
 };
 
 class RankingDataClass {
@@ -117,7 +108,7 @@ Future<void> getRankData() async {
         publicDataController.rankingList.add(
           RankingDataClass(
             rankData['name']?.toString() ?? '',
-            rankData['choiceChannel']?.toString() ?? '',
+            rankData['choicechannel']?.toString() ?? '',
             rankData['rank'] ?? 0,
             rankData['beforerank'] ?? 0,
             rankData['totalmoney'] ?? 0,

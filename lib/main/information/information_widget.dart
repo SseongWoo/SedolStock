@@ -151,6 +151,10 @@ class InformationMyWidget extends StatelessWidget {
                   height: _screenController.screenSize.value.getHeightPerSize(10),
                   width: _screenController.screenSize.value.getHeightPerSize(10),
                   decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.blueAccent),
+                  child: ClipOval(
+                    child: Image.asset(
+                        'assets/image/fan/${fanImageMap[_myDataController.myChoicechannel.value]}.png'),
+                  ),
                 ),
               ),
             ],
@@ -235,14 +239,14 @@ class PropertyRowWidget extends StatelessWidget {
           title,
           style: TextStyle(
             fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
-            color: colorStelLiveDark,
+            color: colorISEGYEIDOL,
           ),
         ),
         Text(
           value,
           style: TextStyle(
             fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
-            color: colorStelLiveDark,
+            color: colorISEGYEIDOL,
           ),
         ),
       ],
@@ -376,7 +380,7 @@ class StockPieChartWidget extends StatelessWidget {
         series: <PieSeries<StockListClass, String>>[
           PieSeries<StockListClass, String>(
             dataSource: _myDataController.stockListItem.isEmpty
-                ? [StockListClass('', '보유 주식 없음', 0, 0, 1, 0, 0, 0, '', colorStelLive)]
+                ? [StockListClass('', '보유 주식 없음', 0, 0, 1, 0, 0, 0, '', colorISEGYEIDOL)]
                 : _myDataController.stockListItem,
             xValueMapper: (StockListClass data, _) => data.stockName,
             yValueMapper: (StockListClass data, _) => data.stockCount,

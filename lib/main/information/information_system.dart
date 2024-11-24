@@ -9,7 +9,7 @@ import 'package:stockpj/main/information/withdrawal/withdrawal_screen.dart';
 import '../../data/my_data.dart';
 import '../../data/public_data.dart';
 import '../../utils/data_storage.dart';
-import '../../utils/http_request.dart';
+import '../../utils/get_env.dart';
 import '../../utils/simple_widget.dart';
 import 'information_widget.dart';
 import 'package:http/http.dart' as http;
@@ -34,8 +34,7 @@ class InformationController extends GetxController {
   RxInt dialogIndex = 0.obs;
 
   void test() async {
-    String? test = await getDataDate();
-    print(test);
+    print(rate);
   }
 
   @override
@@ -67,12 +66,13 @@ class InformationController extends GetxController {
 
   void profitRate() {
     if (_myDataController.totalMoneyHistoryList.length > 1) {
-      rate.value = ((_myDataController.myTotalMoney.value -
+      rate.value = (((_myDataController.myTotalMoney.value -
                   _myDataController
                       .totalMoneyHistoryList[_myDataController.totalMoneyHistoryList.length - 2]) /
               _myDataController
                   .totalMoneyHistoryList[_myDataController.totalMoneyHistoryList.length - 2]) *
-          100;
+          100);
+      rate.value = double.parse(rate.value.toStringAsFixed(2));
     } else {
       rate.value = 0.0;
     }

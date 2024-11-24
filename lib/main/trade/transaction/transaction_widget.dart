@@ -5,6 +5,7 @@ import 'package:stockpj/main/trade/transaction/transaction_system.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
+import '../../../data/public_data.dart';
 
 class TransactionTitleWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
@@ -14,16 +15,18 @@ class TransactionTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-            '${channelMapData[channelUID]!}(${_transactionController.itemType == 'view' ? '조회수' : '좋아요수'})'),
-        Text(
-          ' (${_transactionController.stockRatio.toStringAsFixed(2)}%)',
-          style: TextStyle(color: _transactionController.textColor),
-        ),
-      ],
+    return Obx(
+      () => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+              '${channelMapData[channelUID]!}(${_transactionController.itemType == 'view' ? '조회수' : '좋아요수'})'),
+          Text(
+            ' (${_transactionController.stockRatio.toStringAsFixed(2)}%)',
+            style: TextStyle(color: _transactionController.textColor),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -65,7 +68,7 @@ class TransactionPriceWidget extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                '현재 가격 : ${formatToCurrency(_transactionController.itemType == 'view' ? _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.viewCountPrice : _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.likeCountPrice)}원',
+                '현재 가격 : ${formatToCurrency(_transactionController.itemType == 'view' ? _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.viewCountPrice : _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.likeCountPrice)}원 수수료 : ${formatToCurrency(((_transactionController.itemType == 'view' ? _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.viewCountPrice : _youtubeDataController.youtubeLiveData[_transactionController.channelUID]!.likeCountPrice) * feeRate).round())}원',
                 style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
                 ),
@@ -343,7 +346,15 @@ void transactionDialog(
                 transactionTableWidget('$buyingText수량', '$transactionCount주'),
                 transactionTableWidget('$buyingText단가', '${formatToCurrency(price)}원'),
                 transactionTableWidget(
-                    '총$buyingText가격', '${formatToCurrency(price * transactionCount)}원'),
+                    '총$buyingText가격', '${formatToCurrency((price * transactionCount))}원'),
+                buying
+                    ? transactionTableWidget('$buyingText수수료',
+                        '${formatToCurrency(((price * transactionCount) * feeRate).round())}원')
+                    : const SizedBox(),
+                buying
+                    ? transactionTableWidget('총지불금액',
+                        '${formatToCurrency((price * transactionCount) + ((price * transactionCount) * feeRate).round())}원')
+                    : const SizedBox(),
                 SizedBox(height: screenController.screenSize.value.getHeightPerSize(2)),
                 Row(
                   //mainAxisAlignment: MainAxisAlignment.center,

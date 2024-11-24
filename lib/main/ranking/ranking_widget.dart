@@ -95,7 +95,11 @@ class RankingMyWidget extends StatelessWidget {
             Container(
               height: _screenController.screenSize.value.getHeightPerSize(6),
               width: _screenController.screenSize.value.getHeightPerSize(6),
-              decoration: const BoxDecoration(color: Colors.orangeAccent, shape: BoxShape.circle),
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: ClipOval(
+                child: Image.asset(
+                    'assets/image/fan/${fanImageMap[_myDataController.myChoicechannel.value]}.png'),
+              ),
             ),
             SizedBox(
               width: _screenController.screenSize.value.getWidthPerSize(2),
@@ -177,7 +181,11 @@ class RankingWidget extends StatelessWidget {
             Container(
               height: _screenController.screenSize.value.getHeightPerSize(6),
               width: _screenController.screenSize.value.getHeightPerSize(6),
-              decoration: const BoxDecoration(color: Colors.orangeAccent, shape: BoxShape.circle),
+              decoration: const BoxDecoration(shape: BoxShape.circle),
+              child: ClipOval(
+                child:
+                    Image.asset('assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png'),
+              ),
             ),
             SizedBox(
               width: _screenController.screenSize.value.getWidthPerSize(2),

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/utils/simple_widget.dart';
-import '../../utils/http_request.dart';
+import '../../utils/get_env.dart';
 import '../login/login_screen.dart';
 
 class FindAccountBinding extends Bindings {

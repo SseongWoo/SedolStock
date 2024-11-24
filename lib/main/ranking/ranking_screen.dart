@@ -12,7 +12,7 @@ class RankingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: colorStelLiveLight,
+      color: colorISEGYEIDOLLight,
       child: Padding(
         padding: EdgeInsets.only(
             left: _screenController.screenSize.value.getWidthPerSize(2),

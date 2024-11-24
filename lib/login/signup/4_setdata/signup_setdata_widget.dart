@@ -83,7 +83,7 @@ class SignUpSetDataButtonWidget extends StatelessWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorStelLiveLight, // 버튼 배경색
+          backgroundColor: colorISEGYEIDOLLight, // 버튼 배경색
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30), // 버튼을 둥글게 만들어 FAB 느낌을 줌
           ),
