@@ -5,11 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/utils/date_time.dart';
 import 'package:stockpj/utils/format.dart';
+import 'package:stockpj/utils/simple_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/screen_size.dart';
 
+// 앱바의 타이틀 부분 위젯 변수
 class TradeDetailAppBarTitleWidget extends StatelessWidget {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
@@ -22,7 +24,9 @@ class TradeDetailAppBarTitleWidget extends StatelessWidget {
       children: [
         Text(
           '${channelMapData[_tradeDetailController.channelUID]!} (${_tradeDetailController.type == 'view' ? '조회수' : '좋아요수'})',
-          style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+          style: TextStyle(
+            fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+          ),
         ),
         Obx(
           () => Row(
@@ -55,6 +59,7 @@ class TradeDetailAppBarTitleWidget extends StatelessWidget {
   }
 }
 
+// 상세 정보 커스텀 위젯
 class TradeDetailListTileWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final String title;
@@ -82,6 +87,7 @@ class TradeDetailListTileWidget extends StatelessWidget {
   }
 }
 
+// 상세 정보 가격 그래프 위젯
 class TradeDatailChartWidget extends StatefulWidget {
   const TradeDatailChartWidget({super.key});
 
@@ -110,11 +116,18 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, 0),
+          ),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+        padding: EdgeInsets.all(
+          _screenController.screenSize.value.getHeightPerSize(1),
+        ),
         child: Obx(
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,6 +256,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
   }
 }
 
+// 사용자의 자산 정보 위젯
 class TradeDetailMyStock extends StatelessWidget {
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
   final ScreenController _screenController = Get.find<ScreenController>();
@@ -255,11 +269,18 @@ class TradeDetailMyStock extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, 0),
+          ),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+        padding: EdgeInsets.all(
+          _screenController.screenSize.value.getHeightPerSize(1),
+        ),
         child: Obx(
           () => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,6 +340,7 @@ class TradeDetailMyStock extends StatelessWidget {
   }
 }
 
+// 상세정보 구매 판매 버튼 위젯
 class TradeDetailButtonWidget extends StatelessWidget {
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
   final ScreenController _screenController = Get.find<ScreenController>();
@@ -386,6 +408,7 @@ class TradeDetailButtonWidget extends StatelessWidget {
   }
 }
 
+// 채널의 최신 10개의 영상을 나타내는 위젯
 class DetailVideoListWidget extends StatelessWidget {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
@@ -397,7 +420,9 @@ class DetailVideoListWidget extends StatelessWidget {
     return Card(
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+        padding: EdgeInsets.all(
+          _screenController.screenSize.value.getHeightPerSize(1),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -408,7 +433,8 @@ class DetailVideoListWidget extends StatelessWidget {
                   () => Text(
                     '${_tradeDetailController.typeMain.value ? '메인 채널' : '서브 채널'} 최근 업로드된 영상',
                     style: TextStyle(
-                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+                      fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                    ),
                   ),
                 ),
                 InkWell(
@@ -419,7 +445,8 @@ class DetailVideoListWidget extends StatelessWidget {
                     () => Text(
                       _tradeDetailController.typeMain.value ? '서브' : '메인',
                       style: TextStyle(
-                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.4)),
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.4),
+                      ),
                     ),
                   ),
                 ),
@@ -427,10 +454,9 @@ class DetailVideoListWidget extends StatelessWidget {
             ),
             Obx(
               () => SizedBox(
-                height: _screenController.screenSize.value.getHeightPerSize(100), // 높이 지정
+                height: _screenController.screenSize.value.getHeightPerSize(100),
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  // Null 체크 추가: youtubeVideoData[channelUID]가 null이면 0을 반환
                   itemCount: _youtubeDataController
                       .youtubeVideoData[_tradeDetailController.typeMain.value
                           ? _tradeDetailController.channelUID
@@ -443,7 +469,7 @@ class DetailVideoListWidget extends StatelessWidget {
                             : channelAndSubChannelMapData[_tradeDetailController.channelUID]];
                     if (videoData == null || videoData.isEmpty) {
                       return const Center(
-                        child: Text('영상 데이터를 불러올 수 없습니다.'), // 데이터가 없을 때의 메시지
+                        child: Text('영상 데이터를 불러올 수 없습니다.'),
                       );
                     }
                     return SizedBox(
@@ -464,8 +490,9 @@ class DetailVideoListWidget extends StatelessWidget {
                                 );
                               },
                               errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
+                                return Center(
+                                  child:
+                                      Image.asset('assets/image/image_error.png'), // 오류 시 표시할 텍스트
                                 );
                               },
                             ),
@@ -508,8 +535,8 @@ class DetailVideoListWidget extends StatelessWidget {
                                 if (await canLaunchUrl(url)) {
                                   await launchUrl(url);
                                 } else {
-                                  // URL을 열 수 없는 경우 처리
-                                  print('Could not launch $url');
+                                  showSimpleSnackbar('오류', '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.',
+                                      SnackPosition.TOP, Colors.red);
                                 }
                               },
                               icon: const Icon(

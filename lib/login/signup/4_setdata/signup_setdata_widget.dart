@@ -8,6 +8,7 @@ import '../../../data/public_data.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
+// 앱바에 위치한 뒤로가기 버튼 위젯
 class SignUpSetDataBackButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
@@ -24,6 +25,7 @@ class SignUpSetDataBackButtonWidget extends StatelessWidget {
   }
 }
 
+// 이름입력 텍스트 필드 위젯
 class SignUpSetDataTextWidget extends StatefulWidget {
   const SignUpSetDataTextWidget({super.key});
 
@@ -49,7 +51,6 @@ class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
             return '이름을 입력해주세요';
           }
           if (value.containsBadWords || _singUpSetDataControll.filter.hasProfanity(value)) {
-            print(value);
             return '부적절한 언어 사용은 허용되지 않습니다. 다시 입력해 주세요.';
           }
           if (_singUpSetDataControll.overlapName) {
@@ -63,6 +64,7 @@ class _SignUpSetDataTextWidgetState extends State<SignUpSetDataTextWidget> {
   }
 }
 
+// 회원가입 버튼 위젯
 class SignUpSetDataButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
@@ -98,6 +100,7 @@ class SignUpSetDataButtonWidget extends StatelessWidget {
   }
 }
 
+// 팬덤명 선택 위젯
 class SignUpDropDownWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
@@ -121,9 +124,6 @@ class SignUpDropDownWidget extends StatelessWidget {
             ),
             Expanded(
               child: GestureDetector(
-                onLongPress: () {
-                  //_singUpSetDataControll.listIndex.value = fanNameList.length - 1;
-                },
                 child: Text(
                   fanNameList[_singUpSetDataControll.listIndex.value],
                   textAlign: TextAlign.center,
@@ -149,45 +149,3 @@ class SignUpDropDownWidget extends StatelessWidget {
     );
   }
 }
-
-// class SignUpDropDownWidget extends StatelessWidget {
-//   final ScreenController _screenController = Get.find<ScreenController>();
-//   final SingUpSetDataControll _singUpSetDataControll = Get.find<SingUpSetDataControll>();
-//   SignUpDropDownWidget({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Obx(
-//             () => DropdownButton<String>(
-//           value: _singUpSetDataControll.selectedName.value,
-//           alignment: Alignment.center,
-//           onChanged: (String? newValue) {
-//             _singUpSetDataControll.updateSelectedName(newValue!);
-//           },
-//           items: List.generate(fanNameList.length, (index) {
-//             return DropdownMenuItem<String>(
-//               value: fanNameList[index],
-//               child: Row(
-//                 children: [
-//                   Icon(
-//                     _singUpSetDataControll.iconData[index],
-//                     size: _screenController.screenSize.value.getHeightPerSize(3.5),
-//                     color: colorList[index],
-//                   ),
-//                   SizedBox(width: _screenController.screenSize.value.getWidthPerSize(1.5)),
-//                   Text(
-//                     fanNameList[index],
-//                     style: TextStyle(
-//                         fontSize: _screenController.screenSize.value.getHeightPerSize(3),
-//                         color: colorList[index]),
-//                   ),
-//                 ],
-//               ),
-//             );
-//           }),
-//         ),
-//       ),
-//     );
-//   }
-// }

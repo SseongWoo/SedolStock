@@ -4,6 +4,7 @@ import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import 'find_account_system.dart';
 
+// 이메일 입력 텍스트 필드 위젯
 class FindAccountEmailWidget extends StatefulWidget {
   const FindAccountEmailWidget({super.key});
 
@@ -37,31 +38,34 @@ class _FindAccountEmailWidgetState extends State<FindAccountEmailWidget> {
   }
 }
 
+// 계정 찾기 버튼 위젯
 class FindAccountButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   FindAccountButtonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FindAccountController _findAccountController = Get.find<FindAccountController>();
+    final FindAccountController findAccountController = Get.find<FindAccountController>();
     return SizedBox(
-      width: double.infinity, // 기기의 전체 너비
+      width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          if (_findAccountController.formKey.currentState!.validate()) {
-            _findAccountController.sendFindEmail();
+          if (findAccountController.formKey.currentState!.validate()) {
+            findAccountController.sendFindEmail();
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorISEGYEIDOLLight, // 버튼 배경색
+          backgroundColor: colorISEGYEIDOLLight,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30), // 버튼을 둥글게 만들어 FAB 느낌을 줌
+            borderRadius: BorderRadius.circular(30),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16), // 버튼 높이를 조절
+          padding: const EdgeInsets.symmetric(vertical: 16),
         ),
         child: Text(
           '비밀번호 찾기',
-          style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
+          style: TextStyle(
+            fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+          ),
         ),
       ),
     );

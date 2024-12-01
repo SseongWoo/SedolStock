@@ -5,6 +5,7 @@ import 'package:stockpj/splash/splash_system.dart';
 import 'package:stockpj/utils/color.dart';
 import '../utils/screen_size.dart';
 
+// 앱 실행 로딩 화면
 class SplashScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final SplashController _splashController = Get.put(SplashController());

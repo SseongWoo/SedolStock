@@ -4,6 +4,7 @@ import 'package:stockpj/login/find_account/find_account_widget.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 
+// 계정 찾기 화면
 class FindAccountScreen extends StatelessWidget {
   FindAccountScreen({super.key});
   final ScreenController _screenController = Get.find<ScreenController>();
@@ -20,7 +21,10 @@ class FindAccountScreen extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(_screenController.screenSize.value.getWidthPerSize(5)),
+          padding: EdgeInsets.only(
+            left: _screenController.screenSize.value.getWidthPerSize(10),
+            right: _screenController.screenSize.value.getWidthPerSize(10),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -38,7 +42,8 @@ class FindAccountScreen extends StatelessWidget {
                     child: Text(
                       '이메일 인증을 완료한 사용자만 비밀번호 찾기 서비스를 이용할 수 있습니다.',
                       style: TextStyle(
-                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.2),
+                      ),
                     ),
                   ),
                 ],

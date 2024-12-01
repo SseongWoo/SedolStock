@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/youtube_data.dart';
@@ -8,7 +7,9 @@ import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/data_storage.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/simple_widget.dart';
+import 'package:stockpj/main.dart';
 
+// 보유 주식 클래스
 class OwnStock {
   String stockName;
   int stockCount;
@@ -16,6 +17,7 @@ class OwnStock {
   OwnStock(this.stockName, this.stockCount, this.stockPrice);
 }
 
+// 보유 주식 리스트 클래스
 class StockListClass {
   String stockUID;
   String stockName;
@@ -42,6 +44,7 @@ class StockListClass {
   );
 }
 
+// 주식 거래 내역 클래스
 class TradeHistoryClass {
   String itemuid;
   String itemtype;
@@ -66,6 +69,7 @@ class TradeHistoryClass {
   });
 }
 
+// 주식 정보 클래스
 class ItemHistoryClass {
   String itemUID;
   String itemType;
@@ -75,59 +79,60 @@ class ItemHistoryClass {
 
 class MyDataController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
-  RxString myUid = ''.obs;
-  RxString myId = ''.obs;
-  RxString myFirstlogintime = ''.obs;
-  RxString myName = ''.obs;
-  RxString myChoicechannel = ''.obs;
-  RxString myLastLoginTime = ''.obs;
-  RxInt myMoney = 0.obs;
-  RxInt myStockMoney = 0.obs;
-  RxInt myRank = 0.obs;
-  RxInt myBeforeRank = 0.obs;
-  RxInt myTotalMoney = 0.obs;
-  RxInt myReturnMoney = 0.obs;
-  RxDouble myRatioMoney = 0.0.obs;
-  RxInt myStockCount = 0.obs;
-  RxInt myStockList = 0.obs;
-  RxMap<String, OwnStock> ownStock = <String, OwnStock>{}.obs;
-  RxList<StockListClass> stockListItem = <StockListClass>[].obs;
-  RxList<TradeHistoryClass> tradeHistoryList = <TradeHistoryClass>[].obs;
-  RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs;
-  RxInt totalMoneyHistory = 0.obs;
-  RxInt totalSellHistory = 0.obs;
-  RxInt totalBuyHistory = 0.obs;
-  RxList<int> totalMoneyHistoryList = <int>[].obs;
+  RxString myUid = ''.obs; // 사용자 정보
+  RxString myId = ''.obs; // *
+  RxString myFirstlogintime = ''.obs; // *
+  RxString myName = ''.obs; // *
+  RxString myChoicechannel = ''.obs; // *
+  RxString myLastLoginTime = ''.obs; // *
+  RxInt myMoney = 0.obs; // *
+  RxInt myStockMoney = 0.obs; // *
+  RxInt myRank = 0.obs; // *
+  RxInt myBeforeRank = 0.obs; // *
+  RxInt myTotalMoney = 0.obs; // *
+  RxInt myReturnMoney = 0.obs; // *
+  RxDouble myRatioMoney = 0.0.obs; // *
+  RxInt myStockCount = 0.obs; // *
+  RxInt myStockList = 0.obs; // //
+  RxMap<String, OwnStock> ownStock = <String, OwnStock>{}.obs; // 보유 주식 맵 데이터
+  RxList<StockListClass> stockListItem = <StockListClass>[].obs; // 보유 주식 리스트 데이터
+  RxList<TradeHistoryClass> tradeHistoryList = <TradeHistoryClass>[].obs; // 거래 내역 리스트 데이터
+  RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs; // 주식 정보 맵 데이터
+  RxInt totalMoneyHistory = 0.obs; // 거래 내역 정보
+  RxInt totalSellHistory = 0.obs; // *
+  RxInt totalBuyHistory = 0.obs; // //
+  RxList<int> totalMoneyHistoryList = <int>[].obs; // 사용자 보유 잔고 역사 그래프 데이터
 
+  // 사용자의 소지 금액과 주식 금액을 더해서 총 소유 자산을 계산하는 함수
   void setTotalMoney() {
     myTotalMoney.value = myMoney.value + myStockMoney.value;
   }
 
+  // 사용자의 자산 데이터를 설정하는 함수
   void setMoneyData() {
     myStockMoney.value = 0;
     myRatioMoney.value = 0;
     myReturnMoney.value = 0;
-    int totalBuyPrice = 0; // 총 구매 가격을 추적
+    int totalBuyPrice = 0; // 총 구매 가격
     stockListItem.clear();
 
     ownStock.forEach((key, value) {
       if (value.stockCount > 0) {
-        String keyUID = key.replaceAll(RegExp(r'(_view|_comment|_like)$'), '');
-        String? type = RegExp(r'_([^_]+)$') // 마지막 '_' 뒤의 단어만 매칭
+        String keyUID = key.replaceAll(RegExp(r'(_view|_comment|_like)$'), ''); // 조건에 맞는 단어들을 삭제
+        String? type = RegExp(r'_([^_]+)$') // 마지막 '_' 뒤의 단어만 매칭 가져옴
             .firstMatch(key)
             ?.group(1);
 
         if (_youtubeDataController.youtubeLiveData[keyUID] != null) {
+          // 주식 종류를 구분해서 가격정보를 가져옴
           int stockPrice = (type == 'view'
                   ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
                   : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice) *
               value.stockCount;
 
           myStockMoney.value += stockPrice;
-
           totalBuyPrice += value.stockPrice;
-
-          int profit = stockPrice - value.stockPrice;
+          int profit = stockPrice - value.stockPrice; // 이익 계산
           myReturnMoney.value += profit;
 
           stockListItem.add(
@@ -164,9 +169,11 @@ class MyDataController extends GetxController {
   }
 }
 
+// 사용자의 정보를 가져오는 함수
 Future<bool> getUserData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
   try {
+    // 사용자의 정보가 저장이 안되어있고 기기에 저장된 데이터도 없을 경우 예외발생
     if (myDataController.myUid.value == '') {
       if (await getUID() != null) {
         myDataController.myUid.value = (await getUID())!;
@@ -174,7 +181,7 @@ Future<bool> getUserData() async {
         throw Exception('Empty My Uid');
       }
     }
-    final String apiUrl = '$httpURL/users/${myDataController.myUid.value}'; // 서버 URL과 엔드포인트
+    final String apiUrl = '$httpURL/users/${myDataController.myUid.value}'; // 서버와 통신하기위한 url
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -194,32 +201,32 @@ Future<bool> getUserData() async {
       return false;
     }
   } catch (e) {
+    logger.e('getUserData error : $e');
     showSimpleSnackbar('에러', '$e', SnackPosition.BOTTOM, Colors.red);
     return false;
   }
 }
 
+// 사용자의 자산 데이터를 가져오는 함수
 Future<bool> getWalletData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
 
-  if (myDataController.myUid.value == '') {
-    if (await getUID() != null) {
-      myDataController.myUid.value = (await getUID())!;
-    } else {
-      throw Exception('Empty My Uid');
-    }
-  }
-  final String apiUrl = '$httpURL/users/wallet/${myDataController.myUid.value}'; // 서버 URL과 엔드포인트
-  myDataController.myStockCount.value = 0;
-  myDataController.myStockList.value = 0;
-
   try {
-    // 서버에 GET 요청을 보냄
+    // 사용자의 정보가 저장이 안되어있고 기기에 저장된 데이터도 없을 경우 예외발생
+    if (myDataController.myUid.value == '') {
+      if (await getUID() != null) {
+        myDataController.myUid.value = (await getUID())!;
+      } else {
+        throw Exception('Empty My Uid');
+      }
+    }
+    final String apiUrl = '$httpURL/users/wallet/${myDataController.myUid.value}'; // 서버와 통신하기위한 url
+    myDataController.myStockCount.value = 0;
+    myDataController.myStockList.value = 0;
+
     final response = await http.get(Uri.parse(apiUrl));
 
-    // 요청이 성공적인지 확인
     if (response.statusCode == 200) {
-      // JSON 데이터를 파싱
       final jsonData = jsonDecode(response.body)['data'];
       final jsonData2 = jsonDecode(response.body)['moneyhistory'];
 
@@ -241,35 +248,41 @@ Future<bool> getWalletData() async {
         });
         return true;
       } else {
-        // 예상한 데이터 형식이 아닐 때의 처리
-        print('Unexpected data format: $jsonData');
+        logger.w('getWalletData error : Unexpected data format: $jsonData');
         return false;
       }
     } else if (response.statusCode == 404) {
-      // 문서가 존재하지 않는 경우의 처리
-      print('No wallet data found for user ${myDataController.myUid.value}');
+      logger
+          .w('getWalletData error : No wallet data found for user ${myDataController.myUid.value}');
       return false;
     } else {
-      // 다른 상태 코드에 대한 처리
-      print('Failed to fetch wallet data. Status code: ${response.statusCode}');
+      logger.w(
+          'getWalletData error : Failed to fetch wallet data. Status code: ${response.statusCode}');
       return false;
     }
   } catch (e) {
-    // 예외 발생 시 처리
-    print('Error fetching wallet data: $e');
+    logger.e('getWalletData error : $e');
     showSimpleSnackbar('에러', '$e', SnackPosition.BOTTOM, Colors.red);
     return false;
   }
 }
 
+// 거래 데이터 내역을 가져오는 함수
 Future<void> getTradeHistoryData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
 
-  // UID를 가져옴
-  myDataController.myUid.value = (await getUID())!;
-  final String apiUrl = '$httpURL/users/tradeList/${myDataController.myUid.value}';
-
   try {
+    // 사용자의 정보가 저장이 안되어있고 기기에 저장된 데이터도 없을 경우 예외발생
+    if (myDataController.myUid.value == '') {
+      if (await getUID() != null) {
+        myDataController.myUid.value = (await getUID())!;
+      } else {
+        throw Exception('Empty My Uid');
+      }
+    }
+
+    final String apiUrl = '$httpURL/users/tradeList/${myDataController.myUid.value}';
+
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -286,12 +299,10 @@ Future<void> getTradeHistoryData() async {
         List<String> tradetimes = List<String>.from(jsonData['tradetime'] ?? []);
         List<int> priceavgs = List<int>.from(jsonData['priceavg'] ?? []);
 
-        // 데이터 초기화
         myDataController.tradeHistoryList.clear();
         myDataController.totalBuyHistory.value = 0;
         myDataController.totalSellHistory.value = 0;
 
-        // 모든 리스트의 길이가 같은지 체크
         if (itemuids.length == itemtypes.length &&
             itemuids.length == itemcounts.length &&
             itemuids.length == transactionprices.length &&
@@ -314,6 +325,7 @@ Future<void> getTradeHistoryData() async {
               ),
             );
 
+            // 판매인지 구매인지 구분하여 저장
             if (types[i] == 'buy') {
               myDataController.totalBuyHistory.value += transactionprices[i] * itemcounts[i];
             } else {
@@ -325,54 +337,59 @@ Future<void> getTradeHistoryData() async {
           myDataController.totalMoneyHistory.value =
               myDataController.totalSellHistory.value - myDataController.totalBuyHistory.value;
         } else {
-          print('Data length mismatch between lists.');
+          logger.w('getTradeHistoryData error : Data length mismatch between lists.');
         }
       } else {
-        print('Unexpected data format: $jsonData');
+        logger.w('getTradeHistoryData error : Unexpected data format: $jsonData');
       }
     } else if (response.statusCode == 404) {
-      print('No wallet data found for user ${myDataController.myUid.value}');
+      logger.w(
+          'getTradeHistoryData error : No wallet data found for user ${myDataController.myUid.value}');
     } else {
-      print('Failed to fetch wallet data. Status code: ${response.statusCode}');
+      logger.w(
+          'getTradeHistoryData error : Failed to fetch wallet data. Status code: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error fetching wallet data: $e');
+    logger.e('getTradeHistoryData error : $e');
   }
 }
 
+// 사용자의 자산 데이터를 DB에 업데이트 하는 함수
 Future<void> updateMyTotalMoney() async {
   final MyDataController myDataController = Get.find<MyDataController>();
 
-  // UID를 가져옴
-  myDataController.myUid.value = (await getUID())!;
-
-  // 서버 URL
-  final String apiUrl = '$httpURL/users/updatetotalmoney/${myDataController.myUid.value}';
-
-  // 요청에 보낼 데이터 구성
-  final Map<String, dynamic> requestData = {
-    'totalmoney': myDataController.myTotalMoney.value,
-  };
-
   try {
-    // HTTP PUT 요청 보내기
+    // 사용자의 정보가 저장이 안되어있고 기기에 저장된 데이터도 없을 경우 예외발생
+    if (myDataController.myUid.value == '') {
+      if (await getUID() != null) {
+        myDataController.myUid.value = (await getUID())!;
+      } else {
+        throw Exception('Empty My Uid');
+      }
+    }
+
+    // 서버 URL
+    final String apiUrl = '$httpURL/users/updatetotalmoney/${myDataController.myUid.value}';
+
+    final Map<String, dynamic> requestData = {
+      'totalmoney': myDataController.myTotalMoney.value,
+    };
+
     final response = await http.put(
       Uri.parse(apiUrl),
       headers: {
-        'Content-Type': 'application/json', // JSON 형식으로 헤더 설정
+        'Content-Type': 'application/json',
       },
-      body: jsonEncode(requestData), // 데이터 JSON으로 인코딩
+      body: jsonEncode(requestData),
     );
 
     if (response.statusCode == 200) {
-      // 업데이트 성공 처리
-      print('Total money updated successfully');
+      logger.i('updateMyTotalMoney log : Total money updated successfully');
     } else {
-      // 상태 코드가 200이 아닌 경우 실패 처리
-      print('Failed to update total money. Status code: ${response.statusCode}');
+      logger.w(
+          'updateMyTotalMoney error : Failed to update total money. Status code: ${response.statusCode}');
     }
   } catch (e) {
-    // 요청 도중 발생한 예외 처리
-    print('Error updating total money: $e');
+    logger.e('updateMyTotalMoney error : $e');
   }
 }

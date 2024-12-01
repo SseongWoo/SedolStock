@@ -20,6 +20,7 @@ Color colorIfariLight = Color.lerp(colorIfari, Colors.white, 0.5)!;
 Color colorISEGYEIDOL = const Color(0xffCE3669);
 Color colorISEGYEIDOLLight = Color.lerp(colorISEGYEIDOL, Colors.white, 0.5)!;
 
+// 색상 리스트
 List<Color> colorList = [
   colorWAKGOOD,
   colorIfari,
@@ -31,9 +32,10 @@ List<Color> colorList = [
   colorVIICHAN,
 ];
 
-Map<String, Color> streamerColorMap = {};
-Map<String, Color> fanColorMap = Map.fromIterables(fanNameList, colorList);
+Map<String, Color> streamerColorMap = {}; // colorIfari 색상을 제외한 맵 리스트
+Map<String, Color> fanColorMap = Map.fromIterables(fanNameList, colorList); // 팬덤명과 색상을 합친 맵 리스트
 
+// streamerColorMap 맵 데이터의 값을 설정하는 함수
 void setStreamerColorMap() {
   List<Color> filteredColors = List.from(colorList)..removeAt(1);
   streamerColorMap = Map.fromIterables(channelIdList, filteredColors);

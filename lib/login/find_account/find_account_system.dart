@@ -25,8 +25,11 @@ class FindAccountController extends GetxController {
     super.onClose();
   }
 
+  // 로그인 화면으로 이동 하는 함수
   void goLogin() {
-    Get.offAll(() => LoginScreen());
+    Get.offAll(
+      () => LoginScreen(),
+    );
   }
 
   // 비밀번호 찾기 이메일을 보내는 함수

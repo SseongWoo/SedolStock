@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/main/trade/detail/trade_detail_widget.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/timer.dart';
 
+// 주식 아이템 상세정보 화면
 class TradeDetailScreen extends StatefulWidget {
   const TradeDetailScreen({super.key});
 
@@ -58,7 +58,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
                     ),
                     DetailVideoListWidget(),
                     SizedBox(
-                      height: _screenController.screenSize.value.getHeightPerSize(7),
+                      height: _screenController.screenSize.value.getHeightPerSize(8),
                     )
                   ],
                 ),
@@ -67,7 +67,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
             Positioned(
               left: 0,
               right: 0,
-              bottom: 0,
+              bottom: _screenController.screenSize.value.getHeightPerSize(1),
               child: TradeDetailButtonWidget(),
             ),
           ],

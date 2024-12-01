@@ -8,6 +8,7 @@ import '../../utils/color.dart';
 import '../../utils/date_time.dart';
 import '../../utils/screen_size.dart';
 
+// 랭킹 타이틀과 보조 타이틀 위젯
 class RankingSubTitleWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
@@ -36,6 +37,7 @@ class RankingSubTitleWidget extends StatelessWidget {
   }
 }
 
+// 랭킹 리스트 뷰 위젯
 class RankingListViewWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
@@ -52,7 +54,7 @@ class RankingListViewWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(
               vertical: _screenController.screenSize.value.getHeightPerSize(1),
             ),
-            child: RankingWidget(rankingData: rankingData),
+            child: GestureDetector(child: RankingWidget(rankingData: rankingData)),
           );
         },
       ),
@@ -60,6 +62,7 @@ class RankingListViewWidget extends StatelessWidget {
   }
 }
 
+// 사용자 랭킹 정보 위젯
 class RankingMyWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -71,24 +74,28 @@ class RankingMyWidget extends StatelessWidget {
       height: _screenController.screenSize.value.getHeightPerSize(10),
       decoration: BoxDecoration(
         color: fanColorMap[_myDataController.myChoicechannel.value],
-        borderRadius:
-            const BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.only(
-            left: _screenController.screenSize.value.getWidthPerSize(2),
-            right: _screenController.screenSize.value.getWidthPerSize(2)),
+          left: _screenController.screenSize.value.getWidthPerSize(2),
+          right: _screenController.screenSize.value.getWidthPerSize(2),
+        ),
         child: Row(
           children: [
-            Container(
+            SizedBox(
               height: _screenController.screenSize.value.getHeightPerSize(8),
               width: _screenController.screenSize.value.getHeightPerSize(4),
               child: Center(
                 child: Text(
                   _myDataController.myRank.value == 0 ? '-' : _myDataController.myRank.string,
                   style: GoogleFonts.barlowCondensed(
-                      fontWeight: FontWeight.w800,
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(3)),
+                    fontWeight: FontWeight.w800,
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                  ),
                 ),
               ),
             ),
@@ -119,7 +126,8 @@ class RankingMyWidget extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          right: _screenController.screenSize.value.getWidthPerSize(2)),
+                        right: _screenController.screenSize.value.getWidthPerSize(2),
+                      ),
                       child: Text(
                         formatToCurrency(_myDataController.myTotalMoney.value),
                         style: TextStyle(
@@ -144,6 +152,7 @@ class RankingMyWidget extends StatelessWidget {
   }
 }
 
+// 랭킹 리스트에 사용되는 랭킹 데이터 위젯
 class RankingWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final RankingDataClass rankingData;
@@ -157,13 +166,19 @@ class RankingWidget extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
         boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, 0),
+          ),
         ],
       ),
       child: Padding(
         padding: EdgeInsets.only(
-            left: _screenController.screenSize.value.getWidthPerSize(2),
-            right: _screenController.screenSize.value.getWidthPerSize(2)),
+          left: _screenController.screenSize.value.getWidthPerSize(2),
+          right: _screenController.screenSize.value.getWidthPerSize(2),
+        ),
         child: Row(
           children: [
             SizedBox(
@@ -173,8 +188,9 @@ class RankingWidget extends StatelessWidget {
                 child: Text(
                   rankingData.rank.toString(),
                   style: GoogleFonts.barlowCondensed(
-                      fontWeight: FontWeight.w800,
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(3)),
+                    fontWeight: FontWeight.w800,
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                  ),
                 ),
               ),
             ),
@@ -205,7 +221,8 @@ class RankingWidget extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: Padding(
                       padding: EdgeInsets.only(
-                          right: _screenController.screenSize.value.getWidthPerSize(2)),
+                        right: _screenController.screenSize.value.getWidthPerSize(2),
+                      ),
                       child: Text(
                         formatToCurrency(rankingData.totalMoney),
                         style: TextStyle(
@@ -229,6 +246,7 @@ class RankingWidget extends StatelessWidget {
   }
 }
 
+// 랭킹 변동 표시 위젯
 Widget rankingChangeWidget(int rank, int beforeRank) {
   final ScreenController screenController = Get.find<ScreenController>();
   String title = '-';

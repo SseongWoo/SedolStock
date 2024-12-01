@@ -4,6 +4,7 @@ import 'package:stockpj/login/signup/2_main/signup_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
+// 회원가입 2단계 화면
 class SignUpScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   SignUpScreen({super.key});
@@ -18,7 +19,7 @@ class SignUpScreen extends StatelessWidget {
         backgroundColor: colorISEGYEIDOL,
         title: const Text('회원가입'),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: SignUpWidget(),
       ),
     );

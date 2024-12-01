@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+///////////////////////////
+// 날짜 형식을 변환하는 함수들 //
+///////////////////////////
 
 String formatDateTime(DateTime dateTime) {
   final DateFormat formatter = DateFormat('y년 M월 d일 H시 m분');

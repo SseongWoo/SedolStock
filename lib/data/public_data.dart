@@ -1,17 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import '../main.dart';
 import '../utils/data_storage.dart';
 import '../utils/get_env.dart';
 import '../utils/timer.dart';
 
+// 거래 수수료
 double feeRate = 0.05;
 
-List<String> channelIdList = [];
-List<String> subChannelIdList = [];
-
+List<String> channelIdList = []; // 채널 uid 리스트 데이터
+List<String> subChannelIdList = []; // 서브채널 uid 리스트 데이터
+// 채널 이름 리스트 데이터
 List<String> channelNameList = [
   '우왁굳',
   '아이네',
@@ -22,7 +23,9 @@ List<String> channelNameList = [
   '비챤',
 ];
 
+// 팬덤명 리스트 데이터
 List<String> fanNameList = ['팬치', '이파리', '둘기', '똥강아지', '박쥐단', '주폭도', '세균단', '라니'];
+// 영어 팬덤명 리스트 데이터
 List<String> fanEnNameList = [
   'Penchi',
   'Ifari',
@@ -34,12 +37,14 @@ List<String> fanEnNameList = [
   'Rani'
 ];
 
+// 팬덤명 맵 데이터
 Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
 
 Map<String, int> streamerIndexMap = {
   for (int i = 0; i < fanNameList.length; i++) fanNameList[i]: i
 };
 
+// 랭킹 데이터 클래스
 class RankingDataClass {
   String name;
   String choiceChannel;
@@ -75,9 +80,10 @@ class RankingDataClass {
 }
 
 class PublicDataController extends GetxController {
-  RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs;
-  RxString updateDate = ''.obs;
+  RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs; // 랭킹 데이터 리스트
+  RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
 
+  // 로그아웃 기능 함수
   void logOut() async {
     EasyLoading.show();
     await clearTokens();
@@ -87,6 +93,7 @@ class PublicDataController extends GetxController {
   }
 }
 
+// 랭크 데이터를 서버에서 가져오는 함수
 Future<void> getRankData() async {
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   final url = Uri.parse('$httpURL/rank/get');
@@ -95,32 +102,34 @@ Future<void> getRankData() async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // 서버로부터 받아온 데이터를 JSON으로 디코딩
       final jsonData = jsonDecode(response.body)['data'];
       final List<dynamic> dataList = jsonData['users'];
       publicDataController.updateDate.value = jsonData['updatedate'] ?? '';
 
-      // 기존 데이터 초기화
       publicDataController.rankingList.clear();
 
-      // 데이터 매핑 및 추가
       for (var rankData in dataList) {
+        int? totalmoney;
+        if (rankData['totalmoney'] is double) {
+          double doubleMoney = rankData['totalmoney'];
+          totalmoney = doubleMoney.round();
+        }
         publicDataController.rankingList.add(
           RankingDataClass(
             rankData['name']?.toString() ?? '',
             rankData['choicechannel']?.toString() ?? '',
             rankData['rank'] ?? 0,
             rankData['beforerank'] ?? 0,
-            rankData['totalmoney'] ?? 0,
+            totalmoney ?? rankData['totalmoney'] ?? 0,
           ),
         );
       }
-
-      print('Ranking data stored successfully.');
+      logger.i('getRankData log : Ranking data stored successfully.');
     } else {
-      print('Failed to fetch ranking data. Status code: ${response.statusCode}');
+      logger.w(
+          'getRankData error : Failed to fetch ranking data. Status code: ${response.statusCode}');
     }
-  } catch (error) {
-    print('Error fetching ranking data: $error');
+  } catch (e) {
+    logger.e('getRankData error : $e');
   }
 }

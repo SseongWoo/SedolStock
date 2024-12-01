@@ -8,11 +8,11 @@ import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/search_name.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import '../../data/public_data.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 
+// 정보 탭 내 정보 위젯
 class InformationMyWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final InformationController _informationController = Get.find<InformationController>();
@@ -39,7 +39,8 @@ class InformationMyWidget extends StatelessWidget {
                 color: Colors.white,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: _screenController.screenSize.value.getHeightPerSize(1)),
+                    bottom: _screenController.screenSize.value.getHeightPerSize(1),
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -52,7 +53,8 @@ class InformationMyWidget extends StatelessWidget {
                       Text(
                         _myDataController.myName.value,
                         style: TextStyle(
-                            fontSize: _screenController.screenSize.value.getHeightPerSize(2)),
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                        ),
                       ),
                     ],
                   ),
@@ -165,6 +167,7 @@ class InformationMyWidget extends StatelessWidget {
   }
 }
 
+// 정보 탭 내 자산 위젯
 class InformationPropertyWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -224,6 +227,7 @@ class InformationPropertyWidget extends StatelessWidget {
   }
 }
 
+// 내 자산 커스텀 위젯
 class PropertyRowWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final String title;
@@ -254,6 +258,7 @@ class PropertyRowWidget extends StatelessWidget {
   }
 }
 
+// 정보 탭 커스텀 버튼 위젯
 class InformationButtonWidget extends StatelessWidget {
   final String title;
   final Function function;
@@ -274,22 +279,24 @@ class InformationButtonWidget extends StatelessWidget {
   }
 }
 
+// 정보 탭 대분류 제목 위젯
 Widget settingTitle(String title) {
-  final ScreenController _screenController = Get.find<ScreenController>();
+  final ScreenController screenController = Get.find<ScreenController>();
   return Padding(
-    padding: EdgeInsets.only(left: _screenController.screenSize.value.getWidthPerSize(2)),
+    padding: EdgeInsets.only(left: screenController.screenSize.value.getWidthPerSize(2)),
     child: Align(
       alignment: Alignment.centerLeft,
       child: Text(
         title,
         style: TextStyle(
-          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+          fontSize: screenController.screenSize.value.getHeightPerSize(1.8),
         ),
       ),
     ),
   );
 }
 
+// 정보 탭 버튼 사이 구분선 위젯
 Widget settingDivider() {
   final ScreenController screenController = Get.find<ScreenController>();
   return Divider(
@@ -301,9 +308,9 @@ Widget settingDivider() {
   );
 }
 
+// 보유 자산 비율 그래프 위젯
 class TradeDatailChartWidget extends StatefulWidget {
   const TradeDatailChartWidget({super.key});
-
   @override
   State<TradeDatailChartWidget> createState() => _TradeDatailChartWidgetState();
 }
@@ -318,7 +325,9 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
     return SizedBox(
       height: _screenController.screenSize.value.getHeightPerSize(60),
       child: Padding(
-        padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+        padding: EdgeInsets.all(
+          _screenController.screenSize.value.getHeightPerSize(1),
+        ),
         child: Obx(
           () => SfCartesianChart(
             title: const ChartTitle(text: '내 자산 변동 그래프', alignment: ChartAlignment.near),
@@ -335,9 +344,6 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
             zoomPanBehavior: ZoomPanBehavior(
               enablePanning: true, // 팬(슬라이드) 기능 활성화
             ),
-            //title: ChartTitle(text: 'Half yearly sales analysis'),
-            //tooltipBehavior: _tooltipBehavior,
-
             series: <LineSeries<int, int>>[
               LineSeries<int, int>(
                 markerSettings: MarkerSettings(
@@ -366,6 +372,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
   }
 }
 
+// 보유 주식 원형 그래프 위젯
 class StockPieChartWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -390,7 +397,7 @@ class StockPieChartWidget extends StatelessWidget {
                 : data.stockName,
             dataLabelSettings: DataLabelSettings(
               isVisible: true,
-              labelPosition: ChartDataLabelPosition.outside, // 또는 inside
+              labelPosition: ChartDataLabelPosition.outside,
               textStyle:
                   TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
             ),
@@ -401,6 +408,7 @@ class StockPieChartWidget extends StatelessWidget {
   }
 }
 
+// 보유 자산 원형 그래프 위젯
 class MoneyPieChartWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final InformationController _informationController = Get.find<InformationController>();
@@ -420,9 +428,11 @@ class MoneyPieChartWidget extends StatelessWidget {
             dataLabelMapper: (MoneyChartClass data, _) =>
                 '${data.name} : ${formatToCurrency(data.money)}원',
             dataLabelSettings: DataLabelSettings(
-              isVisible: true, labelPosition: ChartDataLabelPosition.outside, // 또는 inside
-              textStyle:
-                  TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+              isVisible: true,
+              labelPosition: ChartDataLabelPosition.outside,
+              textStyle: TextStyle(
+                fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+              ),
             ),
           ),
         ],
@@ -431,6 +441,7 @@ class MoneyPieChartWidget extends StatelessWidget {
   }
 }
 
+// 이름 변경 다이얼로그
 class NameChangeDialog extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -462,8 +473,9 @@ class NameChangeDialog extends StatelessWidget {
             child: TextFormField(
               controller: _informationController.controllerName,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(0.5)),
+                contentPadding: EdgeInsets.all(
+                  _screenController.screenSize.value.getHeightPerSize(0.5),
+                ),
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -492,7 +504,7 @@ class NameChangeDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Get.back(); // 다이얼로그 닫기
+            Get.back();
           },
           child: const Text('취소'),
         ),
@@ -501,7 +513,6 @@ class NameChangeDialog extends StatelessWidget {
             EasyLoading.show(status: '중복 검사중');
             _informationController.overlapName =
                 await searchName(_informationController.controllerName.text);
-
             if (!_informationController.overlapName &&
                 _informationController.formKey.currentState!.validate()) {
               await _informationController.updateUserName();
@@ -515,6 +526,7 @@ class NameChangeDialog extends StatelessWidget {
   }
 }
 
+// 팬덤명 변경 다이얼로그
 class ChannelChangeDialog extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -524,7 +536,7 @@ class ChannelChangeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('진영 변경'),
+      title: const Text('팬덤 변경'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -532,7 +544,7 @@ class ChannelChangeDialog extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Obx(
                 () => Text(
-                  '원래 진영 : ${_myDataController.myChoicechannel}',
+                  '원래 팬덤 : ${_myDataController.myChoicechannel}',
                   style: TextStyle(
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
                   ),
@@ -589,7 +601,7 @@ class ChannelChangeDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            Get.back(); // 다이얼로그 닫기
+            Get.back();
           },
           child: const Text('취소'),
         ),
@@ -611,6 +623,7 @@ class ChannelChangeDialog extends StatelessWidget {
   }
 }
 
+// 로그아웃 다이얼로그
 class LogoutDialog extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
@@ -622,7 +635,9 @@ class LogoutDialog extends StatelessWidget {
       title: const Text('로그아웃'),
       content: Text(
         '로그아웃하시겠습니까?',
-        style: TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+        style: TextStyle(
+          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+        ),
       ),
       actions: [
         TextButton(
@@ -643,6 +658,7 @@ class LogoutDialog extends StatelessWidget {
   }
 }
 
+// 비밀번호 변경 다이얼로그
 class ChangePWDialog extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();

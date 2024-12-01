@@ -4,6 +4,7 @@ import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import 'login_system.dart';
 
+// 로그인 메인 위젯
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
 
@@ -15,13 +16,13 @@ class _LoginWidgetState extends State<LoginWidget> {
   final ScreenController _screenController = Get.find<ScreenController>();
   @override
   Widget build(BuildContext context) {
-    final LoginController _loginController = Get.find<LoginController>();
+    final LoginController loginController = Get.find<LoginController>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextField(
-          controller: _loginController.controllerID,
+          controller: loginController.controllerID,
           maxLines: 1,
           decoration: const InputDecoration(
             labelText: '아이디',
@@ -33,7 +34,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           height: _screenController.screenSize.value.getHeightPerSize(4),
         ),
         TextField(
-          controller: _loginController.controllerPassword,
+          controller: loginController.controllerPassword,
           obscureText: true,
           maxLines: 1,
           decoration: const InputDecoration(
@@ -50,8 +51,8 @@ class _LoginWidgetState extends State<LoginWidget> {
           width: _screenController.screenSize.value.getWidthPerSize(80),
           child: ElevatedButton(
             onPressed: () {
-              _loginController.tryLogin(
-                  _loginController.controllerID.text, _loginController.controllerPassword.text);
+              loginController.tryLogin(
+                  loginController.controllerID.text, loginController.controllerPassword.text);
             },
             child: Text(
               '로그인',
@@ -72,7 +73,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               height: _screenController.screenSize.value.getHeightPerSize(4),
               child: TextButton(
                 onPressed: () async {
-                  _loginController.goFindAccount();
+                  loginController.goFindAccount();
                 },
                 child: Text(
                   '비밀번호 찾기',
@@ -87,7 +88,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               height: _screenController.screenSize.value.getHeightPerSize(4),
               child: TextButton(
                 onPressed: () {
-                  _loginController.goSignUp();
+                  loginController.goSignUp();
                 },
                 child: Text(
                   '회원 가입',

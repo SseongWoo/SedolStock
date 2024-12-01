@@ -5,6 +5,7 @@ import 'package:stockpj/main/trade/transaction/transaction_widget.dart';
 import 'package:stockpj/utils/timer.dart';
 import '../../../utils/screen_size.dart';
 
+// 주식 매매 화면
 class TransactionScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.put(TransactionController());

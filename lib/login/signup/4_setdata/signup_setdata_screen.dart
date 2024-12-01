@@ -5,6 +5,7 @@ import 'package:stockpj/login/signup/4_setdata/signup_setdata_widget.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
+// 회원가입 4단계 화면
 class SignupSetprofileScreen extends StatefulWidget {
   const SignupSetprofileScreen({super.key});
 

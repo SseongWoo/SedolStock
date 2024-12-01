@@ -19,6 +19,7 @@ class MainController extends GetxController {
     InformationScreen(),
   ];
 
+  // 각각의 탭 이름
   final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '정보'];
 
   // 인덱스 변경 함수

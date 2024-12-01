@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stockpj/data/public_data.dart';
 import '../../utils/screen_size.dart';
 import 'package:get/get.dart';
 import 'home_widget.dart';
 
+// 홈 화면
 class HomeScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   HomeScreen({super.key});

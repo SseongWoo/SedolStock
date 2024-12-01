@@ -3,17 +3,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/main.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/check_list.dart';
 import 'package:stockpj/utils/simple_widget.dart';
-
 import '../data/start_data.dart';
 
 class TimerController extends GetxController {
-  Timer? _countdownTimer;
+  Timer? _countdownTimer; // 카운트다운 타이머
   RxInt secondsRemaining = 0.obs; // 총 남은 시간을 초 단위로 저장
   RxString timeDisplay = '00:00'.obs; // 남은 시간을 "분:초"로 저장
-  RxString currentTime = ''.obs;
+  RxString currentTime = ''.obs; // 현재 시간
 
   @override
   void onInit() {
@@ -29,7 +29,7 @@ class TimerController extends GetxController {
   // 다음 실행 시간을 예약하는 함수
   void _scheduleNextRun() {
     final now = DateTime.now();
-    int nextRunMinute = ((now.minute ~/ 5) + 1) * 5;
+    int nextRunMinute = ((now.minute ~/ 5) + 1) * 5; // 5분단위
 
     // 60분을 넘는 경우 처리 (시(hour)를 올려주고, 분(minute)은 0으로 설정)
     int nextRunHour = now.hour;
@@ -72,7 +72,7 @@ class TimerController extends GetxController {
   // 5분이 다 되면 실행되는 작업
   void _executeTask() async {
     currentTime.value = '5분 단위로 실행됨: ${DateTime.now()}';
-    print(currentTime.value);
+    logger.i(currentTime.value);
     _scheduleNextRun();
 
     if (Get.isRegistered<InformationController>()) {
@@ -108,6 +108,7 @@ class TimerController extends GetxController {
   }
 }
 
+// 타이머 위젯
 class TimerWidget extends StatelessWidget {
   final TimerController _timerController = Get.find<TimerController>();
   TimerWidget({super.key});

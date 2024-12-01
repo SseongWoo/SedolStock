@@ -8,12 +8,14 @@ import 'package:stockpj/main/information/setting/setting_screen.dart';
 import 'package:stockpj/main/information/withdrawal/withdrawal_screen.dart';
 import '../../data/my_data.dart';
 import '../../data/public_data.dart';
+import '../../main.dart';
 import '../../utils/data_storage.dart';
 import '../../utils/get_env.dart';
 import '../../utils/simple_widget.dart';
 import 'information_widget.dart';
 import 'package:http/http.dart' as http;
 
+// 정보 화면 사용자 자산 변동 그래프를 위한 클래스
 class MoneyChartClass {
   String name;
   int money;
@@ -24,18 +26,14 @@ class MoneyChartClass {
 class InformationController extends GetxController {
   final MyDataController _myDataController = Get.find<MyDataController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
-  RxInt minValue = 0.obs;
-  RxDouble rate = 0.0.obs;
-  RxList<MoneyChartClass> moneyChartList = <MoneyChartClass>[].obs;
+  RxInt minValue = 0.obs; // 그래프의 y축 최소값을 지정하기 위한 변수
+  RxDouble rate = 0.0.obs; // 사용자의 자산 변동률 변수
+  RxList<MoneyChartClass> moneyChartList = <MoneyChartClass>[].obs; // 사용자의 자산 차트 값 리스트
   final TextEditingController controllerName = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  final filter = ProfanityFilter();
-  bool overlapName = false;
+  final filter = ProfanityFilter(); // 비속어를 감지하는 필터
+  bool overlapName = false; // 사용자의 이름 중복 확인
   RxInt dialogIndex = 0.obs;
-
-  void test() async {
-    print(rate);
-  }
 
   @override
   void onInit() {
@@ -48,12 +46,14 @@ class InformationController extends GetxController {
     dialogIndex.value = streamerIndexMap[_myDataController.myChoicechannel.value]!;
   }
 
+  // 차트 데이터 설정 함수
   void setMoneyChartData() {
     moneyChartList.clear();
     moneyChartList.add(MoneyChartClass('현금 자산', _myDataController.myMoney.value));
     moneyChartList.add(MoneyChartClass('주식 자산', _myDataController.myStockMoney.value));
   }
 
+  // 차트 y축 최소값을 지정하기 위한 함수
   void setMinValue() {
     int minV = _myDataController.totalMoneyHistoryList.reduce(min);
 
@@ -64,6 +64,7 @@ class InformationController extends GetxController {
     }
   }
 
+  // 사용자의 자산 변동률을 계산하는 함수
   void profitRate() {
     if (_myDataController.totalMoneyHistoryList.length > 1) {
       rate.value = (((_myDataController.myTotalMoney.value -
@@ -72,82 +73,107 @@ class InformationController extends GetxController {
               _myDataController
                   .totalMoneyHistoryList[_myDataController.totalMoneyHistoryList.length - 2]) *
           100);
-      rate.value = double.parse(rate.value.toStringAsFixed(2));
+      rate.value = double.parse(
+        rate.value.toStringAsFixed(2),
+      );
+      if (rate.value > -0.01 && rate.value < 0.01) {
+        rate.value = 0.0;
+      }
     } else {
       rate.value = 0.0;
     }
   }
 
+  // 사용자의 이름 변경을 위한 다이얼로그 호출 함수
   void nameChange() {
     Get.dialog(NameChangeDialog()).then(
       (value) => controllerName.clear(),
     );
   }
 
+  // 사용자가 설정한 팬덤명을 변경하기 위해 다이얼로그를 호출하는 함수
   void channelChange() {
     Get.dialog(ChannelChangeDialog()).then(
       (value) => dialogIndex.value = streamerIndexMap[_myDataController.myChoicechannel.value]!,
     );
   }
 
+  // 관리 화면으로 이동하는 함수
   void goSetting() {
     Get.to(() => SettingScreen());
   }
 
+  // 사용자의 이름을 업데이트 하는 함수
   Future<void> updateUserName() async {
-    EasyLoading.show(status: '사용자 데이터 등록중');
-    final userData = await http.put(
-      Uri.parse('$httpURL/names/update'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'uid': _myDataController.myUid.value,
-        'name': _myDataController.myName.value,
-        'newname': controllerName.text,
-      }),
-    );
+    try {
+      EasyLoading.show(status: '사용자 데이터 등록중');
+      final userData = await http.put(
+        Uri.parse('$httpURL/names/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'uid': _myDataController.myUid.value,
+          'name': _myDataController.myName.value,
+          'newname': controllerName.text,
+        }),
+      );
 
-    Get.back();
-    if (userData.statusCode == 200) {
-      EasyLoading.dismiss();
-      _myDataController.myName.value = controllerName.text;
-      print('${_myDataController.myName.value} : ${controllerName.text}');
-      showSimpleSnackbar('변경 완료', '닉네임 변경이 완료되었습니다', SnackPosition.TOP, Colors.black);
-    } else {
+      Get.back();
+      if (userData.statusCode == 200) {
+        EasyLoading.dismiss();
+        _myDataController.myName.value = controllerName.text;
+        showSimpleSnackbar('변경 완료', '닉네임 변경이 완료되었습니다', SnackPosition.TOP, Colors.black);
+      } else {
+        EasyLoading.dismiss();
+        showSimpleSnackbar('변경 실패', '닉네임 변경에 실패하였습니다\n다시 시도해 주세요', SnackPosition.TOP, Colors.black);
+        logger.w('updateUserName error');
+      }
+    } catch (e) {
       EasyLoading.dismiss();
       showSimpleSnackbar('변경 실패', '닉네임 변경에 실패하였습니다\n다시 시도해 주세요', SnackPosition.TOP, Colors.black);
+      logger.e('updateUserName error : $e');
     }
   }
 
+  // 사용자가 설정한 팬덤명을 변경하는 함수
   Future<void> updateFanName() async {
-    EasyLoading.show(status: '팬네임 변경중');
-    final userData = await http.put(
-      Uri.parse('$httpURL/fanname/update'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'uid': _myDataController.myUid.value,
-        'name': fanNameList[dialogIndex.value],
-      }),
-    );
+    try {
+      EasyLoading.show(status: '팬네임 변경중');
+      final userData = await http.put(
+        Uri.parse('$httpURL/fanname/update'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'uid': _myDataController.myUid.value,
+          'name': fanNameList[dialogIndex.value],
+        }),
+      );
 
-    Get.back();
-    if (userData.statusCode == 200) {
-      EasyLoading.dismiss();
-      _myDataController.myChoicechannel.value = fanNameList[dialogIndex.value];
-      showSimpleSnackbar('변경 완료', '팬네임 변경이 완료되었습니다', SnackPosition.TOP, Colors.black);
-    } else {
+      Get.back();
+      if (userData.statusCode == 200) {
+        EasyLoading.dismiss();
+        _myDataController.myChoicechannel.value = fanNameList[dialogIndex.value];
+        showSimpleSnackbar('변경 완료', '팬네임 변경이 완료되었습니다', SnackPosition.TOP, Colors.black);
+      } else {
+        EasyLoading.dismiss();
+        showSimpleSnackbar('변경 실패', '팬네임 변경에 실패하였습니다\n다시 시도해 주세요', SnackPosition.TOP, Colors.black);
+        logger.w('updateFanName error');
+      }
+    } catch (e) {
       EasyLoading.dismiss();
       showSimpleSnackbar('변경 실패', '팬네임 변경에 실패하였습니다\n다시 시도해 주세요', SnackPosition.TOP, Colors.black);
+      logger.e('updateFanName error : $e');
     }
   }
 
+  // 로그아웃을 하기위한 다이얼로그를 호출하는 함수
   void startLogOut() {
     Get.dialog(LogoutDialog());
   }
 
+  // 사용자의 비밀번호를 변경하는 함수
   void startPWChange() async {
     if (_myDataController.myId.contains('@') && _myDataController.myId.contains('.')) {
       await sendFindEmail();
@@ -156,6 +182,7 @@ class InformationController extends GetxController {
     }
   }
 
+  // 계정 비밀번호 변경을 위한 이메일 전송 함수
   Future<void> sendFindEmail() async {
     EasyLoading.show(status: '확인중');
     try {
@@ -177,55 +204,42 @@ class InformationController extends GetxController {
       } else {
         throw Exception('error');
       }
-    } catch (error) {
+    } catch (e) {
       showSimpleDialog(Get.back, '오류', '이메일 전송에 실패했습니다.\n다시 시도해 주세요.');
+      logger.e('sendFindEmail error : $e');
     }
     EasyLoading.dismiss();
   }
 
+  // 계정 정보 초기화 함수(파산 신청)
   Future<void> restartUserData() async {
     EasyLoading.show(status: '초기화 중');
-    String? uid = await getUID();
-    final userData = await http.put(
-      Uri.parse('$httpURL/users/restart'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'uid': uid.toString(),
-      }),
-    );
+    try {
+      String uid = _myDataController.myUid.value;
+      if (uid == '') {
+        throw Exception('uid is empty');
+      }
 
-    if (userData.statusCode == 201) {
-      showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
-      _publicDataController.logOut();
-      EasyLoading.dismiss();
-    } else {
-      EasyLoading.dismiss();
+      final userData = await http.put(
+        Uri.parse('$httpURL/users/restart'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'uid': uid.toString(),
+        }),
+      );
+
+      if (userData.statusCode == 201) {
+        showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
+        _publicDataController.logOut();
+      } else {
+        showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
+      }
+    } catch (e) {
       showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
+      logger.e('restartUserData error : $e');
     }
-  }
-
-  Future<void> changePWData() async {
-    EasyLoading.show(status: '초기화 중');
-    String? uid = await getUID();
-    final userData = await http.put(
-      Uri.parse('$httpURL/users/restart'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'uid': uid.toString(),
-      }),
-    );
-
-    if (userData.statusCode == 201) {
-      showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
-      _publicDataController.logOut();
-      EasyLoading.dismiss();
-    } else {
-      EasyLoading.dismiss();
-      showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
-    }
+    EasyLoading.dismiss();
   }
 }

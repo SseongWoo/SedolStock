@@ -7,6 +7,7 @@ import 'package:stockpj/utils/simple_widget.dart';
 import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../main.dart';
 import '../../../utils/get_env.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,14 +15,14 @@ class TransactionController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
 
-  late bool buying;
+  late bool buying; // 판매, 구매 구분 변수
   late String channelUID;
-  late String transactionText;
-  late String itemType;
-  RxString calculatorDisplay = ''.obs;
-  RxInt calculatorInt = 0.obs;
-  RxInt calculatorSum = 0.obs;
-  RxDouble stockRatio = 0.0.obs;
+  late String transactionText; // 판매, 구매 구분 텍스트
+  late String itemType; // 조회수, 좋아요수 구분 텍스트
+  RxString calculatorDisplay = ''.obs; // 계산기 디스플레이에 나타날 변수
+  RxInt calculatorInt = 0.obs; // 계산기 입력된 값(주식 개수)
+  RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
+  RxDouble stockRatio = 0.0.obs; // 주식 변동률
   Color textColor = Colors.black;
 
   @override
@@ -42,6 +43,7 @@ class TransactionController extends GetxController {
     // TODO: implement onReady
     super.onReady();
 
+    // 화면의 숫자 버튼을 눌렀을떄 실행되는 기능
     ever(
       calculatorInt,
       (callback) {
@@ -51,6 +53,7 @@ class TransactionController extends GetxController {
     );
   }
 
+  // 구매, 판매를 구분하여 텍스트를 설정하는 함수
   void setTransactionText(bool buying) {
     if (buying) {
       transactionText = '구매';
@@ -59,6 +62,7 @@ class TransactionController extends GetxController {
     }
   }
 
+  // 매매 화면의 버튼중 숫자 버튼을 눌렀을때 계산기 화면에 등록될 값을 설정하는 화면
   void onTapNumButton(int pad) {
     if (pad >= 0) {
       calculatorInt.value = (calculatorInt.value * 10) + pad;
@@ -70,6 +74,7 @@ class TransactionController extends GetxController {
     calculatorDisplay.value = calculatorInt.value.toString();
   }
 
+  // 주식 매매 수량 +1 버튼
   void onTapPlus() {
     if (calculatorDisplay.value.isNotEmpty) {
       calculatorInt.value++;
@@ -79,6 +84,7 @@ class TransactionController extends GetxController {
     calculatorDisplay.value = calculatorInt.value.toString();
   }
 
+  // 주식 매매 수량 -1 버튼
   void onTapMinus() {
     if (calculatorDisplay.value.isNotEmpty && calculatorInt.value > 0) {
       calculatorInt.value--;
@@ -88,6 +94,7 @@ class TransactionController extends GetxController {
     calculatorDisplay.value = calculatorInt.value.toString();
   }
 
+  // 내 자산으로 매매 가능한 최대값의 절반을 계산해서 등록해주는 함수
   void onTapHalf() {
     if (buying) {
       calculatorInt.value = (_myDataController.myMoney.value ~/
@@ -100,6 +107,7 @@ class TransactionController extends GetxController {
     }
   }
 
+  // 내 자산으로 매매 가능한 최대값을 계산해서 등록해주는 함수
   void onTapMax() {
     if (buying) {
       calculatorInt.value = (_myDataController.myMoney.value ~/
@@ -110,15 +118,14 @@ class TransactionController extends GetxController {
     }
   }
 
+  // 내 자산보다 구매할 주식이 클 경우 또는 판매할 주식이 내 보유 주식보다 많은지 체크하는 함수
   bool checkData() {
     if (buying && calculatorSum.value > _myDataController.myMoney.value) {
       return false;
     }
-
     if (_myDataController.ownStock['${channelUID}_$itemType']!.stockCount < calculatorInt.value) {
       return false;
     }
-
     return true;
   }
 
@@ -132,6 +139,7 @@ class TransactionController extends GetxController {
     }
   }
 
+  // 매매 함수
   Future<void> trySale(int price, int count) async {
     EasyLoading.show();
     final url = Uri.parse('$httpURL/trade/${_myDataController.myUid}/trade/0');
@@ -142,7 +150,6 @@ class TransactionController extends GetxController {
       priceAvg = _myDataController.itemHistory['${channelUID}_$itemType']!.itemPriceAvg;
     }
 
-    // JSON 데이터를 구성
     final Map<String, dynamic> tradeData = {
       'itemuid': channelUID,
       'itemtype': itemType,
@@ -165,17 +172,17 @@ class TransactionController extends GetxController {
         Get.back();
         await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
-        print('Trade data updated successfully');
+        logger.i('trySale : Trade data updated successfully');
       } else {
         showSimpleSnackbar(
             '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);
-        print('Failed to update trade data. Status code: ${response.statusCode}');
+        logger.w('trySale : Failed to update trade data. Status code: ${response.statusCode}');
       }
       EasyLoading.dismiss();
     } catch (e) {
       showSimpleSnackbar(
           '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);
-      print('Error updating trade data: $e');
+      logger.e('trySale : Error updating trade data: $e');
       Get.back();
       EasyLoading.dismiss();
     }

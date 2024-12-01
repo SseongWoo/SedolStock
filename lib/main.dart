@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:stockpj/main/home/home_system.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_system.dart';
 import 'package:stockpj/splash/splash_screen.dart';
@@ -22,8 +21,11 @@ import 'main/main_screen.dart';
 import 'main/trade/trade_system.dart';
 import 'main/wallet/stockhistory/stockhistory_system.dart';
 
+var logger = Logger(); // 로그를 나타내기 위한 변수
+
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); // 빌드 초기화
+  // 가로화면 금지
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -63,9 +65,9 @@ void main() async {
   //   );
   // };
 
-  await dotenv.load(fileName: '.env');
-  setURL();
-  startController();
+  await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
+  setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
+  startController(); // 컨트롤러들 생성
 
   // // 비동기 에러 핸들링
   // runZonedGuarded(() {
@@ -82,10 +84,13 @@ void main() async {
   //   );
   // });
 
+  logger.d("Logger is working!");
+
   runApp(const MyApp());
   configLoading();
 }
 
+// 컨트롤러들 생성 함수
 void startController() {
   Get.put(ScreenController());
   Get.put(TimerController(), permanent: true);
@@ -103,7 +108,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      builder: EasyLoading.init(),
+      builder: (context, child) {
+        child = EasyLoading.init()(context, child);
+        return Center(
+          child: Container(
+            constraints: GetPlatform.isWeb
+                ? BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.height > 750
+                        ? MediaQuery.of(context).size.height * (10 / 16)
+                        : 500,
+                  )
+                : null, // 화면 너비 제한
+            child: child,
+          ),
+        );
+      },
+      //builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       title: 'StockGame',
       theme: ThemeData(
@@ -117,7 +137,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/test',
-          page: () => SignupSetprofileScreen(),
+          page: () => const SignupSetprofileScreen(),
         ),
         GetPage(
           name: '/',
@@ -132,13 +152,13 @@ class MyApp extends StatelessWidget {
           name: '/main',
           page: () => MainScreen(),
           transition: Transition.noTransition,
-          //transitionDuration: const Duration(seconds: 2),
         ),
       ],
     );
   }
 }
 
+// easyloading 설정
 void configLoading() {
   EasyLoading.instance
     ..displayDuration = const Duration(milliseconds: 2000)

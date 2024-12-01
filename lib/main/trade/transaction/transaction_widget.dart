@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
@@ -7,6 +8,7 @@ import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../data/public_data.dart';
 
+// 앱바 타이틀 위젯
 class TransactionTitleWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -19,9 +21,9 @@ class TransactionTitleWidget extends StatelessWidget {
       () => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          AutoSizeText(
               '${channelMapData[channelUID]!}(${_transactionController.itemType == 'view' ? '조회수' : '좋아요수'})'),
-          Text(
+          AutoSizeText(
             ' (${_transactionController.stockRatio.toStringAsFixed(2)}%)',
             style: TextStyle(color: _transactionController.textColor),
           ),
@@ -31,6 +33,7 @@ class TransactionTitleWidget extends StatelessWidget {
   }
 }
 
+// 매매 가격 디스플레이 위젯
 class TransactionPriceWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -44,7 +47,12 @@ class TransactionPriceWidget extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, 0),
+          ),
         ],
       ),
       child: Padding(
@@ -81,6 +89,7 @@ class TransactionPriceWidget extends StatelessWidget {
   }
 }
 
+// 계산기 디스플레이, 주싯 매매 수량 디스플레이 위젯
 class CalculatorTitleWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -147,6 +156,7 @@ class CalculatorTitleWidget extends StatelessWidget {
   }
 }
 
+// 계산기 넘버패드 위젯
 class CalculatorNumWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -187,6 +197,7 @@ class CalculatorNumWidget extends StatelessWidget {
   }
 }
 
+// 절반, 최대 버튼 위젯
 class CalculatorRatioButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -232,6 +243,7 @@ class CalculatorRatioButtonWidget extends StatelessWidget {
   }
 }
 
+// 넘버패트의 버튼 위젯
 class CalculatorNumButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final int first;
@@ -265,6 +277,7 @@ class CalculatorNumButtonWidget extends StatelessWidget {
   }
 }
 
+// 매매 버튼 위젯
 class TransactionButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TransactionController _transactionController = Get.find<TransactionController>();
@@ -306,6 +319,7 @@ class TransactionButtonWidget extends StatelessWidget {
   }
 }
 
+// 매매 내역 다이얼로그 위젯
 void transactionDialog(
   bool buying,
   String title,
@@ -425,6 +439,7 @@ void transactionDialog(
   );
 }
 
+// 매매내역 다이얼로그속 표 위젯
 Widget transactionTableWidget(String title, String content) {
   final ScreenController _screenController = Get.find<ScreenController>();
   return Padding(
@@ -442,7 +457,11 @@ Widget transactionTableWidget(String title, String content) {
                 color: Colors.grey[400],
                 boxShadow: const [
                   BoxShadow(
-                      color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                    color: Colors.grey,
+                    spreadRadius: 0.1,
+                    blurRadius: 0.1,
+                    offset: Offset(0, 0),
+                  ),
                 ],
               ),
               child: Align(

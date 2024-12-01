@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/wallet/stockhistory/stockhistory_screen.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_screen.dart';
-
 import '../../utils/screen_size.dart';
 
+// 지갑 화면
 class WalletScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   WalletScreen({super.key});
@@ -16,7 +16,7 @@ class WalletScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: TabBar(
+          title: const TabBar(
             tabs: [
               Tab(text: '주식 잔고'),
               Tab(text: '거래 내역'),
@@ -25,7 +25,7 @@ class WalletScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            StocklistScreen(),
+            const StocklistScreen(),
             StockHistoryScreen(),
           ],
         ),

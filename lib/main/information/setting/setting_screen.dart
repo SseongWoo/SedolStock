@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/main/information/setting/setting_system.dart';
 import 'package:stockpj/main/information/setting/setting_widget.dart';
 
+// 정보 탭 관리 화면
 class SettingScreen extends StatelessWidget {
   final SettingController _settingController = Get.put(SettingController());
   SettingScreen({super.key});

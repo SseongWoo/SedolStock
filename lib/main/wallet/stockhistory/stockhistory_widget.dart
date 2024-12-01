@@ -8,6 +8,7 @@ import '../../../data/my_data.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/screen_size.dart';
 
+// 거래내역 표1 위젯
 class StockHistoryTable1 extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -23,7 +24,11 @@ class StockHistoryTable1 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Center(
@@ -71,6 +76,7 @@ class StockHistoryTable1 extends StatelessWidget {
   }
 }
 
+// 거래내역 표2 위젯
 class StockHistoryTable2 extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
@@ -86,7 +92,11 @@ class StockHistoryTable2 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Center(
@@ -106,12 +116,17 @@ class StockHistoryTable2 extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                  color: Colors.grey,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0),
+                ),
               ],
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(1)),
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(1),
+              ),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -132,7 +147,11 @@ class StockHistoryTable2 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Center(
@@ -152,12 +171,17 @@ class StockHistoryTable2 extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                  color: Colors.grey,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0),
+                ),
               ],
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(1)),
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(1),
+              ),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -176,6 +200,7 @@ class StockHistoryTable2 extends StatelessWidget {
   }
 }
 
+// 거래내역 목록 위젯
 class StockHistoryDataTableWidget extends StatefulWidget {
   const StockHistoryDataTableWidget({super.key});
 
@@ -198,6 +223,7 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
     ];
   }
 
+  // 데이터 테이블 헤더
   Widget _getTitleItemWidget(String label, double width) {
     return Container(
       width: width,
@@ -212,6 +238,7 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
     );
   }
 
+  // 데이터 테이블 1번째 줄 위젯
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     return Container(
       width: _screenController.screenSize.value.getWidthPerSize(40),
@@ -225,6 +252,7 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
     );
   }
 
+  // 데이터 테이블 데이터 위젯
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     bool buy = _myDataController.tradeHistoryList[index].type == 'buy' ? true : false;
     int tradePrice = _myDataController.tradeHistoryList[index].transactionprice *
@@ -309,8 +337,6 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
         rightHandSideColumnWidth: _screenController.screenSize.value.getWidthPerSize(125),
         isFixedHeader: true,
         headerWidgets: _getTitleWidget(),
-        // isFixedFooter: true,
-        // footerWidgets: _getTitleWidget(),
         leftSideItemBuilder: _generateFirstColumnRow,
         rightSideItemBuilder: _generateRightHandSideColumnRow,
         itemCount: _stockHistoryController.historyList.length,
@@ -327,6 +353,7 @@ class _StockHistoryDataTableWidgetState extends State<StockHistoryDataTableWidge
   }
 }
 
+// 필터 버튼 위젯
 class StockHistoryFilterWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   StockHistoryFilterWidget({super.key});
@@ -382,6 +409,7 @@ class StockHistoryFilterWidget extends StatelessWidget {
   }
 }
 
+// 필터 설정 바텀시트 위젯
 class StockHistoryBottomSheetWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final StockHistoryController _stockHistoryController = Get.find<StockHistoryController>();
@@ -391,7 +419,6 @@ class StockHistoryBottomSheetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: _screenController.screenSize.value.getWidthSize(),
-      //height: _screenController.screenSize.value.getHeightPerSize(60),
       padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(2))
           .copyWith(top: _screenController.screenSize.value.getHeightPerSize(1)),
       decoration: const BoxDecoration(

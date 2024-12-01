@@ -6,6 +6,7 @@ import '../../../utils/screen_size.dart';
 
 final SingUpChoiceControll _choiceControll = Get.put(SingUpChoiceControll());
 
+// 회원가입 1단계 화면의 커스텀 버튼 위젯
 class SignUpChoiceButtonWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final String title;

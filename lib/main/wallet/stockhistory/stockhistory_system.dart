@@ -17,20 +17,24 @@ class StockHistoryController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    historyList = _myDataController.tradeHistoryList;
   }
 
+  // 아이템 타입 필터 설정
   void selectItemTypeFilter(String filter) {
     if (selectItemType.value != filter) {
       selectItemType.value = filter;
     }
   }
 
+  // 매매 타입 필터 설정
   void selectSaleTypeFilter(String filter) {
     if (selectSaleType.value != filter) {
       selectSaleType.value = filter;
     }
   }
 
+  // 필터 아이템중 종목명 부분의 버튼을 눌렀을때 실행되는 함수
   void toggleFilter(String filter) {
     if (filter == '전체') {
       if (!selectedFilters.contains('전체')) {
@@ -51,6 +55,7 @@ class StockHistoryController extends GetxController {
     }
   }
 
+  // 사용자가 설정한 필터를 적용하는 함수
   void setfilter() {
     RxList<TradeHistoryClass> setHistoryList = <TradeHistoryClass>[].obs;
     historyList.clear();
@@ -77,12 +82,9 @@ class StockHistoryController extends GetxController {
       return matchItem && matchItemType && matchSaleType;
     }).toList();
     historyList = setHistoryList;
-    print(
-        '$selectedFilters, ${itemTypeMapping[selectItemType.value]}, ${tradeTypeMapping[selectSaleType.value]}');
-    print(
-        '${_myDataController.tradeHistoryList.length},${historyList.length}, ${setHistoryList.length}');
   }
 
+  // 필터 초기화 함수
   void resetFilter() {
     selectedFilters.clear();
     selectedFilters.add('전체');

@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:stockpj/login/signup/1_choice/signup_choice_widget.dart';
 import '../../../utils/screen_size.dart';
 
-class SignupChoiceScreen extends StatelessWidget {
+// 회원가입 1단계 화면
+class SignUpChoiceScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
-
-  SignupChoiceScreen({super.key});
+  SignUpChoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

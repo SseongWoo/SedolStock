@@ -6,6 +6,7 @@ import 'package:stockpj/utils/format.dart';
 import '../../../data/my_data.dart';
 import '../../../utils/screen_size.dart';
 
+// 주식 목록 표1 위젯
 class StockListTable1 extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final String title;
@@ -21,7 +22,11 @@ class StockListTable1 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Text(
@@ -38,12 +43,17 @@ class StockListTable1 extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                  color: Colors.grey,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0),
+                ),
               ],
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(1)),
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(1),
+              ),
               child: Text(
                 value,
                 textAlign: TextAlign.right,
@@ -59,6 +69,7 @@ class StockListTable1 extends StatelessWidget {
   }
 }
 
+// 주식목록 표2 위젯
 class StockListTable2 extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final String title1;
@@ -83,7 +94,11 @@ class StockListTable2 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Text(
@@ -100,12 +115,17 @@ class StockListTable2 extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                  color: Colors.grey,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0),
+                ),
               ],
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(1)),
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(1),
+              ),
               child: Text(
                 value1,
                 textAlign: TextAlign.right,
@@ -123,7 +143,11 @@ class StockListTable2 extends StatelessWidget {
             color: Colors.grey[400],
             boxShadow: const [
               BoxShadow(
-                  color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                color: Colors.grey,
+                spreadRadius: 0.1,
+                blurRadius: 0.1,
+                offset: Offset(0, 0),
+              ),
             ],
           ),
           child: Text(
@@ -140,12 +164,17 @@ class StockListTable2 extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+                  color: Colors.grey,
+                  spreadRadius: 0.1,
+                  blurRadius: 0.1,
+                  offset: Offset(0, 0),
+                ),
               ],
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(1)),
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(1),
+              ),
               child: Text(
                 value2,
                 textAlign: TextAlign.right,
@@ -162,6 +191,7 @@ class StockListTable2 extends StatelessWidget {
   }
 }
 
+// 보유 주식 목록 위젯
 class StockDataTableWidget extends StatefulWidget {
   const StockDataTableWidget({super.key});
 
@@ -182,6 +212,7 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
     ];
   }
 
+// 데이터 테이블 헤더
   Widget _getTitleItemWidget(String label, double width) {
     return Container(
       width: width,
@@ -196,6 +227,7 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
     );
   }
 
+  // 데이터 테이블 1번째 줄 위젯
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     String typeName = _myDataController.stockListItem[index].stockType == 'view' ? '조회수' : '좋아요수';
     return GestureDetector(
@@ -219,6 +251,7 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
     );
   }
 
+  // 데이터 테이블 데이터 위젯
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return GestureDetector(
       onTap: () {
@@ -314,9 +347,9 @@ class _StockDataTableWidgetState extends State<StockDataTableWidget> {
   }
 }
 
+// 사용자 자산 테이블 위젯
 class StockListCustomTableWidget extends StatelessWidget {
   final MyDataController _myDataController = Get.find<MyDataController>();
-
   StockListCustomTableWidget({super.key});
 
   @override

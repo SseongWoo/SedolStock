@@ -6,12 +6,15 @@ import 'dart:convert';
 
 import 'package:stockpj/utils/get_env.dart';
 
+import '../main.dart';
 import '../main/trade/detail/trade_detail_system.dart';
 
-Map<String, String> channelMapData = Map.fromIterables(channelIdList, channelNameList);
+Map<String, String> channelMapData =
+    Map.fromIterables(channelIdList, channelNameList); // 채널의 uid와 이름으로 구성된 맵 데이터
 Map<String, String> channelAndSubChannelMapData =
-    Map.fromIterables(channelIdList, subChannelIdList);
+    Map.fromIterables(channelIdList, subChannelIdList); // 채널의 uid와 서브채널의 uid로 구성되어있는 맵 데이터
 
+// 홈 화면에 사용될 최신영상 데이터 클래스
 class HomeYoutubeDataClass {
   String title;
   String thumbnail;
@@ -43,6 +46,7 @@ class HomeYoutubeDataClass {
   }
 }
 
+// 유튜브 영상 데이터 클래스
 class YoutubeVideoDataClass {
   String videoid;
   String title;
@@ -79,6 +83,7 @@ class YoutubeVideoDataClass {
   }
 }
 
+// 채널의 데이터 클래스
 class YoutubeChannelDataClass {
   String birthday;
   String description;
@@ -115,14 +120,7 @@ class YoutubeChannelDataClass {
   }
 }
 
-// class YoutubeChartDataClass {
-//   List<int> commentCount;
-//   List<int> likeCount;
-//   List<int> viewCount;
-//
-//   YoutubeChartDataClass(this.commentCount, this.likeCount, this.viewCount);
-// }
-
+// 차트에 사용될 주식 데이터 리스트 클래스
 class YoutubeChartDataClass {
   List<SalesData> commentCount;
   List<SalesData> likeCount;
@@ -131,6 +129,7 @@ class YoutubeChartDataClass {
   YoutubeChartDataClass(this.commentCount, this.likeCount, this.viewCount);
 }
 
+// 채널의 가격 데이터 클래스
 class YoutubeLiveDataClass {
   int differenceCommentCount;
   int differenceLikeCount;
@@ -176,15 +175,19 @@ class YoutubeLiveDataClass {
 }
 
 class YoutubeDataController extends GetxController {
-  RxMap<String, HomeYoutubeDataClass> latestYoutubeData = <String, HomeYoutubeDataClass>{}.obs;
+  RxMap<String, HomeYoutubeDataClass> latestYoutubeData =
+      <String, HomeYoutubeDataClass>{}.obs; // 직전 유튜브 데이터 맵 데이터
   RxMap<String, YoutubeChannelDataClass> youtubeChannelData =
-      <String, YoutubeChannelDataClass>{}.obs;
-  RxMap<String, YoutubeLiveDataClass> youtubeLiveData = <String, YoutubeLiveDataClass>{}.obs;
-  RxMap<String, YoutubeChartDataClass> youtubeChartData = <String, YoutubeChartDataClass>{}.obs;
+      <String, YoutubeChannelDataClass>{}.obs; // 유튜브 채널 데이터 맵 데이터
+  RxMap<String, YoutubeLiveDataClass> youtubeLiveData =
+      <String, YoutubeLiveDataClass>{}.obs; // 유튜브 가격 데이터 맵 데이터
+  RxMap<String, YoutubeChartDataClass> youtubeChartData =
+      <String, YoutubeChartDataClass>{}.obs; // 차트에 사용될 가격 데이터 맵 데이터
   RxMap<String, List<YoutubeVideoDataClass>> youtubeVideoData =
-      <String, List<YoutubeVideoDataClass>>{}.obs;
+      <String, List<YoutubeVideoDataClass>>{}.obs; // 비디오 데이터 맵 데이터
 }
 
+// 주식 아이템 상세페이지의 그래프에 사용될 데이터를 형식에 맞게 가공하여 저장하는 함수
 List<SalesData> convertViewCountToSalesData(List<int> viewCountList) {
   List<SalesData> salesDataList = [];
 
@@ -192,33 +195,25 @@ List<SalesData> convertViewCountToSalesData(List<int> viewCountList) {
   DateTime now = DateTime.now();
   DateTime currentTime = DateTime(now.year, now.month, now.day, now.hour, (now.minute ~/ 5) * 5);
 
-  // viewCountList를 순회하며 SalesData로 변환
   for (int i = viewCountList.length - 1; i >= 0; i--) {
-    // 현재 시간을 hh:mm 형식으로 변환
     String formattedTime = DateFormat('HH:mm').format(currentTime);
-
-    // SalesData 객체에 현재 시간과 해당 viewCount 값을 추가
     salesDataList.add(SalesData(formattedTime, viewCountList[i].toDouble()));
-
-    // 다음 시간은 현재 시간에서 5분 빼서 설정
-    currentTime = currentTime.subtract(Duration(minutes: 5));
+    currentTime = currentTime.subtract(const Duration(minutes: 5));
   }
-
   return salesDataList;
 }
 
+// 홈 화면에서 사용될 각각의 채널의 최신영상 데이터를 가져오는 함수
 Future<void> getLatestYoutubeData() async {
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  final url = Uri.parse('$httpURL/youtube/getLatestVideoInfo'); // 서버 주소와 엔드포인트
+  final url = Uri.parse('$httpURL/youtube/getLatestVideoInfo');
 
   try {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // JSON 데이터 파싱
       final Map<String, dynamic> data = jsonDecode(response.body)['videos'];
 
-      // 데이터를 HomeYoutubeDataClass 객체로 변환하여 LatestYoutubeData에 저장
       data.forEach((channelId, videoData) {
         youtubeDataController.latestYoutubeData[channelId] = HomeYoutubeDataClass(
           videoData['title'] ?? '',
@@ -228,24 +223,23 @@ Future<void> getLatestYoutubeData() async {
           videoData['channelName'] ?? '',
         );
       });
-
-      // 저장된 데이터를 확인
-      print('Latest Videos stored successfully.');
+      logger.i('getLatestYoutubeData log : Latest Videos stored successfully.');
     } else {
-      print('Failed to fetch latest videos. Status code: ${response.statusCode}');
+      logger.w(
+          'getLatestYoutubeData log : Failed to fetch latest videos. Status code: ${response.statusCode}');
     }
-  } catch (error) {
-    print('Error fetching latest videos: $error');
+  } catch (e) {
+    logger.e('getLatestYoutubeData error : $e');
   }
 }
 
+// 채널의 데이터들을 가져오는 함수
 Future<void> getYoutubeChannelData() async {
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  final url = Uri.parse('$httpURL/youtube/getchannelinfo'); // 서버 주소와 엔드포인트
+  final url = Uri.parse('$httpURL/youtube/getchannelinfo');
 
   try {
     final response = await http.get(url);
-
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body)['channel'];
 
@@ -258,16 +252,17 @@ Future<void> getYoutubeChannelData() async {
             videoData['subscribercount'] ?? '');
       });
 
-      // 저장된 데이터를 확인
-      print('Videos Channel Data stored successfully.');
+      logger.i('getYoutubeChannelData log : Videos Channel Data stored successfully.');
     } else {
-      print('Failed to fetch Videos Channel Data. Status code: ${response.statusCode}');
+      logger.w(
+          'getYoutubeChannelData log : Failed to fetch Videos Channel Data. Status code: ${response.statusCode}');
     }
-  } catch (error) {
-    print('Error fetching Videos Channel Data: $error');
+  } catch (e) {
+    logger.e('getYoutubeChannelData error : $e');
   }
 }
 
+// 각각의 아이템 가격 데이터를 가져오는 함수
 Future<void> getYoutubeLiveData() async {
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final url = Uri.parse('$httpURL/youtube/getlivedata');
@@ -276,9 +271,12 @@ Future<void> getYoutubeLiveData() async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> countMapData = jsonDecode(response.body)['countMapData'];
-      final Map<String, dynamic> countSubMapData = jsonDecode(response.body)['countSubMapData'];
-      final Map<String, dynamic> chartDataList = jsonDecode(response.body)['chartDataList'];
+      final Map<String, dynamic> countMapData =
+          jsonDecode(response.body)['countMapData']; // 메인 채널 데이터
+      final Map<String, dynamic> countSubMapData =
+          jsonDecode(response.body)['countSubMapData']; // 서브 채널 데이터
+      final Map<String, dynamic> chartDataList =
+          jsonDecode(response.body)['chartDataList']; // 차트 데이터
 
       countMapData.forEach((channelId, videoData) {
         youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
@@ -328,13 +326,14 @@ Future<void> getYoutubeLiveData() async {
         );
       });
 
+      // 각각의 데이터들을 형식에 맞게 저장하기 위해 변환 후 저장
       chartDataList.forEach((channelId, videoData) {
         youtubeDataController.youtubeChartData[channelId] = YoutubeChartDataClass(
           convertViewCountToSalesData(
-            (videoData['commentCount'] as List<dynamic>?) // List<dynamic>을 받아서
-                    ?.map((e) => int.tryParse(e.toString()) ?? 0) // 각 항목을 int로 변환
+            (videoData['commentCount'] as List<dynamic>?)
+                    ?.map((e) => int.tryParse(e.toString()) ?? 0)
                     .toList() ??
-                [0], // 변환한 값을 List<int>로 만들고, null일 경우 [0]을 기본값으로 설정
+                [0],
           ),
           convertViewCountToSalesData(
             (videoData['likeCount'] as List<dynamic>?)
@@ -350,19 +349,17 @@ Future<void> getYoutubeLiveData() async {
           ),
         );
       });
-      //   List<SalesData> testList = convertViewCountToSalesData(
-      //       youtubeDataController.youtubeChartData[channelId]!.viewCount);
-      // });
-
-      print('YoutubeLiveData stored successfully.');
+      logger.i('getYoutubeLiveData log : YoutubeLiveData stored successfully.');
     } else {
-      print('Failed to fetch YoutubeLiveData. Status code: ${response.statusCode}');
+      logger.w(
+          'getYoutubeLiveData log : Failed to fetch YoutubeLiveData. Status code: ${response.statusCode}');
     }
-  } catch (error) {
-    print('Error fetching YoutubeLiveData: $error');
+  } catch (e) {
+    logger.e('getYoutubeLiveData error : $e');
   }
 }
 
+// 각각의 채널의 비디오 데이터를 가져오는 함수
 Future<void> getYoutubeVideoData() async {
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final url = Uri.parse('$httpURL/youtube/getvideodata');
@@ -371,12 +368,8 @@ Future<void> getYoutubeVideoData() async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      // 서버로부터 받아온 데이터를 JSON으로 디코딩
       final Map<String, dynamic> countMapData = jsonDecode(response.body)['channel'];
-
-      // countMapData는 Map<String, dynamic>이며 각 key는 channelId를 의미
       countMapData.forEach((channelId, videoListData) {
-        // videoListData는 List<dynamic>이므로 이를 List<YoutubeVideoDataClass>로 변환
         List<YoutubeVideoDataClass> videoList = (videoListData as List<dynamic>).map((videoData) {
           return YoutubeVideoDataClass(
             videoData['videoid']?.toString() ?? '',
@@ -387,15 +380,14 @@ Future<void> getYoutubeVideoData() async {
           );
         }).toList();
 
-        // 해당 채널의 ID에 대해 비디오 리스트를 저장 (Map<String, List<YoutubeVideoDataClass>> 형태)
         youtubeDataController.youtubeVideoData[channelId] = videoList;
       });
-
-      print('YoutubeVideoData stored successfully.');
+      logger.i('getYoutubeVideoData log : YoutubeVideoData stored successfully.');
     } else {
-      print('Failed to fetch YoutubeVideoData. Status code: ${response.statusCode}');
+      logger.w(
+          'getYoutubeVideoData log : Failed to fetch YoutubeVideoData. Status code: ${response.statusCode}');
     }
-  } catch (error) {
-    print('Error fetching YoutubeVideoData: $error');
+  } catch (e) {
+    logger.e('getYoutubeVideoData error : $e');
   }
 }

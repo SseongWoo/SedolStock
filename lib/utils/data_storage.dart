@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
+import 'package:stockpj/main.dart';
 import '../data/youtube_data.dart';
 
 // 토큰을 안전하게 저장하기 위한 보안 저장소
@@ -19,31 +19,34 @@ Future<void> setTokens(String accessToken, String refreshToken, String uid) asyn
     await storage.write(key: 'refreshToken', value: refreshToken);
     await storage.write(key: 'uid', value: uid);
   } catch (e) {
-    print('Error saving tokens: $e');
+    logger.e('setTokens error : $e');
   }
 }
 
+// 보안 저장소에 토큰을 저장하는 함수
 Future<void> setIdToken(String idToken) async {
   try {
     await storage.write(key: 'idToken', value: idToken);
   } catch (e) {
-    print('Error saving idToken: $e');
+    logger.e('setIdToken error : $e');
   }
 }
 
+// 보안 저장소에 엑세스 토큰을 저장하는 함수
 Future<void> setAccessToken(String accessToken) async {
   try {
     await storage.write(key: 'accessToken', value: accessToken);
   } catch (e) {
-    print('Error saving accessToken: $e');
+    logger.e('setAccessToken error : $e');
   }
 }
 
+// 보안 저장소에 사용자의 uid를 저장하는 함수
 Future<void> setUid(String uid) async {
   try {
     await storage.write(key: 'uid', value: uid);
   } catch (e) {
-    print('Error saving UID: $e');
+    logger.e('setUid error : $e');
   }
 }
 
@@ -52,34 +55,37 @@ Future<String?> getIdToken() async {
   try {
     return await storage.read(key: 'idToken');
   } catch (e) {
-    print('Error reading idToken: $e');
+    logger.e('getIdToken error : $e');
     return null;
   }
 }
 
+// 엑세스 토큰을 보안 저장소에서 읽어오는 함수
 Future<String?> getAccessToken() async {
   try {
     return await storage.read(key: 'accessToken');
   } catch (e) {
-    print('Error reading accessToken: $e');
+    logger.e('getAccessToken error : $e');
     return null;
   }
 }
 
+// 리플래시 토큰을 보안저장소에서 읽어오는 함수
 Future<String?> getRefreshToken() async {
   try {
     return await storage.read(key: 'refreshToken');
   } catch (e) {
-    print('Error reading refreshToken: $e');
+    logger.e('getRefreshToken error : $e');
     return null;
   }
 }
 
+// 사용자의 uid를 보안저장소에서 읽어오는 함수
 Future<String?> getUID() async {
   try {
     return await storage.read(key: 'uid');
   } catch (e) {
-    print('Error reading UID: $e');
+    logger.e('getUID error : $e');
     return null;
   }
 }
@@ -89,53 +95,58 @@ Future<void> clearTokens() async {
   try {
     await storage.deleteAll();
   } catch (e) {
-    print('Error clearing tokens: $e');
+    logger.e('clearTokens error : $e');
   }
 }
 
-Future<void> deleteIDPW() async {
+// 보안 저장소에서 id 데이터를 삭제하는 함수
+Future<void> deleteID() async {
   try {
     await storage.delete(key: 'id');
-    await storage.delete(key: 'pw');
   } catch (e) {
-    print('Error deleting ID and PW: $e');
+    logger.e('deleteID error : $e');
   }
 }
 
+// 날짜 데이터를 보안저장소에 저장하는 함수
 Future<void> setDataDate(String date) async {
   try {
     await storage.write(key: 'data_date', value: date);
   } catch (e) {
-    print('Error saving data date: $e');
+    logger.e('setDataDate error : $e');
   }
 }
 
+// 보안저장소에서 날짜 데이터를 읽어오는 함수
 Future<String?> getDataDate() async {
   try {
     return await storage.read(key: 'data_date');
   } catch (e) {
-    print('Error reading data date: $e');
+    logger.e('getDataDate error : $e');
     return null;
   }
 }
 
+// 기기에 데이터를 저장하는 함수
 void saveData(String key, dynamic value) {
   try {
     box.write(key, value);
   } catch (e) {
-    print('Error saving data: $e');
+    logger.e('saveData error : $e');
   }
 }
 
+// 기기에 저장된 데이터를 읽어오는 함수
 dynamic readData(String key) {
   try {
     return box.read(key);
   } catch (e) {
-    print('Error reading data: $e');
+    logger.e('readData error : $e');
     return null;
   }
 }
 
+// 최신 영상 리스트 데이터를 기기에 저장하는 함수
 void saveLatestYoutubeData() {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -143,10 +154,11 @@ void saveLatestYoutubeData() {
         youtubeDataController.latestYoutubeData.map((key, value) => MapEntry(key, value.toJson()));
     box.write('latestYoutubeData', jsonEncode(jsonData));
   } catch (e) {
-    print('Error saving latest YouTube data: $e');
+    logger.e('saveLatestYoutubeData error : $e');
   }
 }
 
+// 기기에 저장되어있는 최신 영상 리스트 데이터를 읽어오는 함수
 Future<void> loadLatestYoutubeData() async {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -158,10 +170,11 @@ Future<void> loadLatestYoutubeData() async {
       );
     }
   } catch (e) {
-    print('Error loading latest YouTube data: $e');
+    logger.e('loadLatestYoutubeData error : $e');
   }
 }
 
+// 채널 정보 리스트 데이터를 기기에 저장하는 함수
 void saveYoutubeChannelData() {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -169,10 +182,11 @@ void saveYoutubeChannelData() {
         youtubeDataController.youtubeChannelData.map((key, value) => MapEntry(key, value.toJson()));
     box.write('youtubeChannelData', jsonEncode(jsonData));
   } catch (e) {
-    print('Error saving YouTube channel data: $e');
+    logger.e('saveYoutubeChannelData error : $e');
   }
 }
 
+// 기기에 저장되어있는 채널 정보 리스트 데이터를 읽어오는 함수
 Future<void> loadYoutubeChannelData() async {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -184,10 +198,11 @@ Future<void> loadYoutubeChannelData() async {
       );
     }
   } catch (e) {
-    print('Error loading YouTube channel data: $e');
+    logger.e('loadYoutubeChannelData error : $e');
   }
 }
 
+// 각각의 채널의 최신10개 영상의 데이터 리스트를 기기에 저장하는 함수
 void saveYoutubeVideoData() {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -195,10 +210,11 @@ void saveYoutubeVideoData() {
         .map((key, value) => MapEntry(key, value.map((video) => video.toJson()).toList()));
     box.write('youtubeVideoData', jsonEncode(jsonData));
   } catch (e) {
-    print('Error saving YouTube video data: $e');
+    logger.e('saveYoutubeVideoData error : $e');
   }
 }
 
+// 기기에 저장되어있는 각각의 채널의 최신10개 영상의 데이터 리스트를 읽어오는 함수
 Future<void> loadYoutubeVideoData() async {
   try {
     final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -216,20 +232,22 @@ Future<void> loadYoutubeVideoData() async {
       );
     }
   } catch (e) {
-    print('Error loading YouTube video data: $e');
+    logger.e('loadYoutubeVideoData error : $e');
   }
 }
 
+// 랭킹 데이터 리스트를 기기에 저장하는 함수
 void saveRankingData() {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final jsonData = publicDataController.rankingList.map((data) => data.toJson()).toList();
     box.write('rankingData', jsonEncode(jsonData));
   } catch (e) {
-    print('Error saving ranking data: $e');
+    logger.e('saveRankingData error : $e');
   }
 }
 
+// 기기에 저장되어있는 랭킹 데이터 리스트를 읽어오는 함수
 Future<void> loadRankingData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
@@ -241,6 +259,6 @@ Future<void> loadRankingData() async {
       );
     }
   } catch (e) {
-    print('Error loading ranking data: $e');
+    logger.e('loadRankingData error : $e');
   }
 }

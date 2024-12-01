@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/trade/trade_system.dart';
 import 'package:stockpj/utils/color.dart';
-import 'package:stockpj/utils/data_storage.dart';
 import 'package:stockpj/utils/format.dart';
 import '../../data/public_data.dart';
 import '../../data/youtube_data.dart';
 import '../../utils/screen_size.dart';
 
+// 필터 버튼 위젯
 class TradeSelectWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TradeController _tradeController = Get.find<TradeController>();
@@ -16,7 +16,9 @@ class TradeSelectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: _screenController.screenSize.value.getWidthPerSize(2)),
+      padding: EdgeInsets.only(
+        right: _screenController.screenSize.value.getWidthPerSize(2),
+      ),
       child: Align(
         alignment: Alignment.topCenter,
         child: InkWell(
@@ -24,7 +26,9 @@ class TradeSelectWidget extends StatelessWidget {
             Get.bottomSheet(
               Container(
                 width: _screenController.screenSize.value.getWidthSize(),
-                padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(2)),
+                padding: EdgeInsets.all(
+                  _screenController.screenSize.value.getHeightPerSize(2),
+                ),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -84,8 +88,9 @@ class TradeSelectWidget extends StatelessWidget {
               Obx(
                 () => Text(
                   _tradeController.dropdownItem.value,
-                  style:
-                      TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                  ),
                 ),
               ),
             ],
@@ -96,6 +101,7 @@ class TradeSelectWidget extends StatelessWidget {
   }
 }
 
+// 주식 아이템 리스트뷰 위젯
 class TradeItemListWidget extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final TradeController _tradeController = Get.find<TradeController>();
@@ -148,6 +154,7 @@ class TradeItemListWidget extends StatelessWidget {
   }
 }
 
+// 리스트뷰 아이템 위젯
 class TradeItemWidget extends StatelessWidget {
   final String channelUID;
   final int index;
@@ -166,7 +173,12 @@ class TradeItemWidget extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
-          BoxShadow(color: Colors.grey, spreadRadius: 0.1, blurRadius: 0.1, offset: Offset(0, 0)),
+          BoxShadow(
+            color: Colors.grey,
+            spreadRadius: 0.1,
+            blurRadius: 0.1,
+            offset: Offset(0, 0),
+          ),
         ],
       ),
       child: Material(
@@ -200,8 +212,8 @@ class TradeItemWidget extends StatelessWidget {
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Text('이미지를 불러올 수 없습니다.'), // 오류 시 표시할 텍스트
+                        return Center(
+                          child: Image.asset('assets/image/image_error.png'), // 오류 시 표시할 텍스트
                         );
                       },
                     ),
@@ -228,8 +240,9 @@ class TradeItemWidget extends StatelessWidget {
               ),
               Text(
                 '${channelNameList[index]} ${type == 'view' ? '(조회수)' : '(좋아요수)'}',
-                style:
-                    TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                ),
               ),
               const Spacer(),
               Obx(
@@ -244,7 +257,8 @@ class TradeItemWidget extends StatelessWidget {
                           : formatToCurrency(
                               _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice),
                       style: TextStyle(
-                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8)),
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                      ),
                     ),
                     differenceTextWidget(type == 'view'
                         ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
@@ -265,6 +279,7 @@ class TradeItemWidget extends StatelessWidget {
   }
 }
 
+// 가격 변동값 설정
 Widget differenceTextWidget(int differenceInt) {
   final ScreenController screenController = Get.find<ScreenController>();
   String pm = '';
@@ -286,6 +301,7 @@ Widget differenceTextWidget(int differenceInt) {
   );
 }
 
+// 바텀 시트 커스텀 위젯
 class BottomSheetWidget extends StatelessWidget {
   final TradeController _tradeController = Get.find<TradeController>();
   final ScreenController _screenController = Get.find<ScreenController>();

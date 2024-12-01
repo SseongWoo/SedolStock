@@ -4,17 +4,17 @@ import 'package:get/get.dart';
 import 'package:stockpj/main/main_system.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import '../data/my_data.dart';
 import '../utils/timer.dart';
 
+// 메인 화면
 class MainScreen extends StatelessWidget {
   final MainController _homeController = Get.put(MainController());
   final ScreenController _screenController = Get.find<ScreenController>();
-
   MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // 모든 화면이 빌드 후 실행되게 하는 기능
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _screenController.updateScreenSize(context);
     });

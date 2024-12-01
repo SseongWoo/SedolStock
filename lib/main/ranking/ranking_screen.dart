@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stockpj/main/ranking/ranking_widget.dart';
 import 'package:stockpj/utils/color.dart';
 import '../../utils/screen_size.dart';
 
+// 랭킹 화면
 class RankingScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   RankingScreen({super.key});

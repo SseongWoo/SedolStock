@@ -4,6 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/utils/simple_widget.dart';
+import '../../../data/my_data.dart';
+import '../../../main.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/get_env.dart';
 import '../../../utils/data_storage.dart';
@@ -21,6 +23,7 @@ class SignUpBinding extends Bindings {
 }
 
 class SingUpEmailControll extends GetxController {
+  final MyDataController myDataController = Get.find<MyDataController>();
   final TextEditingController controllerID = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerPasswordCheck = TextEditingController();
@@ -43,20 +46,24 @@ class SingUpEmailControll extends GetxController {
     controllerPasswordCheck.dispose();
   }
 
+  // 회원가입 3단계로 이동
   void goSignUpCheckEmail() {
     Get.offAll(() => SignupCheckemailScreen(),
         binding: SignUpCheckEmailBinding(),
         arguments: {'id': controllerID.text, 'pw': controllerPassword.text});
   }
 
+  // 로그인 화면으로 이동
   void backSignUp() {
     Get.offAll(() => LoginScreen());
   }
 
+  // 게스트 회원가입일 경우 3단계는 건너뛰고 4단계로 이동
   void goSignUpSetProfile() {
     Get.offAll(() => const SignupSetprofileScreen(), binding: SignUpSetDataBinding());
   }
 
+  // 사용자 데이터 삭제하는 함수
   Future<void> deleteUserData(String uid) async {
     await http.post(
       Uri.parse('$httpURL/deleteUser/$uid'),
@@ -83,7 +90,7 @@ class SingUpEmailControll extends GetxController {
       email = controllerID.text;
       checkEmail = true;
     } else {
-      email = '${controllerID.text}@geuset.login';
+      email = '${controllerID.text}@geuset.login'; // 게스트 로그인일경우 임의로 아이디 뒤에 이메일 형식을 넣음
       checkEmail = false;
     }
     password = controllerPassword.text;
@@ -101,7 +108,8 @@ class SingUpEmailControll extends GetxController {
       uid = jsonData!['user']['uid'];
       refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
       accessToken = jsonData['user']['stsTokenManager']['accessToken'];
-      setTokens(accessToken, refreshToken, uid);
+      await setTokens(accessToken, refreshToken, uid);
+      myDataController.myUid.value = uid;
 
       final signUpUserData = await http.post(
         Uri.parse('$httpURL/users'),
@@ -132,6 +140,7 @@ class SingUpEmailControll extends GetxController {
           } else {
             deleteUserData(uid);
             showSimpleDialog(Get.back, '오류', '이메일 전송에 실패했습니다.\n다시 시도해 주세요');
+            logger.e('trySignUp error : 이메일 전송 실패');
           }
         } else {
           goSignUpSetProfile();
@@ -141,24 +150,15 @@ class SingUpEmailControll extends GetxController {
         controllerPassword.clear();
         controllerPasswordCheck.clear();
         deleteUserData(uid);
+        myDataController.myUid.value = '';
         showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
+        logger.e('trySignUp error : 오류 발생');
       }
     } else {
-      //
-      final response = await http.post(
-        Uri.parse('$httpURL/signin'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{'email': email, 'password': password}),
-      );
-      // 로그인이 성공했을때
-
-      //
-
       controllerID.clear();
       controllerPassword.clear();
       controllerPasswordCheck.clear();
+      myDataController.myUid.value = '';
       showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
     }
     EasyLoading.dismiss();

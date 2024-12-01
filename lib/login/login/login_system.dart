@@ -8,6 +8,7 @@ import 'package:stockpj/main/main_screen.dart';
 import 'package:stockpj/login/find_account/find_account_screen.dart';
 import 'package:stockpj/utils/get_env.dart';
 import '../../data/my_data.dart';
+import '../../main.dart';
 import '../../utils/data_storage.dart';
 import '../../utils/simple_widget.dart';
 import '../find_account/find_account_system.dart';
@@ -32,14 +33,17 @@ class LoginController extends GetxController {
     controllerPassword.dispose();
   }
 
+  // 회원가입 화면으로 이동
   void goSignUp() {
-    Get.to(() => SignupChoiceScreen());
+    Get.to(() => SignUpChoiceScreen());
   }
 
+  // 계정 찾기 화면으로 이동
   void goFindAccount() {
     Get.to(() => FindAccountScreen(), binding: FindAccountBinding());
   }
 
+  // 로그인을 완료하고 메인 홈 화면으로 이동
   void goHome() {
     Get.offAll(() => MainScreen());
   }
@@ -86,10 +90,10 @@ class LoginController extends GetxController {
         throw Exception('LoginData is missing.');
       }
       EasyLoading.dismiss();
-    } catch (error) {
+    } catch (e) {
       EasyLoading.dismiss();
+      logger.e('tryLogin error : $e');
       showSimpleDialog(Get.back, '로그인 실패', '입력하신 정보가 일치하지 않습니다.\n다시 시도해 주세요.');
-      //showSimpleDialog(Get.back, '로그인 실패', '입력하신 정보가 일치하지 않습니다.\n다시 시도해 주세요.\n$error');
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/start_data.dart';
 import 'package:stockpj/login/login/login_screen.dart';
+import 'package:stockpj/main.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../login/login/login_system.dart';
@@ -13,7 +14,7 @@ import '../utils/check_list.dart';
 import '../utils/data_storage.dart';
 
 class SplashController extends GetxController {
-  RxString loadingMessage = RxString('로딩');
+  RxString loadingMessage = RxString('로딩'); // 로딩 메세지
 
   @override
   void onInit() {
@@ -22,16 +23,17 @@ class SplashController extends GetxController {
     splash();
   }
 
+  // 로그인 화면으로 이동
   void goLogin() {
-    Get.offAll(() => GetPlatform.isMobile ? LoginScreen() : DesktopLoginScreen(),
-        binding: LoginBinding(), transition: Transition.noTransition);
+    Get.offAll(() => LoginScreen(), binding: LoginBinding(), transition: Transition.noTransition);
   }
 
+  // 메인 화면으로 이동
   void goHome() {
     Get.offAllNamed('/main');
-    //Get.offAll(() => MainScreen(), transition: Transition.noTransition);
   }
 
+  // 자동 로그인 기능 실행 함수
   Future<void> tryAutoLogin() async {
     Map<String, dynamic>? jsonData;
     try {
@@ -67,14 +69,16 @@ class SplashController extends GetxController {
           throw Exception('MyData is missing.');
         }
       }
-    } catch (error) {
+    } catch (e) {
       showSimpleSnackbar(
           '로그인 오류', '로그인을 처리하는데 문제가 발생하였습니다.\n로그인을 다시 시도해주세요', SnackPosition.TOP, Colors.black);
+      logger.e('tryAutoLogin error : $e');
       await Future.delayed(const Duration(seconds: 3));
       goLogin();
     }
   }
 
+  // 로딩 함수, 데이터를 서버에서 받아오는 기능
   void splash() async {
     loadingMessage.value = '서버 상태 확인중';
     bool runnintServer = await checkServer();
@@ -93,6 +97,7 @@ class SplashController extends GetxController {
     }
   }
 
+  // 앱 종료 기능
   void closeApp() {
     exit(0);
   }

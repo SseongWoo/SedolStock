@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/main/trade/trade_widget.dart';
 import '../../utils/screen_size.dart';
 
+// 거래 화면
 class TradeScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   TradeScreen({super.key});

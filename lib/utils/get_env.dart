@@ -5,6 +5,7 @@ import 'color.dart';
 late String httpURL;
 late String cafeURL;
 
+//env파일에서 데이터를 가져오는 함수
 void setURL() async {
   cafeURL = dotenv.env['CAFE_URL'] ?? '';
   httpURL = dotenv.env['API_URL'] ?? '';

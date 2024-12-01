@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/information/withdrawal/withdrawal_system.dart';
-import 'package:stockpj/utils/color.dart';
 import '../../../utils/screen_size.dart';
 
+// 회원 탈퇴 화면
 class WithdrawalScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
   final WithdrawalController _withdrawalController = Get.put(WithdrawalController());
   WithdrawalScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
