@@ -14,6 +14,7 @@ class TimerController extends GetxController {
   RxInt secondsRemaining = 0.obs; // 총 남은 시간을 초 단위로 저장
   RxString timeDisplay = '00:00'.obs; // 남은 시간을 "분:초"로 저장
   RxString currentTime = ''.obs; // 현재 시간
+  RxBool checkDataTime = false.obs; // 카운트다운 타이머와 데이터 갱신 카운트다운 타이머 구분 변수
 
   @override
   void onInit() {
@@ -42,7 +43,7 @@ class TimerController extends GetxController {
     }
 
     // 다음 실행 시간을 설정
-    final nextRunTime = DateTime(now.year, now.month, now.day, nextRunHour, nextRunMinute, 30);
+    final nextRunTime = DateTime(now.year, now.month, now.day, nextRunHour, nextRunMinute);
 
     // 현재 시각과 다음 실행 시간의 차이 계산
     Duration delay = nextRunTime.difference(now);
@@ -50,6 +51,23 @@ class TimerController extends GetxController {
 
     // 카운트다운 시작
     _startCountdown();
+  }
+
+  // 5분 타이머 후 갱신된 데이터를 불러오기위해 n초만큼 기다린 후 데이터 가져오게 하는 함수
+  void _getDataTime() {
+    int countdown = 15;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (countdown > 0) {
+        countdown--;
+        secondsRemaining.value = countdown;
+        _updateTimeDisplay();
+      } else {
+        timer.cancel();
+        countdown = 15;
+        checkDataTime.value = false;
+        _executeTask();
+      }
+    });
   }
 
   // 카운트다운 시작 함수
@@ -64,7 +82,9 @@ class TimerController extends GetxController {
       } else {
         timer.cancel(); // 시간이 끝나면 타이머 종료
         secondsRemaining.value = 600;
-        _executeTask(); // 5분이 다 되면 작업 실행
+        //_executeTask(); // 5분이 다 되면 작업 실행
+        checkDataTime.value = true;
+        _getDataTime();
       }
     });
   }
@@ -119,7 +139,11 @@ class TimerWidget extends StatelessWidget {
       () => Text(
         _timerController.timeDisplay.value,
         style: TextStyle(
-            color: _timerController.secondsRemaining.value > 60 ? Colors.black : Colors.red),
+            color: _timerController.secondsRemaining.value > 60
+                ? Colors.black
+                : _timerController.checkDataTime.value
+                    ? Colors.grey
+                    : Colors.red),
       ),
     );
   }

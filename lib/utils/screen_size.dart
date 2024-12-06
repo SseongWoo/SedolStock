@@ -56,6 +56,7 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
 
   // 화면 사이즈 업데이트
   void updateScreenSize(BuildContext context) {
+    print('${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}');
     screenSize.value =
         ScreenSize(Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height));
   }

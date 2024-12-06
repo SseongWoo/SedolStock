@@ -318,7 +318,7 @@ class TradeDetailMyStock extends StatelessWidget {
                       ),
                       textAlign: TextAlign.right,
                     ),
-                    Text(
+                    AutoSizeText(
                       '${formatToCurrency(_tradeDetailController.walletReturn.value)}(${_tradeDetailController.walletRatio.value.toStringAsFixed(2)}%)',
                       style: TextStyle(
                           fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),

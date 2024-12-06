@@ -346,6 +346,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
             ),
             series: <LineSeries<int, int>>[
               LineSeries<int, int>(
+                animationDuration: 0,
                 markerSettings: MarkerSettings(
                   isVisible: true,
                   shape: DataMarkerType.circle,
@@ -386,6 +387,7 @@ class StockPieChartWidget extends StatelessWidget {
         //legend: const Legend(isVisible: true),
         series: <PieSeries<StockListClass, String>>[
           PieSeries<StockListClass, String>(
+            animationDuration: 0,
             dataSource: _myDataController.stockListItem.isEmpty
                 ? [StockListClass('', '보유 주식 없음', 0, 0, 1, 0, 0, 0, '', colorISEGYEIDOL)]
                 : _myDataController.stockListItem,
@@ -422,6 +424,7 @@ class MoneyPieChartWidget extends StatelessWidget {
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <PieSeries<MoneyChartClass, String>>[
           PieSeries<MoneyChartClass, String>(
+            animationDuration: 0,
             dataSource: _informationController.moneyChartList,
             xValueMapper: (MoneyChartClass data, _) => data.name,
             yValueMapper: (MoneyChartClass data, _) => data.money,

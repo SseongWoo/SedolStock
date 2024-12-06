@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,6 +31,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   // FlutterError.onError = (FlutterErrorDetails details) {
   //   // 콘솔에 에러를 출력
   //   FlutterError.dumpErrorToConsole(details);
@@ -127,7 +129,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'StockGame',
       theme: ThemeData(
-        fontFamily: 'Gyeonggi',
+        fontFamily: 'Maple',
         colorScheme: ColorScheme.fromSeed(seedColor: colorISEGYEIDOL),
         useMaterial3: true,
       ),

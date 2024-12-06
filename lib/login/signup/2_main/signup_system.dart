@@ -108,7 +108,7 @@ class SingUpEmailControll extends GetxController {
       uid = jsonData!['user']['uid'];
       refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
       accessToken = jsonData['user']['stsTokenManager']['accessToken'];
-      await setTokens(accessToken, refreshToken, uid);
+      await setTokens(refreshToken, uid);
       myDataController.myUid.value = uid;
 
       final signUpUserData = await http.post(

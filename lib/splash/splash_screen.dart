@@ -17,38 +17,76 @@ class SplashScreen extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: colorISEGYEIDOL,
-      child: Padding(
-        padding: EdgeInsets.only(
-            top: _screenController.screenSize.value.getHeightPerSize(20),
-            bottom: _screenController.screenSize.value.getHeightPerSize(20)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: _screenController.screenSize.value.getHeightPerSize(20),
-              width: _screenController.screenSize.value.getHeightPerSize(20),
-              color: colorIfari,
-            ),
-            const Spacer(),
-            SizedBox(
-              height: _screenController.screenSize.value.getHeightPerSize(10),
-              width: _screenController.screenSize.value.getHeightPerSize(10),
-              child: const SpinKitRing(
-                color: Colors.white,
+      color: colorIfari,
+      child: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(_screenController.screenSize.value.getWidthPerSize(15),
+                  0, _screenController.screenSize.value.getWidthPerSize(15), 0),
+              child: SizedBox(
+                child: Image.asset('assets/image/title.png'),
               ),
             ),
-            Obx(
-              () => Text(
-                _splashController.loadingMessage.value,
-                style: TextStyle(
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(2),
-                    color: Colors.white),
-              ),
+          ),
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: _screenController.screenSize.value.getHeightPerSize(10),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: _screenController.screenSize.value.getHeightPerSize(10),
+                  width: _screenController.screenSize.value.getHeightPerSize(10),
+                  child: const SpinKitRing(
+                    color: Colors.black,
+                  ),
+                ),
+                Obx(
+                  () => Text(
+                    _splashController.loadingMessage.value,
+                    style: TextStyle(
+                        fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                        color: Colors.black),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+
+      // Padding(
+      //   padding: EdgeInsets.only(
+      //       top: _screenController.screenSize.value.getHeightPerSize(20),
+      //       bottom: _screenController.screenSize.value.getHeightPerSize(20)),
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       SizedBox(
+      //         height: _screenController.screenSize.value.getHeightPerSize(20),
+      //         width: _screenController.screenSize.value.getHeightPerSize(20),
+      //         child: Image.asset('assets/image/title.png'),
+      //       ),
+      //       const Spacer(),
+      //       SizedBox(
+      //         height: _screenController.screenSize.value.getHeightPerSize(10),
+      //         width: _screenController.screenSize.value.getHeightPerSize(10),
+      //         child: const SpinKitRing(
+      //           color: Colors.white,
+      //         ),
+      //       ),
+      //       Obx(
+      //         () => Text(
+      //           _splashController.loadingMessage.value,
+      //           style: TextStyle(
+      //               fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+      //               color: Colors.white),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

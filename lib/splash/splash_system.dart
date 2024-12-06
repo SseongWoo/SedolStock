@@ -8,6 +8,7 @@ import 'package:stockpj/login/login/login_screen.dart';
 import 'package:stockpj/main.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/simple_widget.dart';
+import '../data/public_data.dart';
 import '../login/login/login_system.dart';
 import '../data/my_data.dart';
 import '../utils/check_list.dart';
@@ -82,6 +83,8 @@ class SplashController extends GetxController {
   void splash() async {
     loadingMessage.value = '서버 상태 확인중';
     bool runnintServer = await checkServer();
+    loadingMessage.value = '앱 버전 확인중';
+    await getAppVersion();
     loadingMessage.value = '로그인 확인중';
     String? token = await getRefreshToken();
 

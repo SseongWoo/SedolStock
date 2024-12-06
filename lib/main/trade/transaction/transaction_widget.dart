@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/main/trade/transaction/transaction_system.dart';
+import 'package:stockpj/utils/simple_widget.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../data/public_data.dart';
+import '../../../utils/timer.dart';
 
 // 앱바 타이틀 위젯
 class TransactionTitleWidget extends StatelessWidget {
@@ -328,6 +330,7 @@ void transactionDialog(
 ) {
   final TransactionController transactionController = Get.find<TransactionController>();
   final ScreenController screenController = Get.find<ScreenController>();
+  final TimerController timerController = Get.find<TimerController>();
   String buyingText = buying ? '구매' : '판매';
   String typeText = transactionController.itemType == 'view' ? '조회수' : '좋아요수';
   Get.dialog(
@@ -417,7 +420,12 @@ void transactionDialog(
                               backgroundColor: buying ? Colors.red : Colors.blue),
                           onPressed: () {
                             Get.back();
-                            transactionController.trySale(price, transactionCount);
+                            if (timerController.checkDataTime.value) {
+                              showSimpleDialog(
+                                  Get.back, '매매 실패', '현재 서버에서 데이터를 갱신 중입니다. 갱신 완료 후 다시 이용해 주세요.');
+                            } else {
+                              transactionController.trySale(price, transactionCount);
+                            }
                           },
                           child: Text(
                             buyingText,

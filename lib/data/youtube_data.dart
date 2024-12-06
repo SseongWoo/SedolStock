@@ -149,6 +149,9 @@ class YoutubeLiveDataClass {
   int commentCountPrice;
   int likeCountPrice;
   int viewCountPrice;
+  int viewDelisting;
+  int likeDelisting;
+  int commentDelisting;
   String updateTime;
 
   YoutubeLiveDataClass(
@@ -170,6 +173,9 @@ class YoutubeLiveDataClass {
     this.commentCountPrice,
     this.likeCountPrice,
     this.viewCountPrice,
+    this.viewDelisting,
+    this.likeDelisting,
+    this.commentDelisting,
     this.updateTime,
   );
 }
@@ -298,6 +304,9 @@ Future<void> getYoutubeLiveData() async {
           videoData['commentCountPrice'] ?? 0,
           videoData['likeCountPrice'] ?? 0,
           videoData['viewCountPrice'] ?? 0,
+          videoData['viewDelisting'] ?? 0,
+          videoData['likeDelisting'] ?? 0,
+          videoData['commentDelisting'] ?? 0,
           videoData['updateTime'] ?? '',
         );
       });
@@ -322,6 +331,9 @@ Future<void> getYoutubeLiveData() async {
           videoData['commentCountPrice'] ?? 0,
           videoData['likeCountPrice'] ?? 0,
           videoData['viewCountPrice'] ?? 0,
+          videoData['viewDelisting'] ?? 0,
+          videoData['likeDelisting'] ?? 0,
+          videoData['commentDelisting'] ?? 0,
           videoData['updateTime'] ?? '',
         );
       });

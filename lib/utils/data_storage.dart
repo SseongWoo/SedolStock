@@ -13,9 +13,8 @@ const storage = FlutterSecureStorage();
 final GetStorage box = GetStorage();
 
 // 보안 저장소에 토큰을 저장하는 함수
-Future<void> setTokens(String accessToken, String refreshToken, String uid) async {
+Future<void> setTokens(String refreshToken, String uid) async {
   try {
-    await storage.write(key: 'accessToken', value: accessToken);
     await storage.write(key: 'refreshToken', value: refreshToken);
     await storage.write(key: 'uid', value: uid);
   } catch (e) {
@@ -29,15 +28,6 @@ Future<void> setIdToken(String idToken) async {
     await storage.write(key: 'idToken', value: idToken);
   } catch (e) {
     logger.e('setIdToken error : $e');
-  }
-}
-
-// 보안 저장소에 엑세스 토큰을 저장하는 함수
-Future<void> setAccessToken(String accessToken) async {
-  try {
-    await storage.write(key: 'accessToken', value: accessToken);
-  } catch (e) {
-    logger.e('setAccessToken error : $e');
   }
 }
 
@@ -56,16 +46,6 @@ Future<String?> getIdToken() async {
     return await storage.read(key: 'idToken');
   } catch (e) {
     logger.e('getIdToken error : $e');
-    return null;
-  }
-}
-
-// 엑세스 토큰을 보안 저장소에서 읽어오는 함수
-Future<String?> getAccessToken() async {
-  try {
-    return await storage.read(key: 'accessToken');
-  } catch (e) {
-    logger.e('getAccessToken error : $e');
     return null;
   }
 }

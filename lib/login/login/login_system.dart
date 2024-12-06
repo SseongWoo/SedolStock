@@ -55,7 +55,6 @@ class LoginController extends GetxController {
     try {
       final String uid;
       final String refreshToken;
-      final String accessToken;
 
       EasyLoading.show(status: '로그인중');
       if (!RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(controllerID.text)) {
@@ -74,9 +73,8 @@ class LoginController extends GetxController {
         jsonData = jsonDecode(response.body);
         uid = jsonData!['user']['uid'];
         refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
-        accessToken = jsonData['user']['stsTokenManager']['accessToken'];
         _myDataController.myUid.value = uid;
-        await setTokens(accessToken, refreshToken, uid);
+        await setTokens(refreshToken, uid);
         bool checkMyData = await getUserData();
         bool checkMyWalletData = await getWalletData();
 
