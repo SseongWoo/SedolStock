@@ -1,4 +1,5 @@
 # 주식 시뮬레이터
+## 세돌스탁
 <img src = "https://github.com/user-attachments/assets/8a8fbb0f-8ebd-432c-bf9b-44a294c380e4" width="350" height="350">
 
 ## 프로젝트 소개
