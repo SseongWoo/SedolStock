@@ -152,11 +152,55 @@ lib
     ├── simple_widget.dart                      # 자주 사용되는 간단한 위젯
     └── timer.dart                              # 타이머 기능
 ```
+### 화면 구성
+<details><summary>로그인 부분</summary>
+    
+|로딩|로그인|
+|:---:|:---:|
+|<img src = "https://github.com/user-attachments/assets/0ea46979-759c-4d6f-8ca1-9f23888a2928" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1d5d29b5-4c8e-42dd-85a9-3141d5b0a1f7" width="350" height="750">|
+|회원가입 1단계|회원가입 2단계|
+|<img src = "https://github.com/user-attachments/assets/931ab878-e75c-4782-a9f6-fcc87e5dd8fc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/a71e3b36-67d4-4b4c-8685-e6d5cb542aa0" width="350" height="750">|
+|회원가입 3단계|회원가입 4단계|
+|<img src = "https://github.com/user-attachments/assets/308d267e-c079-4856-85b9-f89511a85fde" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/fc703f4d-3c6e-4140-a506-bc6c57bf714b" width="350" height="750">|
+|비밀번호 찾기||
+|<img src = "https://github.com/user-attachments/assets/5a545793-37c1-4c86-a7e5-32a5fbff40e1" width="350" height="750">||
+</details>
+
+<details><summary>메인 화면 부분</summary>
+    
+|홈 탭|랭킹 탭|
+|:---:|:---:|
+|<img src = "https://github.com/user-attachments/assets/f902e00b-c17d-42fd-9406-1188aae330e7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/de211c84-1a37-4a05-821f-c3c7ec193237" width="350" height="750">|
+|지갑 탭 주식잔고|지갑 탭 거래내역|
+|<img src = "https://github.com/user-attachments/assets/76fbd07d-a2dd-4dbb-90c2-6fd93e40aac1" width="350" height="750">|<img src = "" width="350" height="750">|
+</details>
+
+<details><summary>거래 화면 부분</summary>
+    
+|거래 탭|종목 상세 정보|
+|:---:|:---:|
+|<img src = "https://github.com/user-attachments/assets/d9c6640a-8880-45e6-ac53-79358bc01fcc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1ce1dd61-3f72-4ea3-9049-8c13f6466869" width="350" height="750">|
+|종목 판매|종목 구매|
+|<img src = "https://github.com/user-attachments/assets/4594f88e-0647-40d2-b75c-ef35c7747260" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/d37fbb26-593d-43b1-8090-8d960957481b" width="350" height="750">|
+|종목 판매 확인|종목 구매 확인|
+|<img src = "https://github.com/user-attachments/assets/1fe5e4a0-5625-4eeb-b467-0e3d8676ec4b" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/7a168253-83cd-4773-9d28-e57ad794fade" width="350" height="750">|
+</details>
+
+<details><summary>정보 화면 부분</summary>
+    
+|정보 탭|상세 관리|
+|:---:|:---:|
+|<img src = "https://github.com/user-attachments/assets/c9456f50-68e4-45da-aa8f-a843038c94c1" width="350" height="1500">|<img src = "https://github.com/user-attachments/assets/59412a18-f5c8-4783-a1c6-781c969f9afb" width="350" height="750">|
+|이름 변경|팬덤 변경|
+|<img src = "https://github.com/user-attachments/assets/af86de07-2fc1-489e-a54f-3ab97cdb6d3a" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/d2bd9c73-3c59-46cf-bebc-1d953aa6d449" width="350" height="750">|
+|회원 탈퇴||
+|<img src = "https://github.com/user-attachments/assets/ea065213-09dc-419e-8017-3fb922ac8a23" width="350" height="750">|
+</details>
 
 ### 사용한 라이브러리
 ```sh
 cupertino_icons: ^1.0.8             # 더 다양한 아이콘 라이브러리
-get:                                # 상태변환 및 라우팅 관리 라이브러리
+get:                                # 상태변환 관리 라이브러리
 auto_size_text: ^3.0.0              # 텍스트 크기를 자동으로 조정하는 라이브러리
 horizontal_data_table: ^4.3.1       # 가로로 스크롤 가능한 데이터 테이블 라이브러리
 http:                               # HTTP 요청 라이브러리
@@ -165,11 +209,11 @@ flutter_easyloading: ^3.0.5         # 로딩 화면 표시를 위한 라이브�
 intl:                               # 날짜 및 숫자 형식화를 지원하는 라이브러리
 korean_profanity_filter: ^1.0.0     # 한국어 비속어 필터링 라이브러리
 profanity_filter: ^2.0.0            # 다국어 비속어 필터링 라이브러리
-url_launcher:                       # URL을 열거나 전화, 이메일 실행을 위한 라이브러리
+url_launcher:                       # URL을 열기 위한 라이브러리
 get_storage: ^2.1.1                 # 경량화된 로컬 데이터 저장 라이브러리
 flutter_dotenv: ^5.2.1              # 환경 변수 관리 라이브러리
 font_awesome_flutter: ^10.8.0       # FontAwesome 아이콘 라이브러리
 logger: ^2.5.0                      # 로그 기록 및 디버깅용 라이브러리
-package_info_plus: ^8.1.1           # 앱의 패키지 정보(버전 등) 가져오기
+package_info_plus: ^8.1.1           # 앱의 패키지 정보 가져오는 라이브러리
 fl_chart: ^0.69.2                   # 플러터용 차트 생성 라이브러리
 ```
