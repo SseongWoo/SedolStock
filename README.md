@@ -46,3 +46,130 @@
 - HTTPS를 통한 백엔드와의 보안 통신
 
 ## 프로젝트 구성
+### 디렉토리 구조
+```sh
+assets
+├── fonts      # 프로젝트 폰트 폴더
+└── image      # 프로젝트 이미지 폴더
+    ├── fan    # 팬덤 이미지 폴더
+    └── ui     # ui 구성 이미지 폴더
+```
+
+```sh
+lib
+├── data                                        # 앱 구성 데이터 폴더
+│   ├── my_data.dart                            # 사용자 데이터 파일
+│   ├── public_data.dart                        # 전역 변수 데이터 파일
+│   ├── start_data.dart                         # 앱을 실행할 때 호출되는 파일
+│   └── youtube_data.dart                       # 유튜브 데이터 파일
+├── login
+│   ├── find_account                            # 계정 찾기 파일 
+│   │   ├── find_account_screen.dart
+│   │   ├── find_account_system.dart
+│   │   └── find_account_widget.dart
+│   ├── login                                   # 로그인 파일
+│   │   ├── login_screen.dart  
+│   │   ├── login_system.dart
+│   │   └── login_widget.dart
+│   └── signup                                  # 회원가입 파일
+│       ├── 1_choice                            # 회원가입중 이메일, 게스트 로그인 선택 단계 파일
+│       │   ├── signup_choice_screen.dart
+│       │   ├── signup_choice_system.dart
+│       │   └── signup_choice_widget.dart
+│       ├── 2_main                              # 회원가입중 사용자 로그인 데이터를 입력하는 단계 파일
+│       │   ├── signup_screen.dart
+│       │   ├── signup_system.dart
+│       │   └── signup_widget.dart
+│       ├── 3_checkemail                        # 회원가입중 이메일 로그인일때 이메일 인증 단계 파일  
+│       │   ├── signup_checkemail_screen.dart
+│       │   ├── signup_checkemail_system.dart
+│       │   └── signup_checkemail_widget.dart
+│       └── 4_setdata                           # 회원가입중 사용자 구성 데이터를 입력하는 단계 파일
+│           ├── signup_setdata_screen.dart
+│           ├── signup_setdata_system.dart
+│           └── signup_setdata_widget.dart
+├── main                                        # 메인 화면 파일
+│   ├── home                                    # 홈 탭 화면 파일
+│   │   ├── home_screen.dart
+│   │   ├── home_system.dart
+│   │   └── home_widget.dart
+│   ├── information                             # 정보 탭 화면 파일
+│   │   ├── information_screen.dart
+│   │   ├── information_system.dart
+│   │   ├── information_widget.dart
+│   │   ├── setting                             # 상세 설정 화면 파일
+│   │   │   ├── setting_screen.dart
+│   │   │   ├── setting_system.dart
+│   │   │   └── setting_widget.dart
+│   │   └── withdrawal                          # 회원 탈퇴 화면 파일
+│   │       ├── withdrawal_screen.dart
+│   │       └── withdrawal_system.dart
+│   ├── main_screen.dart
+│   ├── main_system.dart
+│   ├── ranking                                 # 랭킹 탭 화면 파일
+│   │   ├── ranking_screen.dart
+│   │   ├── ranking_system.dart
+│   │   └── ranking_widget.dart
+│   ├── trade                                   # 거래 탭 화면 파일
+│   │   ├── detail                              # 아이템 상세 화면 파일
+│   │   │   ├── trade_detail_screen.dart
+│   │   │   ├── trade_detail_system.dart
+│   │   │   └── trade_detail_widget.dart
+│   │   ├── trade_screen.dart
+│   │   ├── trade_system.dart
+│   │   ├── trade_widget.dart
+│   │   └── transaction                         # 아이템 매매 화면 파일
+│   │       ├── transaction_screen.dart
+│   │       ├── transaction_system.dart
+│   │       └── transaction_widget.dart
+│   └── wallet                                  # 사용자 자산 화면 파일
+│       ├── stockhistory                        # 사용자 아이템 매매 내역 화면 파일
+│       │   ├── stockhistory_screen.dart
+│       │   ├── stockhistory_system.dart
+│       │   └── stockhistory_widget.dart
+│       ├── stocklist                           # 사용자 보유 아이템 내역 화면 파일
+│       │   ├── stocklist_screen.dart
+│       │   ├── stocklist_system.dart
+│       │   └── stocklist_widget.dart
+│       ├── wallet_screen.dart
+│       ├── wallet_system.dart
+│       └── wallet_widget.dart
+├── main.dart
+├── splash                                      # 앱 로딩화면 파일 
+│   ├── splash_screen.dart
+│   ├── splash_system.dart
+│   └── splash_widget.dart
+└── utils                                       # 다양한 기능 관련 파일
+    ├── check_list.dart                         # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
+    ├── color.dart                              # 색 설정 파일
+    ├── custom_scroll.dart                      # 웹에서도 스크롤이 동작하게 하는 기능
+    ├── data_storage.dart                       # 기기에 데이터를 저장하게 하는 기능
+    ├── date_time.dart                          # 날짜 형식을 변경하는 기능
+    ├── format.dart                             # 데이터 형식을 변경하는 기능
+    ├── get_env.dart                            # 환경변수 파일에서 데이터를 가져오는 기능
+    ├── screen_size.dart                        # 화면 사이즈를 가져와 ui의 크기를 설정하는 기능
+    ├── search_name.dart                        # 중복 닉네임 확인 기능
+    ├── simple_widget.dart                      # 자주 사용되는 간단한 위젯
+    └── timer.dart                              # 타이머 기능
+```
+
+### 사용한 라이브러리
+```sh
+cupertino_icons: ^1.0.8             # 더 다양한 아이콘 라이브러리
+get:                                # 상태변환 및 라우팅 관리 라이브러리
+auto_size_text: ^3.0.0              # 텍스트 크기를 자동으로 조정하는 라이브러리
+horizontal_data_table: ^4.3.1       # 가로로 스크롤 가능한 데이터 테이블 라이브러리
+http:                               # HTTP 요청 라이브러리
+flutter_secure_storage:             # 안전한 데이터 저장을 위한 라이브러리
+flutter_easyloading: ^3.0.5         # 로딩 화면 표시를 위한 라이브러리
+intl:                               # 날짜 및 숫자 형식화를 지원하는 라이브러리
+korean_profanity_filter: ^1.0.0     # 한국어 비속어 필터링 라이브러리
+profanity_filter: ^2.0.0            # 다국어 비속어 필터링 라이브러리
+url_launcher:                       # URL을 열거나 전화, 이메일 실행을 위한 라이브러리
+get_storage: ^2.1.1                 # 경량화된 로컬 데이터 저장 라이브러리
+flutter_dotenv: ^5.2.1              # 환경 변수 관리 라이브러리
+font_awesome_flutter: ^10.8.0       # FontAwesome 아이콘 라이브러리
+logger: ^2.5.0                      # 로그 기록 및 디버깅용 라이브러리
+package_info_plus: ^8.1.1           # 앱의 패키지 정보(버전 등) 가져오기
+fl_chart: ^0.69.2                   # 플러터용 차트 생성 라이브러리
+```
