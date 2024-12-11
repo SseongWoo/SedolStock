@@ -3,7 +3,7 @@
 <img src = "https://github.com/user-attachments/assets/8a8fbb0f-8ebd-432c-bf9b-44a294c380e4" width="350" height="350">
 
 ## 서버 프로젝트
-[서버 프로젝트](https://github.com/SseongWoo/Stock_Project_Server)
+[서버 프로젝트](https://github.com/SseongWoo/SedolStock_Server)
 
 ## 프로젝트 소개
 - 이 프로젝트는 인터넷 방송인 우왁굳과 버츄얼 아이돌 그룹 이세계 아이돌의 유튜브 채널 활동을 기반으로 한 모의 투자 시뮬레이션 팬게임입니다.
