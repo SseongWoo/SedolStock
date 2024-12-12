@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/trade/transaction/transaction_screen.dart';
@@ -22,13 +23,14 @@ class TradeDetailController extends GetxController {
   RxInt walletAvg = 0.obs; // 보유중인 주식 1주 평균 가격
   RxDouble walletRatio = 0.0.obs; // 보유중인 주식 자산 변동률
   RxInt walletCount = 0.obs; // 보유중인 주식 수
-  RxDouble minYValue = 0.0.obs; // 그래프 y축 최소값
   Color textColor = Colors.black;
   Color titleTextColor = Colors.black;
   RxInt stockReturn = 0.obs; // 주식 변동 가격
   RxDouble stockRatio = 0.0.obs; // 주식 변동률
   RxDouble opacity = 0.0.obs; // 화면 스크롤 위치 값
   RxBool typeMain = true.obs; // 메인, 서브 채널 구분 변수
+  List<FlSpot> chartSpots = []; // 가격 그래프 데이터 리스트
+  List<String> chartXTitle = []; // 가격 그래프 x축 타이틀
 
   // 주식 매매 화면으로 이동하는 볒변수
   void goTransaction(bool buying) {
@@ -52,6 +54,7 @@ class TradeDetailController extends GetxController {
     channelUID = arguments['channelUID'];
     type = arguments['type'];
     setDetailData();
+    setChartData();
 
     // 스크롤 위치가 맨 위일경우 위젯이 안보이고 내려갈수록 위젯이 보이도록 하는 기능
     // 화면의 앱 바의 타이틀부분에 주식 아이템 이름과, 변동률을 넣어서 사용
@@ -80,11 +83,8 @@ class TradeDetailController extends GetxController {
     super.onClose();
   }
 
-  // 주식 데이터값을 업데이트 하는 함수
+  // 보유 주식 데이터값을 업데이트 하는 함수
   void setDetailData() {
-    minYValue.value = _calculateMinYValue();
-    minYValue.value = (minYValue ~/ 10) * 10;
-
     stockReturn.value = _calculateStockReturn();
     stockRatio.value = (stockReturn.value / _getLastPrice()) * 100;
 
@@ -93,14 +93,6 @@ class TradeDetailController extends GetxController {
 
     setTextColor();
     setTitleTextColor();
-  }
-
-  // 차트 y축의 최소값을 설정하기 위한 함수
-  double _calculateMinYValue() {
-    final chartData = (type == 'view')
-        ? _youtubeDataController.youtubeChartData[channelUID]!.viewCount
-        : _youtubeDataController.youtubeChartData[channelUID]!.likeCount;
-    return chartData.map((data) => data.sales).reduce((a, b) => a < b ? a : b);
   }
 
   // 주식 변동 가격을 설정하기 위한 함수
@@ -121,14 +113,17 @@ class TradeDetailController extends GetxController {
   // 사용자의 자산 데이터를 가져오기 위한 변수
   void _setWalletDetails() {
     if (walletCount.value != 0) {
-      walletSum.value = _myDataController.ownStock['${channelUID}_$type']!.stockPrice;
-      walletAvg.value = walletSum.value ~/ walletCount.value;
-
       final currentPrice = (type == 'view')
           ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice
           : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice;
 
-      walletReturn.value = walletSum.value - (currentPrice * walletCount.value);
+      walletSum.value =
+          currentPrice * _myDataController.ownStock['${channelUID}_$type']!.stockCount;
+      walletAvg.value = walletSum.value ~/ walletCount.value;
+
+      walletReturn.value = walletSum.value -
+          (_myDataController.ownStock['${channelUID}_$type']!.stockCount *
+              _myDataController.ownStock['${channelUID}_$type']!.stockPrice);
       walletRatio.value = (walletReturn.value / walletSum.value) * 100;
     } else {
       walletAvg.value = 0;
@@ -155,5 +150,25 @@ class TradeDetailController extends GetxController {
     } else {
       titleTextColor = Colors.black;
     }
+  }
+
+  // 차트 데이터 생성 함수
+  void setChartData() {
+    List<SalesData> reversedCount = [];
+    if (type == 'view') {
+      reversedCount =
+          _youtubeDataController.youtubeChartData[channelUID]!.viewCount.take(10).toList();
+    } else {
+      reversedCount =
+          _youtubeDataController.youtubeChartData[channelUID]!.likeCount.take(10).toList();
+    }
+    final List<SalesData> last10ReversedCount = reversedCount.reversed.toList();
+
+    chartSpots = last10ReversedCount.asMap().entries.map((entry) {
+      final int index = entry.key;
+      final SalesData data = entry.value;
+      chartXTitle.add(data.time);
+      return FlSpot(index.toDouble(), data.sales);
+    }).toList();
   }
 }

@@ -16,61 +16,52 @@ class LoginScreen extends StatelessWidget {
       _screenController.updateScreenSize(context);
     });
     return Scaffold(
-      backgroundColor: colorIfari,
-      body: Center(
-        child: Stack(
+      backgroundColor: colorMAIN,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            Positioned(
-              top: _screenController.screenSize.value.getHeightPerSize(18),
-              left: 0,
-              right: 0,
-              child: SizedBox(
-                height: _screenController.screenSize.value.getHeightPerSize(20),
-                width: _screenController.screenSize.value.getWidthPerSize(80),
-                child: Image.asset('assets/image/title.png'),
+            SizedBox(
+              height: _screenController.screenSize.value.getHeightPerSize(18),
+            ),
+            SizedBox(
+              height: _screenController.screenSize.value.getHeightPerSize(20),
+              width: _screenController.screenSize.value.getWidthPerSize(80),
+              child: Image.asset('assets/image/title.png'),
+            ),
+            SizedBox(
+              height: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+            Container(
+              height: _screenController.screenSize.value.getHeightPerSize(38),
+              width: _screenController.screenSize.value.getWidthPerSize(94),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/image/ui/login.png',
+                  ),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(_screenController.screenSize.value.getWidthPerSize(8),
+                    0, _screenController.screenSize.value.getWidthPerSize(8), 0),
+                child: const LoginWidget(),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: _screenController.screenSize.value.getHeightPerSize(20),
+            Padding(
+              padding: EdgeInsets.only(
+                right: _screenController.screenSize.value.getWidthPerSize(6),
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  'ver.$appVersion',
+                  style: TextStyle(
+                      fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                      fontFamily: 'Dot'),
                 ),
-                Container(
-                  height: _screenController.screenSize.value.getHeightPerSize(38),
-                  width: _screenController.screenSize.value.getWidthPerSize(94),
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/image/ui/login.png',
-                      ),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        _screenController.screenSize.value.getWidthPerSize(8),
-                        0,
-                        _screenController.screenSize.value.getWidthPerSize(8),
-                        0),
-                    child: const LoginWidget(),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    right: _screenController.screenSize.value.getWidthPerSize(6),
-                  ),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      'ver.$appVersion',
-                      style: TextStyle(
-                          fontSize: _screenController.screenSize.value.getHeightPerSize(2),
-                          fontFamily: 'Dot'),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),

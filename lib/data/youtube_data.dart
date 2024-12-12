@@ -1,11 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'dart:convert';
-
 import 'package:stockpj/utils/get_env.dart';
-
 import '../main.dart';
 import '../main/trade/detail/trade_detail_system.dart';
 
@@ -204,6 +203,22 @@ List<SalesData> convertViewCountToSalesData(List<int> viewCountList) {
   for (int i = viewCountList.length - 1; i >= 0; i--) {
     String formattedTime = DateFormat('HH:mm').format(currentTime);
     salesDataList.add(SalesData(formattedTime, viewCountList[i].toDouble()));
+    currentTime = currentTime.subtract(const Duration(minutes: 5));
+  }
+  return salesDataList;
+}
+
+// 주식 아이템 상세페이지의 그래프에 사용될 데이터를 형식에 맞게 가공하여 저장하는 함수
+List<FlSpot> convertViewCountToSalesDataTest(List<int> viewCountList) {
+  List<FlSpot> salesDataList = [];
+
+  // 현재 시간을 가져와 5분 단위로 내림 처리
+  DateTime now = DateTime.now();
+  DateTime currentTime = DateTime(now.year, now.month, now.day, now.hour, (now.minute ~/ 5) * 5);
+
+  for (int i = viewCountList.length - 1; i >= 0; i--) {
+    String formattedTime = DateFormat('HH:mm').format(currentTime);
+    salesDataList.add(FlSpot(i.toDouble(), viewCountList[i].toDouble()));
     currentTime = currentTime.subtract(const Duration(minutes: 5));
   }
   return salesDataList;

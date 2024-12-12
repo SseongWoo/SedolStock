@@ -1,10 +1,12 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/main_system.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../utils/timer.dart';
+
+import 'main_widget.dart';
 
 // 메인 화면
 class MainScreen extends StatelessWidget {
@@ -20,6 +22,7 @@ class MainScreen extends StatelessWidget {
     });
     return Scaffold(
         appBar: AppBar(
+          leading: LeadingWidget(),
           title: Obx(
             () => Text(_homeController.pagesName[_homeController.selectedIndex.value]),
           ),
@@ -49,22 +52,6 @@ class MainScreen extends StatelessWidget {
             currentIndex: _homeController.selectedIndex.value,
             onTap: (int i) => _homeController.changeTabIndex(i),
           ),
-        )
-
-        // ConvexAppBar(
-        //   style: TabStyle.react,
-        //   color: colorISEGYEIDOLLight,
-        //   backgroundColor: colorISEGYEIDOL,
-        //   items:
-        //   const [
-        //     TabItem(icon: Icons.home, title: '홈'),
-        //     TabItem(icon: Icons.show_chart, title: '거래'),
-        //     TabItem(icon: Icons.emoji_events, title: '랭킹'),
-        //     TabItem(icon: Icons.wallet, title: '지갑'),
-        //     TabItem(icon: Icons.info, title: '정보'),
-        //   ],
-        //   onTap: (int i) => _homeController.changeTabIndex(i),
-        // ),
-        );
+        ));
   }
 }

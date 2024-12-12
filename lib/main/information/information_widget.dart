@@ -1,13 +1,14 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:korean_profanity_filter/korean_profanity_filter.dart';
 import 'package:stockpj/data/my_data.dart';
+import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/search_name.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../data/public_data.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
@@ -308,142 +309,6 @@ Widget settingDivider() {
   );
 }
 
-// 보유 자산 비율 그래프 위젯
-class TradeDatailChartWidget extends StatefulWidget {
-  const TradeDatailChartWidget({super.key});
-  @override
-  State<TradeDatailChartWidget> createState() => _TradeDatailChartWidgetState();
-}
-
-class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
-  final MyDataController _myDataController = Get.find<MyDataController>();
-  final InformationController _informationController = Get.find<InformationController>();
-  final ScreenController _screenController = Get.find<ScreenController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: _screenController.screenSize.value.getHeightPerSize(60),
-      child: Padding(
-        padding: EdgeInsets.all(
-          _screenController.screenSize.value.getHeightPerSize(1),
-        ),
-        child: Obx(
-          () => SfCartesianChart(
-            title: const ChartTitle(text: '내 자산 변동 그래프', alignment: ChartAlignment.near),
-            primaryXAxis: const CategoryAxis(
-              autoScrollingDelta: 5, // X축에서 5개의 데이터만 보여주고 나머지는 스크롤 가능
-              autoScrollingMode: AutoScrollingMode.end, // 끝부분에서 스크롤
-              isVisible: false,
-            ),
-            primaryYAxis: NumericAxis(
-              minimum: _informationController.minValue.value.toDouble(),
-              numberFormat: NumberFormat('#,##0'),
-              interval: 1,
-            ),
-            zoomPanBehavior: ZoomPanBehavior(
-              enablePanning: true, // 팬(슬라이드) 기능 활성화
-            ),
-            series: <LineSeries<int, int>>[
-              LineSeries<int, int>(
-                animationDuration: 0,
-                markerSettings: MarkerSettings(
-                  isVisible: true,
-                  shape: DataMarkerType.circle,
-                  color: fanColorMap[_myDataController.myChoicechannel.value],
-                  borderColor: Colors.white,
-                  borderWidth: 1,
-                  width: _screenController.screenSize.value.getHeightPerSize(1),
-                  height: _screenController.screenSize.value.getHeightPerSize(1),
-                ),
-                dataSource: _myDataController.totalMoneyHistoryList, // List<int> 사용
-                xValueMapper: (int value, int index) => index, // 인덱스를 x축 값으로 사용
-                yValueMapper: (int value, _) => value, // 값 자체를 y축 값으로 사용
-                dataLabelSettings: const DataLabelSettings(
-                  isVisible: true,
-                  labelAlignment: ChartDataLabelAlignment.top,
-                ),
-                dataLabelMapper: (int value, _) => formatToCurrency(value),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// 보유 주식 원형 그래프 위젯
-class StockPieChartWidget extends StatelessWidget {
-  final ScreenController _screenController = Get.find<ScreenController>();
-  final MyDataController _myDataController = Get.find<MyDataController>();
-  StockPieChartWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => SfCircularChart(
-        title: const ChartTitle(text: '보유 주식 비율', alignment: ChartAlignment.near),
-        //legend: const Legend(isVisible: true),
-        series: <PieSeries<StockListClass, String>>[
-          PieSeries<StockListClass, String>(
-            animationDuration: 0,
-            dataSource: _myDataController.stockListItem.isEmpty
-                ? [StockListClass('', '보유 주식 없음', 0, 0, 1, 0, 0, 0, '', colorISEGYEIDOL)]
-                : _myDataController.stockListItem,
-            xValueMapper: (StockListClass data, _) => data.stockName,
-            yValueMapper: (StockListClass data, _) => data.stockCount,
-            pointColorMapper: (StockListClass data, _) => data.color,
-            dataLabelMapper: (StockListClass data, _) => _myDataController.stockListItem.isNotEmpty
-                ? '${data.stockName} : ${data.stockCount}주'
-                : data.stockName,
-            dataLabelSettings: DataLabelSettings(
-              isVisible: true,
-              labelPosition: ChartDataLabelPosition.outside,
-              textStyle:
-                  TextStyle(fontSize: _screenController.screenSize.value.getHeightPerSize(1.6)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// 보유 자산 원형 그래프 위젯
-class MoneyPieChartWidget extends StatelessWidget {
-  final ScreenController _screenController = Get.find<ScreenController>();
-  final InformationController _informationController = Get.find<InformationController>();
-  MoneyPieChartWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => SfCircularChart(
-        title: const ChartTitle(text: '보유 자산 비율', alignment: ChartAlignment.near),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        series: <PieSeries<MoneyChartClass, String>>[
-          PieSeries<MoneyChartClass, String>(
-            animationDuration: 0,
-            dataSource: _informationController.moneyChartList,
-            xValueMapper: (MoneyChartClass data, _) => data.name,
-            yValueMapper: (MoneyChartClass data, _) => data.money,
-            dataLabelMapper: (MoneyChartClass data, _) =>
-                '${data.name} : ${formatToCurrency(data.money)}원',
-            dataLabelSettings: DataLabelSettings(
-              isVisible: true,
-              labelPosition: ChartDataLabelPosition.outside,
-              textStyle: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // 이름 변경 다이얼로그
 class NameChangeDialog extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
@@ -697,6 +562,324 @@ class ChangePWDialog extends StatelessWidget {
             Get.back();
           },
           child: const Text('확인'),
+        ),
+      ],
+    );
+  }
+}
+
+// 보유 자산 비율 그래프 위젯
+class ChartLine extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  final InformationController _informationController = Get.find<InformationController>();
+  ChartLine({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+          child: Text(
+            '보유 자산 변동 그래프',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              _screenController.screenSize.value.getWidthPerSize(2),
+              _screenController.screenSize.value.getHeightPerSize(1),
+              _screenController.screenSize.value.getWidthPerSize(6),
+              _screenController.screenSize.value.getHeightPerSize(1),
+            ),
+            child: Obx(
+              () => LineChart(
+                LineChartData(
+                  gridData: const FlGridData(show: true),
+                  titlesData: FlTitlesData(
+                    // y축 설정
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: _screenController.screenSize.value.getWidthPerSize(12),
+                      ),
+                    ),
+                    // x축 설정
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final DateTime today = DateTime.now();
+                          final DateTime date = today.subtract(Duration(
+                              days:
+                                  (_informationController.chartSpots.length - 1 - value.toInt())));
+                          final String formattedDate = DateFormat('MM/dd').format(date);
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              formattedDate,
+                              style: TextStyle(
+                                  fontSize:
+                                      _screenController.screenSize.value.getHeightPerSize(1.2)),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                  ),
+                  borderData: FlBorderData(
+                    show: true,
+                    border: Border.all(color: Colors.black, width: 1),
+                  ),
+                  minX: 0,
+                  maxX: _informationController.chartSpots.isEmpty
+                      ? 1
+                      : (_informationController.chartSpots.length - 1).toDouble(),
+                  minY: 0,
+                  maxY: _informationController.chartSpots.isEmpty
+                      ? 1
+                      : (() {
+                          final maxValue = _informationController.chartSpots
+                              .map((spot) => spot.y)
+                              .reduce((a, b) => a > b ? a : b);
+                          return ((maxValue / 500000).ceil() * 500000).toDouble();
+                        })(),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: _informationController.chartSpots,
+                      isCurved: true,
+                      barWidth: 4,
+                      color: fanColorMap[_myDataController.myChoicechannel.value],
+                      dotData: const FlDotData(show: true),
+                    ),
+                  ],
+                  lineTouchData: LineTouchData(
+                    touchTooltipData: LineTouchTooltipData(
+                      tooltipPadding: const EdgeInsets.all(8),
+                      getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                        return touchedSpots.map((spot) {
+                          return LineTooltipItem(
+                            '${formatToCurrency(spot.y.toInt())} units', // 단위 추가
+                            const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 보유 주식 원형 그래프 위젯
+class StockPieChartWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  StockPieChartWidget({super.key});
+
+  List<PieChartSectionData> showingSections() {
+    final totalStockCount = _myDataController.stockListItem
+        .fold<int>(0, (sum, item) => sum + item.stockCount); // 전체 stockCount 합계
+
+    return _myDataController.stockListItem.map((stock) {
+      final double percentage = (stock.stockCount / totalStockCount) * 100;
+
+      return PieChartSectionData(
+        value: stock.stockCount.toDouble(), // stockCount 값을 사용
+        color: stock.color, // StockListClass.color를 색상으로 사용
+        title:
+            '${stock.stockName}(${stock.stockType == 'view' ? '조' : '좋'})\n${stock.stockCount}(${percentage.toStringAsFixed(1)})%', // 이름 + 퍼센트
+        titleStyle: TextStyle(
+          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+        radius: _screenController.screenSize.value.getHeightPerSize(14),
+        badgeWidget: _StockBadge(
+          stock.stockType == 'view'
+              ? _youtubeDataController.youtubeChannelData[stock.stockUID]!.thumbnail
+              : _youtubeDataController
+                  .youtubeChannelData[channelAndSubChannelMapData[stock.stockUID]]!.thumbnail,
+          size: _screenController.screenSize.value.getWidthPerSize(10),
+          borderColor: Colors.black,
+        ),
+        badgePositionPercentageOffset: .98,
+      );
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+          child: Text(
+            '보유 주식 비율 그래프',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Obx(
+            () => _myDataController.stockListItem.isNotEmpty
+                ? PieChart(
+                    PieChartData(
+                      sections: showingSections(),
+                      centerSpaceRadius: 0,
+                      sectionsSpace: 2,
+                    ),
+                  )
+                : SizedBox(
+                    width: _screenController.screenSize.value.getWidthSize(),
+                    child: Center(
+                      child: Text(
+                        '보유한 주식이 없습니다.',
+                        style: TextStyle(
+                          fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+        SizedBox(
+          height: _screenController.screenSize.value.getHeightPerSize(3),
+        )
+      ],
+    );
+  }
+}
+
+class _StockBadge extends StatelessWidget {
+  const _StockBadge(
+    this.svgAsset, {
+    required this.size,
+    required this.borderColor,
+  });
+  final String svgAsset;
+  final double size;
+  final Color borderColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: PieChart.defaultDuration,
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: borderColor,
+          width: 2,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(.5),
+            offset: const Offset(3, 3),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      child: Center(
+        child: ClipOval(
+          child: Image.network(
+            svgAsset,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
+              return const Center(
+                child: CircularProgressIndicator(), // 로딩 중인 동안 표시
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Image.asset('assets/image/image_error.png'), // 오류 시 표시할 텍스트
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 보유 자산 원형 그래프 위젯
+class MoneyPieChartWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final InformationController _informationController = Get.find<InformationController>();
+  MoneyPieChartWidget({super.key});
+
+  List<PieChartSectionData> showingSections() {
+    final totalMoney = _informationController.moneyChartList
+        .fold<int>(0, (sum, item) => sum + item.money); // 전체 stockCount 합계
+
+    return _informationController.moneyChartList.map((money) {
+      final double percentage = (money.money / totalMoney) * 100;
+
+      return PieChartSectionData(
+        value: money.money.toDouble(), // stockCount 값을 사용
+        color: money.name == '현금 자산'
+            ? fanColorMap[_myDataController.myChoicechannel.value]
+            : Colors.grey, // StockListClass.color를 색상으로 사용
+        title:
+            '${money.name}\n${formatToCurrency(money.money)}(${percentage.toStringAsFixed(1)})%', // 이름 + 퍼센트
+        titleStyle: TextStyle(
+          fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+        radius: _screenController.screenSize.value.getHeightPerSize(14),
+      );
+    }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+          child: Text(
+            '보유 자산 비율 그래프',
+            style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Obx(
+            () => PieChart(
+              PieChartData(
+                sections: showingSections(),
+                centerSpaceRadius: 0,
+                sectionsSpace: 2,
+              ),
+            ),
+          ),
         ),
       ],
     );

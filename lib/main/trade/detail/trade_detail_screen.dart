@@ -48,7 +48,7 @@ class _TradeDetailScreenState extends State<TradeDetailScreen> {
                     right: _screenController.screenSize.value.getWidthPerSize(2)),
                 child: Column(
                   children: [
-                    const TradeDatailChartWidget(),
+                    TradeDatailChartWidget(),
                     SizedBox(
                       height: _screenController.screenSize.value.getHeightPerSize(1),
                     ),

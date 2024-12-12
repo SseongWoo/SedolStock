@@ -79,8 +79,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   return '비밀번호를 여섯글자 이상 입력해 주세요';
                 }
                 if (value.trim() != _singUpControll.controllerPasswordCheck.text.trim()) {
-                  print(
-                      '${_singUpControll.controllerPassword.text}, ${_singUpControll.controllerPasswordCheck.text}');
                   return '비밀번호가 동일하지 않습니다.';
                 }
                 return null;

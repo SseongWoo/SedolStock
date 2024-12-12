@@ -5,10 +5,18 @@ import 'package:stockpj/main/trade/trade_screen.dart';
 import 'package:stockpj/main/wallet/wallet_screen.dart';
 import 'home/home_screen.dart';
 import 'information/information_screen.dart';
+import 'message/message_screen.dart';
 
 class MainController extends GetxController {
   // 현재 선택된 탭 인덱스
   var selectedIndex = 0.obs;
+
+  void goMessage() {
+    Get.to(
+      () => MessageScreen(),
+      transition: Transition.upToDown,
+    );
+  }
 
   // 선택된 탭에 맞는 페이지 가져오기
   final List<Widget> pages = [

@@ -19,6 +19,8 @@ Color colorIfari = const Color(0xffC6FF01);
 Color colorIfariLight = Color.lerp(colorIfari, Colors.white, 0.5)!;
 Color colorISEGYEIDOL = const Color(0xffCE3669);
 Color colorISEGYEIDOLLight = Color.lerp(colorISEGYEIDOL, Colors.white, 0.5)!;
+
+Color colorMAIN = const Color(0xffC6FF01);
 Color colorSUB = const Color(0xff251D3D);
 
 // 색상 리스트

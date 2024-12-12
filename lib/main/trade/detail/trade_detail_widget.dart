@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,10 +7,12 @@ import 'package:stockpj/main/trade/detail/trade_detail_system.dart';
 import 'package:stockpj/utils/date_time.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/simple_widget.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
+import 'dart:math';
 
 // 앱바의 타이틀 부분 위젯 변수
 class TradeDetailAppBarTitleWidget extends StatelessWidget {
@@ -88,25 +91,11 @@ class TradeDetailListTileWidget extends StatelessWidget {
 }
 
 // 상세 정보 가격 그래프 위젯
-class TradeDatailChartWidget extends StatefulWidget {
-  const TradeDatailChartWidget({super.key});
-
-  @override
-  State<TradeDatailChartWidget> createState() => _TradeDatailChartWidgetState();
-}
-
-class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
+class TradeDatailChartWidget extends StatelessWidget {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
   final ScreenController _screenController = Get.find<ScreenController>();
-  late TooltipBehavior _tooltipBehavior;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _tooltipBehavior = TooltipBehavior(enable: true);
-  }
+  TradeDatailChartWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -162,47 +151,7 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
                 ],
               ),
               Expanded(
-                child: SfCartesianChart(
-                  primaryXAxis: const CategoryAxis(
-                    autoScrollingDelta: 5, // X축에서 5개의 데이터만 보여주고 나머지는 스크롤 가능
-                    autoScrollingMode: AutoScrollingMode.end, // 끝부분에서 스크롤
-                  ),
-                  primaryYAxis: NumericAxis(
-                    numberFormat: NumberFormat.decimalPattern(),
-                    //minimum: _tradeDetailController.minYValue.value,
-                  ),
-                  zoomPanBehavior: ZoomPanBehavior(
-                    enablePanning: true, // 팬(슬라이드) 기능 활성화
-                  ),
-                  series: <LineSeries<SalesData, String>>[
-                    LineSeries<SalesData, String>(
-                      dataSource: _tradeDetailController.type == 'view'
-                          ? _youtubeDataController
-                              .youtubeChartData[_tradeDetailController.channelUID]
-                              ?.viewCount
-                              .reversed
-                              .toList()
-                          : _youtubeDataController
-                              .youtubeChartData[_tradeDetailController.channelUID]
-                              ?.likeCount
-                              .reversed
-                              .toList(),
-                      xValueMapper: (SalesData sales, _) => sales.time,
-                      yValueMapper: (SalesData sales, _) => sales.sales,
-                      markerSettings: MarkerSettings(
-                        isVisible: true,
-                        width: _screenController.screenSize.value.getHeightPerSize(1),
-                        height: _screenController.screenSize.value.getHeightPerSize(1),
-                        color: Colors.blue, // 포인터 색상
-                      ),
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: true,
-                      ),
-                      dataLabelMapper: (SalesData sales, _) =>
-                          NumberFormat('#,###').format(sales.sales),
-                    ),
-                  ],
-                ),
+                child: TradeDatailLineChartWidget(),
               ),
               TradeDetailListTileWidget(
                 title: _tradeDetailController.type == 'view' ? '총 조회수' : '총 좋아요수',
@@ -256,6 +205,106 @@ class _TradeDatailChartWidgetState extends State<TradeDatailChartWidget> {
   }
 }
 
+// 차트 위젯
+class TradeDatailLineChartWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  TradeDatailLineChartWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+      child: Obx(
+        () {
+          return LineChart(
+            LineChartData(
+              gridData: const FlGridData(show: true),
+              titlesData: FlTitlesData(
+                // Y축 설정
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: _screenController.screenSize.value.getWidthPerSize(12),
+                  ),
+                ),
+                // X축 설정
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                            top: _screenController.screenSize.value.getHeightPerSize(1)),
+                        child: Text(
+                          _tradeDetailController.chartXTitle[value.toInt()],
+                          style: TextStyle(
+                              fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+              ),
+              borderData: FlBorderData(
+                show: true,
+                border: Border.all(color: Colors.black, width: 1),
+              ),
+              minX: 0,
+              maxX: _tradeDetailController.chartSpots.isEmpty
+                  ? 1
+                  : (_tradeDetailController.chartSpots.length - 1).toDouble(),
+              minY: 0,
+              maxY: _tradeDetailController.chartSpots.isEmpty
+                  ? 1
+                  : (() {
+                      final maxValue = _tradeDetailController.chartSpots
+                          .map((spot) => spot.y)
+                          .reduce((a, b) => a > b ? a : b);
+                      int digitCount = maxValue.toInt().toString().length;
+                      int baseValue = pow(10, digitCount - 1).toInt();
+
+                      return ((maxValue / baseValue).ceil() * baseValue).toDouble();
+                    })(),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: _tradeDetailController.chartSpots,
+                  isCurved: true,
+                  barWidth: 4,
+                  color: fanColorMap[_tradeDetailController.channelUID] ?? Colors.blue,
+                  dotData: const FlDotData(show: true),
+                ),
+              ],
+              lineTouchData: LineTouchData(
+                touchTooltipData: LineTouchTooltipData(
+                  tooltipPadding: const EdgeInsets.all(8),
+                  getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                    return touchedSpots.map((spot) {
+                      return LineTooltipItem(
+                        '${formatToCurrency(spot.y.toInt())} units',
+                        const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    }).toList();
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 // 사용자의 자산 정보 위젯
 class TradeDetailMyStock extends StatelessWidget {
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
@@ -292,7 +341,7 @@ class TradeDetailMyStock extends StatelessWidget {
                 ),
               ),
               TradeDetailListTileWidget(
-                title: '1주 평균',
+                title: '1주 평균 금액',
                 trailing: '${formatToCurrency(_tradeDetailController.walletAvg.value)}원',
                 fontSize: 1.8,
               ),
@@ -343,6 +392,7 @@ class TradeDetailMyStock extends StatelessWidget {
 // 상세정보 구매 판매 버튼 위젯
 class TradeDetailButtonWidget extends StatelessWidget {
   final TradeDetailController _tradeDetailController = Get.find<TradeDetailController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final ScreenController _screenController = Get.find<ScreenController>();
   TradeDetailButtonWidget({super.key});
 
@@ -352,58 +402,82 @@ class TradeDetailButtonWidget extends StatelessWidget {
       padding: EdgeInsets.only(
           left: _screenController.screenSize.value.getWidthPerSize(4),
           right: _screenController.screenSize.value.getWidthPerSize(4)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: SizedBox(
+      child: (_tradeDetailController.type == 'view'
+                  ? _youtubeDataController
+                      .youtubeLiveData[_tradeDetailController.channelUID]!.viewDelisting
+                  : _youtubeDataController
+                      .youtubeLiveData[_tradeDetailController.channelUID]!.likeDelisting) >
+              0
+          ? SizedBox(
               height: _screenController.screenSize.value.getHeightPerSize(6),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.grey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15), // 원하는 둥글기 정도 설정
                   ),
                 ),
-                onPressed: () {
-                  _tradeDetailController.goTransaction(false);
-                },
+                onPressed: () {},
                 child: Text(
-                  '판매하기',
+                  '상장 폐지중(${_tradeDetailController.type == 'view' ? _youtubeDataController.youtubeLiveData[_tradeDetailController.channelUID]!.viewDelisting : _youtubeDataController.youtubeLiveData[_tradeDetailController.channelUID]!.likeDelisting})',
                   style: TextStyle(
                       fontSize: _screenController.screenSize.value.getHeightPerSize(2),
                       color: Colors.white),
                 ),
               ),
-            ),
-          ),
-          SizedBox(
-            width: _screenController.screenSize.value.getWidthPerSize(4),
-          ),
-          Expanded(
-            child: SizedBox(
-              height: _screenController.screenSize.value.getHeightPerSize(6),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15), // 원하는 둥글기 정도 설정
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: _screenController.screenSize.value.getHeightPerSize(6),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15), // 원하는 둥글기 정도 설정
+                        ),
+                      ),
+                      onPressed: () {
+                        _tradeDetailController.goTransaction(false);
+                      },
+                      child: Text(
+                        '판매하기',
+                        style: TextStyle(
+                            fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                            color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
-                onPressed: () {
-                  _tradeDetailController.goTransaction(true);
-                },
-                child: Text(
-                  '구매하기',
-                  style: TextStyle(
-                      fontSize: _screenController.screenSize.value.getHeightPerSize(2),
-                      color: Colors.white),
+                SizedBox(
+                  width: _screenController.screenSize.value.getWidthPerSize(4),
                 ),
-              ),
+                Expanded(
+                  child: SizedBox(
+                    height: _screenController.screenSize.value.getHeightPerSize(6),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15), // 원하는 둥글기 정도 설정
+                        ),
+                      ),
+                      onPressed: () {
+                        _tradeDetailController.goTransaction(true);
+                      },
+                      child: Text(
+                        '구매하기',
+                        style: TextStyle(
+                            fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

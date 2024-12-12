@@ -5,3 +5,7 @@ String formatToCurrency(int amount) {
   final formatter = NumberFormat('#,###');
   return formatter.format(amount);
 }
+
+double ceilToUnit(double value, double unit) {
+  return (value / unit).ceil() * unit;
+}

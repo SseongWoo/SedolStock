@@ -7,7 +7,7 @@ import 'information_widget.dart';
 // 정보 화면
 class InformationScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
-  final InformationController _informationController = Get.put(InformationController());
+  final InformationController _informationController = Get.find<InformationController>();
   InformationScreen({super.key});
 
   @override
@@ -20,17 +20,17 @@ class InformationScreen extends StatelessWidget {
             height: _screenController.screenSize.value.getHeightPerSize(2),
           ),
           Container(
-            height: _screenController.screenSize.value.getHeightPerSize(30),
+            height: _screenController.screenSize.value.getHeightPerSize(35),
             color: Colors.white,
-            child: const TradeDatailChartWidget(),
+            child: ChartLine(),
           ),
           Container(
-            height: _screenController.screenSize.value.getHeightPerSize(30),
+            height: _screenController.screenSize.value.getHeightPerSize(38),
             color: Colors.white,
             child: StockPieChartWidget(),
           ),
           Container(
-            height: _screenController.screenSize.value.getHeightPerSize(30),
+            height: _screenController.screenSize.value.getHeightPerSize(35),
             color: Colors.white,
             child: MoneyPieChartWidget(),
           ),

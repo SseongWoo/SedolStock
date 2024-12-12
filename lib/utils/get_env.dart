@@ -12,6 +12,6 @@ void setURL() async {
   channelIdList = dotenv.get('CHANNEL_ID_LIST').split(',');
   subChannelIdList = dotenv.get('SUB_CHANNEL_ID_LIST').split(',');
 
-  //httpURL = 'http://localhost:3000/api';
+  httpURL = 'http://localhost:3000/api';
   setStreamerColorMap();
 }

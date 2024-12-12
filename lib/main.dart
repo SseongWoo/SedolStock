@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:stockpj/main/home/home_system.dart';
+import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_system.dart';
 import 'package:stockpj/splash/splash_screen.dart';
 import 'package:stockpj/utils/color.dart';
@@ -103,6 +104,7 @@ void startController() {
   Get.put(PublicDataController());
   Get.put(TradeController());
   Get.put(HomeController());
+  Get.put(InformationController());
 }
 
 class MyApp extends StatelessWidget {

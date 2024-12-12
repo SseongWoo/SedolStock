@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/check_list.dart';
+import 'package:stockpj/utils/data_storage.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../data/start_data.dart';
 
@@ -99,8 +100,10 @@ class TimerController extends GetxController {
       EasyLoading.show(status: '데이터 갱신중');
       bool serverState = await checkServer();
       if (serverState) {
-        await startGetData();
-        await reflashGetData(true);
+        if (await getUID() != null) {
+          await startGetData();
+          await reflashGetData(true);
+        }
         EasyLoading.dismiss();
       } else {
         EasyLoading.dismiss();

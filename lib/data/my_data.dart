@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import 'package:stockpj/main.dart';
 
+import '../utils/date_time.dart';
+
 // 보유 주식 클래스
 class OwnStock {
   String stockName;
@@ -77,6 +79,13 @@ class ItemHistoryClass {
   ItemHistoryClass(this.itemUID, this.itemType, this.itemPriceAvg);
 }
 
+class MessageClass {
+  String itemUID;
+  int stockCount;
+  String time;
+  MessageClass(this.itemUID, this.stockCount, this.time);
+}
+
 class MyDataController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   RxString myUid = ''.obs; // 사용자 정보
@@ -102,6 +111,7 @@ class MyDataController extends GetxController {
   RxInt totalSellHistory = 0.obs; // *
   RxInt totalBuyHistory = 0.obs; // //
   RxList<int> totalMoneyHistoryList = <int>[].obs; // 사용자 보유 잔고 역사 그래프 데이터
+  RxList<MessageClass> messageList = <MessageClass>[].obs; // 메세지 리스트 데이터
 
   // 사용자의 소지 금액과 주식 금액을 더해서 총 소유 자산을 계산하는 함수
   void setTotalMoney() {
@@ -391,5 +401,43 @@ Future<void> updateMyTotalMoney() async {
     }
   } catch (e) {
     logger.e('updateMyTotalMoney error : $e');
+  }
+}
+
+Future<void> getMessage() async {
+  final MyDataController myDataController = Get.find<MyDataController>();
+
+  try {
+    if (myDataController.myUid.value == '') {
+      if (await getUID() != null) {
+        myDataController.myUid.value = (await getUID())!;
+      } else {
+        throw Exception('Empty My Uid');
+      }
+    }
+
+    final String apiUrl = '$httpURL/users/getmessage/${myDataController.myUid.value}';
+
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body)['messages'];
+
+      // JSON 데이터를 MessageClass 리스트로 변환
+      final List<MessageClass> parsedMessages = jsonData.map((data) {
+        return MessageClass(
+          data['itemUid'] as String,
+          data['stockCount'], // stockCount를 문자열로 변환
+          data['time'] as String,
+        );
+      }).toList();
+
+      // 메시지 리스트에 추가
+      myDataController.messageList.assignAll(parsedMessages);
+    } else if (response.statusCode == 404) {
+      logger.w('getMessage error : No messages found for the user.');
+    }
+  } catch (e) {
+    logger.e('getMessage error : $e');
   }
 }

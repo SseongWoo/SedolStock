@@ -24,6 +24,7 @@ class TransactionController extends GetxController {
   RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
   RxDouble stockRatio = 0.0.obs; // 주식 변동률
   Color textColor = Colors.black;
+  RxInt delistingCount = 0.obs; // 상장폐지 기간
 
   @override
   void onInit() {
@@ -51,6 +52,15 @@ class TransactionController extends GetxController {
             _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice;
       },
     );
+  }
+
+  // 해당 종목이 상장폐지가 되었는지 확인하는 함수
+  bool checkDelisting() {
+    final delistingValue = (itemType == 'view')
+        ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting
+        : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting;
+    delistingCount.value = delistingValue;
+    return delistingValue > 0;
   }
 
   // 구매, 판매를 구분하여 텍스트를 설정하는 함수

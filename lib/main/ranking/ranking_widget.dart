@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/utils/format.dart';
@@ -92,9 +91,9 @@ class RankingMyWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   _myDataController.myRank.value == 0 ? '-' : _myDataController.myRank.string,
-                  style: GoogleFonts.barlowCondensed(
-                    fontWeight: FontWeight.w800,
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value
+                        .getHeightPerSize(_myDataController.myRank < 100 ? 3 : 2),
                   ),
                 ),
               ),
@@ -187,9 +186,9 @@ class RankingWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   rankingData.rank.toString(),
-                  style: GoogleFonts.barlowCondensed(
-                    fontWeight: FontWeight.w800,
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value
+                        .getHeightPerSize(rankingData.rank < 100 ? 3 : 2),
                   ),
                 ),
               ),

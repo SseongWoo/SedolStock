@@ -10,7 +10,9 @@ class TradeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _screenController.updateScreenSize(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _screenController.updateScreenSize(context);
+    });
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: _screenController.screenSize.value.getHeightPerSize(3),

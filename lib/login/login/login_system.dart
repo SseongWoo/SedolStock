@@ -59,6 +59,7 @@ class LoginController extends GetxController {
       EasyLoading.show(status: '로그인중');
       if (!RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(controllerID.text)) {
         email = '$email@geuset.login';
+        print('aaaaaa');
       }
 
       final response = await http.post(

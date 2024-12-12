@@ -331,6 +331,7 @@ void transactionDialog(
   final TransactionController transactionController = Get.find<TransactionController>();
   final ScreenController screenController = Get.find<ScreenController>();
   final TimerController timerController = Get.find<TimerController>();
+  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   String buyingText = buying ? '구매' : '판매';
   String typeText = transactionController.itemType == 'view' ? '조회수' : '좋아요수';
   Get.dialog(
@@ -423,6 +424,9 @@ void transactionDialog(
                             if (timerController.checkDataTime.value) {
                               showSimpleDialog(
                                   Get.back, '매매 실패', '현재 서버에서 데이터를 갱신 중입니다. 갱신 완료 후 다시 이용해 주세요.');
+                            } else if (transactionController.checkDelisting()) {
+                              showSimpleDialog(Get.back, '매매 실패',
+                                  '현재 상장폐지중인 아이템입니다. ${transactionController.delistingCount}턴 후에 다시 이용해주세요');
                             } else {
                               transactionController.trySale(price, transactionCount);
                             }

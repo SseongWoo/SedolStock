@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../data/my_data.dart';
 import '../../data/public_data.dart';
 import '../../main.dart';
 import '../../utils/data_storage.dart';
+import '../../utils/format.dart';
 import '../../utils/get_env.dart';
 import '../../utils/simple_widget.dart';
 import 'information_widget.dart';
@@ -34,15 +36,31 @@ class InformationController extends GetxController {
   final filter = ProfanityFilter(); // 비속어를 감지하는 필터
   bool overlapName = false; // 사용자의 이름 중복 확인
   RxInt dialogIndex = 0.obs;
+  RxInt maxValue = 0.obs; // 자산 차트 값 중 가장 높은 값을 10000단위로 올림한 값
+  List<FlSpot> get chartSpots {
+    final list = _myDataController.totalMoneyHistoryList
+        .asMap()
+        .entries
+        .map((entry) => FlSpot(
+              entry.key.toDouble(),
+              entry.value.toDouble(),
+            ))
+        .toList();
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    setMinValue();
+    // 리스트의 마지막 10개의 값만 가져오기
+    final last10 = list.length > 10 ? list.sublist(list.length - 10) : list;
+
+    // x 값을 0부터 다시 설정
+    return last10.asMap().entries.map((entry) {
+      final index = entry.key; // 새로운 인덱스
+      final spot = entry.value;
+      return FlSpot(index.toDouble(), spot.y); // x 값을 0부터 다시 설정
+    }).toList();
+  }
+
+  void startController() {
     profitRate();
     setMoneyChartData();
-
     dialogIndex.value = streamerIndexMap[_myDataController.myChoicechannel.value]!;
   }
 
@@ -51,17 +69,6 @@ class InformationController extends GetxController {
     moneyChartList.clear();
     moneyChartList.add(MoneyChartClass('현금 자산', _myDataController.myMoney.value));
     moneyChartList.add(MoneyChartClass('주식 자산', _myDataController.myStockMoney.value));
-  }
-
-  // 차트 y축 최소값을 지정하기 위한 함수
-  void setMinValue() {
-    int minV = _myDataController.totalMoneyHistoryList.reduce(min);
-
-    if (minV > 10000) {
-      minValue.value = (minV ~/ 10000) * 10000;
-    } else {
-      minValue.value = 0;
-    }
   }
 
   // 사용자의 자산 변동률을 계산하는 함수

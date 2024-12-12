@@ -204,16 +204,16 @@ class TradeItemWidget extends StatelessWidget {
                           : _youtubeDataController
                               .youtubeChannelData[channelAndSubChannelMapData[channelUID]]!
                               .thumbnail,
-                      fit: BoxFit.cover, // 이미지가 부모 컨테이너에 맞도록
+                      fit: BoxFit.cover,
                       loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child; // 로딩이 완료되면 이미지 표시
+                        if (loadingProgress == null) return child;
                         return const Center(
-                          child: CircularProgressIndicator(), // 로딩 중인 동안 표시
+                          child: CircularProgressIndicator(),
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
                         return Center(
-                          child: Image.asset('assets/image/image_error.png'), // 오류 시 표시할 텍스트
+                          child: Image.asset('assets/image/image_error.png'),
                         );
                       },
                     ),
@@ -252,19 +252,29 @@ class TradeItemWidget extends StatelessWidget {
                   children: [
                     Text(
                       type == 'view'
-                          ? formatToCurrency(
-                              _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice)
-                          : formatToCurrency(
-                              _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice),
+                          ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting > 0
+                              ? '상장 폐지 중...'
+                              : formatToCurrency(_youtubeDataController
+                                  .youtubeLiveData[channelUID]!.viewCountPrice)
+                          : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting > 0
+                              ? '상장 폐지 중...'
+                              : formatToCurrency(_youtubeDataController
+                                  .youtubeLiveData[channelUID]!.likeCountPrice),
                       style: TextStyle(
                         fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
                       ),
                     ),
-                    differenceTextWidget(type == 'view'
-                        ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
-                            _youtubeDataController.youtubeLiveData[channelUID]!.lastViewCountPrice
-                        : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice -
-                            _youtubeDataController.youtubeLiveData[channelUID]!.lastLikeCountPrice),
+                    differenceTextWidget(
+                        type == 'view'
+                            ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
+                                _youtubeDataController
+                                    .youtubeLiveData[channelUID]!.lastViewCountPrice
+                            : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice -
+                                _youtubeDataController
+                                    .youtubeLiveData[channelUID]!.lastLikeCountPrice,
+                        type == 'view'
+                            ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting
+                            : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting),
                   ],
                 ),
               ),
@@ -280,25 +290,35 @@ class TradeItemWidget extends StatelessWidget {
 }
 
 // 가격 변동값 설정
-Widget differenceTextWidget(int differenceInt) {
+Widget differenceTextWidget(int differenceInt, int delisting) {
   final ScreenController screenController = Get.find<ScreenController>();
+  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   String pm = '';
   Color textColor;
 
-  if (differenceInt > 0) {
-    pm = '+';
-    textColor = Colors.red;
-  } else if (differenceInt < 0) {
-    textColor = Colors.blue;
-  } else {
+  if (delisting > 0) {
     textColor = Colors.grey;
-  }
+    return Text(
+      delisting.toString(),
+      style: TextStyle(
+          color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
+    );
+  } else {
+    if (differenceInt > 0) {
+      pm = '+';
+      textColor = Colors.red;
+    } else if (differenceInt < 0) {
+      textColor = Colors.blue;
+    } else {
+      textColor = Colors.grey;
+    }
 
-  return Text(
-    '$pm${differenceInt.toString()}',
-    style: TextStyle(
-        color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
-  );
+    return Text(
+      '$pm${differenceInt.toString()}',
+      style: TextStyle(
+          color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
+    );
+  }
 }
 
 // 바텀 시트 커스텀 위젯
