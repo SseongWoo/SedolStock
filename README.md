@@ -108,6 +108,10 @@ lib
 │   │   └── withdrawal                          # 회원 탈퇴 화면 파일
 │   │       ├── withdrawal_screen.dart
 │   │       └── withdrawal_system.dart
+│   ├── message                                 # 알림 화면 파일
+│   │   ├── message_screen.dart
+│   │   ├── message_system.dart
+│   │   └── message_widget.dart
 │   ├── main_screen.dart
 │   ├── main_system.dart
 │   ├── ranking                                 # 랭킹 탭 화면 파일
@@ -177,6 +181,8 @@ lib
 |<img src = "https://github.com/user-attachments/assets/f902e00b-c17d-42fd-9406-1188aae330e7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/de211c84-1a37-4a05-821f-c3c7ec193237" width="350" height="750">|
 |지갑 탭 주식잔고|지갑 탭 거래내역|
 |<img src = "https://github.com/user-attachments/assets/76fbd07d-a2dd-4dbb-90c2-6fd93e40aac1" width="350" height="750">|<img src = "" width="350" height="750">|
+|알림 화면||
+|<img src = "" width="350" height="750">|<img src = "" width="350" height="750">|
 </details>
 
 <details><summary>거래 화면 부분</summary>
