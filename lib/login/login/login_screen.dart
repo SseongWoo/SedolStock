@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  'ver.$appVersion',
+                  'ver.$appVersion+$appBuild',
                   style: TextStyle(
                       fontSize: _screenController.screenSize.value.getHeightPerSize(2),
                       fontFamily: 'Dot'),

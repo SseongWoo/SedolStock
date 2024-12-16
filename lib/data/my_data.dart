@@ -378,7 +378,6 @@ Future<void> updateMyTotalMoney() async {
       }
     }
 
-    // 서버 URL
     final String apiUrl = '$httpURL/users/updatetotalmoney/${myDataController.myUid.value}';
 
     final Map<String, dynamic> requestData = {
@@ -416,7 +415,7 @@ Future<void> getMessage() async {
       }
     }
 
-    final String apiUrl = '$httpURL/users/getmessage/${myDataController.myUid.value}';
+    final String apiUrl = '$httpURL/users/message/${myDataController.myUid.value}';
 
     final response = await http.get(Uri.parse(apiUrl));
 

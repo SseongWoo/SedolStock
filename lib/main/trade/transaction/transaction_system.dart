@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/my_data.dart';
+import 'package:stockpj/utils/audio.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 class TransactionController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
+  final AudioController _audioController = Get.find<AudioController>();
 
   late bool buying; // 판매, 구매 구분 변수
   late String channelUID;
@@ -179,6 +181,7 @@ class TransactionController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        _audioController.playSound('assets/sound/testsound.wav');
         Get.back();
         await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);

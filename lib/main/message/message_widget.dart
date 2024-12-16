@@ -24,6 +24,7 @@ class MessageListWidget extends StatelessWidget {
                       _myDataController.messageList[index].stockCount),
                   time: _myDataController.messageList[index].time,
                   onClose: () {
+                    _messageController.deleteMessage(_myDataController.messageList[index].time);
                     _myDataController.messageList.removeAt(index); // 버튼 클릭 시 해당 메시지 삭제
                   },
                 );

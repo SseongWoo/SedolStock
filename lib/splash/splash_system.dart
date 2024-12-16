@@ -8,6 +8,7 @@ import 'package:stockpj/login/login/login_screen.dart';
 import 'package:stockpj/main.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/simple_widget.dart';
+import 'package:store_redirect/store_redirect.dart';
 import '../data/public_data.dart';
 import '../login/login/login_system.dart';
 import '../data/my_data.dart';
@@ -83,25 +84,78 @@ class SplashController extends GetxController {
   void splash() async {
     loadingMessage.value = '서버 상태 확인중';
     bool runnintServer = await checkServer();
+
     loadingMessage.value = '앱 버전 확인중';
     await getAppVersion();
-    loadingMessage.value = '로그인 확인중';
-    String? token = await getRefreshToken();
-
-    if (runnintServer) {
-      if (token != null) {
-        loadingMessage.value = '사용자 정보를 불러오는중';
-        await tryAutoLogin();
-      } else {
-        goLogin();
-      }
+    if (checkVersion() && Platform.isAndroid) {
+      updateDialog();
     } else {
-      showSimpleDialog(closeApp, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.');
+      loadingMessage.value = '로그인 확인중';
+      String? token = await getRefreshToken();
+
+      if (runnintServer) {
+        if (token != null) {
+          loadingMessage.value = '사용자 정보를 불러오는중';
+          await tryAutoLogin();
+        } else {
+          goLogin();
+        }
+      } else {
+        showSimpleDialog(closeApp, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.');
+      }
     }
   }
 
   // 앱 종료 기능
   void closeApp() {
     exit(0);
+  }
+
+  // 앱 버전과 최소 요구 버전 비교
+  bool checkVersion() {
+    final isVersionOutdated = isVersionLower();
+    final isBuildOutdated = minBuild.codeUnitAt(0) > appBuild.codeUnitAt(0);
+
+    return (isVersionOutdated || isBuildOutdated);
+  }
+
+  void updateDialog() {
+    Get.dialog(
+      AlertDialog(
+        title: const Text('업데이트'),
+        content: const Text('최신 버전으로 업데이트가 필요합니다.'),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  exit(0);
+                },
+                child: const Text('취소'),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    StoreRedirect.redirect();
+                  },
+                  child: const Text('업데이트'),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  bool isVersionLower() {
+    final appParts = appVersion.split('.').map(int.parse).toList();
+    final minParts = minVersion.split('.').map(int.parse).toList();
+    for (int i = 0; i < appParts.length; i++) {
+      if (minParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
+      if (minParts[i] < appParts[i]) return false; // 현재 버전이 더 높음
+    }
+    return false; // 버전이 같음
   }
 }

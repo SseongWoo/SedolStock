@@ -14,10 +14,14 @@ class TradeScreen extends StatelessWidget {
       _screenController.updateScreenSize(context);
     });
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: _screenController.screenSize.value.getHeightPerSize(3),
-          actions: [TradeSelectWidget()],
-        ),
-        body: TradeItemListWidget());
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            TradeProgressBarWidget(),
+            TradeFilterWidget(),
+            TradeListTitleWidget(),
+            Expanded(child: TradeItemListWidget()),
+          ],
+        ));
   }
 }

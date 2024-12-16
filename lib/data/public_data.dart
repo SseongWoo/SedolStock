@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../main.dart';
+import '../utils/check_list.dart';
 import '../utils/data_storage.dart';
 import '../utils/get_env.dart';
 import '../utils/timer.dart';
@@ -11,6 +12,11 @@ import '../utils/timer.dart';
 // 거래 수수료
 double feeRate = 0.05;
 String appVersion = ''; // 앱 버전
+String appBuild = ''; // 앱 버전
+String latestVersion = ''; // 스토어 최신 버전
+String latestBuild = ''; // 스토어 최신 버전
+String minVersion = ''; // 최소 설치 버전
+String minBuild = ''; // 최소 설치 버전
 
 List<String> channelIdList = []; // 채널 uid 리스트 데이터
 List<String> subChannelIdList = []; // 서브채널 uid 리스트 데이터
@@ -138,7 +144,7 @@ Future<void> getRankData() async {
 
 Future<void> getAppVersion() async {
   final packageInfo = await PackageInfo.fromPlatform();
-
   appVersion = packageInfo.version;
-  logger.i('appversion : ${packageInfo.version}');
+  appBuild = packageInfo.buildNumber;
+  logger.i('appversion : ${packageInfo.version}+${packageInfo.buildNumber}');
 }

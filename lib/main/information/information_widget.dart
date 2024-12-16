@@ -412,7 +412,7 @@ class ChannelChangeDialog extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Obx(
                 () => Text(
-                  '원래 팬덤 : ${_myDataController.myChoicechannel}',
+                  '기존 팬덤 : ${_myDataController.myChoicechannel}',
                   style: TextStyle(
                     fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
                   ),
@@ -445,6 +445,12 @@ class ChannelChangeDialog extends StatelessWidget {
                     style: TextStyle(
                       color: fanColorMap[fanNameList[_informationController.dialogIndex.value]],
                       fontSize: _screenController.screenSize.value.getHeightPerSize(3),
+                      shadows: const [
+                        Shadow(offset: Offset(-1.5, -1.5), color: Colors.black), // 좌상단
+                        Shadow(offset: Offset(1.5, -1.5), color: Colors.black), // 우상단
+                        Shadow(offset: Offset(1.5, 1.5), color: Colors.black), // 우하단
+                        Shadow(offset: Offset(-1.5, 1.5), color: Colors.black), // 좌하단
+                      ],
                     ),
                   ),
                 )),

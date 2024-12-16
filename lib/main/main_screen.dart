@@ -23,8 +23,12 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           leading: LeadingWidget(),
+          backgroundColor: Colors.white,
           title: Obx(
-            () => Text(_homeController.pagesName[_homeController.selectedIndex.value]),
+            () => Text(
+              _homeController.pagesName[_homeController.selectedIndex.value],
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
           actions: [
             Padding(
@@ -37,9 +41,9 @@ class MainScreen extends StatelessWidget {
         body: Obx(() => _homeController.pages[_homeController.selectedIndex.value]),
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
-            backgroundColor: colorISEGYEIDOL, // 바탕색
-            selectedItemColor: Colors.white, // 선택된 항목 색상
-            unselectedItemColor: colorISEGYEIDOLLight, // 선택되지 않은 항목 색상
+            backgroundColor: colorSUB, // 바탕색
+            selectedItemColor: colorMAIN, // 선택된 항목 색상
+            unselectedItemColor: Colors.white, // 선택되지 않은 항목 색상
             type: BottomNavigationBarType.fixed, // 모든 탭에 색상 적용
 
             items: const [

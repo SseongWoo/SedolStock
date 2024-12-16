@@ -48,7 +48,7 @@ class InformationScreen extends StatelessWidget {
           ),
           settingDivider(),
           InformationButtonWidget(
-            title: '선택 채널 변경',
+            title: '대표 팬덤 변경',
             function: _informationController.channelChange,
           ),
           SizedBox(

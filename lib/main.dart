@@ -9,6 +9,8 @@ import 'package:stockpj/main/home/home_system.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_system.dart';
 import 'package:stockpj/splash/splash_screen.dart';
+import 'package:stockpj/utils/audio.dart';
+import 'package:stockpj/utils/check_list.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/get_env.dart';
@@ -105,6 +107,7 @@ void startController() {
   Get.put(TradeController());
   Get.put(HomeController());
   Get.put(InformationController());
+  Get.put(AudioController());
 }
 
 class MyApp extends StatelessWidget {
@@ -127,7 +130,6 @@ class MyApp extends StatelessWidget {
           ),
         );
       },
-      //builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
       title: 'StockGame',
       theme: ThemeData(

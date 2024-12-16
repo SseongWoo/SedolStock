@@ -121,10 +121,11 @@ class TradeDetailController extends GetxController {
           currentPrice * _myDataController.ownStock['${channelUID}_$type']!.stockCount;
       walletAvg.value = walletSum.value ~/ walletCount.value;
 
-      walletReturn.value = walletSum.value -
-          (_myDataController.ownStock['${channelUID}_$type']!.stockCount *
-              _myDataController.ownStock['${channelUID}_$type']!.stockPrice);
-      walletRatio.value = (walletReturn.value / walletSum.value) * 100;
+      walletReturn.value =
+          walletSum.value - (_myDataController.ownStock['${channelUID}_$type']!.stockPrice);
+      walletRatio.value =
+          (walletReturn.value / _myDataController.ownStock['${channelUID}_$type']!.stockPrice) *
+              100;
     } else {
       walletAvg.value = 0;
     }

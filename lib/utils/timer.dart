@@ -7,6 +7,7 @@ import 'package:stockpj/main.dart';
 import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/check_list.dart';
 import 'package:stockpj/utils/data_storage.dart';
+import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/utils/simple_widget.dart';
 import '../data/start_data.dart';
 
@@ -134,19 +135,30 @@ class TimerController extends GetxController {
 // 타이머 위젯
 class TimerWidget extends StatelessWidget {
   final TimerController _timerController = Get.find<TimerController>();
+  final ScreenController _screenController = Get.find<ScreenController>();
   TimerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Text(
-        _timerController.timeDisplay.value,
-        style: TextStyle(
-            color: _timerController.secondsRemaining.value > 60
-                ? Colors.black
-                : _timerController.checkDataTime.value
-                    ? Colors.grey
-                    : Colors.red),
+      () => Container(
+        //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: _screenController.screenSize.value.getWidthPerSize(1.2),
+            right: _screenController.screenSize.value.getWidthPerSize(1.2),
+          ),
+          child: Text(
+            _timerController.timeDisplay.value,
+            style: TextStyle(
+                fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
+                color: _timerController.secondsRemaining.value > 60
+                    ? Colors.black
+                    : _timerController.checkDataTime.value
+                        ? Colors.grey
+                        : Colors.red),
+          ),
+        ),
       ),
     );
   }

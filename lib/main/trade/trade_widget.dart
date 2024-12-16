@@ -1,100 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/main/trade/trade_system.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/format.dart';
+import 'package:stockpj/utils/timer.dart';
 import '../../data/public_data.dart';
 import '../../data/youtube_data.dart';
 import '../../utils/screen_size.dart';
 
-// 필터 버튼 위젯
-class TradeSelectWidget extends StatelessWidget {
+// 상단 로딩 바 위젯
+class TradeProgressBarWidget extends StatefulWidget {
+  const TradeProgressBarWidget({super.key});
+
+  @override
+  State<TradeProgressBarWidget> createState() => _TradeProgressBarWidgetState();
+}
+
+class _TradeProgressBarWidgetState extends State<TradeProgressBarWidget> {
   final ScreenController _screenController = Get.find<ScreenController>();
-  final TradeController _tradeController = Get.find<TradeController>();
-  TradeSelectWidget({super.key});
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  final TimerController _timerController = Get.find<TimerController>();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        right: _screenController.screenSize.value.getWidthPerSize(2),
+    return Container(
+      width: _screenController.screenSize.value.getWidthSize(),
+      height: _screenController.screenSize.value.getHeightPerSize(2),
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: InkWell(
-          onTap: () {
-            Get.bottomSheet(
-              Container(
-                width: _screenController.screenSize.value.getWidthSize(),
-                padding: EdgeInsets.all(
-                  _screenController.screenSize.value.getHeightPerSize(2),
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    BottomSheetWidget(
-                      title: '전체',
-                      onTap: () {
-                        _tradeController.dropdownItem.value = '전체';
-                        Get.back();
-                      },
-                    ),
-                    BottomSheetWidget(
-                      title: '조회수',
-                      onTap: () {
-                        _tradeController.dropdownItem.value = '조회수';
-                        Get.back();
-                      },
-                    ),
-                    BottomSheetWidget(
-                      title: '좋아요수',
-                      onTap: () {
-                        _tradeController.dropdownItem.value = '좋아요수';
-                        Get.back();
-                      },
-                    ),
-                    SizedBox(
-                      height: _screenController.screenSize.value.getHeightPerSize(1),
-                    ),
-                    const Divider(color: Colors.grey, thickness: 1),
-                    SizedBox(
-                      height: _screenController.screenSize.value.getHeightPerSize(1),
-                    ),
-                    BottomSheetWidget(
-                      title: '취소',
-                      onTap: () {
-                        Get.back();
-                      },
-                    ),
-                  ],
-                ),
+      child: Stack(
+        children: [
+          Obx(
+            () => AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              width: !_timerController.checkDataTime.value
+                  ? _screenController.screenSize.value.getWidthSize() *
+                      (_timerController.secondsRemaining.value / 180)
+                  : 0, // 진행률 계산
+              height: _screenController.screenSize.value.getHeightPerSize(2),
+              decoration: BoxDecoration(
+                color: fanColorMap[_myDataController.myChoicechannel.value],
               ),
-              isScrollControlled: true, // 필요시 전체 화면 BottomSheet 설정
-            );
-          },
-          child: Row(
-            children: [
-              Icon(
-                Icons.tune,
-                size: _screenController.screenSize.value.getHeightPerSize(2),
-              ),
-              Obx(
-                () => Text(
-                  _tradeController.dropdownItem.value,
-                  style: TextStyle(
-                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class TradeListTitleWidget extends StatelessWidget {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  TradeListTitleWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: _screenController.screenSize.value.getHeightPerSize(5),
+      width: _screenController.screenSize.value.getWidthSize(),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: colorSUB,
+            width: 1.5,
+          ),
+          bottom: BorderSide(
+            color: colorSUB,
+            width: 1.5,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: _screenController.screenSize.value.getWidthPerSize(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                '채널',
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: _screenController.screenSize.value.getWidthPerSize(1),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                '가격',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: _screenController.screenSize.value.getWidthPerSize(25),
+              child: Text(
+                '등락폭',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: _screenController.screenSize.value.getHeightPerSize(2),
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -116,8 +136,8 @@ class TradeItemListWidget extends StatelessWidget {
           children: [
             Obx(
               () => Visibility(
-                visible: _tradeController.dropdownItem.value == '전체' ||
-                    _tradeController.dropdownItem.value == '조회수',
+                visible: _tradeController.selectItemType.value == '전체' ||
+                    _tradeController.selectItemType.value == '조회수',
                 child: TradeItemWidget(
                   channelUID: channelIdList[index],
                   index: index,
@@ -127,25 +147,14 @@ class TradeItemListWidget extends StatelessWidget {
             ),
             Obx(
               () => Visibility(
-                visible: _tradeController.dropdownItem.value == '전체',
-                child: SizedBox(
-                  height: _screenController.screenSize.value.getHeightPerSize(0.5),
-                ),
-              ),
-            ),
-            Obx(
-              () => Visibility(
-                visible: _tradeController.dropdownItem.value == '전체' ||
-                    _tradeController.dropdownItem.value == '좋아요수',
+                visible: _tradeController.selectItemType.value == '전체' ||
+                    _tradeController.selectItemType.value == '좋아요수',
                 child: TradeItemWidget(
                   channelUID: channelIdList[index],
                   index: index,
                   type: 'like',
                 ),
               ),
-            ),
-            SizedBox(
-              height: _screenController.screenSize.value.getHeightPerSize(0.5),
             ),
           ],
         );
@@ -169,17 +178,18 @@ class TradeItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: _screenController.screenSize.value.getHeightPerSize(8),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            spreadRadius: 0.1,
-            blurRadius: 0.1,
-            offset: Offset(0, 0),
+        border: Border(
+          top: BorderSide(
+            color: Color(0xffA6A6A6),
+            width: 0.25,
           ),
-        ],
+          bottom: BorderSide(
+            color: Color(0xffA6A6A6),
+            width: 0.25,
+          ),
+        ),
       ),
       child: Material(
         color: Colors.transparent,
@@ -192,95 +202,88 @@ class TradeItemWidget extends StatelessWidget {
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(1),
               ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  SizedBox(
-                    width: _screenController.screenSize.value.getHeightPerSize(6),
-                    height: _screenController.screenSize.value.getHeightPerSize(6),
-                    child: Image.network(
-                      type == 'view'
-                          ? _youtubeDataController.youtubeChannelData[channelUID]!.thumbnail
-                          : _youtubeDataController
-                              .youtubeChannelData[channelAndSubChannelMapData[channelUID]]!
-                              .thumbnail,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Center(
-                          child: Image.asset('assets/image/image_error.png'),
-                        );
-                      },
-                    ),
+              SizedBox(
+                width: _screenController.screenSize.value.getHeightPerSize(6),
+                height: _screenController.screenSize.value.getHeightPerSize(6),
+                child: ClipOval(
+                  child: Image.network(
+                    type == 'view'
+                        ? _youtubeDataController.youtubeChannelData[channelUID]!.thumbnail
+                        : _youtubeDataController
+                            .youtubeChannelData[channelAndSubChannelMapData[channelUID]]!.thumbnail,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Image.asset('assets/image/image_error.png'),
+                      );
+                    },
                   ),
-                  Positioned(
-                    right: -10,
-                    bottom: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.green)),
-                      child: Icon(
-                        type == 'view' ? Icons.visibility : Icons.thumb_up,
-                        color: Colors.green,
-                        size: _screenController.screenSize.value.getHeightPerSize(2),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(1),
               ),
-              Text(
-                '${channelNameList[index]} ${type == 'view' ? '(조회수)' : '(좋아요수)'}',
-                style: TextStyle(
-                  fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(30),
+                child: Text(
+                  type == 'view'
+                      ? _youtubeDataController.youtubeChannelData[channelUID]!.title
+                      : _youtubeDataController
+                          .youtubeChannelData[channelAndSubChannelMapData[channelUID]]!.title,
+                  //'${channelNameList[index]} ${type == 'view' ? '(조회수)' : '(좋아요수)'}',
+                  softWrap: true,
+
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.6),
+                  ),
                 ),
               ),
               const Spacer(),
               Obx(
-                () => Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      type == 'view'
-                          ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting > 0
-                              ? '상장 폐지 중...'
-                              : formatToCurrency(_youtubeDataController
-                                  .youtubeLiveData[channelUID]!.viewCountPrice)
-                          : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting > 0
-                              ? '상장 폐지 중...'
-                              : formatToCurrency(_youtubeDataController
-                                  .youtubeLiveData[channelUID]!.likeCountPrice),
-                      style: TextStyle(
-                        fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
-                      ),
-                    ),
-                    differenceTextWidget(
-                        type == 'view'
-                            ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
-                                _youtubeDataController
-                                    .youtubeLiveData[channelUID]!.lastViewCountPrice
-                            : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice -
-                                _youtubeDataController
-                                    .youtubeLiveData[channelUID]!.lastLikeCountPrice,
-                        type == 'view'
-                            ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting
-                            : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting),
-                  ],
+                () => Text(
+                  type == 'view'
+                      ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting > 0
+                          ? '상장 폐지 중...'
+                          : formatToCurrency(
+                              _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice)
+                      : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting > 0
+                          ? '상장 폐지 중...'
+                          : formatToCurrency(
+                              _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice),
+                  style: TextStyle(
+                    fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
+                  ),
                 ),
               ),
               SizedBox(
                 width: _screenController.screenSize.value.getHeightPerSize(3),
-              )
+              ),
+              SizedBox(
+                width: _screenController.screenSize.value.getWidthPerSize(24),
+                child: Obx(
+                  () => differenceTextWidget(
+                      type == 'view'
+                          ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice -
+                              _youtubeDataController.youtubeLiveData[channelUID]!.lastViewCountPrice
+                          : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice -
+                              _youtubeDataController
+                                  .youtubeLiveData[channelUID]!.lastLikeCountPrice,
+                      type == 'view'
+                          ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting
+                          : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting,
+                      type == 'view'
+                          ? _youtubeDataController.youtubeLiveData[channelUID]!.lastViewCountPrice
+                          : _youtubeDataController.youtubeLiveData[channelUID]!.lastLikeCountPrice),
+                ),
+              ),
+              // SizedBox(
+              //   width: _screenController.screenSize.value.getHeightPerSize(1),
+              // )
             ],
           ),
         ),
@@ -290,18 +293,22 @@ class TradeItemWidget extends StatelessWidget {
 }
 
 // 가격 변동값 설정
-Widget differenceTextWidget(int differenceInt, int delisting) {
+Widget differenceTextWidget(int differenceInt, int delisting, int lastPrice) {
   final ScreenController screenController = Get.find<ScreenController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   String pm = '';
   Color textColor;
+  double ratio = (differenceInt / lastPrice) * 100;
 
   if (delisting > 0) {
     textColor = Colors.grey;
     return Text(
       delisting.toString(),
+      textAlign: TextAlign.center,
       style: TextStyle(
-          color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
+        color: textColor,
+        fontSize: screenController.screenSize.value.getHeightPerSize(1.8),
+      ),
     );
   } else {
     if (differenceInt > 0) {
@@ -314,40 +321,78 @@ Widget differenceTextWidget(int differenceInt, int delisting) {
     }
 
     return Text(
-      '$pm${differenceInt.toString()}',
+      '$pm${differenceInt.toString()}\n($pm${ratio.toStringAsFixed(2)}%)',
+      textAlign: TextAlign.center,
       style: TextStyle(
-          color: textColor, fontSize: screenController.screenSize.value.getHeightPerSize(1.8)),
+        color: textColor,
+        fontSize: screenController.screenSize.value.getHeightPerSize(1.6),
+      ),
     );
   }
 }
 
-// 바텀 시트 커스텀 위젯
-class BottomSheetWidget extends StatelessWidget {
+// 필터 버튼 위젯
+class TradeFilterWidget extends StatelessWidget {
   final TradeController _tradeController = Get.find<TradeController>();
   final ScreenController _screenController = Get.find<ScreenController>();
-  final VoidCallback onTap;
-  final String title;
-
-  BottomSheetWidget({super.key, required this.onTap, required this.title});
+  TradeFilterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: _screenController.screenSize.value.getHeightPerSize(6),
-        width: _screenController.screenSize.value.getWidthSize(),
-        color: Colors.transparent,
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(2),
-                color:
-                    _tradeController.dropdownItem.value == title ? colorISEGYEIDOL : Colors.black),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: _screenController.screenSize.value.getWidthPerSize(1),
+            top: _screenController.screenSize.value.getHeightPerSize(0.1),
+            bottom: _screenController.screenSize.value.getHeightPerSize(0.1),
+          ),
+          child: Obx(
+            () => Wrap(
+              spacing: _screenController.screenSize.value.getWidthPerSize(1),
+              runSpacing: 4.0,
+              children: _tradeController.dropdownItemList.map((filter) {
+                return ChoiceChip(
+                  label: Text(filter),
+                  selected: _tradeController.selectItemType.value == filter,
+                  showCheckmark: false,
+                  onSelected: (bool selected) {
+                    _tradeController.selectItemTypeFilter(filter);
+                  },
+                  selectedColor: colorSUB,
+                  backgroundColor: Colors.white,
+                  labelStyle: TextStyle(
+                    color: _tradeController.selectItemType.value == filter
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0), // 모서리를 각지게 설정
+                    side: BorderSide(
+                      color: colorSUB,
+                      width: 1.5,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.only(
+            right: _screenController.screenSize.value.getWidthPerSize(2),
+          ),
+          child: Tooltip(
+            message: '툴팁 메세지',
+            triggerMode: TooltipTriggerMode.tap,
+            child: Icon(
+              Icons.info_outline,
+              size: _screenController.screenSize.value.getHeightPerSize(3),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

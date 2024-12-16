@@ -57,6 +57,7 @@ Future<void> startGetData() async {
     final TradeDetailController tradeDetailController = Get.find<TradeDetailController>();
     tradeDetailController.setChartData();
   }
+  await getMessage();
 }
 
 // 앱 실행중 5분마다 실행되거나, 특정 동작으로 실행되는 함수로 사용자의 정보와 주식의 정보를 업데이트 함
@@ -66,6 +67,7 @@ Future<void> reflashGetData(bool timeReFlash) async {
   await getUserData();
   await getWalletData();
 
+  // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {
     myDataController.setMoneyData();
     await getTradeHistoryData();

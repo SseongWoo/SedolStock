@@ -13,6 +13,10 @@ import '../../utils/data_storage.dart';
 import '../../utils/simple_widget.dart';
 import '../find_account/find_account_system.dart';
 import '../signup/1_choice/signup_choice_screen.dart';
+import '../signup/3_checkemail/signup_checkemail_screen.dart';
+import '../signup/3_checkemail/signup_checkemail_system.dart';
+import '../signup/4_setdata/signup_setdata_screen.dart';
+import '../signup/4_setdata/signup_setdata_system.dart';
 
 class LoginBinding extends Bindings {
   @override
@@ -38,6 +42,18 @@ class LoginController extends GetxController {
     Get.to(() => SignUpChoiceScreen());
   }
 
+  // 회원가입 완료가 안된 이메일 계정일경우 회원가입 3단계 화면으로 넘어가게 함
+  void goCheckEmail() {
+    Get.offAll(() => SignupCheckemailScreen(),
+        binding: SignUpCheckEmailBinding(),
+        arguments: {'id': controllerID.text, 'pw': controllerPassword.text});
+  }
+
+  // 회원가입 완료가 안된 게스트 계정일경우 회원가입 4단계 화면으로 넘어가게 함
+  void goSetData() {
+    Get.offAll(() => const SignupSetprofileScreen(), binding: SignUpSetDataBinding());
+  }
+
   // 계정 찾기 화면으로 이동
   void goFindAccount() {
     Get.to(() => FindAccountScreen(), binding: FindAccountBinding());
@@ -59,7 +75,6 @@ class LoginController extends GetxController {
       EasyLoading.show(status: '로그인중');
       if (!RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(controllerID.text)) {
         email = '$email@geuset.login';
-        print('aaaaaa');
       }
 
       final response = await http.post(
@@ -72,18 +87,27 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 201) {
         jsonData = jsonDecode(response.body);
+
         uid = jsonData!['user']['uid'];
         refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
         _myDataController.myUid.value = uid;
-        await setTokens(refreshToken, uid);
-        bool checkMyData = await getUserData();
-        bool checkMyWalletData = await getWalletData();
 
-        if (checkMyData && checkMyWalletData) {
-          await startGetData();
-          goHome();
+        print(jsonData['state']);
+        if (jsonData['state'] == 'checkemail') {
+          showSimpleDialog(goCheckEmail, '회원가입 미완료', '회원가입이 중단된 상태입니다. 아래 버튼을 눌러 계속 진행해주세요!');
+        } else if (jsonData['state'] == 'setdata') {
+          showSimpleDialog(goSetData, '회원가입 미완료', '회원가입이 중단된 상태입니다. 아래 버튼을 눌러 계속 진행해주세요!');
         } else {
-          throw Exception('MyData is missing.');
+          await setTokens(refreshToken, uid);
+          bool checkMyData = await getUserData();
+          bool checkMyWalletData = await getWalletData();
+
+          if (checkMyData && checkMyWalletData) {
+            await startGetData();
+            goHome();
+          } else {
+            throw Exception('MyData is missing.');
+          }
         }
       } else {
         throw Exception('LoginData is missing.');
