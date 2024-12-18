@@ -27,12 +27,17 @@ Future<bool> checkServer() async {
 
     if (running.statusCode == 200) {
       final jsonData = jsonDecode(running.body);
+      String storeVersionData = jsonData['version']['versionName'];
+      storeBuild = jsonData['version']['versionCode'];
 
-      latestVersion = jsonData['version']['latest_version'];
-      latestBuild = jsonData['version']['latest_build'];
-      minVersion = jsonData['version']['min_version'];
-      minBuild = jsonData['version']['min_build'];
+      RegExp regex = RegExp(r'\(([^)]+)\)');
+      Match? match = regex.firstMatch(storeVersionData);
 
+      if (match != null) {
+        storeVersion = match.group(1)!;
+      } else {
+        storeVersion = '0.0.0';
+      }
       return true;
     } else {
       return false;

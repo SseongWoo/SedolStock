@@ -712,8 +712,9 @@ class StockPieChartWidget extends StatelessWidget {
       return PieChartSectionData(
         value: stock.stockCount.toDouble(), // stockCount 값을 사용
         color: stock.color, // StockListClass.color를 색상으로 사용
-        title:
-            '${stock.stockName}(${stock.stockType == 'view' ? '조' : '좋'})\n${stock.stockCount}(${percentage.toStringAsFixed(1)})%', // 이름 + 퍼센트
+        title: '${stock.stockCount}(${percentage.toStringAsFixed(1)})%',
+        // title:
+        //     '${stock.stockName}(${stock.stockType == 'view' ? '조' : '좋'})\n${stock.stockCount}(${percentage.toStringAsFixed(1)})%',
         titleStyle: TextStyle(
           fontSize: _screenController.screenSize.value.getHeightPerSize(1.8),
           fontWeight: FontWeight.bold,

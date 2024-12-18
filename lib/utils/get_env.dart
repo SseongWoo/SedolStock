@@ -15,5 +15,6 @@ void setURL() async {
   packageName = dotenv.env['PACKAGE_NAME'] ?? '';
 
   //httpURL = 'http://localhost:3000/api';
+  //httpURL = 'http://10.0.2.2:3000/api';
   setStreamerColorMap();
 }

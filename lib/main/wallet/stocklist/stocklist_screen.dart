@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main/wallet/stocklist/stocklist_widget.dart';
+import '../../../data/my_data.dart';
 import '../../../utils/screen_size.dart';
 
 // 보유 주식 목록 화면
-class StocklistScreen extends StatefulWidget {
-  const StocklistScreen({super.key});
-
-  @override
-  State<StocklistScreen> createState() => _StocklistScreenState();
-}
-
-class _StocklistScreenState extends State<StocklistScreen> {
+class StocklistScreen extends StatelessWidget {
   final ScreenController _screenController = Get.find<ScreenController>();
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  StocklistScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        StockListCustomTableWidget(),
-        const Expanded(
-          child: StockDataTableWidget(),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          StockListMyDataWidget(),
+          StockListChartWidget(),
+          StockListWidget(),
+        ],
+      ),
     );
   }
 }

@@ -114,7 +114,7 @@ class SplashController extends GetxController {
   // 앱 버전과 최소 요구 버전 비교
   bool checkVersion() {
     final isVersionOutdated = isVersionLower();
-    final isBuildOutdated = minBuild.codeUnitAt(0) > appBuild.codeUnitAt(0);
+    final isBuildOutdated = storeBuild.codeUnitAt(0) > appBuild.codeUnitAt(0);
 
     return (isVersionOutdated || isBuildOutdated);
   }
@@ -151,7 +151,7 @@ class SplashController extends GetxController {
 
   bool isVersionLower() {
     final appParts = appVersion.split('.').map(int.parse).toList();
-    final minParts = minVersion.split('.').map(int.parse).toList();
+    final minParts = storeVersion.split('.').map(int.parse).toList();
     for (int i = 0; i < appParts.length; i++) {
       if (minParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
       if (minParts[i] < appParts[i]) return false; // 현재 버전이 더 높음

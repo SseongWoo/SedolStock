@@ -51,7 +51,9 @@ class TransactionController extends GetxController {
       calculatorInt,
       (callback) {
         calculatorSum.value = calculatorInt.value *
-            _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice;
+            (itemType == 'view'
+                ? _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice
+                : _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice);
       },
     );
   }
@@ -116,6 +118,7 @@ class TransactionController extends GetxController {
       calculatorDisplay.value = calculatorInt.value.toString();
     } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
       calculatorInt.value = _myDataController.ownStock['${channelUID}_$itemType']!.stockCount ~/ 2;
+      calculatorDisplay.value = calculatorInt.value.toString();
     }
   }
 
@@ -127,6 +130,7 @@ class TransactionController extends GetxController {
       calculatorDisplay.value = calculatorInt.value.toString();
     } else if (!buying && _myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
       calculatorInt.value = _myDataController.ownStock['${channelUID}_$itemType']!.stockCount;
+      calculatorDisplay.value = calculatorInt.value.toString();
     }
   }
 

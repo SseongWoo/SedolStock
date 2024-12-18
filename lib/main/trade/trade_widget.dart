@@ -26,7 +26,7 @@ class _TradeProgressBarWidgetState extends State<TradeProgressBarWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: _screenController.screenSize.value.getWidthSize(),
-      height: _screenController.screenSize.value.getHeightPerSize(2),
+      height: _screenController.screenSize.value.getHeightPerSize(0.5),
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
@@ -39,7 +39,7 @@ class _TradeProgressBarWidgetState extends State<TradeProgressBarWidget> {
                   ? _screenController.screenSize.value.getWidthSize() *
                       (_timerController.secondsRemaining.value / 180)
                   : 0, // 진행률 계산
-              height: _screenController.screenSize.value.getHeightPerSize(2),
+              height: _screenController.screenSize.value.getHeightPerSize(0.5),
               decoration: BoxDecoration(
                 color: fanColorMap[_myDataController.myChoicechannel.value],
               ),
@@ -248,11 +248,11 @@ class TradeItemWidget extends StatelessWidget {
                 () => Text(
                   type == 'view'
                       ? _youtubeDataController.youtubeLiveData[channelUID]!.viewDelisting > 0
-                          ? '상장 폐지 중...'
+                          ? '상장 폐지'
                           : formatToCurrency(
                               _youtubeDataController.youtubeLiveData[channelUID]!.viewCountPrice)
                       : _youtubeDataController.youtubeLiveData[channelUID]!.likeDelisting > 0
-                          ? '상장 폐지 중...'
+                          ? '상장 폐지'
                           : formatToCurrency(
                               _youtubeDataController.youtubeLiveData[channelUID]!.likeCountPrice),
                   style: TextStyle(

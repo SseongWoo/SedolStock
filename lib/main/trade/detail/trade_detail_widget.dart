@@ -214,7 +214,11 @@ class TradeDatailLineChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(_screenController.screenSize.value.getHeightPerSize(1)),
+      padding: EdgeInsets.fromLTRB(
+          _screenController.screenSize.value.getWidthPerSize(1),
+          _screenController.screenSize.value.getHeightPerSize(2),
+          _screenController.screenSize.value.getWidthPerSize(3),
+          _screenController.screenSize.value.getHeightPerSize(2)),
       child: Obx(
         () {
           return LineChart(
@@ -235,11 +239,11 @@ class TradeDatailLineChartWidget extends StatelessWidget {
                     getTitlesWidget: (value, meta) {
                       return Padding(
                         padding: EdgeInsets.only(
-                            top: _screenController.screenSize.value.getHeightPerSize(1)),
+                            top: _screenController.screenSize.value.getHeightPerSize(0.5)),
                         child: Text(
                           _tradeDetailController.chartXTitle[value.toInt()],
                           style: TextStyle(
-                              fontSize: _screenController.screenSize.value.getHeightPerSize(1.2)),
+                              fontSize: _screenController.screenSize.value.getHeightPerSize(1)),
                         ),
                       );
                     },

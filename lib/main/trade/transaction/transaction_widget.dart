@@ -146,7 +146,7 @@ class CalculatorTitleWidget extends StatelessWidget {
               ),
             ),
             Text(
-              '내 잔고 : ${formatToCurrency(_myDataController.myMoney.value)}원',
+              '내 잔고 : ${formatToCurrency(_myDataController.myMoney.value)}원 보유 주식 : ${_myDataController.ownStock['${_transactionController.channelUID}_${_transactionController.itemType}']?.stockCount}주',
               style: TextStyle(
                   fontSize: _screenController.screenSize.value.getHeightPerSize(1.5),
                   color: Colors.grey),
