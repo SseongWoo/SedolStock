@@ -23,8 +23,9 @@
 - 프로젝트 : 모의 투자 시뮬레이션 팬게임
 - 분류 : 소규모 팀 프로젝트
 - 제작기간 : 24.11~24.12
-- 사용기술 : Flutter, Dart, JavaScript, Node.js, AWS EC2, FireBase Authentication, FireBase Cloud Firestore
+- 사용기술 : Flutter, Dart, JavaScript, Node.js, AWS EC2, FireBase,
 - 사용 IDE : Android Studio(프론트앤드), Visual Studio Code(백엔드)
+- 사용 API : YouTube Data API v3, Google Play Android Developer API, FireBase Authentication API, FireBase Cloud Firestore API
 - 사용 디바이스 : iPhone 16 pro max, Galaxy S23+, Galaxy Tap S9+, Galaxy Tap A7 Lite
 
 ## 개발환경
