@@ -148,6 +148,7 @@ lib
 │   ├── splash_system.dart
 │   └── splash_widget.dart
 └── utils                                       # 다양한 기능 관련 파일
+    ├── audio.dart                              # 소리 기능
     ├── check_list.dart                         # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
     ├── color.dart                              # 색 설정 파일
     ├── custom_scroll.dart                      # 웹에서도 스크롤이 동작하게 하는 기능
