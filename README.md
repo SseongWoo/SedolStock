@@ -178,18 +178,18 @@ lib
     
 |홈 탭|랭킹 탭|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/f902e00b-c17d-42fd-9406-1188aae330e7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/de211c84-1a37-4a05-821f-c3c7ec193237" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/bf47eb77-723d-4f3d-a79c-8a22a4ac60d7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/de211c84-1a37-4a05-821f-c3c7ec193237" width="350" height="750">|
 |지갑 탭 주식잔고|지갑 탭 거래내역|
-|<img src = "https://github.com/user-attachments/assets/76fbd07d-a2dd-4dbb-90c2-6fd93e40aac1" width="350" height="750">|<img src = "" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/a29fb1be-c6da-4758-a4a1-797a9b957c2e" width="350" height="750">|<img src = "" width="350" height="750">|
 |알림 화면||
-|<img src = "" width="350" height="750">|<img src = "" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/07e6e4c9-4964-4d6a-81fd-f1ceb650e7c7" width="350" height="750">|<img src = "" width="350" height="750">|
 </details>
 
 <details><summary>거래 화면 부분</summary>
     
 |거래 탭|종목 상세 정보|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/d9c6640a-8880-45e6-ac53-79358bc01fcc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1ce1dd61-3f72-4ea3-9049-8c13f6466869" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/3d7c7be7-97d4-4552-b532-f1a0e246f092" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1ce1dd61-3f72-4ea3-9049-8c13f6466869" width="350" height="750">|
 |종목 판매|종목 구매|
 |<img src = "https://github.com/user-attachments/assets/4594f88e-0647-40d2-b75c-ef35c7747260" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/d37fbb26-593d-43b1-8090-8d960957481b" width="350" height="750">|
 |종목 판매 확인|종목 구매 확인|
@@ -226,4 +226,7 @@ font_awesome_flutter: ^10.8.0       # FontAwesome 아이콘 라이브러리
 logger: ^2.5.0                      # 로그 기록 및 디버깅용 라이브러리
 package_info_plus: ^8.1.1           # 앱의 패키지 정보 가져오는 라이브러리
 fl_chart: ^0.69.2                   # 플러터용 차트 생성 라이브러리
+badges: ^3.1.2                      # 배지 위젯 라이브러리
+just_audio: ^0.9.42                 # 오디오 재생 라이브러리
+store_redirect: ^2.0.3              # 앱 스토어에 바로 리다이렉트하는 기능의 라이브러리
 ```
