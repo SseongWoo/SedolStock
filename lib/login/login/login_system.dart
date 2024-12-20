@@ -92,7 +92,6 @@ class LoginController extends GetxController {
         refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];
         _myDataController.myUid.value = uid;
 
-        print(jsonData['state']);
         if (jsonData['state'] == 'checkemail') {
           showSimpleDialog(goCheckEmail, '회원가입 미완료', '회원가입이 중단된 상태입니다. 아래 버튼을 눌러 계속 진행해주세요!');
         } else if (jsonData['state'] == 'setdata') {

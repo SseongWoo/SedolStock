@@ -11,11 +11,14 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('관리'),
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
+          SettingAudioWidget(),
           SettingButtonWidget(
             title: '데이터 새로고침',
             function: _settingController.tryGetData,

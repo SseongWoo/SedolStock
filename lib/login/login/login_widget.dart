@@ -42,6 +42,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           cursorColor: Colors.white,
           onTapOutside: (event) => FocusScope.of(context).unfocus(),
           textInputAction: TextInputAction.next,
+          keyboardType: TextInputType.emailAddress,
         ),
         SizedBox(
           height: _screenController.screenSize.value.getHeightPerSize(2),
