@@ -6,10 +6,8 @@ import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/data_storage.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/utils/simple_widget.dart';
+import 'package:stockpj/widget/simple_widget.dart';
 import 'package:stockpj/main.dart';
-
-import '../utils/date_time.dart';
 
 // 보유 주식 클래스
 class OwnStock {
@@ -48,15 +46,43 @@ class StockListClass {
 
 // 주식 거래 내역 클래스
 class TradeHistoryClass {
+  // String itemuid;
+  // String itemtype;
+  // int itemcount;
+  // int transactionprice;
+  // String type;
+  // int moneybefore;
+  // int moneyafter;
+  // String tradetime;
+  // int priceavg;
+  // int tradePrice;
+  // int profit;
+  // double ratio;
+  //
+  // TradeHistoryClass({
+  //   required this.itemuid,
+  //   required this.itemtype,
+  //   required this.itemcount,
+  //   required this.transactionprice,
+  //   required this.type,
+  //   required this.moneybefore,
+  //   required this.moneyafter,
+  //   required this.tradetime,
+  //   required this.priceavg,
+  //   required this.tradePrice,
+  //   required this.profit,
+  //   required this.ratio,
+  // });
+
   String itemuid;
   String itemtype;
   int itemcount;
   int transactionprice;
   String type;
-  int moneybefore;
-  int moneyafter;
   String tradetime;
-  int priceavg;
+  int tradePrice;
+  int profit;
+  double ratio;
 
   TradeHistoryClass({
     required this.itemuid,
@@ -64,10 +90,10 @@ class TradeHistoryClass {
     required this.itemcount,
     required this.transactionprice,
     required this.type,
-    required this.moneybefore,
-    required this.moneyafter,
     required this.tradetime,
-    required this.priceavg,
+    required this.tradePrice,
+    required this.profit,
+    required this.ratio,
   });
 }
 
@@ -104,7 +130,7 @@ class MyDataController extends GetxController {
   RxInt myStockCount = 0.obs; // *
   RxInt myStockList = 0.obs; // //
   RxMap<String, OwnStock> ownStock = <String, OwnStock>{}.obs; // 보유 주식 맵 데이터
-  RxList<StockListClass> stockListItem = <StockListClass>[].obs; // 보유 주식 리스트 데이터
+  RxMap<String, StockListClass> stockListItem = <String, StockListClass>{}.obs; // 보유 주식 리스트 데이터
   RxList<TradeHistoryClass> tradeHistoryList = <TradeHistoryClass>[].obs; // 거래 내역 리스트 데이터
   RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs; // 주식 정보 맵 데이터
   RxInt totalMoneyHistory = 0.obs; // 거래 내역 정보
@@ -128,41 +154,33 @@ class MyDataController extends GetxController {
 
     ownStock.forEach((key, value) {
       if (value.stockCount > 0) {
-        String keyUID = key.replaceAll(RegExp(r'(_view|_comment|_like)$'), ''); // 조건에 맞는 단어들을 삭제
-        String? type = RegExp(r'_([^_]+)$') // 마지막 '_' 뒤의 단어만 매칭 가져옴
-            .firstMatch(key)
-            ?.group(1);
-
-        if (_youtubeDataController.youtubeLiveData[keyUID] != null) {
+        if (_youtubeDataController.itemPriceDateMap[key] != null) {
           // 주식 종류를 구분해서 가격정보를 가져옴
-          int stockPrice = (type == 'view'
-                  ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
-                  : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice) *
-              value.stockCount;
+          ItemPriceDataClass itemPriceData = _youtubeDataController.itemPriceDateMap[key]!;
+
+          int stockPrice = itemPriceData.price;
 
           myStockMoney.value += stockPrice;
           totalBuyPrice += value.stockPrice;
           int profit = stockPrice - value.stockPrice; // 이익 계산
           myReturnMoney.value += profit;
 
-          stockListItem.add(
-            StockListClass(
-                keyUID,
-                channelMapData[keyUID]!,
-                profit,
-                (profit / value.stockPrice) * 100,
-                value.stockCount,
-                stockPrice,
-                value.stockPrice ~/ value.stockCount,
-                type == 'view'
-                    ? _youtubeDataController.youtubeLiveData[keyUID]!.viewCountPrice
-                    : _youtubeDataController.youtubeLiveData[keyUID]!.likeCountPrice,
-                type ?? '',
-                streamerColorMap[keyUID]!),
-          );
+          String itemUid = itemPriceData.uid;
 
-          itemHistory[key] =
-              ItemHistoryClass(keyUID, type ?? '', value.stockPrice ~/ value.stockCount);
+          stockListItem['${itemUid}_${itemPriceData.type}'] = StockListClass(
+              itemUid,
+              channelMapData[itemUid]!,
+              profit,
+              (profit / value.stockPrice) * 100,
+              value.stockCount,
+              stockPrice,
+              value.stockPrice ~/ value.stockCount,
+              itemPriceData.price,
+              itemPriceData.type,
+              streamerColorMap[itemUid]!);
+
+          itemHistory[key] = ItemHistoryClass(
+              itemUid, itemPriceData.type ?? '', value.stockPrice ~/ value.stockCount);
         }
       }
     });
@@ -321,17 +339,35 @@ Future<void> getTradeHistoryData() async {
             itemuids.length == moneyafters.length &&
             itemuids.length == tradetimes.length) {
           for (int i = 0; i < itemuids.length; i++) {
+            int tradePrice = transactionprices[i] * itemcounts[i];
+            int profit = (priceavgs[i] - transactionprices[i]) * itemcounts[i];
+            double ratio = profit / (priceavgs[i] * itemcounts[i]) * 100;
+
             myDataController.tradeHistoryList.add(
+              // TradeHistoryClass(
+              //   itemuid: itemuids[i],
+              //   itemtype: itemtypes[i],
+              //   itemcount: itemcounts[i],
+              //   transactionprice: transactionprices[i],
+              //   type: types[i],
+              //   moneybefore: moneybefores[i],
+              //   moneyafter: moneyafters[i],
+              //   tradetime: tradetimes[i],
+              //   priceavg: priceavgs[i],
+              //   tradePrice: tradePrice,
+              //   profit: profit,
+              //   ratio: ratio,
+              // ),
               TradeHistoryClass(
                 itemuid: itemuids[i],
                 itemtype: itemtypes[i],
                 itemcount: itemcounts[i],
                 transactionprice: transactionprices[i],
                 type: types[i],
-                moneybefore: moneybefores[i],
-                moneyafter: moneyafters[i],
                 tradetime: tradetimes[i],
-                priceavg: priceavgs[i],
+                tradePrice: tradePrice,
+                profit: profit,
+                ratio: ratio,
               ),
             );
 

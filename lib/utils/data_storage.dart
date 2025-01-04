@@ -146,7 +146,7 @@ Future<void> loadLatestYoutubeData() async {
     if (jsonData != null) {
       final Map<String, dynamic> dataMap = jsonDecode(jsonData);
       youtubeDataController.latestYoutubeData.assignAll(
-        dataMap.map((key, value) => MapEntry(key, HomeYoutubeDataClass.fromJson(value))),
+        dataMap.map((key, value) => MapEntry(key, YoutubeVideoDataClass.fromHomeJson(value))),
       );
     }
   } catch (e) {
@@ -206,7 +206,7 @@ Future<void> loadYoutubeVideoData() async {
           (key, value) => MapEntry(
             key,
             List<YoutubeVideoDataClass>.from(
-                value.map((video) => YoutubeVideoDataClass.fromJson(video))),
+                value.map((video) => YoutubeVideoDataClass.fromVideoJson(video))),
           ),
         ),
       );
@@ -222,6 +222,7 @@ void saveRankingData() {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final jsonData = publicDataController.rankingList.map((data) => data.toJson()).toList();
     box.write('rankingData', jsonEncode(jsonData));
+    box.write('rankingDataDate', publicDataController.updateDate.value);
   } catch (e) {
     logger.e('saveRankingData error : $e');
   }
@@ -238,6 +239,7 @@ Future<void> loadRankingData() async {
         dataList.map((data) => RankingDataClass.fromJson(data)).toList(),
       );
     }
+    publicDataController.updateDate.value = await box.read('rankingDataDate');
   } catch (e) {
     logger.e('loadRankingData error : $e');
   }

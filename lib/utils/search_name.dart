@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/main.dart';
-import 'package:stockpj/utils/simple_widget.dart';
+import 'package:stockpj/widget/simple_widget.dart';
 import 'package:get/get.dart';
 import 'get_env.dart';
 

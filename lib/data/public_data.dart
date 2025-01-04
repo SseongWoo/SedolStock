@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:stockpj/config/route.dart';
 import '../main.dart';
 import '../utils/data_storage.dart';
 import '../utils/get_env.dart';
@@ -94,7 +95,7 @@ class PublicDataController extends GetxController {
     await clearTokens();
     Get.delete<TimerController>();
     EasyLoading.dismiss();
-    Get.offAllNamed('/login');
+    Get.offAllNamed(AppRoute.signin);
   }
 }
 

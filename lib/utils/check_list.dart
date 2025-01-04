@@ -47,3 +47,8 @@ Future<bool> checkServer() async {
     return false;
   }
 }
+
+// 이메일 형식인지 확인하는 함수
+bool isValidEmail(String email) {
+  return RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+').hasMatch(email);
+}

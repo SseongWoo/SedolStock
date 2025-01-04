@@ -73,9 +73,9 @@ lib
 │   │   ├── find_account_system.dart
 │   │   └── find_account_widget.dart
 │   ├── login                                   # 로그인 파일
-│   │   ├── login_screen.dart  
+│   │   ├── signin_screen.dart  
 │   │   ├── login_system.dart
-│   │   └── login_widget.dart
+│   │   └── signin_widget.dart
 │   └── signup                                  # 회원가입 파일
 │       ├── 1_choice                            # 회원가입중 이메일, 게스트 로그인 선택 단계 파일
 │       │   ├── signup_choice_screen.dart
@@ -110,9 +110,9 @@ lib
 │   │       ├── withdrawal_screen.dart
 │   │       └── withdrawal_system.dart
 │   ├── message                                 # 알림 화면 파일
-│   │   ├── message_screen.dart
+│   │   ├── notification_screen.dart
 │   │   ├── message_system.dart
-│   │   └── message_widget.dart
+│   │   └── notification_widget.dart
 │   ├── main_screen.dart
 │   ├── main_system.dart
 │   ├── ranking                                 # 랭킹 탭 화면 파일

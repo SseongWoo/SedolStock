@@ -1,29 +1,30 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:stockpj/main/home/home_system.dart';
-import 'package:stockpj/main/information/information_system.dart';
-import 'package:stockpj/main/wallet/stocklist/stocklist_system.dart';
-import 'package:stockpj/splash/splash_screen.dart';
 import 'package:stockpj/utils/audio.dart';
-import 'package:stockpj/utils/check_list.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/utils/timer.dart';
+import 'package:stockpj/view/main/information/delete_account_screen.dart';
+import 'package:stockpj/view/main/information/setting_app_screen.dart';
+import 'package:stockpj/view/main/main_screen.dart';
+import 'package:stockpj/view/main/notification/notification_screen.dart';
+import 'package:stockpj/view/main/trade/trade_dealing_screen.dart';
+import 'package:stockpj/view/main/trade/trade_detail_screen.dart';
+import 'package:stockpj/view/sign/find/find_account_screen.dart';
+import 'package:stockpj/view/sign/signin/signin_screen.dart';
+import 'package:stockpj/view/sign/signup/signup_checkemail_screen.dart';
+import 'package:stockpj/view/sign/signup/signup_choice_screen.dart';
+import 'package:stockpj/view/sign/signup/signup_screen.dart';
+import 'package:stockpj/view/splash_screen.dart';
+import 'config/route.dart';
 import 'data/public_data.dart';
 import 'data/youtube_data.dart';
-import 'login/login/login_screen.dart';
-import 'login/login/login_system.dart';
-import 'login/signup/4_setdata/signup_setdata_screen.dart';
-import 'main/main_screen.dart';
-import 'main/trade/trade_system.dart';
-import 'main/wallet/stockhistory/stockhistory_system.dart';
 
 var logger = Logger(); // 로그를 나타내기 위한 변수
 
@@ -98,15 +99,10 @@ void main() async {
 // 컨트롤러들 생성 함수
 void startController() {
   Get.put(ScreenController());
-  Get.put(TimerController(), permanent: true);
   Get.put(YoutubeDataController());
   Get.put(MyDataController());
-  Get.put(StockListController());
-  Get.put(StockHistoryController());
+  Get.put(TimerController(), permanent: true);
   Get.put(PublicDataController());
-  Get.put(TradeController());
-  Get.put(HomeController());
-  Get.put(InformationController());
   Get.put(AudioController());
 }
 
@@ -134,30 +130,60 @@ class MyApp extends StatelessWidget {
       title: 'StockGame',
       theme: ThemeData(
         fontFamily: 'Maple',
-        colorScheme: ColorScheme.fromSeed(seedColor: colorISEGYEIDOL),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      initialRoute: '/',
+      initialRoute: AppRoute.splash,
 
       getPages: [
         GetPage(
-          name: '/test',
-          page: () => const SignupSetprofileScreen(),
-        ),
-        GetPage(
-          name: '/',
+          name: AppRoute.splash,
           page: () => SplashScreen(),
         ),
         GetPage(
-          name: '/login',
-          page: () => LoginScreen(),
-          binding: LoginBinding(),
+          name: AppRoute.signupChoice,
+          page: () => SignupChoiceScreen(),
         ),
         GetPage(
-          name: '/main',
+          name: AppRoute.signupScreen,
+          page: () => SignupScreen(),
+        ),
+        GetPage(
+          name: AppRoute.signupCheckEmail,
+          page: () => SignupCheckemailScreen(),
+        ),
+        GetPage(
+          name: AppRoute.signin,
+          page: () => SigninScreen(),
+        ),
+        GetPage(
+          name: AppRoute.home,
           page: () => MainScreen(),
-          transition: Transition.noTransition,
+        ),
+        GetPage(
+          name: AppRoute.findPW,
+          page: () => FindAccountScreen(),
+        ),
+        GetPage(
+          name: AppRoute.tradeDetail,
+          page: () => TradeDetailScreen(),
+        ),
+        GetPage(
+          name: AppRoute.tradeDealing,
+          page: () => TradeDealingScreen(),
+        ),
+        GetPage(
+          name: AppRoute.notification,
+          page: () => NotificationScreen(),
+        ),
+        GetPage(
+          name: AppRoute.settingApp,
+          page: () => SettingAppScreen(),
+        ),
+        GetPage(
+          name: AppRoute.deleteAccount,
+          page: () => DeleteAccountScreen(),
         ),
       ],
     );

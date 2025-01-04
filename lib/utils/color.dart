@@ -43,3 +43,11 @@ void setStreamerColorMap() {
   List<Color> filteredColors = List.from(colorList)..removeAt(1);
   streamerColorMap = Map.fromIterables(channelIdList, filteredColors);
 }
+
+Color profitAndLossColor(num value) {
+  return value > 0
+      ? Colors.red
+      : value < 0
+          ? Colors.blue
+          : Colors.grey;
+}

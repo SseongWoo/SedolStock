@@ -6,80 +6,62 @@ import 'package:stockpj/data/public_data.dart';
 import 'dart:convert';
 import 'package:stockpj/utils/get_env.dart';
 import '../main.dart';
-import '../main/trade/detail/trade_detail_system.dart';
+import '../model/main/trade_model.dart';
 
 Map<String, String> channelMapData =
     Map.fromIterables(channelIdList, channelNameList); // 채널의 uid와 이름으로 구성된 맵 데이터
 Map<String, String> channelAndSubChannelMapData =
     Map.fromIterables(channelIdList, subChannelIdList); // 채널의 uid와 서브채널의 uid로 구성되어있는 맵 데이터
 
-// 홈 화면에 사용될 최신영상 데이터 클래스
-class HomeYoutubeDataClass {
-  String title;
-  String thumbnail;
-  String publishedAt;
-  String videoUrl;
-  String channelName;
+class YoutubeVideoDataClass {
+  final String videoUrl;
+  final String title;
+  final String description;
+  final String thumbnail;
+  final String publishedAt;
+  final String channelName;
 
-  HomeYoutubeDataClass(
-      this.title, this.thumbnail, this.publishedAt, this.videoUrl, this.channelName);
+  YoutubeVideoDataClass({
+    required this.videoUrl,
+    required this.title,
+    required this.thumbnail,
+    required this.publishedAt,
+    this.description = '',
+    this.channelName = '', // 채널 이름이 없을 경우 빈 문자열로 초기화
+  });
 
-  // 객체를 JSON으로 변환
-  Map<String, dynamic> toJson() => {
-        'title': title,
-        'thumbnail': thumbnail,
-        'publishedAt': publishedAt,
-        'videoUrl': videoUrl,
-        'channelName': channelName,
-      };
-
-  // JSON을 객체로 변환
-  factory HomeYoutubeDataClass.fromJson(Map<String, dynamic> json) {
-    return HomeYoutubeDataClass(
-      json['title'],
-      json['thumbnail'],
-      json['publishedAt'],
-      json['videoUrl'],
-      json['channelName'],
+  // JSON을 객체로 변환 (HomeYoutubeDataClass 형태)
+  factory YoutubeVideoDataClass.fromHomeJson(Map<String, dynamic> json) {
+    return YoutubeVideoDataClass(
+      videoUrl: json['videoUrl'] ?? '',
+      title: json['title'] ?? '',
+      description: '',
+      thumbnail: json['thumbnail'] ?? '',
+      publishedAt: json['publishedAt'] ?? '',
+      channelName: json['channelName'] ?? '',
     );
   }
-}
 
-// 유튜브 영상 데이터 클래스
-class YoutubeVideoDataClass {
-  String videoid;
-  String title;
-  String description;
-  String thumbnailurl;
-  String publishedat;
-
-  YoutubeVideoDataClass(
-    this.videoid,
-    this.title,
-    this.description,
-    this.thumbnailurl,
-    this.publishedat,
-  );
+  // JSON을 객체로 변환 (YoutubeVideoDataClass 형태)
+  factory YoutubeVideoDataClass.fromVideoJson(Map<String, dynamic> json) {
+    return YoutubeVideoDataClass(
+      videoUrl: json['videoUrl'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      thumbnail: json['thumbnail'] ?? '',
+      publishedAt: json['publishedAt'] ?? '',
+    );
+  }
 
   // 객체를 JSON으로 변환
   Map<String, dynamic> toJson() => {
-        'videoid': videoid,
+        'videoUrl': videoUrl,
         'title': title,
         'description': description,
-        'thumbnailurl': thumbnailurl,
-        'publishedat': publishedat,
+        'thumbnail': thumbnail,
+        'publishedAt': publishedAt,
+        'channelName': channelName,
       };
-
-  // JSON을 객체로 변환
-  factory YoutubeVideoDataClass.fromJson(Map<String, dynamic> json) {
-    return YoutubeVideoDataClass(
-      json['videoid'],
-      json['title'],
-      json['description'],
-      json['thumbnailurl'],
-      json['publishedat'],
-    );
-  }
 }
 
 // 채널의 데이터 클래스
@@ -179,17 +161,46 @@ class YoutubeLiveDataClass {
   );
 }
 
+class ItemPriceDataClass {
+  String type;
+  String uid;
+  int totalCount;
+  int price;
+  int beforeTotalCount;
+  int beforePrice;
+  int delisting;
+  int differencePrice;
+  int subTotalCount;
+  int subBeforeTotalCount;
+  double ratio;
+
+  ItemPriceDataClass(
+      this.uid,
+      this.type,
+      this.price,
+      this.totalCount,
+      this.beforePrice,
+      this.beforeTotalCount,
+      this.delisting,
+      this.differencePrice,
+      this.ratio,
+      this.subTotalCount,
+      this.subBeforeTotalCount);
+}
+
 class YoutubeDataController extends GetxController {
-  RxMap<String, HomeYoutubeDataClass> latestYoutubeData =
-      <String, HomeYoutubeDataClass>{}.obs; // 직전 유튜브 데이터 맵 데이터
+  RxMap<String, YoutubeVideoDataClass> latestYoutubeData =
+      <String, YoutubeVideoDataClass>{}.obs; // 직전 유튜브 데이터 맵 데이터
   RxMap<String, YoutubeChannelDataClass> youtubeChannelData =
       <String, YoutubeChannelDataClass>{}.obs; // 유튜브 채널 데이터 맵 데이터
-  RxMap<String, YoutubeLiveDataClass> youtubeLiveData =
-      <String, YoutubeLiveDataClass>{}.obs; // 유튜브 가격 데이터 맵 데이터
+  // RxMap<String, YoutubeLiveDataClass> youtubeLiveData =
+  //     <String, YoutubeLiveDataClass>{}.obs; // 유튜브 가격 데이터 맵 데이터
   RxMap<String, YoutubeChartDataClass> youtubeChartData =
       <String, YoutubeChartDataClass>{}.obs; // 차트에 사용될 가격 데이터 맵 데이터
   RxMap<String, List<YoutubeVideoDataClass>> youtubeVideoData =
       <String, List<YoutubeVideoDataClass>>{}.obs; // 비디오 데이터 맵 데이터
+  RxMap<String, ItemPriceDataClass> itemPriceDateMap =
+      <String, ItemPriceDataClass>{}.obs; // 주식 종목들 데이터
 }
 
 // 주식 아이템 상세페이지의 그래프에 사용될 데이터를 형식에 맞게 가공하여 저장하는 함수
@@ -236,12 +247,12 @@ Future<void> getLatestYoutubeData() async {
       final Map<String, dynamic> data = jsonDecode(response.body)['videos'];
 
       data.forEach((channelId, videoData) {
-        youtubeDataController.latestYoutubeData[channelId] = HomeYoutubeDataClass(
-          videoData['title'] ?? '',
-          videoData['thumbnail'] ?? '',
-          videoData['publishedAt'] ?? '',
-          videoData['videoUrl'] ?? '',
-          videoData['channelName'] ?? '',
+        youtubeDataController.latestYoutubeData[channelId] = YoutubeVideoDataClass(
+          title: videoData['title'] ?? '',
+          thumbnail: videoData['thumbnail'] ?? '',
+          publishedAt: videoData['publishedAt'] ?? '',
+          videoUrl: videoData['videoUrl'] ?? '',
+          channelName: videoData['channelName'] ?? '',
         );
       });
       logger.i('getLatestYoutubeData log : Latest Videos stored successfully.');
@@ -299,58 +310,93 @@ Future<void> getYoutubeLiveData() async {
       final Map<String, dynamic> chartDataList =
           jsonDecode(response.body)['chartDataList']; // 차트 데이터
 
-      countMapData.forEach((channelId, videoData) {
-        youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
-          videoData['differenceCommentCount'] ?? 0,
-          videoData['differenceLikeCount'] ?? 0,
-          videoData['differenceViewCount'] ?? 0,
-          videoData['lastDifferenceCommentCount'] ?? 0,
-          videoData['lastDifferenceLikeCount'] ?? 0,
-          videoData['lastDifferenceViewCount'] ?? 0,
-          videoData['lastTotalCommentCount'] ?? 0,
-          videoData['lastTotalLikeCount'] ?? 0,
-          videoData['lastTotalViewCount'] ?? 0,
-          videoData['totalCommentCount'] ?? 0,
-          videoData['totalLikeCount'] ?? 0,
-          videoData['totalViewCount'] ?? 0,
-          videoData['lastCommentCountPrice'] ?? 0,
-          videoData['lastViewCountPrice'] ?? 0,
-          videoData['lastLikeCountPrice'] ?? 0,
-          videoData['commentCountPrice'] ?? 0,
-          videoData['likeCountPrice'] ?? 0,
-          videoData['viewCountPrice'] ?? 0,
-          videoData['viewDelisting'] ?? 0,
-          videoData['likeDelisting'] ?? 0,
-          videoData['commentDelisting'] ?? 0,
-          videoData['updateTime'] ?? '',
-        );
-      });
+      // countMapData.forEach((channelId, videoData) {
+      //   youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
+      //     videoData['differenceCommentCount'] ?? 0,
+      //     videoData['differenceLikeCount'] ?? 0,
+      //     videoData['differenceViewCount'] ?? 0,
+      //     videoData['lastDifferenceCommentCount'] ?? 0,
+      //     videoData['lastDifferenceLikeCount'] ?? 0,
+      //     videoData['lastDifferenceViewCount'] ?? 0,
+      //     videoData['lastTotalCommentCount'] ?? 0,
+      //     videoData['lastTotalLikeCount'] ?? 0,
+      //     videoData['lastTotalViewCount'] ?? 0,
+      //     videoData['totalCommentCount'] ?? 0,
+      //     videoData['totalLikeCount'] ?? 0,
+      //     videoData['totalViewCount'] ?? 0,
+      //     videoData['lastCommentCountPrice'] ?? 0,
+      //     videoData['lastViewCountPrice'] ?? 0,
+      //     videoData['lastLikeCountPrice'] ?? 0,
+      //     videoData['commentCountPrice'] ?? 0,
+      //     videoData['likeCountPrice'] ?? 0,
+      //     videoData['viewCountPrice'] ?? 0,
+      //     videoData['viewDelisting'] ?? 0,
+      //     videoData['likeDelisting'] ?? 0,
+      //     videoData['commentDelisting'] ?? 0,
+      //     videoData['updateTime'] ?? '',
+      //   );
+      // });
+      //
+      // countSubMapData.forEach((channelId, videoData) {
+      //   youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
+      //     videoData['differenceCommentCount'] ?? 0,
+      //     videoData['differenceLikeCount'] ?? 0,
+      //     videoData['differenceViewCount'] ?? 0,
+      //     videoData['lastDifferenceCommentCount'] ?? 0,
+      //     videoData['lastDifferenceLikeCount'] ?? 0,
+      //     videoData['lastDifferenceViewCount'] ?? 0,
+      //     videoData['lastTotalCommentCount'] ?? 0,
+      //     videoData['lastTotalLikeCount'] ?? 0,
+      //     videoData['lastTotalViewCount'] ?? 0,
+      //     videoData['totalCommentCount'] ?? 0,
+      //     videoData['totalLikeCount'] ?? 0,
+      //     videoData['totalViewCount'] ?? 0,
+      //     videoData['lastCommentCountPrice'] ?? 0,
+      //     videoData['lastViewCountPrice'] ?? 0,
+      //     videoData['lastLikeCountPrice'] ?? 0,
+      //     videoData['commentCountPrice'] ?? 0,
+      //     videoData['likeCountPrice'] ?? 0,
+      //     videoData['viewCountPrice'] ?? 0,
+      //     videoData['viewDelisting'] ?? 0,
+      //     videoData['likeDelisting'] ?? 0,
+      //     videoData['commentDelisting'] ?? 0,
+      //     videoData['updateTime'] ?? '',
+      //   );
+      // });
 
-      countSubMapData.forEach((channelId, videoData) {
-        youtubeDataController.youtubeLiveData[channelId] = YoutubeLiveDataClass(
-          videoData['differenceCommentCount'] ?? 0,
-          videoData['differenceLikeCount'] ?? 0,
-          videoData['differenceViewCount'] ?? 0,
-          videoData['lastDifferenceCommentCount'] ?? 0,
-          videoData['lastDifferenceLikeCount'] ?? 0,
-          videoData['lastDifferenceViewCount'] ?? 0,
-          videoData['lastTotalCommentCount'] ?? 0,
-          videoData['lastTotalLikeCount'] ?? 0,
-          videoData['lastTotalViewCount'] ?? 0,
-          videoData['totalCommentCount'] ?? 0,
-          videoData['totalLikeCount'] ?? 0,
-          videoData['totalViewCount'] ?? 0,
-          videoData['lastCommentCountPrice'] ?? 0,
-          videoData['lastViewCountPrice'] ?? 0,
-          videoData['lastLikeCountPrice'] ?? 0,
-          videoData['commentCountPrice'] ?? 0,
-          videoData['likeCountPrice'] ?? 0,
-          videoData['viewCountPrice'] ?? 0,
-          videoData['viewDelisting'] ?? 0,
-          videoData['likeDelisting'] ?? 0,
-          videoData['commentDelisting'] ?? 0,
-          videoData['updateTime'] ?? '',
-        );
+      countMapData.forEach((channelId, videoData) {
+        int diffView = (videoData['viewCountPrice'] ?? 0) - (videoData['lastViewCountPrice'] ?? 0);
+        double ratioView = (diffView / videoData['lastViewCountPrice']) * 100;
+        int diffLike = (videoData['likeCountPrice'] ?? 0) - (videoData['lastLikeCountPrice'] ?? 0);
+        double ratioLike = (diffLike / videoData['lastLikeCountPrice']) * 100;
+
+        dynamic subData = countSubMapData[channelAndSubChannelMapData[channelId]];
+
+        youtubeDataController.itemPriceDateMap['${channelId}_view'] = ItemPriceDataClass(
+            channelId,
+            'view',
+            videoData['viewCountPrice'] ?? 0,
+            videoData['totalViewCount'] ?? 0,
+            videoData['lastViewCountPrice'] ?? 0,
+            videoData['lastTotalViewCount'] ?? 0,
+            videoData['viewDelisting'] ?? 0,
+            diffView,
+            ratioView,
+            subData['totalViewCount'] ?? 0,
+            subData['lastTotalViewCount'] ?? 0);
+
+        youtubeDataController.itemPriceDateMap['${channelId}_like'] = ItemPriceDataClass(
+            channelId,
+            'like',
+            videoData['likeCountPrice'] ?? 0,
+            videoData['totalLikeCount'] ?? 0,
+            videoData['lastLikeCountPrice'] ?? 0,
+            videoData['lastTotalLikeCount'] ?? 0,
+            videoData['likeDelisting'] ?? 0,
+            diffLike,
+            ratioLike,
+            subData['totalLikeCount'] ?? 0,
+            subData['lastTotalLikeCount'] ?? 0);
       });
 
       // 각각의 데이터들을 형식에 맞게 저장하기 위해 변환 후 저장
@@ -399,11 +445,11 @@ Future<void> getYoutubeVideoData() async {
       countMapData.forEach((channelId, videoListData) {
         List<YoutubeVideoDataClass> videoList = (videoListData as List<dynamic>).map((videoData) {
           return YoutubeVideoDataClass(
-            videoData['videoid']?.toString() ?? '',
-            videoData['title']?.toString() ?? '',
-            videoData['description']?.toString() ?? '',
-            videoData['thumbnailurl']?.toString() ?? '',
-            videoData['publishedat']?.toString() ?? '',
+            videoUrl: videoData['videoUrl']?.toString() ?? '',
+            title: videoData['title']?.toString() ?? '',
+            description: videoData['description']?.toString() ?? '',
+            thumbnail: videoData['thumbnail']?.toString() ?? '',
+            publishedAt: videoData['publishedAt']?.toString() ?? '',
           );
         }).toList();
 

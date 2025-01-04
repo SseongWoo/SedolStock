@@ -2,9 +2,8 @@ import 'package:intl/intl.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/main/information/information_system.dart';
-import '../main/trade/detail/trade_detail_system.dart';
 import '../utils/data_storage.dart';
+import '../viewmodel/main/trade/trade_detail_view_model.dart';
 import 'my_data.dart';
 
 // 하루에 한번만 실행되는 함수
@@ -25,7 +24,6 @@ Future<void> startGetData() async {
   final MyDataController myDataController = Get.find<MyDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
-  final InformationController informationController = Get.find<InformationController>();
   String? date = await getDataDate();
   String today = DateFormat('MM월 dd일 hh시').format(DateTime.now());
   DateTime? dateTime = date != null ? DateFormat('MM월 dd일 hh시').parse(date) : null;
@@ -52,10 +50,9 @@ Future<void> startGetData() async {
   await getYoutubeLiveData();
   myDataController.setMoneyData();
   await getTradeHistoryData();
-  informationController.startController();
-  if (Get.isRegistered<TradeDetailController>()) {
-    final TradeDetailController tradeDetailController = Get.find<TradeDetailController>();
-    tradeDetailController.setChartData();
+  if (Get.isRegistered<TradeDetailViewModel>()) {
+    final TradeDetailViewModel tradeDetailViewModel = Get.find<TradeDetailViewModel>();
+    tradeDetailViewModel.setChartData();
   }
   await getMessage();
 }
@@ -63,7 +60,6 @@ Future<void> startGetData() async {
 // 앱 실행중 5분마다 실행되거나, 특정 동작으로 실행되는 함수로 사용자의 정보와 주식의 정보를 업데이트 함
 Future<void> reflashGetData(bool timeReFlash) async {
   final MyDataController myDataController = Get.find<MyDataController>();
-  final InformationController informationController = Get.find<InformationController>();
   await getUserData();
   await getWalletData();
 
@@ -73,7 +69,4 @@ Future<void> reflashGetData(bool timeReFlash) async {
     await getTradeHistoryData();
   }
   await updateMyTotalMoney();
-
-  informationController.profitRate(); // 수익률 업데이트
-  informationController.setMoneyChartData(); // 차트 데이터 업데이트
 }

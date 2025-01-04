@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
-import 'package:stockpj/main/information/information_system.dart';
 import 'package:stockpj/utils/check_list.dart';
 import 'package:stockpj/utils/data_storage.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import 'package:stockpj/utils/simple_widget.dart';
+import 'package:stockpj/widget/simple_widget.dart';
+import '../data/my_data.dart';
 import '../data/start_data.dart';
 
 class TimerController extends GetxController {
+  final MyDataController _myDataController = Get.find<MyDataController>();
   Timer? _countdownTimer; // 카운트다운 타이머
   RxInt secondsRemaining = 0.obs; // 총 남은 시간을 초 단위로 저장
   RxString timeDisplay = '00:00'.obs; // 남은 시간을 "분:초"로 저장
@@ -97,7 +98,7 @@ class TimerController extends GetxController {
     logger.i(currentTime.value);
     _scheduleNextRun();
 
-    if (Get.isRegistered<InformationController>()) {
+    if (_myDataController.myUid.value != '') {
       EasyLoading.show(status: '데이터 갱신중');
       bool serverState = await checkServer();
       if (serverState) {
@@ -141,23 +142,20 @@ class TimerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Container(
-        //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: _screenController.screenSize.value.getWidthPerSize(1.2),
-            right: _screenController.screenSize.value.getWidthPerSize(1.2),
-          ),
-          child: Text(
-            _timerController.timeDisplay.value,
-            style: TextStyle(
-                fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
-                color: _timerController.secondsRemaining.value > 60
-                    ? Colors.black
-                    : _timerController.checkDataTime.value
-                        ? Colors.grey
-                        : Colors.red),
-          ),
+      () => Padding(
+        padding: EdgeInsets.only(
+          left: _screenController.screenSize.value.getWidthPerSize(1.2),
+          right: _screenController.screenSize.value.getWidthPerSize(1.2),
+        ),
+        child: Text(
+          _timerController.timeDisplay.value,
+          style: TextStyle(
+              fontSize: _screenController.screenSize.value.getHeightPerSize(2.2),
+              color: _timerController.secondsRemaining.value > 60
+                  ? Colors.black
+                  : _timerController.checkDataTime.value
+                      ? Colors.grey
+                      : Colors.red),
         ),
       ),
     );

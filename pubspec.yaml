@@ -52,6 +52,7 @@ dependencies:
   badges: ^3.1.2
   just_audio: ^0.9.42
   store_redirect: ^2.0.3
+  flutter_spinkit: ^5.2.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.1
