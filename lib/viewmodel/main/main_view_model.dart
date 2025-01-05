@@ -5,7 +5,7 @@ import 'package:stockpj/view/main/property/property_screen.dart';
 import 'package:stockpj/view/main/ranking/ranking_screen.dart';
 import 'package:stockpj/view/main/trade/trade_screen.dart';
 
-import '../../config/route.dart';
+import '../../constants/route_constants.dart';
 import '../../view/main/information/information_screen.dart';
 
 class MainViewModel extends GetxController {

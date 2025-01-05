@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/signin_view_model.dart';
-import '../../../data/public_data.dart';
-import '../../../utils/color.dart';
+
+import '../../../constants/color_constants.dart';
 import '../../../utils/screen_size.dart';
 import './signin_widget.dart';
 
@@ -138,7 +138,7 @@ class SigninScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  'ver.$appVersion+$appBuild',
+                  'ver.${_viewModel.publicDataController.appVersion}+${_viewModel.publicDataController.appBuild}',
                   style: TextStyle(fontSize: screenSize.getHeightPerSize(2), fontFamily: 'Dot'),
                 ),
               ),

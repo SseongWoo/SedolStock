@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
-import '../../../config/route.dart';
+import '../../../constants/route_constants.dart';
+import '../../../constants/color_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
@@ -135,7 +137,7 @@ class TradeViewModel extends GetxController {
   // 기본 정렬 리스트
   List<ItemPriceDataClass> basicSort() {
     List<ItemPriceDataClass> basicList = [];
-    for (var item in channelIdList) {
+    for (var item in youtubeDataController.channelIdList) {
       if (selectItemType.value == '전체' || selectItemType.value == '조회수') {
         basicList.add(youtubeDataController.itemPriceDateMap['${item}_view']!);
       }
@@ -150,7 +152,7 @@ class TradeViewModel extends GetxController {
   // 리스트뷰 아이템 uid 정보
   String getItemUID(ItemPriceDataClass item) {
     final channelUID = item.uid;
-    final subChannelUID = channelAndSubChannelMapData[channelUID]!;
+    final subChannelUID = youtubeDataController.channelAndSubChannelMapData[channelUID]!;
     final type = item.type;
     return type == 'view' ? channelUID : subChannelUID;
   }

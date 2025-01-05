@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:get/get.dart';
-import '../../../data/youtube_data.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/trade/trade_dealing_view_model.dart';
 
@@ -40,7 +39,8 @@ class DealingDialog extends StatelessWidget {
                       fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: screenSize.getHeightPerSize(2)),
-                _dealingTableWidget('종목명', channelMapData[viewModel.channelUID]!),
+                _dealingTableWidget(
+                    '종목명', viewModel.youtubeDataController.channelMapData[viewModel.channelUID]!),
                 _dealingTableWidget('종목유형', viewModel.typeTitle()),
                 _dealingTableWidget('거래유형', viewModel.saleTitle()),
                 _dealingTableWidget(

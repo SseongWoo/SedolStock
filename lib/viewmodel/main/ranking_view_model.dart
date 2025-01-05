@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:flutter/material.dart';
+import '../../constants/color_constants.dart';
 import '../../data/my_data.dart';
 import '../../data/youtube_data.dart';
 import '../../utils/color.dart';

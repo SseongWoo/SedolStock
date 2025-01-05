@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/main/information/setting_app_view_model.dart';
+import '../../../constants/color_constants.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 

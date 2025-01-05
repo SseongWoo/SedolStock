@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/color.dart';
+import '../../../constants/color_constants.dart';
 import '../../../viewmodel/main/property/property_view_model.dart';
 
 // 지갑 화면

@@ -2,13 +2,13 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:stockpj/main.dart';
 
-import 'data_storage.dart';
+import '../service/storage_service.dart';
 
 // 오디오 재생 관련 함수
 class AudioController extends GetxController {
   late AudioPlayer audioPlayer;
-  RxBool onAudio = true.obs;
-  RxDouble audioVolume = 0.5.obs;
+  RxBool onAudio = true.obs; // 오디오 사용 설정
+  RxDouble audioVolume = 0.5.obs; // 오디오 볼륨
 
   @override
   void onInit() {

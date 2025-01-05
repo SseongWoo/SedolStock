@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
-import '../../../config/route.dart';
+import '../../../constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/start_data.dart';
 import '../../../model/main/information_model.dart';

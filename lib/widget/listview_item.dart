@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../data/youtube_data.dart';
+import '../model/data/data_class.dart';
 import '../utils/date_time.dart';
 import '../utils/screen_size.dart';
 

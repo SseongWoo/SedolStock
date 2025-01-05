@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:stockpj/data/youtube_data.dart';
+import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/screen_size.dart';
 import '../../../view/main/property/property_history_widget.dart';
 
@@ -8,6 +11,7 @@ import '../../../view/main/property/property_history_widget.dart';
 class PropertyHistoryViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
+  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
 
   List<String> itemList = ['전체'] + channelNameList; // 채널 필터
   List<String> itemTypeList = ['전체', '조회수', '좋아요수']; // 아이템 타입 필터
@@ -64,7 +68,7 @@ class PropertyHistoryViewModel extends GetxController {
     RxList<TradeHistoryClass> setHistoryList = <TradeHistoryClass>[].obs;
     historyList.clear();
     final Map<String, String> itemMapping = {'전체': '전체'}
-      ..addAll(Map.fromIterables(channelNameList, channelIdList));
+      ..addAll(Map.fromIterables(channelNameList, youtubeDataController.channelIdList));
     final Map<String, String> tradeTypeMapping = {
       '구매': 'buy',
       '판매': 'sale',

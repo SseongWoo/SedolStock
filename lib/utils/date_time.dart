@@ -30,8 +30,6 @@ String formatDateString3(String isoString) {
 }
 
 String formatDateString4(String isoString) {
-  List<String> parts = isoString.split('-');
-  String formattedDate = "${parts[0]}년 ${parts[1]}월 ${parts[2]}일";
-
-  return formattedDate;
+  DateTime dateTime = DateTime.parse(isoString);
+  return '${dateTime.year}년 ${dateTime.month.toString().padLeft(2, '0')}월 ${dateTime.day.toString().padLeft(2, '0')}일';
 }

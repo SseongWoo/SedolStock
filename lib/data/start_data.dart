@@ -2,19 +2,20 @@ import 'package:intl/intl.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import 'package:get/get.dart';
-import '../utils/data_storage.dart';
+import '../service/storage_service.dart';
 import '../viewmodel/main/trade/trade_detail_view_model.dart';
 import 'my_data.dart';
 
 // 하루에 한번만 실행되는 함수
-Future<void> fetchDataAndSave(String today) async {
-  await getLatestYoutubeData();
+Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController,
+    PublicDataController publicDataController, String today) async {
+  await youtubeDataController.getLatestYoutubeData();
   saveLatestYoutubeData();
-  await getYoutubeChannelData();
+  await youtubeDataController.getYoutubeChannelData();
   saveYoutubeChannelData();
-  await getYoutubeVideoData();
+  await youtubeDataController.getYoutubeVideoData();
   saveYoutubeVideoData();
-  await getRankData();
+  await publicDataController.getRankData();
   saveRankingData();
   await setDataDate(today);
 }
@@ -32,7 +33,7 @@ Future<void> startGetData() async {
   if (date == null ||
       date != today ||
       (dateTime != null && dateTime.hour < 2 && DateTime.now().hour >= 2)) {
-    await fetchDataAndSave(today);
+    await fetchDataAndSave(youtubeDataController, publicDataController, today);
   } else {
     await loadLatestYoutubeData();
     await loadYoutubeChannelData();
@@ -43,30 +44,30 @@ Future<void> startGetData() async {
         youtubeDataController.youtubeChannelData.isEmpty ||
         youtubeDataController.youtubeVideoData.isEmpty ||
         publicDataController.rankingList.isEmpty) {
-      await fetchDataAndSave(today);
+      await fetchDataAndSave(youtubeDataController, publicDataController, today);
     }
   }
 
-  await getYoutubeLiveData();
+  await youtubeDataController.getYoutubeLiveData();
   myDataController.setMoneyData();
-  await getTradeHistoryData();
+  await myDataController.getTradeHistoryData();
   if (Get.isRegistered<TradeDetailViewModel>()) {
     final TradeDetailViewModel tradeDetailViewModel = Get.find<TradeDetailViewModel>();
     tradeDetailViewModel.setChartData();
   }
-  await getMessage();
+  await myDataController.getMessage();
 }
 
 // 앱 실행중 5분마다 실행되거나, 특정 동작으로 실행되는 함수로 사용자의 정보와 주식의 정보를 업데이트 함
 Future<void> reflashGetData(bool timeReFlash) async {
   final MyDataController myDataController = Get.find<MyDataController>();
-  await getUserData();
-  await getWalletData();
+  await myDataController.getUserData();
+  await myDataController.getWalletData();
 
   // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {
     myDataController.setMoneyData();
-    await getTradeHistoryData();
+    await myDataController.getTradeHistoryData();
   }
-  await updateMyTotalMoney();
+  await myDataController.updateMyTotalMoney();
 }

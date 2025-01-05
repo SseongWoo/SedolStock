@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/utils/data_storage.dart';
-import '../../../config/route.dart';
+import '../../../constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../model/main/trade_model.dart';
 import '../../../service/http_service.dart';
 import '../../../utils/format.dart';
@@ -84,7 +84,8 @@ class TradeDetailViewModel extends GetxController {
 
   // 앱바에 위치한 타이틀에 표시할 데이터 설정
   AppBarTitleDataClass appBarData() {
-    String title = '${channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
+    String title =
+        '${_youtubeDataController.channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
     String price = formatToCurrency(itemPriceData.price);
     String retnRatio =
         '${itemPriceData.differencePrice > 0 ? '+' : ''}${formatToCurrency(itemPriceData.differencePrice)} (${itemPriceData.ratio.toStringAsFixed(2)}%)';
@@ -95,7 +96,7 @@ class TradeDetailViewModel extends GetxController {
   // 그래프에 사용될 데이터 설정
   void setChartData() {
     tradeDetailChartData.title =
-        '${channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
+        '${_youtubeDataController.channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
     tradeDetailChartData.price = formatToCurrency(itemPriceData.price);
 
     tradeDetailChartData.returnRatio =
@@ -150,8 +151,8 @@ class TradeDetailViewModel extends GetxController {
   // 비디오 영상 설정
   void setVideoListData() {
     mainVideoList.value = _youtubeDataController.youtubeVideoData[channelUID]!;
-    subVideoList.value =
-        _youtubeDataController.youtubeVideoData[channelAndSubChannelMapData[channelUID]]!;
+    subVideoList.value = _youtubeDataController
+        .youtubeVideoData[_youtubeDataController.channelAndSubChannelMapData[channelUID]]!;
   }
 
   // 메인, 서브 영상 리스트 설정

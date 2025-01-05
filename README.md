@@ -55,113 +55,263 @@
 ```sh
 assets
 ├── fonts      # 프로젝트 폰트 폴더
+├── sound      # 사운드 폴더
 └── image      # 프로젝트 이미지 폴더
     ├── fan    # 팬덤 이미지 폴더
     └── ui     # ui 구성 이미지 폴더
 ```
 
+#### 모델 부분
 ```sh
 lib
-├── data                                        # 앱 구성 데이터 폴더
-│   ├── my_data.dart                            # 사용자 데이터 파일
-│   ├── public_data.dart                        # 전역 변수 데이터 파일
-│   ├── start_data.dart                         # 앱을 실행할 때 호출되는 파일
-│   └── youtube_data.dart                       # 유튜브 데이터 파일
-├── login
-│   ├── find_account                            # 계정 찾기 파일 
-│   │   ├── find_account_screen.dart
-│   │   ├── find_account_system.dart
-│   │   └── find_account_widget.dart
-│   ├── login                                   # 로그인 파일
-│   │   ├── signin_screen.dart  
-│   │   ├── login_system.dart
-│   │   └── signin_widget.dart
-│   └── signup                                  # 회원가입 파일
-│       ├── 1_choice                            # 회원가입중 이메일, 게스트 로그인 선택 단계 파일
-│       │   ├── signup_choice_screen.dart
-│       │   ├── signup_choice_system.dart
-│       │   └── signup_choice_widget.dart
-│       ├── 2_main                              # 회원가입중 사용자 로그인 데이터를 입력하는 단계 파일
-│       │   ├── signup_screen.dart
-│       │   ├── signup_system.dart
-│       │   └── signup_widget.dart
-│       ├── 3_checkemail                        # 회원가입중 이메일 로그인일때 이메일 인증 단계 파일  
-│       │   ├── signup_checkemail_screen.dart
-│       │   ├── signup_checkemail_system.dart
-│       │   └── signup_checkemail_widget.dart
-│       └── 4_setdata                           # 회원가입중 사용자 구성 데이터를 입력하는 단계 파일
-│           ├── signup_setdata_screen.dart
-│           ├── signup_setdata_system.dart
-│           └── signup_setdata_widget.dart
-├── main                                        # 메인 화면 파일
-│   ├── home                                    # 홈 탭 화면 파일
-│   │   ├── home_screen.dart
-│   │   ├── home_system.dart
-│   │   └── home_widget.dart
-│   ├── information                             # 정보 탭 화면 파일
-│   │   ├── information_screen.dart
-│   │   ├── information_system.dart
-│   │   ├── information_widget.dart
-│   │   ├── setting                             # 상세 설정 화면 파일
-│   │   │   ├── setting_screen.dart
-│   │   │   ├── setting_system.dart
+├── view                                                      ## 뷰 폴더
+│   ├── main                                            # 메인 폴더
+│   │   ├── home                                  # 홈 탭 화면
+│   │   │   ├── home_screen.dart
+│   │   │   └── home_widget.dart
+│   │   ├── information                           # 정보 탭 화면
+│   │   │   ├── delete_account_screen.dart
+│   │   │   ├── information_screen.dart
+│   │   │   ├── information_widget.dart
+│   │   │   ├── setting_app_screen.dart
 │   │   │   └── setting_widget.dart
-│   │   └── withdrawal                          # 회원 탈퇴 화면 파일
-│   │       ├── withdrawal_screen.dart
-│   │       └── withdrawal_system.dart
-│   ├── message                                 # 알림 화면 파일
-│   │   ├── notification_screen.dart
-│   │   ├── message_system.dart
-│   │   └── notification_widget.dart
-│   ├── main_screen.dart
-│   ├── main_system.dart
-│   ├── ranking                                 # 랭킹 탭 화면 파일
-│   │   ├── ranking_screen.dart
-│   │   ├── ranking_system.dart
-│   │   └── ranking_widget.dart
-│   ├── trade                                   # 거래 탭 화면 파일
-│   │   ├── detail                              # 아이템 상세 화면 파일
-│   │   │   ├── trade_detail_screen.dart
-│   │   │   ├── trade_detail_system.dart
-│   │   │   └── trade_detail_widget.dart
-│   │   ├── trade_screen.dart
-│   │   ├── trade_system.dart
-│   │   ├── trade_widget.dart
-│   │   └── transaction                         # 아이템 매매 화면 파일
-│   │       ├── transaction_screen.dart
-│   │       ├── transaction_system.dart
-│   │       └── transaction_widget.dart
-│   └── wallet                                  # 사용자 자산 화면 파일
-│       ├── stockhistory                        # 사용자 아이템 매매 내역 화면 파일
-│       │   ├── stockhistory_screen.dart
-│       │   ├── stockhistory_system.dart
-│       │   └── stockhistory_widget.dart
-│       ├── stocklist                           # 사용자 보유 아이템 내역 화면 파일
-│       │   ├── stocklist_screen.dart
-│       │   ├── stocklist_system.dart
-│       │   └── stocklist_widget.dart
-│       ├── wallet_screen.dart
-│       ├── wallet_system.dart
-│       └── wallet_widget.dart
-├── main.dart
-├── splash                                      # 앱 로딩화면 파일 
-│   ├── splash_screen.dart
-│   ├── splash_system.dart
-│   └── splash_widget.dart
-└── utils                                       # 다양한 기능 관련 파일
-    ├── audio.dart                              # 소리 기능
-    ├── check_list.dart                         # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
-    ├── color.dart                              # 색 설정 파일
-    ├── custom_scroll.dart                      # 웹에서도 스크롤이 동작하게 하는 기능
-    ├── data_storage.dart                       # 기기에 데이터를 저장하게 하는 기능
-    ├── date_time.dart                          # 날짜 형식을 변경하는 기능
-    ├── format.dart                             # 데이터 형식을 변경하는 기능
-    ├── get_env.dart                            # 환경변수 파일에서 데이터를 가져오는 기능
-    ├── screen_size.dart                        # 화면 사이즈를 가져와 ui의 크기를 설정하는 기능
-    ├── search_name.dart                        # 중복 닉네임 확인 기능
-    ├── simple_widget.dart                      # 자주 사용되는 간단한 위젯
-    └── timer.dart                              # 타이머 기능
+│   │   ├── main_screen.dart                      # 메인 화면
+│   │   ├── notification                          # 알림 화면
+│   │   │   ├── notification_screen.dart
+│   │   │   └── notification_widget.dart
+│   │   ├── property                                  # 내 지갑 탭 화면
+│   │   │   ├── property_history_screen.dart
+│   │   │   ├── property_history_widget.dart
+│   │   │   ├── property_screen.dart
+│   │   │   ├── property_stocklist_screen.dart
+│   │   │   ├── property_stocklist_widget.dart
+│   │   │   └── property_widget.dart
+│   │   ├── ranking                                   # 랭킹 화면
+│   │   │   ├── ranking_screen.dart
+│   │   │   └── ranking_widget.dart
+│   │   └── trade                                     # 거래 화면
+│   │       ├── trade_dealing_screen.dart
+│   │       ├── trade_dealing_widget.dart
+│   │       ├── trade_detail_screen.dart
+│   │       ├── trade_detail_widget.dart
+│   │       ├── trade_screen.dart
+│   │       └── trade_widget.dart
+│   ├── sign                                                ## 계정 관련 폴더
+│   │   ├── find                                      # 계정 찾기 화면
+│   │   │   └── find_account_screen.dart
+│   │   ├── signin                                    # 로그인 화면
+│   │   │   ├── signin_screen.dart
+│   │   │   └── signin_widget.dart
+│   │   └── signup                                    # 회원가입 화면
+│   │       ├── signup_checkemail_screen.dart
+│   │       ├── signup_checkemail_widget.dart
+│   │       ├── signup_choice_screen.dart
+│   │       ├── signup_choice_widget.dart
+│   │       ├── signup_screen.dart
+│   │       └── signup_widget.dart
+│   └── splash_screen.dart                                  # 로딩 화면
 ```
+
+#### 뷰모델 부분
+```sh
+lib                               # 로딩 화면
+├── viewmodel                                                     ## 뷰모델 폴더
+│   ├── main
+│   │   ├── home_view_model.dart                      # 홈 탭 뷰모델
+│   │   ├── information
+│   │   │   ├── delete_account_view_model.dart  # 계정 삭제 뷰모델
+│   │   │   ├── information_view_model.dart     # 정보 탭 뷰모델
+│   │   │   └── setting_app_view_model.dart     # 상세 설정 뷰모델
+│   │   ├── main_view_model.dart                      # 메인 뷰모델
+│   │   ├── notification_view_model.dart              # 알림 뷰모델
+│   │   ├── property
+│   │   │   ├── property_history_view_model.dart    # 거래 내역 뷰모델
+│   │   │   ├── property_stocklist_view_model.dart  # 보유 주식 뷰모델
+│   │   │   └── property_view_model.dart            # 지갑 탭 뷰모델
+│   │   ├── ranking_view_model.dart                       # 랭킹 탭 뷰모델
+│   │   └── trade
+│   │       ├── trade_dealing_view_model.dart             # 매매 뷰모델
+│   │       ├── trade_detail_view_model.dart              # 종목 상세 뷰모델
+│   │       └── trade_view_model.dart                     # 거래 탭 뷰모델
+│   ├── sign
+│   │   ├── find_account_view_model.dart                  # 계정 찾기 뷰모델
+│   │   ├── signin_view_model.dart                        # 로그인 뷰모델
+│   │   ├── signup_checkemail_view_model.dart             # 이메일 인증 뷰모델
+│   │   ├── signup_choice_view_model.dart                 # 이메일,게스트 선택 뷰모델
+│   │   └── signup_view_model.dart                        # 회원가입 뷰모델
+│   └── splash_view_model.dart                                  # 로딩 뷰모델
+```
+
+#### 모델 부분
+```sh
+lib
+├── model                                           ## 모델 파일 폴더
+│   ├── data                                  ## 앱 구성 데이터 모델 폴더
+│   │   ├── data_class.dart             # 앱 구성 데이터 클래스 파일
+│   │   └── data_model.dart             # 앱 구성 데이터 모델
+│   ├── main                                  ## 앱 메인 화면 모델 폴더
+│   │   ├── information_model.dart      # 정보 탭 화면 모델
+│   │   ├── notification_model.dart     # 알림 화면 모델
+│   │   └── trade_model.dart            # 거래 탭 모델
+│   ├── scarch_name_model.dart                # 이름 검색 모델
+│   ├── sign                                  ## 계정 부분 폴더
+│   │   ├── find_account_model.dart     # 계정 찾기 모델
+│   │   ├── signin_model.dart           # 로그인 모델
+│   │   └── signup_model.dart           # 회원가입 모델
+│   └── splash_model.dart                     # 로딩 화면 모델
+```
+
+#### 그 외
+```sh
+lib
+├── constants                                       ## 상수 데이터 폴더
+│   ├── color_constants.dart                  # 색상
+│   ├── data_constants.dart                   # 데이터
+│   └── route_constants.dart                            # 화면 경로 설정 파일
+├── data                                            ## 앱 구성 데이터 폴더
+│   ├── my_data.dart                          # 사용자 데이터 파일
+│   ├── public_data.dart                      # 공통 데이터 파일
+│   ├── start_data.dart                       # 앱을 실행, 특정 실행으로 데이터를 호출하는 파일
+│   └── youtube_data.dart                     # 유튜브 데이터 파일
+├── main.dart
+├── service                                         
+│   ├── http_service.dart                     # 외부와 통신하는 파일
+│   └── storage_service.dart                  # 로컬에 데이터를 저장하거나 불러오는 기능
+├── utils                                           ## 다양한 기능 관련 폴더
+│   ├── audio.dart                            # 소리 기능
+│   ├── check_list.dart                       # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
+│   ├── color.dart                            # 색 설정 기능
+│   ├── custom_scroll.dart                    # 웹에서도 스크롤이 동작하게 하는 기능
+│   ├── date_time.dart                        # 날짜 형식을 변경하는 기능
+│   ├── format.dart                           # 데이터 형식을 변경하는 기능
+│   ├── get_env.dart                          # 환경변수 파일에서 데이터를 가져오는 기능
+│   ├── screen_size.dart                      # 화면 사이즈를 가져와 ui의 크기를 설정하는 기능
+│   ├── search_name.dart                      # 중복 닉네임 확인 기능
+│   └── timer.dart                            # 타이머 기능
+└── widget                                                            ## 재사용 위젯 폴더
+    ├── button.dart                                                   # 버튼 위젯
+    ├── divider.dart                                                  # 구분선 위젯
+    ├── listview_item.dart                                            # 리스트뷰 아이템 위젯
+    └── simple_widget.dart                                            # 간단한 다이얼로그, 스낵바 위젯
+```
+<details><summary>전체 구조</summary>
+    lib
+    ├── constants                                       ## 상수 데이터 폴더
+    │   ├── color_constants.dart                  # 색상
+    │   ├── data_constants.dart                   # 데이터
+    │   └── route_constants.dart                  # 화면 경로
+    ├── data                                            ## 앱 구성 데이터 폴더
+    │   ├── my_data.dart                          # 사용자 데이터 파일
+    │   ├── public_data.dart                      # 공통 데이터 파일
+    │   ├── start_data.dart                       # 앱을 실행, 특정 실행으로 데이터를 호출하는 파일
+    │   └── youtube_data.dart                     # 유튜브 데이터 파일
+    ├── main.dart
+    ├── model                                           ## 모델 파일 폴더
+    │   ├── data                                  ## 앱 구성 데이터 모델 폴더
+    │   │   ├── data_class.dart             # 앱 구성 데이터 클래스 파일
+    │   │   └── data_model.dart             # 앱 구성 데이터 모델
+    │   ├── main                                  ## 앱 메인 화면 모델 폴더
+    │   │   ├── information_model.dart      # 정보 탭 화면 모델
+    │   │   ├── notification_model.dart     # 알림 화면 모델
+    │   │   └── trade_model.dart            # 거래 탭 모델
+    │   ├── scarch_name_model.dart                # 이름 검색 모델
+    │   ├── sign                                  ## 계정 부분 폴더
+    │   │   ├── find_account_model.dart     # 계정 찾기 모델
+    │   │   ├── signin_model.dart           # 로그인 모델
+    │   │   └── signup_model.dart           # 회원가입 모델
+    │   └── splash_model.dart                     # 로딩 화면 모델
+    ├── service                                         
+    │   ├── http_service.dart                     # 외부와 통신하는 파일
+    │   └── storage_service.dart                  # 로컬에 데이터를 저장하거나 불러오는 기능
+    ├── utils                                           ## 다양한 기능 관련 폴더
+    │   ├── audio.dart                            # 소리 기능
+    │   ├── check_list.dart                       # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
+    │   ├── color.dart                            # 색 설정 기능
+    │   ├── custom_scroll.dart                    # 웹에서도 스크롤이 동작하게 하는 기능
+    │   ├── date_time.dart                        # 날짜 형식을 변경하는 기능
+    │   ├── format.dart                           # 데이터 형식을 변경하는 기능
+    │   ├── get_env.dart                          # 환경변수 파일에서 데이터를 가져오는 기능
+    │   ├── screen_size.dart                      # 화면 사이즈를 가져와 ui의 크기를 설정하는 기능
+    │   ├── search_name.dart                      # 중복 닉네임 확인 기능
+    │   └── timer.dart                            # 타이머 기능
+    ├── view                                                          ## 뷰 폴더
+    │   ├── main                                                # 메인 폴더
+    │   │   ├── home                                      # 홈 탭 화면
+    │   │   │   ├── home_screen.dart
+    │   │   │   └── home_widget.dart
+    │   │   ├── information                               # 정보 탭 화면
+    │   │   │   ├── delete_account_screen.dart
+    │   │   │   ├── information_screen.dart
+    │   │   │   ├── information_widget.dart
+    │   │   │   ├── setting_app_screen.dart
+    │   │   │   └── setting_widget.dart
+    │   │   ├── main_screen.dart                           # 메인 화면
+    │   │   ├── notification                               # 알림 화면
+    │   │   │   ├── notification_screen.dart
+    │   │   │   └── notification_widget.dart
+    │   │   ├── property                                   # 내 지갑 탭 화면
+    │   │   │   ├── property_history_screen.dart
+    │   │   │   ├── property_history_widget.dart
+    │   │   │   ├── property_screen.dart
+    │   │   │   ├── property_stocklist_screen.dart
+    │   │   │   ├── property_stocklist_widget.dart
+    │   │   │   └── property_widget.dart
+    │   │   ├── ranking                                     # 랭킹 화면
+    │   │   │   ├── ranking_screen.dart
+    │   │   │   └── ranking_widget.dart
+    │   │   └── trade                                       # 거래 화면
+    │   │       ├── trade_dealing_screen.dart
+    │   │       ├── trade_dealing_widget.dart
+    │   │       ├── trade_detail_screen.dart
+    │   │       ├── trade_detail_widget.dart
+    │   │       ├── trade_screen.dart
+    │   │       └── trade_widget.dart
+    │   ├── sign                                                   ## 계정 관련 폴더
+    │   │   ├── find                                         # 계정 찾기 화면
+    │   │   │   └── find_account_screen.dart
+    │   │   ├── signin                                       # 로그인 화면
+    │   │   │   ├── signin_screen.dart
+    │   │   │   └── signin_widget.dart
+    │   │   └── signup                                       # 회원가입 화면
+    │   │       ├── signup_checkemail_screen.dart
+    │   │       ├── signup_checkemail_widget.dart
+    │   │       ├── signup_choice_screen.dart
+    │   │       ├── signup_choice_widget.dart
+    │   │       ├── signup_screen.dart
+    │   │       └── signup_widget.dart
+    │   └── splash_screen.dart                                      # 로딩 화면
+    ├── viewmodel                                                         ## 뷰모델 폴더
+    │   ├── main
+    │   │   ├── home_view_model.dart                          # 홈 탭 뷰모델
+    │   │   ├── information
+    │   │   │   ├── delete_account_view_model.dart      # 계정 삭제 뷰모델
+    │   │   │   ├── information_view_model.dart         # 정보 탭 뷰모델
+    │   │   │   └── setting_app_view_model.dart         # 상세 설정 뷰모델
+    │   │   ├── main_view_model.dart                          # 메인 뷰모델
+    │   │   ├── notification_view_model.dart                  # 알림 뷰모델
+    │   │   ├── property
+    │   │   │   ├── property_history_view_model.dart    # 거래 내역 뷰모델
+    │   │   │   ├── property_stocklist_view_model.dart  # 보유 주식 뷰모델
+    │   │   │   └── property_view_model.dart            # 지갑 탭 뷰모델
+    │   │   ├── ranking_view_model.dart                       # 랭킹 탭 뷰모델
+    │   │   └── trade
+    │   │       ├── trade_dealing_view_model.dart             # 매매 뷰모델
+    │   │       ├── trade_detail_view_model.dart              # 종목 상세 뷰모델
+    │   │       └── trade_view_model.dart                     # 거래 탭 뷰모델
+    │   ├── sign
+    │   │   ├── find_account_view_model.dart                  # 계정 찾기 뷰모델
+    │   │   ├── signin_view_model.dart                        # 로그인 뷰모델
+    │   │   ├── signup_checkemail_view_model.dart             # 이메일 인증 뷰모델
+    │   │   ├── signup_choice_view_model.dart                 # 이메일,게스트 선택 뷰모델
+    │   │   └── signup_view_model.dart                        # 회원가입 뷰모델
+    │   └── splash_view_model.dart                                  # 로딩 뷰모델
+    └── widget                                                            ## 재사용 위젯 폴더
+        ├── button.dart                                                   # 버튼 위젯
+        ├── divider.dart                                                  # 구분선 위젯
+        ├── listview_item.dart                                            # 리스트뷰 아이템 위젯
+        └── simple_widget.dart                                            # 간단한 다이얼로그, 스낵바 위젯
+</details>
+
 ### 화면 구성
 <details><summary>로그인 부분</summary>
     

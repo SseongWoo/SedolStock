@@ -1,32 +1,16 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:stockpj/main.dart';
 import 'package:stockpj/widget/simple_widget.dart';
 import 'package:get/get.dart';
-import 'get_env.dart';
+import '../model/scarch_name_model.dart';
 
-// 사용자가 설정하고싶은 이름이 이미 등록되어있는 닉네임인지 확인하는 함수
+// 이름 검색을 처리하는 함수
 Future<bool> searchName(String name) async {
+  final NameModel nameModel = NameModel();
   try {
-    final searchNameData = await http.post(
-      Uri.parse('$httpURL/names/$name'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-      }),
-    );
-    if (searchNameData.statusCode == 200) {
-      return true;
-    } else if (searchNameData.statusCode == 404) {
-      return false;
-    } else {
-      showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
-      return true;
-    }
+    final result = await nameModel.searchName(name);
+    return result;
   } catch (e) {
-    logger.e('searchName error : $e');
+    logger.e('searchName error: $e');
     showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
     return true;
   }

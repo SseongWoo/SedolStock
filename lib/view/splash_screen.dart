@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
+import '../constants/color_constants.dart';
 import '../viewmodel/splash_view_model.dart';
 
 class SplashScreen extends StatelessWidget {

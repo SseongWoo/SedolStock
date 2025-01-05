@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:stockpj/config/route.dart';
+import 'package:stockpj/constants/route_constants.dart';
 import '../../utils/screen_size.dart';
 
 // 회원가입 1단계 뷰모델

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/model/sign/find_account_model.dart';
-import '../../config/route.dart';
+import '../../constants/route_constants.dart';
 import '../../utils/check_list.dart';
 import '../../utils/screen_size.dart';
 import '../../widget/simple_widget.dart';

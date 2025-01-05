@@ -1,93 +1,35 @@
-import 'dart:convert';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:stockpj/config/route.dart';
+import 'package:stockpj/constants/route_constants.dart';
+import '../constants/data_constants.dart';
 import '../main.dart';
-import '../utils/data_storage.dart';
-import '../utils/get_env.dart';
+import '../model/data/data_class.dart';
+import '../model/data/data_model.dart';
+import '../service/storage_service.dart';
 import '../utils/timer.dart';
 
-// 거래 수수료
-double feeRate = 0.05;
-String appVersion = ''; // 앱 버전
-String appBuild = ''; // 앱 버전
-String storeVersion = ''; // 스토어 최신 버전
-String storeBuild = ''; // 스토어 최신 버전
-
-List<String> channelIdList = []; // 채널 uid 리스트 데이터
-List<String> subChannelIdList = []; // 서브채널 uid 리스트 데이터
-// 채널 이름 리스트 데이터
-List<String> channelNameList = [
-  '우왁굳',
-  '아이네',
-  '징버거',
-  '릴파',
-  '주르르',
-  '고세구',
-  '비챤',
-];
-
-// 팬덤명 리스트 데이터
-List<String> fanNameList = ['팬치', '이파리', '둘기', '똥강아지', '박쥐단', '주폭도', '세균단', '라니'];
-// 영어 팬덤명 리스트 데이터
-List<String> fanEnNameList = [
-  'Penchi',
-  'Ifari',
-  'Dulgi',
-  'Ddonggangaji',
-  'Bakjuidan',
-  'Jupukdo',
-  'Segyundan',
-  'Rani'
-];
-
 // 팬덤명 맵 데이터
-Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
+final Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
 
-Map<String, int> streamerIndexMap = {
+final Map<String, int> streamerIndexMap = {
   for (int i = 0; i < fanNameList.length; i++) fanNameList[i]: i
 };
 
-// 랭킹 데이터 클래스
-class RankingDataClass {
-  String name;
-  String choiceChannel;
-  int rank;
-  int beforeRank;
-  int totalMoney;
-
-  RankingDataClass(
-    this.name,
-    this.choiceChannel,
-    this.rank,
-    this.beforeRank,
-    this.totalMoney,
-  );
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'choiceChannel': choiceChannel,
-        'rank': rank,
-        'beforeRank': beforeRank,
-        'totalMoney': totalMoney,
-      };
-
-  factory RankingDataClass.fromJson(Map<String, dynamic> json) {
-    return RankingDataClass(
-      json['name'] ?? '',
-      json['choiceChannel'] ?? '',
-      json['rank'] ?? 0,
-      json['beforeRank'] ?? 0,
-      json['totalMoney'] ?? 0,
-    );
-  }
-}
-
 class PublicDataController extends GetxController {
+  final DataModel dataModel = DataModel();
+  RxString appVersion = ''.obs; // 앱 버전
+  RxString appBuild = ''.obs; // 앱 버전
+  RxString storeVersion = ''.obs; // 스토어 최신 버전
+  RxString storeBuild = ''.obs; // 스토어 최신 버전
   RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs; // 랭킹 데이터 리스트
   RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+  }
 
   // 로그아웃 기능 함수
   void logOut() async {
@@ -97,52 +39,23 @@ class PublicDataController extends GetxController {
     EasyLoading.dismiss();
     Get.offAllNamed(AppRoute.signin);
   }
-}
 
-// 랭크 데이터를 서버에서 가져오는 함수
-Future<void> getRankData() async {
-  final PublicDataController publicDataController = Get.find<PublicDataController>();
-  final url = Uri.parse('$httpURL/rank/get');
-
-  try {
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body)['data'];
-      final List<dynamic> dataList = jsonData['users'];
-      publicDataController.updateDate.value = jsonData['updatedate'] ?? '';
-
-      publicDataController.rankingList.clear();
-
-      for (var rankData in dataList) {
-        int? totalmoney;
-        if (rankData['totalmoney'] is double) {
-          double doubleMoney = rankData['totalmoney'];
-          totalmoney = doubleMoney.round();
-        }
-        publicDataController.rankingList.add(
-          RankingDataClass(
-            rankData['name']?.toString() ?? '',
-            rankData['choicechannel']?.toString() ?? '',
-            rankData['rank'] ?? 0,
-            rankData['beforerank'] ?? 0,
-            totalmoney ?? rankData['totalmoney'] ?? 0,
-          ),
-        );
-      }
-      logger.i('getRankData log : Ranking data stored successfully.');
-    } else {
-      logger.w(
-          'getRankData error : Failed to fetch ranking data. Status code: ${response.statusCode}');
-    }
-  } catch (e) {
-    logger.e('getRankData error : $e');
+  // 앱의 버전을 가져오는 작업
+  Future<void> getAppVersion() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    appVersion.value = packageInfo.version;
+    appBuild.value = packageInfo.buildNumber;
+    logger.i('appversion : ${packageInfo.version}+${packageInfo.buildNumber}');
   }
-}
 
-Future<void> getAppVersion() async {
-  final packageInfo = await PackageInfo.fromPlatform();
-  appVersion = packageInfo.version;
-  appBuild = packageInfo.buildNumber;
-  logger.i('appversion : ${packageInfo.version}+${packageInfo.buildNumber}');
+  // 서버에서 랭킹 데이터를 가져오는 함수
+  Future<void> getRankData() async {
+    try {
+      List<RankingDataClass> fetchedRankingList = await dataModel.fetchRankingData();
+      rankingList.assignAll(fetchedRankingList);
+      updateDate.value = DateTime.now().toString(); // 예제용 업데이트 날짜 설정
+    } catch (e) {
+      logger.e('getRankData error : $e');
+    }
+  }
 }

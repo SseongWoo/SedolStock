@@ -20,12 +20,16 @@ class HomeViewModel extends GetxController {
 
   // 채널 리스트 변경 함수
   List<String> getChannelList() {
-    return mainChannelList.value ? channelIdList : subChannelIdList;
+    return mainChannelList.value
+        ? youtubeDataController.channelIdList
+        : youtubeDataController.subChannelIdList;
   }
 
   // 채널 비디오 리스트 변경 함수
   List<String> getVideoList() {
-    return mainChannelVideoList.value ? channelIdList : subChannelIdList;
+    return mainChannelVideoList.value
+        ? youtubeDataController.channelIdList
+        : youtubeDataController.subChannelIdList;
   }
 
   // 영상 목록 메인, 서브 채널 전환 버튼

@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
 import 'package:get/get.dart';

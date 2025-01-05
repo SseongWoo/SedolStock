@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
 
 // 랭킹 리스트에 사용되는 랭킹 데이터 위젯

@@ -17,7 +17,7 @@ class RankingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Container(
-      color: colorISEGYEIDOLLight,
+      color: Colors.white,
       child: Padding(
         padding: EdgeInsets.only(
           left: screenSize.getWidthPerSize(2),
@@ -43,23 +43,26 @@ class RankingScreen extends StatelessWidget {
               ],
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _viewModel.publicDataController.rankingList.length,
-                itemBuilder: (context, index) {
-                  final rankingData = _viewModel.publicDataController.rankingList[index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: screenSize.getHeightPerSize(1),
-                    ),
-                    child: GestureDetector(
-                        child: RankingWidget(
-                      rankingData: rankingData,
-                      screenSize: screenSize,
-                    )),
-                  );
-                },
-              ),
-            ),
+                child: _viewModel.publicDataController.rankingList.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: _viewModel.publicDataController.rankingList.length,
+                        itemBuilder: (context, index) {
+                          final rankingData = _viewModel.publicDataController.rankingList[index];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenSize.getHeightPerSize(1),
+                            ),
+                            child: GestureDetector(
+                                child: RankingWidget(
+                              rankingData: rankingData,
+                              screenSize: screenSize,
+                            )),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Text('랭킹 데이터를 불러오지 못했습니다.'),
+                      )),
             Container(
               height: screenSize.getHeightPerSize(10),
               decoration: BoxDecoration(

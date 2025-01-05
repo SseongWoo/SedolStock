@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/config/route.dart';
+import 'package:stockpj/constants/route_constants.dart';
 import '../../model/sign/signup_model.dart';
-import '../../utils/data_storage.dart';
+import '../../service/storage_service.dart';
 import '../../utils/screen_size.dart';
 import '../../widget/simple_widget.dart';
 

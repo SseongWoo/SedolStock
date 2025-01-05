@@ -5,7 +5,8 @@ import 'package:korean_profanity_filter/korean_profanity_filter.dart' as korean_
 import 'package:profanity_filter/profanity_filter.dart' as english_filter;
 import 'package:stockpj/model/sign/signup_model.dart';
 import 'package:stockpj/widget/simple_widget.dart';
-import '../../config/route.dart';
+import '../../constants/route_constants.dart';
+import '../../constants/data_constants.dart';
 import '../../data/public_data.dart';
 import '../../main.dart';
 import '../../utils/color.dart';

@@ -3,8 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:get/get.dart';
-import '../../../data/my_data.dart';
-import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../viewmodel/main/property/property_stocklist_view_model.dart';
 
 class PropertyStockListItemWidget extends StatelessWidget {
@@ -295,8 +294,11 @@ class PropertyStockPieChartWidget extends StatelessWidget {
   Widget _buildBadge(ScreenSize screenSize, StockListClass stock) {
     final String thumbnail = stock.stockType == 'view'
         ? viewModel.youtubeDataController.youtubeChannelData[stock.stockUID]!.thumbnail
-        : viewModel.youtubeDataController
-            .youtubeChannelData[channelAndSubChannelMapData[stock.stockUID]]!.thumbnail;
+        : viewModel
+            .youtubeDataController
+            .youtubeChannelData[
+                viewModel.youtubeDataController.channelAndSubChannelMapData[stock.stockUID]]!
+            .thumbnail;
 
     return AnimatedContainer(
       duration: PieChart.defaultDuration,

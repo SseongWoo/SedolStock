@@ -17,6 +17,17 @@ class HttpService {
     return response;
   }
 
+  // GET 요청
+  Future<http.Response> getRequest(String endpoint) async {
+    final response = await http.get(
+      Uri.parse('$httpURL$endpoint'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    return response;
+  }
+
   Future<http.Response> deleteRequest(String endpoint, Map<String, dynamic> body) async {
     final response = await http.delete(
       Uri.parse('$httpURL$endpoint'),

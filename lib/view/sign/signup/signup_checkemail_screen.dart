@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import 'package:stockpj/view/sign/signup/signup_checkemail_widget.dart';
-import '../../../utils/color.dart';
+
+import '../../../constants/color_constants.dart';
 import '../../../viewmodel/sign/signup_checkemail_view_model.dart';
 
 class SignupCheckemailScreen extends StatelessWidget {
@@ -56,7 +56,7 @@ class SignupCheckemailScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _viewModel.checkEmail(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: colorISEGYEIDOLLight,
+                    backgroundColor: colorISEGYEIDOL,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

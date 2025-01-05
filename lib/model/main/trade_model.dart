@@ -1,7 +1,8 @@
 import '../../data/youtube_data.dart';
 import '../../main.dart';
 import '../../service/http_service.dart';
-import 'package:get/get.dart';
+
+import '../data/data_class.dart';
 
 // TradeItemWidget에 필요한 데이터를 포함하는 클래스
 class TradeItemData {

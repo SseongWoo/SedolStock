@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
+import '../../../constants/color_constants.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 
 // 리스트뷰 상단바 위젯

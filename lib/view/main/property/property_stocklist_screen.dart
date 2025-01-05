@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/view/main/property/property_stocklist_widget.dart';
-import '../../../utils/color.dart';
+import '../../../constants/color_constants.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/property/property_stocklist_view_model.dart';

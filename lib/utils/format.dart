@@ -6,6 +6,7 @@ String formatToCurrency(int amount) {
   return formatter.format(amount);
 }
 
+// 값을 올림하는 함수
 double ceilToUnit(double value, double unit) {
   return (value / unit).ceil() * unit;
 }

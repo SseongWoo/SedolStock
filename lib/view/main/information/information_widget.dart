@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stockpj/utils/screen_size.dart';
+import '../../../constants/data_constants.dart';
 import '../../../data/public_data.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/color.dart';

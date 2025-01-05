@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../service/http_service.dart';
-import '../utils/data_storage.dart';
+import '../service/storage_service.dart';
 
 class LoginDataClass {
   String uid;

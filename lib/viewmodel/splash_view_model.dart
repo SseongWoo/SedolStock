@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
 import 'package:store_redirect/store_redirect.dart';
-import '../config/route.dart';
+import '../constants/route_constants.dart';
 import '../data/public_data.dart';
 import '../data/my_data.dart';
 import '../data/start_data.dart';
 import '../utils/check_list.dart';
-import '../utils/data_storage.dart';
+import '../service/storage_service.dart';
 import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
@@ -16,6 +16,8 @@ import '../model/splash_model.dart';
 class SplashViewModel extends GetxController {
   final SplashModel splashModel = SplashModel();
   final ScreenController screenController = Get.find<ScreenController>();
+  final MyDataController _myDataController = Get.find<MyDataController>();
+  final PublicDataController _publicDataController = Get.find<PublicDataController>();
   RxString loadingMessage = RxString('로딩'); // 로딩 메시지 상태
 
   @override
@@ -30,7 +32,7 @@ class SplashViewModel extends GetxController {
     bool isServerRunning = await checkServer();
 
     loadingMessage.value = '앱 버전 확인중';
-    await getAppVersion();
+    await _publicDataController.getAppVersion();
     bool needsUpdate = _checkVersion();
 
     if (needsUpdate) {
@@ -58,8 +60,8 @@ class SplashViewModel extends GetxController {
       final loginData = await splashModel.tryAutoLogin();
       await setUid(loginData.uid);
       await setIdToken(loginData.token);
-      bool hasUserData = await getUserData();
-      bool hasWalletData = await getWalletData();
+      bool hasUserData = await _myDataController.getUserData();
+      bool hasWalletData = await _myDataController.getWalletData();
 
       if (hasUserData && hasWalletData) {
         loadingMessage.value = '마무리 중';
@@ -96,7 +98,8 @@ class SplashViewModel extends GetxController {
   // 앱 버전과 최소 요구 버전 비교
   bool _checkVersion() {
     final isVersionOutdated = _isVersionLower();
-    final isBuildOutdated = int.parse(storeBuild) > int.parse(appBuild);
+    final isBuildOutdated = int.parse(_publicDataController.storeBuild.value) >
+        int.parse(_publicDataController.appBuild.value);
 
     return (isVersionOutdated || isBuildOutdated);
   }
@@ -132,8 +135,8 @@ class SplashViewModel extends GetxController {
   }
 
   bool _isVersionLower() {
-    final appParts = appVersion.split('.').map(int.parse).toList();
-    final storeParts = storeVersion.split('.').map(int.parse).toList();
+    final appParts = _publicDataController.appVersion.split('.').map(int.parse).toList();
+    final storeParts = _publicDataController.storeVersion.split('.').map(int.parse).toList();
     for (int i = 0; i < appParts.length; i++) {
       if (storeParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
       if (storeParts[i] < appParts[i]) return false; // 현재 버전이 더 높음

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/view/sign/signup/signup_widget.dart';
+import '../../../constants/color_constants.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/sign/signup_view_model.dart';

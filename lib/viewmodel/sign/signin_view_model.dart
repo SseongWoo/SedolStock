@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
-import '../../config/route.dart';
+import '../../constants/route_constants.dart';
 import '../../data/my_data.dart';
 import '../../data/start_data.dart';
 import '../../model/sign/signin_model.dart';
-import '../../utils/data_storage.dart';
+import '../../service/storage_service.dart';
 import '../../utils/screen_size.dart';
 import '../../widget/simple_widget.dart';
 
@@ -14,6 +15,7 @@ class SigninViewModel extends GetxController {
   final SigninModel signinModel = SigninModel();
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
 
@@ -55,8 +57,8 @@ class SigninViewModel extends GetxController {
   Future<void> _initializeUserData(String uid, String token) async {
     _myDataController.myUid.value = uid;
     await setTokens(token, uid);
-    bool checkMyData = await getUserData();
-    bool checkMyWalletData = await getWalletData();
+    bool checkMyData = await _myDataController.getUserData();
+    bool checkMyWalletData = await _myDataController.getWalletData();
 
     if (!checkMyData || !checkMyWalletData) {
       throw Exception('MyData is missing.');

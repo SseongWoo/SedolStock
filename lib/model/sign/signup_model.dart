@@ -1,7 +1,7 @@
 import 'dart:convert';
 import '../../main.dart';
 import '../../service/http_service.dart';
-import '../../utils/data_storage.dart';
+import '../../service/storage_service.dart';
 import '../../utils/date_time.dart';
 
 // 회원가입 부분 모델

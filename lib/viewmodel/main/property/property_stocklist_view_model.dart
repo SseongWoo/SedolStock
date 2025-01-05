@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:stockpj/config/route.dart';
+import 'package:stockpj/constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 
@@ -61,14 +62,18 @@ class PropertyStocklistViewModel extends GetxController {
     return listData.stockType == 'view'
         ? youtubeDataController.youtubeChannelData[listData.stockUID]!.thumbnail
         : youtubeDataController
-            .youtubeChannelData[channelAndSubChannelMapData[listData.stockUID]]!.thumbnail;
+            .youtubeChannelData[
+                youtubeDataController.channelAndSubChannelMapData[listData.stockUID]]!
+            .thumbnail;
   }
 
   String getChannelTitle(StockListClass listData) {
     return listData.stockType == 'view'
         ? youtubeDataController.youtubeChannelData[listData.stockUID]!.title
         : youtubeDataController
-            .youtubeChannelData[channelAndSubChannelMapData[listData.stockUID]]!.title;
+            .youtubeChannelData[
+                youtubeDataController.channelAndSubChannelMapData[listData.stockUID]]!
+            .title;
   }
 
   Color getTextColor(StockListClass listData) {

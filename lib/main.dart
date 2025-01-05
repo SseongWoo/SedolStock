@@ -22,7 +22,7 @@ import 'package:stockpj/view/sign/signup/signup_checkemail_screen.dart';
 import 'package:stockpj/view/sign/signup/signup_choice_screen.dart';
 import 'package:stockpj/view/sign/signup/signup_screen.dart';
 import 'package:stockpj/view/splash_screen.dart';
-import 'config/route.dart';
+import 'constants/route_constants.dart';
 import 'data/public_data.dart';
 import 'data/youtube_data.dart';
 

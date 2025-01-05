@@ -24,7 +24,8 @@ class TradeDealingScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AutoSizeText('${channelMapData[_viewModel.channelUID]!}(${_viewModel.typeTitle()})'),
+            AutoSizeText(
+                '${_viewModel.youtubeDataController.channelMapData[_viewModel.channelUID]!}(${_viewModel.typeTitle()})'),
             Obx(
               () => AutoSizeText(
                 '(${_viewModel.setPlus()}${_viewModel.itemPriceData.value.ratio.toStringAsFixed(2)}%)',

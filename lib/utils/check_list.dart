@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
-import 'package:store_redirect/store_redirect.dart';
-import '../data/public_data.dart';
 import 'get_env.dart';
 
 // 구동중인 기기의 os를 체크하는 함수
@@ -21,6 +18,8 @@ String checkPlatform() {
 
 // 서버가 열렸는지 확인하는 함수
 Future<bool> checkServer() async {
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
+
   try {
     Uri uri = Uri.parse('$httpURL/running');
     final running = await http.get(uri);
@@ -28,15 +27,15 @@ Future<bool> checkServer() async {
     if (running.statusCode == 200) {
       final jsonData = jsonDecode(running.body);
       String storeVersionData = jsonData['version']['versionName'];
-      storeBuild = jsonData['version']['versionCode'];
+      publicDataController.storeBuild.value = jsonData['version']['versionCode'];
 
       RegExp regex = RegExp(r'\(([^)]+)\)');
       Match? match = regex.firstMatch(storeVersionData);
 
       if (match != null) {
-        storeVersion = match.group(1)!;
+        publicDataController.storeVersion.value = match.group(1)!;
       } else {
-        storeVersion = '0.0.0';
+        publicDataController.storeVersion.value = '0.0.0';
       }
       return true;
     } else {

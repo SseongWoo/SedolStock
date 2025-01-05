@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
 import 'package:stockpj/utils/check_list.dart';
-import 'package:stockpj/utils/data_storage.dart';
+import 'package:stockpj/service/storage_service.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/widget/simple_widget.dart';
 import '../data/my_data.dart';

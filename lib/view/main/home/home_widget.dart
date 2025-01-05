@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/custom_scroll.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/home_view_model.dart';

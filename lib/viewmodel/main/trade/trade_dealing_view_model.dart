@@ -2,10 +2,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/model/main/trade_model.dart';
+import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/data/data_class.dart';
 import '../../../utils/audio.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
@@ -16,7 +18,7 @@ import '../../../view/main/trade/trade_dealing_widget.dart';
 class TradeDealingViewModel extends GetxController {
   final TradeModel tradeModel = TradeModel();
   final ScreenController screenController = Get.find<ScreenController>();
-  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final TimerController _timerController = Get.find<TimerController>();
   final AudioController _audioController = Get.find<AudioController>();
@@ -50,7 +52,7 @@ class TradeDealingViewModel extends GetxController {
     buying = arguments['buying'];
     channelUID = arguments['channelUID'];
     itemType = arguments['type'];
-    itemPriceData.value = _youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
+    itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
   }
 
   @override

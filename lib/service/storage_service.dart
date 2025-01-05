@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
 import '../data/youtube_data.dart';
+import '../model/data/data_class.dart';
 
 // 토큰을 안전하게 저장하기 위한 보안 저장소
 const storage = FlutterSecureStorage();
@@ -146,7 +147,7 @@ Future<void> loadLatestYoutubeData() async {
     if (jsonData != null) {
       final Map<String, dynamic> dataMap = jsonDecode(jsonData);
       youtubeDataController.latestYoutubeData.assignAll(
-        dataMap.map((key, value) => MapEntry(key, YoutubeVideoDataClass.fromHomeJson(value))),
+        dataMap.map((key, value) => MapEntry(key, YoutubeVideoDataClass.fromJson(value))),
       );
     }
   } catch (e) {
@@ -206,7 +207,7 @@ Future<void> loadYoutubeVideoData() async {
           (key, value) => MapEntry(
             key,
             List<YoutubeVideoDataClass>.from(
-                value.map((video) => YoutubeVideoDataClass.fromVideoJson(video))),
+                value.map((video) => YoutubeVideoDataClass.fromJson(video))),
           ),
         ),
       );
@@ -233,10 +234,11 @@ Future<void> loadRankingData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final jsonData = await box.read('rankingData');
+
     if (jsonData != null) {
       final List<dynamic> dataList = jsonDecode(jsonData);
       publicDataController.rankingList.assignAll(
-        dataList.map((data) => RankingDataClass.fromJson(data)).toList(),
+        dataList.map((data) => RankingDataClass.fromJson(Map<String, dynamic>.from(data))).toList(),
       );
     }
     publicDataController.updateDate.value = await box.read('rankingDataDate');
