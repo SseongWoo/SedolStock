@@ -33,7 +33,8 @@ class MyDataController extends GetxController {
   RxInt totalMoneyHistory = 0.obs; // 거래 내역 정보
   RxInt totalSellHistory = 0.obs; // *
   RxInt totalBuyHistory = 0.obs; // //
-  RxList<int> totalMoneyHistoryList = <int>[].obs; // 사용자 보유 잔고 역사 그래프 데이터
+  RxList<TotalMoneyDataClass> totalMoneyHistoryList =
+      <TotalMoneyDataClass>[].obs; // 사용자 보유 잔고 역사 그래프 데이터
   RxList<MessageClass> messageList = <MessageClass>[].obs; // 메세지 리스트 데이터
 
   // 사용자의 소지 금액과 주식 금액을 더해서 총 소유 자산을 계산하는 함수
@@ -56,10 +57,11 @@ class MyDataController extends GetxController {
           ItemPriceDataClass itemPriceData = _youtubeDataController.itemPriceDateMap[key]!;
 
           int stockPrice = itemPriceData.price;
+          int buyPrice = value.stockPrice ~/ value.stockCount;
 
-          myStockMoney.value += stockPrice;
+          myStockMoney.value += stockPrice * value.stockCount;
           totalBuyPrice += value.stockPrice;
-          int profit = stockPrice - value.stockPrice; // 이익 계산
+          int profit = stockPrice - buyPrice; // 이익 계산
           myReturnMoney.value += profit;
 
           String itemUid = itemPriceData.uid;
@@ -68,10 +70,10 @@ class MyDataController extends GetxController {
               itemUid,
               _youtubeDataController.channelMapData[itemUid]!,
               profit,
-              (profit / value.stockPrice) * 100,
+              (profit / buyPrice) * 100,
               value.stockCount,
               stockPrice,
-              value.stockPrice ~/ value.stockCount,
+              buyPrice,
               itemPriceData.price,
               itemPriceData.type,
               streamerColorMap[itemUid]!);
@@ -104,7 +106,6 @@ class MyDataController extends GetxController {
           throw Exception('Empty My Uid');
         }
       }
-
       // 모델을 통해 사용자 데이터 가져오기
       final userData = await dataModel.fetchUserData(myUid.value);
 
@@ -146,10 +147,12 @@ class MyDataController extends GetxController {
         final jsonData = result['data'] as Map<String, dynamic>;
         final jsonData2 = result['moneyHistory'];
 
-        // 총자산 데이터 처리
-        totalMoneyHistoryList.value = List<int>.from(
-          jsonData2['totalmoneyhistory'].map((e) => int.tryParse(e.toString()) ?? 0),
-        );
+        totalMoneyHistoryList.value = jsonData2['totalmoneyhistory'].map<TotalMoneyDataClass>((e) {
+          return TotalMoneyDataClass(
+            int.tryParse(e['money'].toString()) ?? 0, // 금액 데이터
+            e['date']?.toString() ?? '', // 날짜 데이터
+          );
+        }).toList();
 
         // 보유 주식 데이터 처리
         myStockCount.value = 0;

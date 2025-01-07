@@ -283,3 +283,10 @@ class ItemPriceDataClass {
       this.subTotalCount,
       this.subBeforeTotalCount);
 }
+
+class TotalMoneyDataClass {
+  int money;
+  String date;
+
+  TotalMoneyDataClass(this.money, this.date);
+}

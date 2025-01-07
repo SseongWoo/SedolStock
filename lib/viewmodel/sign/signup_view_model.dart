@@ -7,7 +7,6 @@ import 'package:stockpj/model/sign/signup_model.dart';
 import 'package:stockpj/widget/simple_widget.dart';
 import '../../constants/route_constants.dart';
 import '../../constants/data_constants.dart';
-import '../../data/public_data.dart';
 import '../../main.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
@@ -28,14 +27,18 @@ class SignupViewModel extends GetxController {
   RxString labelText = ''.obs; // 팬덤
   RxInt listIndex = 0.obs; // 팬덤
   Color labelColor = Colors.black; // 팬덤
-
+  RxBool visPW = true.obs; // 비밀번호 표시
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     email = Get.arguments;
-    idLabel = email ? '이메일 아이디' : '아이디';
+    idLabel = email ? '이메일' : '게스트';
     labelText.value = fanNameList[listIndex.value];
+  }
+
+  int? lengthID() {
+    return email ? null : 20;
   }
 
   // 아이디 유효성 검사
@@ -48,6 +51,16 @@ class SignupViewModel extends GetxController {
     }
     if (!email && RegExp(r'[!@#$%^&*(),.?":{}|<>~`+=_-]').hasMatch(value)) {
       return '아이디에 특수 문자는 사용할 수 없습니다.';
+    }
+    if (email) {
+      // @와 .을 반드시 포함해야 하고, 나머지 특수문자는 허용되지 않음
+      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+        return '이메일 형식이 아닙니다.';
+      }
+      // 이메일에 허용되지 않는 특수문자가 포함되어 있으면 에러 반환
+      if (RegExp(r'[!#$%^&*(),?":{}|<>~`+=_]').hasMatch(value)) {
+        return '이메일에 허용되지 않는 특수문자가 포함되어 있습니다.';
+      }
     }
     return null;
   }
@@ -139,6 +152,7 @@ class SignupViewModel extends GetxController {
       if (email) {
         await _handleEmailUserSignup(id, password);
       } else {
+        showSimpleSnackbar('회원가입 완료', '회원가입이 완료되었습니다. 환영합니다!', SnackPosition.TOP, Colors.black);
         goSignin();
       }
     } catch (e) {
@@ -199,5 +213,9 @@ class SignupViewModel extends GetxController {
     controllerPassword.clear();
     controllerPasswordCheck.clear();
     signupModel.deleteUser();
+  }
+
+  void changeVisPW() {
+    visPW.value = !visPW.value;
   }
 }

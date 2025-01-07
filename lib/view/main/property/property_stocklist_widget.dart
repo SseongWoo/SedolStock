@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:get/get.dart';
 import '../../../model/data/data_class.dart';
@@ -26,7 +27,8 @@ class PropertyStockListItemWidget extends StatelessWidget {
           onTap: () => viewModel.toggleItemExpansion(stockData.stockUID),
           child: _buildStockOverview(screenSize),
         ),
-        Obx(() => _buildStockDetails(screenSize)),
+        _buildStockDetails(screenSize),
+        //Obx(() => _buildStockDetails(screenSize)),
       ],
     );
   }
@@ -36,7 +38,7 @@ class PropertyStockListItemWidget extends StatelessWidget {
       height: screenSize.getHeightPerSize(8),
       decoration: const BoxDecoration(
         border: Border(
-          top: BorderSide(color: Colors.grey, width: 1),
+          //top: BorderSide(color: Colors.grey, width: 1),
           bottom: BorderSide(color: Colors.grey, width: 1),
         ),
       ),
@@ -78,14 +80,17 @@ class PropertyStockListItemWidget extends StatelessWidget {
   }
 
   Widget _buildChannelTitle(ScreenSize screenSize) {
-    return SizedBox(
-      width: screenSize.getWidthPerSize(30),
-      child: Text(
-        viewModel.getChannelTitle(stockData),
-        softWrap: true,
-        style: TextStyle(
-          fontSize: screenSize.getHeightPerSize(1.8),
-          fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => viewModel.goTradeItem(stockData.stockUID, stockData.stockType),
+      child: SizedBox(
+        width: screenSize.getWidthPerSize(30),
+        child: Text(
+          viewModel.getChannelTitle(stockData),
+          softWrap: true,
+          style: TextStyle(
+            fontSize: screenSize.getHeightPerSize(1.8),
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -115,45 +120,77 @@ class PropertyStockListItemWidget extends StatelessWidget {
   }
 
   Widget _buildStockDetails(ScreenSize screenSize) {
-    return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 100),
-      firstChild: SizedBox(
-        width: screenSize.getWidthSize(),
-      ),
-      secondChild: Container(
-        height: screenSize.getHeightPerSize(8),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 1),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: screenSize.getWidthPerSize(3)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildStockDetailColumn(
-                screenSize: screenSize,
-                title1: '보유 잔고',
-                value1: viewModel.getStockCount(stockData),
-                title2: '현재가',
-                value2: viewModel.getFormattedCurrentPrice(stockData),
-              ),
-              _buildStockDetailColumn(
-                screenSize: screenSize,
-                title1: '매입가',
-                value1: viewModel.getFormattedBuyingPrice(stockData),
-                title2: '현재가',
-                value2: viewModel.getFormattedCurrentPrice(stockData),
-              ),
-            ],
-          ),
+    return Container(
+      height: screenSize.getHeightPerSize(8),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey, width: 1),
         ),
       ),
-      crossFadeState: viewModel.isItemExpanded(stockData.stockUID)
-          ? CrossFadeState.showSecond
-          : CrossFadeState.showFirst,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: screenSize.getWidthPerSize(3)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildStockDetailColumn(
+              screenSize: screenSize,
+              title1: '보유 잔고',
+              value1: viewModel.getStockCount(stockData),
+              title2: '',
+              value2: '',
+              color: Colors.black,
+            ),
+            _buildStockDetailColumn(
+              screenSize: screenSize,
+              title1: '매입가',
+              value1: viewModel.getFormattedBuyingPrice(stockData),
+              title2: '현재가',
+              value2: viewModel.getFormattedCurrentPrice(stockData),
+              color: profitAndLossColor(stockData.stockProfit),
+            ),
+          ],
+        ),
+      ),
     );
+    //   AnimatedCrossFade(
+    //   duration: const Duration(milliseconds: 100),
+    //   firstChild: SizedBox(
+    //     width: screenSize.getWidthSize(),
+    //   ),
+    //   secondChild: Container(
+    //     height: screenSize.getHeightPerSize(8),
+    //     decoration: const BoxDecoration(
+    //       border: Border(
+    //         bottom: BorderSide(color: Colors.grey, width: 1),
+    //       ),
+    //     ),
+    //     child: Padding(
+    //       padding: EdgeInsets.symmetric(horizontal: screenSize.getWidthPerSize(3)),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           _buildStockDetailColumn(
+    //             screenSize: screenSize,
+    //             title1: '보유 잔고',
+    //             value1: viewModel.getStockCount(stockData),
+    //             title2: '현재가',
+    //             value2: viewModel.getFormattedCurrentPrice(stockData),
+    //           ),
+    //           _buildStockDetailColumn(
+    //             screenSize: screenSize,
+    //             title1: '매입가',
+    //             value1: viewModel.getFormattedBuyingPrice(stockData),
+    //             title2: '현재가',
+    //             value2: viewModel.getFormattedCurrentPrice(stockData),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    //   crossFadeState: viewModel.isItemExpanded(stockData.stockUID)
+    //       ? CrossFadeState.showSecond
+    //       : CrossFadeState.showFirst,
+    // );
   }
 
   Widget _buildStockDetailRow({
@@ -190,6 +227,7 @@ class PropertyStockListItemWidget extends StatelessWidget {
     required String value1,
     required String title2,
     required String value2,
+    required Color color,
   }) {
     return SizedBox(
       width: screenSize.getWidthPerSize(35),
@@ -205,7 +243,7 @@ class PropertyStockListItemWidget extends StatelessWidget {
           _buildStockDetailRow(
             title: title2,
             value: value2,
-            color: Colors.black,
+            color: color,
             screenSize: screenSize,
           ),
         ],

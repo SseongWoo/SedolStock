@@ -12,7 +12,7 @@ class PropertyStocklistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = _viewModel.screenController.screenSize.value;
+    ScreenSize screenSize = _viewModel.screenController.screenSize.value;
 
     return SingleChildScrollView(
       child: Column(
@@ -24,23 +24,25 @@ class PropertyStocklistScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              SizedBox(
-                height: screenSize.getHeightPerSize(10),
-                child: Row(
-                  children: [
-                    _buildAssetColumn(
-                        '가용 자산',
-                        '${formatToCurrency(_viewModel.myDataController.myMoney.value)} P',
-                        screenSize),
-                    VerticalDivider(
-                      color: Colors.black,
-                      thickness: screenSize.getWidthPerSize(0.3),
-                    ),
-                    _buildAssetColumn(
-                        '총 자산',
-                        '${formatToCurrency(_viewModel.myDataController.myTotalMoney.value)} P',
-                        screenSize),
-                  ],
+              Obx(
+                () => SizedBox(
+                  height: screenSize.getHeightPerSize(10),
+                  child: Row(
+                    children: [
+                      _buildAssetColumn(
+                          '가용 자산',
+                          '${formatToCurrency(_viewModel.myDataController.myMoney.value)} P',
+                          screenSize),
+                      VerticalDivider(
+                        color: Colors.black,
+                        thickness: screenSize.getWidthPerSize(0.3),
+                      ),
+                      _buildAssetColumn(
+                          '총 자산',
+                          '${formatToCurrency(_viewModel.myDataController.myTotalMoney.value)} P',
+                          screenSize),
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -61,24 +63,30 @@ class PropertyStocklistScreen extends StatelessWidget {
             ),
           ),
           Obx(
-            () => AnimatedCrossFade(
-              duration: const Duration(milliseconds: 300),
-              firstChild: SizedBox(width: screenSize.getWidthSize()),
-              secondChild: SizedBox(
-                height: screenSize.getHeightPerSize(38),
-                child: PropertyStockPieChartWidget(
-                  viewModel: _viewModel,
+            () => Container(
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 1),
                 ),
               ),
-              crossFadeState: _viewModel.isExpandedChart.value
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
+              child: AnimatedCrossFade(
+                duration: const Duration(milliseconds: 300),
+                firstChild: SizedBox(width: screenSize.getWidthSize()),
+                secondChild: SizedBox(
+                  height: screenSize.getHeightPerSize(38),
+                  child: PropertyStockPieChartWidget(
+                    viewModel: _viewModel,
+                  ),
+                ),
+                crossFadeState: _viewModel.isExpandedChart.value
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+              ),
             ),
           ),
           Obx(
             () {
               final stockDataList = _viewModel.myDataController.stockListItem.values.toList();
-
               if (stockDataList.isEmpty) {
                 return const Center(child: Text('보유중인 주식이 없습니다.'));
               }

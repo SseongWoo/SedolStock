@@ -25,6 +25,19 @@ class RankingViewModel extends GetxController {
     timeText.value = '${formatDateString4(publicDataController.updateDate.value)} 01시 00분 기준';
   }
 
+  Color rankingColor(int ranking) {
+    switch (ranking) {
+      case 1:
+        return const Color(0xFFFDC707);
+      case 2:
+        return const Color(0xFF9FA4AF);
+      case 3:
+        return const Color(0xFFD18345);
+      default:
+        return Colors.black;
+    }
+  }
+
   // 내 랭킹 위젯의 배경색 설정
   Color myRankingColor() {
     return fanColorMap[myDataController.myChoicechannel.value] ?? colorIfari;

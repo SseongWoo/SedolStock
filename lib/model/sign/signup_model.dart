@@ -19,7 +19,7 @@ class SignupModel {
       });
 
       if (response.statusCode == 201) {
-        logger.i('Signup successful: ${response.body}');
+        logger.i('Signup successful');
         jsonData = jsonDecode(response.body);
         uid = jsonData!['user']['uid'];
         refreshToken = jsonData['user']['stsTokenManager']['refreshToken'];

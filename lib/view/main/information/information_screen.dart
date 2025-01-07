@@ -26,19 +26,19 @@ class InformationScreen extends StatelessWidget {
             height: screenSize.getHeightPerSize(2),
           ),
           Container(
-            height: screenSize.getHeightPerSize(35),
+            height: screenSize.getHeightPerSize(36),
             color: Colors.white,
             child: MyMoneyChartLine(
               viewModel: _viewModel,
             ),
           ),
-          Container(
-            height: screenSize.getHeightPerSize(35),
-            color: Colors.white,
-            child: MoneyPieChartWidget(
-              viewModel: _viewModel,
-            ),
-          ),
+          // Container(
+          //   height: screenSize.getHeightPerSize(35),
+          //   color: Colors.white,
+          //   child: MoneyPieChartWidget(
+          //     viewModel: _viewModel,
+          //   ),
+          // ),
           SizedBox(
             height: screenSize.getHeightPerSize(2),
           ),

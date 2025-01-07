@@ -70,13 +70,13 @@ class PropertyHistoryScreen extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: _titleTableWidget(
-                  screenSize, formatToCurrency(_viewModel.myDataController.totalSellHistory.value)),
+              child: _titleTableWidget(screenSize,
+                  formatToCurrency(_viewModel.myDataController.totalSellHistory.value), '판매'),
             ),
             Expanded(
               flex: 1,
-              child: _titleTableWidget(
-                  screenSize, formatToCurrency(_viewModel.myDataController.totalBuyHistory.value)),
+              child: _titleTableWidget(screenSize,
+                  formatToCurrency(_viewModel.myDataController.totalBuyHistory.value), '구매'),
             ),
           ],
         ),
@@ -132,7 +132,7 @@ class PropertyHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _titleTableWidget(ScreenSize screenSize, String value) {
+  Widget _titleTableWidget(ScreenSize screenSize, String value, String sale) {
     return Row(
       children: [
         Container(
@@ -149,7 +149,7 @@ class PropertyHistoryScreen extends StatelessWidget {
               ),
             ],
           ),
-          child: _titleTableText(screenSize, '총 판매금액'),
+          child: _titleTableText(screenSize, '총 $sale금액'),
         ),
         Expanded(
           child: Container(

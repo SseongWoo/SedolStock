@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
@@ -8,7 +11,9 @@ import '../../../utils/format.dart';
 class RankingWidget extends StatelessWidget {
   final ScreenSize screenSize;
   final RankingDataClass rankingData;
-  const RankingWidget({super.key, required this.rankingData, required this.screenSize});
+  final Color rankColor;
+  const RankingWidget(
+      {super.key, required this.rankingData, required this.screenSize, required this.rankColor});
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +42,43 @@ class RankingWidget extends StatelessWidget {
               height: screenSize.getHeightPerSize(8),
               width: screenSize.getHeightPerSize(4),
               child: Center(
-                child: Text(
+                child: AutoSizeText(
                   rankingData.rank.toString(),
                   style: TextStyle(
-                    fontSize: screenSize.getHeightPerSize(rankingData.rank < 100 ? 3 : 2),
+                    fontSize: screenSize.getHeightPerSize(3),
+                    fontWeight: rankingData.rank < 4 ? FontWeight.bold : null,
+                    color: rankColor,
                   ),
+                  maxLines: 1,
                 ),
               ),
             ),
-            Container(
-              height: screenSize.getHeightPerSize(6),
-              width: screenSize.getHeightPerSize(6),
-              decoration: const BoxDecoration(shape: BoxShape.circle),
-              child: ClipOval(
-                child:
-                    Image.asset('assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png'),
-              ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                rankingData.rank == 1
+                    ? Positioned(
+                        top: -screenSize.getHeightPerSize(2),
+                        left: -screenSize.getHeightPerSize(2),
+                        child: Transform.rotate(
+                          angle: -8 * (3.14159265359 / 180),
+                          child: Image.asset(
+                            'assets/image/ui/crown.png',
+                            width: screenSize.getWidthPerSize(8),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                Container(
+                  height: screenSize.getHeightPerSize(6),
+                  width: screenSize.getHeightPerSize(6),
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: ClipOval(
+                    child: Image.asset(
+                        'assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png'),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
               width: screenSize.getWidthPerSize(2),
@@ -62,10 +88,11 @@ class RankingWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  AutoSizeText(
                     rankingData.name,
                     style: TextStyle(
                         fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
+                    maxLines: 1,
                   ),
                   Align(
                     alignment: Alignment.centerRight,
@@ -73,11 +100,12 @@ class RankingWidget extends StatelessWidget {
                       padding: EdgeInsets.only(
                         right: screenSize.getWidthPerSize(2),
                       ),
-                      child: Text(
+                      child: AutoSizeText(
                         formatToCurrency(rankingData.totalMoney),
                         style: TextStyle(
                           fontSize: screenSize.getHeightPerSize(1.8),
                         ),
+                        maxLines: 1,
                       ),
                     ),
                   ),
@@ -129,7 +157,8 @@ Widget rankingChangeWidget(ScreenSize screenSize, int rank, int beforeRank) {
   }
 
   return Row(
-    mainAxisAlignment: icon != Icons.add ? MainAxisAlignment.start : MainAxisAlignment.center,
+    //mainAxisAlignment: icon != Icons.add ? MainAxisAlignment.start : MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
       icon != Icons.add
           ? Icon(
@@ -137,7 +166,7 @@ Widget rankingChangeWidget(ScreenSize screenSize, int rank, int beforeRank) {
               color: iconColor,
             )
           : const SizedBox.shrink(),
-      Text(
+      AutoSizeText(
         title,
         style: TextStyle(
           fontSize: screenSize.getHeightPerSize(2),

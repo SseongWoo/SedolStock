@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:korean_profanity_filter/korean_profanity_filter.dart' as korean_filter;
 import 'package:profanity_filter/profanity_filter.dart' as english_filter;
 import 'package:stockpj/constants/route_constants.dart';
+import 'package:stockpj/utils/color.dart';
 import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
 import '../../../main.dart';
 import '../../../model/main/information_model.dart';
-import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/search_name.dart';
 import '../../../widget/simple_widget.dart';
@@ -28,7 +28,7 @@ class InformationViewModel extends GetxController {
         .entries
         .map((entry) => FlSpot(
               entry.key.toDouble(),
-              entry.value.toDouble(),
+              entry.value.money.toDouble(),
             ))
         .toList();
 
@@ -59,7 +59,7 @@ class InformationViewModel extends GetxController {
   }
 
   double chartMaxValue() {
-    final maxValue = chartSpots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
+    final maxValue = chartSpots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b) + 500000;
     return ((maxValue / 500000).ceil() * 500000).toDouble();
   }
 
@@ -74,9 +74,10 @@ class InformationViewModel extends GetxController {
     if (myDataController.totalMoneyHistoryList.length > 1) {
       myRate = (((myDataController.myTotalMoney.value -
                   myDataController
-                      .totalMoneyHistoryList[myDataController.totalMoneyHistoryList.length - 2]) /
+                      .totalMoneyHistoryList[myDataController.totalMoneyHistoryList.length - 2]
+                      .money) /
               myDataController
-                  .totalMoneyHistoryList[myDataController.totalMoneyHistoryList.length - 2]) *
+                  .totalMoneyHistoryList[myDataController.totalMoneyHistoryList.length - 2].money) *
           100);
       myRate = double.parse(
         myRate.toStringAsFixed(2),
@@ -87,14 +88,8 @@ class InformationViewModel extends GetxController {
     } else {
       myRate = 0.0;
     }
+    myRateColor = profitAndLossColor(myRate);
 
-    if (myRate > 0) {
-      myRateColor = Colors.red;
-    } else if (myRate < 0) {
-      myRateColor = Colors.blue;
-    } else {
-      myRateColor = Colors.black;
-    }
     return RateConfigClass(myRate, myRateColor);
   }
 

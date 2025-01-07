@@ -25,22 +25,13 @@ class RankingScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '랭킹',
-                  style: TextStyle(
-                    fontSize: screenSize.getHeightPerSize(2.5),
-                  ),
-                ),
-                Text(
-                  _viewModel.timeText.value,
-                  style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(1.2), color: Colors.grey[700]),
-                ),
-              ],
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                _viewModel.timeText.value,
+                style:
+                    TextStyle(fontSize: screenSize.getHeightPerSize(1.2), color: Colors.grey[700]),
+              ),
             ),
             Expanded(
                 child: _viewModel.publicDataController.rankingList.isNotEmpty
@@ -48,15 +39,20 @@ class RankingScreen extends StatelessWidget {
                         itemCount: _viewModel.publicDataController.rankingList.length,
                         itemBuilder: (context, index) {
                           final rankingData = _viewModel.publicDataController.rankingList[index];
+                          final rankingColor = _viewModel.rankingColor(rankingData.rank);
+
                           return Padding(
                             padding: EdgeInsets.symmetric(
                               vertical: screenSize.getHeightPerSize(1),
+                              horizontal: screenSize.getHeightPerSize(0.2),
                             ),
                             child: GestureDetector(
-                                child: RankingWidget(
-                              rankingData: rankingData,
-                              screenSize: screenSize,
-                            )),
+                              child: RankingWidget(
+                                rankingData: rankingData,
+                                screenSize: screenSize,
+                                rankColor: rankingColor,
+                              ),
+                            ),
                           );
                         },
                       )

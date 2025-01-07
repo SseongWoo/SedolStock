@@ -72,6 +72,8 @@ class SplashViewModel extends GetxController {
       }
     } catch (e) {
       logger.e(e);
+      await setIdToken(null);
+      await setTokens(null, null);
       _handleLoginError();
     }
   }

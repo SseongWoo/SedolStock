@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/timer.dart';
-import '../../../data/youtube_data.dart';
+import '../../../constants/data_constants.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/trade/trade_dealing_view_model.dart';
@@ -69,19 +69,19 @@ class TradeDealingScreen extends StatelessWidget {
                         fontSize: screenSize.getHeightPerSize(2.5),
                       ),
                     ),
-                    ListTile(
-                      title: Obx(
-                        () => Text(
+                    Obx(
+                      () => ListTile(
+                        title: Text(
                           '${formatToCurrency(_viewModel.calculatorSum.value)}원',
                           style: TextStyle(
                             fontSize: screenSize.getHeightPerSize(2),
                           ),
                         ),
-                      ),
-                      subtitle: Text(
-                        _viewModel.calculatorDataText(),
-                        style: TextStyle(
-                          fontSize: screenSize.getHeightPerSize(1.4),
+                        subtitle: Text(
+                          '현재 가격 : ${formatToCurrency(_viewModel.itemPriceData.value.price)}원 수수료 : ${formatToCurrency((_viewModel.itemPriceData.value.price * feeRate).round())}원',
+                          style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(1.4),
+                          ),
                         ),
                       ),
                     ),

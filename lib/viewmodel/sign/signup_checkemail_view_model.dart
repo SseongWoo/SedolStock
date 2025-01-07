@@ -18,15 +18,15 @@ class SignupCheckemailViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    final arguments = Get.arguments as Map<String, dynamic>;
-    id = arguments['id'];
-    pw = arguments['pw'];
+    final arguments = (Get.arguments as Map?) ?? {};
+    id = arguments['id']?.toString() ?? '';
+    pw = arguments['pw']?.toString() ?? '';
   }
 
   // 다음 화면으로 이동
   void goSignUp() {
     Get.offAllNamed(
-      AppRoute.signupScreen,
+      AppRoute.signin,
     );
   }
 
@@ -47,7 +47,7 @@ class SignupCheckemailViewModel extends GetxController {
 
     if (checkEmail) {
       showSimpleSnackbar(
-          '이메일 인증 완료', '이메일 인증이 완료되었습니다! 로그인 화면으로 이동하여 로그인해주세요.', SnackPosition.TOP, Colors.black);
+          '이메일 인증 완료', '이메일 인증이 완료되었습니다! 로그인 후 서비스를 이용해 주세요.', SnackPosition.TOP, Colors.black);
       goSignUp();
     } else {
       showSimpleDialog(Get.back, '인증 확인 오류', '이메일 인증이 완료되지 않았습니다. 이메일을 확인하고 인증 링크를 클릭하세요.');

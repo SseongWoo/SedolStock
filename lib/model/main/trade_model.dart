@@ -63,7 +63,7 @@ class SalesData {
 
 class TradeModel {
   // 매매 실행
-  Future<bool> trySale(String myUID, int price, int count, String channelUID, String itemType,
+  Future<bool> fetchTrySale(String myUID, int price, int count, String channelUID, String itemType,
       String saleType, int priceAVG) async {
     final HttpService httpService = HttpService();
     try {
@@ -79,10 +79,11 @@ class TradeModel {
       if (response.statusCode == 200) {
         return true;
       } else {
+        logger.e('trySale error : ${response.statusCode}');
         return false;
       }
     } catch (e) {
-      logger.e('updateFandom error : $e');
+      logger.e('trySale error : $e');
       return false;
     }
   }

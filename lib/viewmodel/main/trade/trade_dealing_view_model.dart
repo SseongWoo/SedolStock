@@ -62,6 +62,13 @@ class TradeDealingViewModel extends GetxController {
       calculatorInt,
       (callback) => setSalePrice(),
     );
+
+    ever(
+      youtubeDataController.itemPriceDateMap,
+      (callback) {
+        itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
+      },
+    );
   }
 
   String typeTitle() {
@@ -147,7 +154,9 @@ class TradeDealingViewModel extends GetxController {
   }
 
   void setSalePrice() {
-    calculatorSum.value = calculatorInt.value * itemPriceData.value.price;
+    int price = calculatorInt.value * itemPriceData.value.price; // 주식 총 가격
+    int fee = (price * feeRate).round();
+    calculatorSum.value = price + fee;
   }
 
   String calculatorDataText() {
@@ -177,14 +186,14 @@ class TradeDealingViewModel extends GetxController {
   }
 
   // 매매 다이얼로그에서 매매버튼을 클릭했을떄 실행
-  void onPressedSaleButton(int price) {
+  void onPressedSaleButton(int price) async {
     if (_timerController.checkDataTime.value) {
       showSimpleDialog(Get.back, '매매 실패', '현재 서버에서 데이터를 갱신 중입니다. 갱신 완료 후 다시 이용해 주세요.');
     } else if (checkDelisting()) {
       showSimpleDialog(
           Get.back, '매매 실패', '현재 상장폐지중인 아이템입니다. ${itemPriceData.value.delisting}턴 후에 다시 이용해주세요');
     } else {
-      trySale(price, calculatorInt.value);
+      await trySale(price, calculatorInt.value);
     }
   }
 
@@ -192,28 +201,30 @@ class TradeDealingViewModel extends GetxController {
   Future<void> trySale(int price, int count) async {
     EasyLoading.show();
     try {
-      bool checkSale = await tradeModel.trySale(
-          myDataController.myUid.value,
-          price,
-          count,
-          channelUID,
-          itemType,
-          saleTitle(),
-          myDataController.itemHistory['${channelUID}_$itemType']!.itemPriceAvg);
+      int priceAvg = 0;
+      String type = buying ? 'buy' : 'sell';
+
+      if (!buying) {
+        priceAvg = myDataController.itemHistory['${channelUID}_$itemType']!.itemPriceAvg;
+      }
+
+      bool checkSale = await tradeModel.fetchTrySale(
+          myDataController.myUid.value, price, count, channelUID, itemType, type, priceAvg);
       if (checkSale) {
         _audioController.playSound('assets/sound/testsound.wav');
         Get.back();
         await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
       } else {
+        Get.back();
         showSimpleSnackbar(
             '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);
       }
       EasyLoading.dismiss();
     } catch (e) {
-      showSimpleSnackbar(
-          '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);
       Get.back();
+      showSimpleSnackbar(
+          '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요. $e', SnackPosition.TOP, Colors.red);
     } finally {
       EasyLoading.dismiss();
     }

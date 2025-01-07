@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
+import 'package:stockpj/viewmodel/main/trade/trade_detail_view_model.dart';
 import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
@@ -12,15 +13,15 @@ import '../../../widget/listview_item.dart';
 // 차트 위젯
 class TradeDatailPriceChartWidget extends StatelessWidget {
   final ScreenSize screenSize;
-  final RxList<FlSpot> chartSpots;
   final RxList<String> chartXTitle;
+  final RxList<FlSpot> chartSpots;
   final String channelUID;
 
   const TradeDatailPriceChartWidget({
     super.key,
     required this.screenSize,
-    required this.chartSpots,
     required this.chartXTitle,
+    required this.chartSpots,
     required this.channelUID,
   });
 
@@ -48,7 +49,9 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
                 sideTitles: SideTitles(
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
-                    if (value.toInt() >= chartXTitle.length) return const SizedBox.shrink();
+                    if (value.toInt() >= chartXTitle.length) {
+                      return const SizedBox.shrink();
+                    }
                     return Padding(
                       padding: EdgeInsets.only(top: screenSize.getHeightPerSize(0.5)),
                       child: Text(

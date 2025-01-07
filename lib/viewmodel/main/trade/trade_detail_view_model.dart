@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +15,7 @@ import '../../../utils/screen_size.dart';
 class TradeDetailViewModel extends GetxController {
   final HttpService _httpService = HttpService();
   final ScreenController screenController = Get.find<ScreenController>();
-  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
+  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
   final ScrollController scrollController = ScrollController();
   RxDouble opacity = 0.0.obs; // 화면 스크롤 위치 값
@@ -24,10 +26,12 @@ class TradeDetailViewModel extends GetxController {
   RxBool typeMain = true.obs; // 아이템의 타입 확인 변수
   RxList<YoutubeVideoDataClass> mainVideoList = <YoutubeVideoDataClass>[].obs;
   RxList<YoutubeVideoDataClass> subVideoList = <YoutubeVideoDataClass>[].obs;
-  TradeDetailChartData tradeDetailChartData = TradeDetailChartData('', '', ''); // 초기화 추가
-  late ItemPriceDataClass itemPriceData; // 아이템 가격 데이터 클래스
+  Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData('', '', '').obs; // 초기화 추가
+  Rx<ItemPriceDataClass> itemPriceData =
+      ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0.0, 0, 0).obs; // 아이템 가격 데이터 클래스
   Rx<MyStockDataClass> myStockDataClass = MyStockDataClass('', 0, 0, '').obs;
   RxInt profit = 0.obs;
+  String typeLabel = '';
 
   @override
   void onInit() {
@@ -36,7 +40,9 @@ class TradeDetailViewModel extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     channelUID = arguments['channelUID'];
     type = arguments['type'];
-    itemPriceData = _youtubeDataController.itemPriceDateMap['${channelUID}_$type']!;
+    itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$type']!;
+
+    typeLabel = type == 'view' ? '조회수' : '좋아요수';
 
     scrollController.addListener(() {
       // 스크롤 위치에 따라 투명도 변경 (최대 100까지 스크롤 시 1.0의 불투명도)
@@ -82,77 +88,52 @@ class TradeDetailViewModel extends GetxController {
         '$pm${formatToCurrency(stockData.stockProfit)}P (${((stockData.stockRatio).toStringAsFixed(2))}%)';
   }
 
-  // 앱바에 위치한 타이틀에 표시할 데이터 설정
-  AppBarTitleDataClass appBarData() {
-    String title =
-        '${_youtubeDataController.channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
-    String price = formatToCurrency(itemPriceData.price);
-    String retnRatio =
-        '${itemPriceData.differencePrice > 0 ? '+' : ''}${formatToCurrency(itemPriceData.differencePrice)} (${itemPriceData.ratio.toStringAsFixed(2)}%)';
-
-    return AppBarTitleDataClass(title, price, retnRatio);
-  }
-
   // 그래프에 사용될 데이터 설정
   void setChartData() {
-    tradeDetailChartData.title =
-        '${_youtubeDataController.channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
-    tradeDetailChartData.price = formatToCurrency(itemPriceData.price);
+    itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$type']!;
+    tradeDetailChartData.value.title =
+        '${youtubeDataController.channelMapData[channelUID]!} (${type == 'view' ? '조회수' : '좋아요수'})';
+    tradeDetailChartData.value.price = formatToCurrency(itemPriceData.value.price);
 
-    tradeDetailChartData.returnRatio =
-        '${itemPriceData.differencePrice > 0 ? '+' : ''}${itemPriceData.differencePrice} (${itemPriceData.ratio > 0 ? '+' : ''}${itemPriceData.ratio.toStringAsFixed(2)}%)';
+    tradeDetailChartData.value.returnRatio =
+        '${itemPriceData.value.differencePrice > 0 ? '+' : ''}${itemPriceData.value.differencePrice} (${itemPriceData.value.ratio > 0 ? '+' : ''}${itemPriceData.value.ratio.toStringAsFixed(2)}%)';
 
     List<SalesData> reversedCount = [];
     if (type == 'view') {
       reversedCount =
-          _youtubeDataController.youtubeChartData[channelUID]!.viewCount.take(10).toList();
+          youtubeDataController.youtubeChartData[channelUID]!.viewCount.take(10).toList();
     } else {
       reversedCount =
-          _youtubeDataController.youtubeChartData[channelUID]!.likeCount.take(10).toList();
+          youtubeDataController.youtubeChartData[channelUID]!.likeCount.take(10).toList();
     }
     final List<SalesData> last10ReversedCount = reversedCount.reversed.toList();
 
-    chartSpots.value = last10ReversedCount.asMap().entries.map((entry) {
+    List<String> xtitle = [];
+    List<FlSpot> spots = last10ReversedCount.asMap().entries.map((entry) {
       final int index = entry.key;
       final SalesData data = entry.value;
-      chartXTitle.add(data.time);
+      xtitle.add(data.time);
       return FlSpot(index.toDouble(), data.sales);
     }).toList();
+
+    chartSpots.value = spots;
+    chartXTitle.value = xtitle;
   }
 
-  // 상세 정보에 표시될 데이터 설정
-  TradeDetailChartInfoClass totalData() {
-    String title = type == 'view' ? '총 조회수' : '총 좋아요수';
-    String trailing = formatToCurrency(itemPriceData.totalCount);
-    return TradeDetailChartInfoClass(title, trailing);
-  }
+  // 그래프 y축 최대값 설정
+  double chartMaxValue() {
+    final maxValue = chartSpots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
+    int digitCount = maxValue.toInt().toString().length;
+    int baseValue = pow(10, digitCount - 1).toInt();
 
-  // 상세 정보에 표시될 데이터 설정
-  TradeDetailChartInfoClass subTotalData() {
-    String title = type == 'view' ? '서브 채널 총 조회수' : '서브 채널 총 좋아요수';
-    String trailing = formatToCurrency(itemPriceData.subTotalCount);
-    return TradeDetailChartInfoClass(title, trailing);
-  }
-
-  // 상세 정보에 표시될 데이터 설정
-  TradeDetailChartInfoClass beforeTotalData() {
-    String title = type == 'view' ? '이전 총 조회수' : '이전 총 좋아요수';
-    String trailing = formatToCurrency(itemPriceData.beforeTotalCount);
-    return TradeDetailChartInfoClass(title, trailing);
-  }
-
-  // 상세 정보에 표시될 데이터 설정
-  TradeDetailChartInfoClass subBeforeTotalData() {
-    String title = type == 'view' ? '서브 채널 이전 총 조회수' : '서브 채널 이전 총 좋아요수';
-    String trailing = formatToCurrency(itemPriceData.subBeforeTotalCount);
-    return TradeDetailChartInfoClass(title, trailing);
+    return ((maxValue / baseValue).ceil() * baseValue) + baseValue.toDouble();
   }
 
   // 비디오 영상 설정
   void setVideoListData() {
-    mainVideoList.value = _youtubeDataController.youtubeVideoData[channelUID]!;
-    subVideoList.value = _youtubeDataController
-        .youtubeVideoData[_youtubeDataController.channelAndSubChannelMapData[channelUID]]!;
+    mainVideoList.value = youtubeDataController.youtubeVideoData[channelUID]!;
+    subVideoList.value = youtubeDataController
+        .youtubeVideoData[youtubeDataController.channelAndSubChannelMapData[channelUID]]!;
   }
 
   // 메인, 서브 영상 리스트 설정
@@ -177,11 +158,11 @@ class TradeDetailViewModel extends GetxController {
 
   // 상장폐지 확인 함수
   bool delistingState() {
-    return itemPriceData.delisting > 0;
+    return itemPriceData.value.delisting > 0;
   }
 
   // 상장폐지 텍스트
   String delistingTitle() {
-    return '상장 폐지중(${itemPriceData.delisting})';
+    return '상장 폐지중(${itemPriceData.value.delisting})';
   }
 }

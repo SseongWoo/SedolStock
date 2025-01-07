@@ -30,14 +30,14 @@ class SignupChoiceScreen extends StatelessWidget {
               _choiceButton(
                 screenSize,
                 '이메일 회원가입',
-                '이메일로 가입하시면 계정 찾기와 비밀번호 재설정이 가능합니다.',
+                '이메일로 가입하시면 계정 찾기와\n비밀번호 재설정이 가능합니다.',
                 true,
                 () => _viewModel.goSignUp(true),
               ),
               _choiceButton(
                 screenSize,
                 '게스트 회원가입',
-                '게스트로 이메일 없이 사용 가능하지만, 계정 복구는 불가능합니다.',
+                '이메일 없이 사용 가능하지만\n계정 복구는 불가능합니다.',
                 false,
                 () => _viewModel.goSignUp(false),
               ),
@@ -82,10 +82,14 @@ class SignupChoiceScreen extends StatelessWidget {
               SizedBox(
                 height: screenSize.getHeightPerSize(1),
               ),
-              Text(
-                value,
-                style: TextStyle(fontSize: screenSize.getHeightPerSize(1.3), color: Colors.white),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: EdgeInsets.only(
+                    left: screenSize.getWidthPerSize(2), right: screenSize.getWidthPerSize(2)),
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(1.3), color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),

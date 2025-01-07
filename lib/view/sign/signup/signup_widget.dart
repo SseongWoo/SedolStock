@@ -22,7 +22,7 @@ class SignupChoiceFandomWidget extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: screenSize.getHeightPerSize(4),
+            height: screenSize.getHeightPerSize(2),
           ),
           Align(
             alignment: Alignment.centerLeft,

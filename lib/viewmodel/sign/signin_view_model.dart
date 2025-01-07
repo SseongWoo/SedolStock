@@ -85,7 +85,6 @@ class SigninViewModel extends GetxController {
         showSimpleDialog(goCheckEmail, '회원가입 미완료', '회원가입이 중단된 상태입니다. 아래 버튼을 눌러 계속 진행해주세요!');
         return;
       }
-
       await _initializeUserData(signinData.uid, signinData.token);
       goHome();
     } catch (e) {

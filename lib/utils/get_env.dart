@@ -1,6 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../data/public_data.dart';
-import 'color.dart';
 
 late String httpURL;
 late String cafeURL;
@@ -11,6 +10,13 @@ void setURL() {
   cafeURL = dotenv.env['CAFE_URL'] ?? '';
   httpURL = dotenv.env['API_URL'] ?? '';
   packageName = dotenv.env['PACKAGE_NAME'] ?? '';
+
+  if (kDebugMode) {
+    print('디버그 모드에서 실행 중입니다.');
+    httpURL = dotenv.env['TEST_API_URL'] ?? '';
+  } else {
+    print('릴리스 모드에서 실행 중입니다.');
+  }
 
   // httpURL = 'http://localhost:3000/api';
   // httpURL = 'http://10.0.2.2:3000/api';

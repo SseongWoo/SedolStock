@@ -212,11 +212,30 @@ class MyMoneyChartLine extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      interval: 1,
                       getTitlesWidget: (value, meta) {
-                        final DateTime today = DateTime.now();
-                        final DateTime date =
-                            today.subtract(Duration(days: (chartSpots.length - 1 - value.toInt())));
-                        final String formattedDate = DateFormat('MM/dd').format(date);
+                        final int index = value.toInt();
+                        final int length = viewModel.myDataController.totalMoneyHistoryList.length;
+
+                        // 인덱스가 범위를 벗어나지 않도록 체크
+                        if (index < 0 || index >= length) {
+                          return const SizedBox.shrink();
+                        }
+
+                        // 처음, 중간, 끝 인덱스만 보여주기
+                        if (index != 0 && index != length ~/ 2 && index != length - 1) {
+                          return const SizedBox.shrink();
+                        }
+
+                        // 해당 인덱스의 날짜 가져오기
+                        final String dateStr =
+                            viewModel.myDataController.totalMoneyHistoryList[index].date;
+
+                        // 날짜 형식 보정
+                        final DateTime parsedDate = DateFormat('yyyy-M-d').parse(dateStr);
+                        final String formattedDate = DateFormat('MM/dd').format(parsedDate);
+
+                        // 반환
                         return Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
