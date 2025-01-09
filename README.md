@@ -65,7 +65,7 @@ assets
     └── ui     # ui 구성 이미지 폴더
 ```
 
-#### 모델 부분
+#### 뷰 부분
 ```sh
 lib
 ├── view                                                      ## 뷰 폴더
@@ -113,7 +113,8 @@ lib
 │   │       ├── signup_choice_widget.dart
 │   │       ├── signup_screen.dart
 │   │       └── signup_widget.dart
-│   └── splash_screen.dart                                  # 로딩 화면
+│   ├── splash_screen.dart                                  # 로딩 화면       
+│   └── splash_widget.dart
 ```
 
 #### 뷰모델 부분
@@ -183,6 +184,7 @@ lib
 │   └── storage_service.dart                  # 로컬에 데이터를 저장하거나 불러오는 기능
 ├── utils                                           ## 다양한 기능 관련 폴더
 │   ├── audio.dart                            # 소리 기능
+│   ├── change_fandom.dart                    # 팬덤 변경 기능
 │   ├── check_list.dart                       # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
 │   ├── color.dart                            # 색 설정 기능
 │   ├── custom_scroll.dart                    # 웹에서도 스크롤이 동작하게 하는 기능
@@ -231,6 +233,7 @@ lib
 │   └── storage_service.dart                  # 로컬에 데이터를 저장하거나 불러오는 기능
 ├── utils                                           ## 다양한 기능 관련 폴더
 │   ├── audio.dart                            # 소리 기능
+│   ├── change_fandom.dart                    # 팬덤 변경 기능
 │   ├── check_list.dart                       # 기기의 플랫폼, 앱 버전, 서버 구동 상태를 확인하는 기능
 │   ├── color.dart                            # 색 설정 기능
 │   ├── custom_scroll.dart                    # 웹에서도 스크롤이 동작하게 하는 기능
@@ -243,6 +246,7 @@ lib
 └── widget                                      ## 재사용 위젯 폴더
     ├── button.dart                             # 버튼 위젯
     ├── divider.dart                            # 구분선 위젯
+    ├── listview_item.dart                      # 리스트뷰 재사용 위젯
     └── simple_widget.dart                      # 간단한 다이얼로그, 스낵바 위젯
 ```
 
@@ -257,42 +261,40 @@ lib
 |:---:|:---:|
 |<img src = "https://github.com/user-attachments/assets/0ea46979-759c-4d6f-8ca1-9f23888a2928" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1d5d29b5-4c8e-42dd-85a9-3141d5b0a1f7" width="350" height="750">|
 |회원가입 1단계|회원가입 2단계|
-|<img src = "https://github.com/user-attachments/assets/931ab878-e75c-4782-a9f6-fcc87e5dd8fc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/a71e3b36-67d4-4b4c-8685-e6d5cb542aa0" width="350" height="750">|
-|회원가입 3단계|회원가입 4단계|
-|<img src = "https://github.com/user-attachments/assets/308d267e-c079-4856-85b9-f89511a85fde" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/fc703f4d-3c6e-4140-a506-bc6c57bf714b" width="350" height="750">|
-|비밀번호 찾기||
-|<img src = "https://github.com/user-attachments/assets/5a545793-37c1-4c86-a7e5-32a5fbff40e1" width="350" height="750">||
+|<img src = "https://github.com/user-attachments/assets/931ab878-e75c-4782-a9f6-fcc87e5dd8fc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/fe522b0a-8393-42e0-b119-d58eafbc700c" width="350" height="750">|
+|회원가입 3단계|비밀번호 찾기|
+|<img src = "https://github.com/user-attachments/assets/1bc58f66-cf73-43a4-85d0-2db179d70c58" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/17aae111-271f-4415-bffa-40c315b08d65" width="350" height="750">|
 </details>
 
 <details><summary>메인 화면 부분</summary>
     
 |홈 탭|랭킹 탭|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/bf47eb77-723d-4f3d-a79c-8a22a4ac60d7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/de211c84-1a37-4a05-821f-c3c7ec193237" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/58628368-3570-4369-ac35-10fd33cabc57" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/9e417713-a9c5-4439-ae14-502f19442495" width="350" height="750">|
 |지갑 탭 주식잔고|지갑 탭 거래내역|
-|<img src = "https://github.com/user-attachments/assets/a29fb1be-c6da-4758-a4a1-797a9b957c2e" width="350" height="750">|<img src = "" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/a29fb1be-c6da-4758-a4a1-797a9b957c2e" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/17050ee2-5365-4dbe-af08-2d5a292c91ec" width="350" height="750">|
 |알림 화면||
-|<img src = "https://github.com/user-attachments/assets/07e6e4c9-4964-4d6a-81fd-f1ceb650e7c7" width="350" height="750">|<img src = "" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/d00a1aeb-b133-47c4-a619-efee416616e0" width="350" height="750">|<img src = "" width="350" height="750">|
 </details>
 
 <details><summary>거래 화면 부분</summary>
     
 |거래 탭|종목 상세 정보|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/3d7c7be7-97d4-4552-b532-f1a0e246f092" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1ce1dd61-3f72-4ea3-9049-8c13f6466869" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/34c6729c-33f2-4449-bfa2-09d3c24f6975" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/316faf49-9c46-4bfb-8762-c60a3ba69d84" width="350" height="750">|
 |종목 판매|종목 구매|
-|<img src = "https://github.com/user-attachments/assets/4594f88e-0647-40d2-b75c-ef35c7747260" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/d37fbb26-593d-43b1-8090-8d960957481b" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/b8011a32-d5cb-408d-b192-5336aed5301a" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/64a19553-36bd-4c3d-a5a0-33bdb734b79e" width="350" height="750">|
 |종목 판매 확인|종목 구매 확인|
-|<img src = "https://github.com/user-attachments/assets/1fe5e4a0-5625-4eeb-b467-0e3d8676ec4b" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/7a168253-83cd-4773-9d28-e57ad794fade" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/adc09cf2-3946-458c-bdd1-91c9d24f0cbc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/da0a9953-ada5-4a52-8506-000b59d186b3" width="350" height="750">|
 </details>
 
 <details><summary>정보 화면 부분</summary>
     
-|정보 탭|상세 관리|
+|정보 탭|관리 화면|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/c9456f50-68e4-45da-aa8f-a843038c94c1" width="350" height="1500">|<img src = "https://github.com/user-attachments/assets/59412a18-f5c8-4783-a1c6-781c969f9afb" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/6aa04fdc-ca86-4b30-8025-b6318210bac7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1dcf662a-c19d-437f-bc38-0f3836063918" width="350" height="750">|
 |이름 변경|팬덤 변경|
-|<img src = "https://github.com/user-attachments/assets/af86de07-2fc1-489e-a54f-3ab97cdb6d3a" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/d2bd9c73-3c59-46cf-bebc-1d953aa6d449" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/d41e25a2-7371-415e-801e-656a9ba49ed6" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/331a0cd8-0f91-494c-8577-734c9995eb54" width="350" height="750">|
 |회원 탈퇴||
 |<img src = "https://github.com/user-attachments/assets/ea065213-09dc-419e-8017-3fb922ac8a23" width="350" height="750">|
 </details>
