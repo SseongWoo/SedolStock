@@ -5,6 +5,7 @@ import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:get/get.dart';
 import '../../../model/data/data_class.dart';
+import '../../../utils/format.dart';
 import '../../../viewmodel/main/property/property_stocklist_view_model.dart';
 
 class PropertyStockListItemWidget extends StatelessWidget {
@@ -104,14 +105,14 @@ class PropertyStockListItemWidget extends StatelessWidget {
         children: [
           _buildStockDetailRow(
             title: '평가손익',
-            value: viewModel.getFormattedProfit(stockData),
-            color: viewModel.getTextColor(stockData),
+            value: '${formatToCurrency(stockData.stockProfit)}P',
+            color: profitAndLossColor(stockData.stockProfit),
             screenSize: screenSize,
           ),
           _buildStockDetailRow(
             title: '수익률',
-            value: viewModel.getFormattedRatio(stockData),
-            color: viewModel.getTextColor(stockData),
+            value: '${stockData.stockRatio.toStringAsFixed(2)}%',
+            color: profitAndLossColor(stockData.stockProfit),
             screenSize: screenSize,
           ),
         ],
@@ -135,17 +136,17 @@ class PropertyStockListItemWidget extends StatelessWidget {
             _buildStockDetailColumn(
               screenSize: screenSize,
               title1: '보유 잔고',
-              value1: viewModel.getStockCount(stockData),
-              title2: '',
-              value2: '',
+              value1: '${stockData.stockCount}주',
+              title2: '평가 금액',
+              value2: '${formatToCurrency(stockData.stockTotalPrice)}P',
               color: Colors.black,
             ),
             _buildStockDetailColumn(
               screenSize: screenSize,
               title1: '매입가',
-              value1: viewModel.getFormattedBuyingPrice(stockData),
+              value1: '${formatToCurrency(stockData.stockBuyingPrice)}P',
               title2: '현재가',
-              value2: viewModel.getFormattedCurrentPrice(stockData),
+              value2: '${formatToCurrency(stockData.currentPrice)}P',
               color: profitAndLossColor(stockData.stockProfit),
             ),
           ],

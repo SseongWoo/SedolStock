@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
+import '../service/http_service.dart';
 import 'get_env.dart';
 
 // 구동중인 기기의 os를 체크하는 함수

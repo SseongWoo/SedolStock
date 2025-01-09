@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/main/information/setting_app_view_model.dart';
+import 'package:stockpj/widget/button.dart';
 import '../../../constants/color_constants.dart';
+import '../../../constants/data_constants.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
@@ -63,39 +65,43 @@ class AudioSettingWidget extends StatelessWidget {
         Obx(
           () => AnimatedCrossFade(
             duration: const Duration(milliseconds: 300),
-            firstChild: SizedBox(
+            firstChild: Container(
               width: screenSize.getWidthSize(),
+              color: Colors.white,
             ),
-            secondChild: Padding(
-              padding: EdgeInsets.only(
-                left: screenSize.getWidthPerSize(3),
-                right: screenSize.getWidthPerSize(3),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Slider(
-                      value: viewModel.audioController.audioVolume.value,
-                      onChanged: (value) {
-                        viewModel.audioController.audioVolume.value = value;
-                        viewModel.audioController.audioPlayer.setVolume(value);
-                      },
-                      activeColor: colorSUB,
-                      inactiveColor: colorMAIN,
-                      thumbColor: fanColorMap[viewModel.myDataController.myChoicechannel.value],
-                      divisions: 10,
-                      label: '${(viewModel.audioController.audioVolume.value * 100).toInt()}%',
-                      min: 0.0,
-                      max: 1.0,
+            secondChild: Container(
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: screenSize.getWidthPerSize(3),
+                  right: screenSize.getWidthPerSize(3),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        value: viewModel.audioController.audioVolume.value,
+                        onChanged: (value) {
+                          viewModel.audioController.audioVolume.value = value;
+                          viewModel.audioController.audioPlayer.setVolume(value);
+                        },
+                        activeColor: colorSUB,
+                        inactiveColor: colorMAIN,
+                        thumbColor: fanColorMap[viewModel.myDataController.myChoicechannel.value],
+                        divisions: 10,
+                        label: '${(viewModel.audioController.audioVolume.value * 100).toInt()}%',
+                        min: 0.0,
+                        max: 1.0,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      viewModel.audioController.playSound('assets/sound/testsound.wav');
-                    },
-                    icon: const Icon(Icons.volume_up),
-                  ),
-                ],
+                    IconButton(
+                      onPressed: () {
+                        viewModel.audioController.playSound('assets/sound/testsound.wav');
+                      },
+                      icon: const Icon(Icons.volume_up),
+                    ),
+                  ],
+                ),
               ),
             ),
             crossFadeState: viewModel.audioController.onAudio.value
@@ -108,35 +114,138 @@ class AudioSettingWidget extends StatelessWidget {
   }
 }
 
-// 파산 신청 다이얼로그
-class RestartDialog extends StatelessWidget {
+class LogoutDialog extends StatelessWidget {
+  final SettingAppViewModel viewModel;
+
+  const LogoutDialog({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenSize screenSize = viewModel.screenController.screenSize.value;
+
+    return AlertDialog(
+      title: const Text('로그아웃'),
+      content: Text(
+        '로그아웃하시겠습니까?',
+        style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Get.back(),
+          child: const Text('취소'),
+        ),
+        TextButton(
+          onPressed: viewModel.logout,
+          child: const Text('로그아웃'),
+        ),
+      ],
+    );
+  }
+}
+
+// 이름 변경 다이얼로그
+class NameChangeDialog extends StatelessWidget {
+  final SettingAppViewModel viewModel;
+  const NameChangeDialog({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenSize screenSize = viewModel.screenController.screenSize.value;
+    return Center(
+      child: Container(
+        height: screenSize.getHeightPerSize(24),
+        width: screenSize.getWidthPerSize(70),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(screenSize.getHeightPerSize(2)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '이름 변경',
+                style: TextStyle(
+                  fontSize: screenSize.getHeightPerSize(1.8),
+                ),
+              ),
+              Form(
+                key: viewModel.formKey,
+                child: TextFormField(
+                  controller: viewModel.controllerName,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(
+                      viewModel.screenController.screenSize.value.getHeightPerSize(0.5),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  maxLines: 1,
+                  maxLength: 12,
+                  onTapOutside: (event) => FocusScope.of(Get.context!).unfocus(),
+                  validator: viewModel.validateName,
+                ),
+              ),
+              SizedBox(
+                height: screenSize.getHeightPerSize(4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: dialogButton(screenSize, '취소', Colors.white, Get.back)),
+                    SizedBox(
+                      width: screenSize.getHeightPerSize(2),
+                    ),
+                    Expanded(
+                        child: dialogButton(screenSize, '변경', colorMAIN, () {
+                      viewModel.nameChange();
+                    })),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChangePasswordDialog extends StatelessWidget {
+  final String email;
   final ScreenSize screenSize;
-  final Function onPressed;
-  const RestartDialog({super.key, required this.screenSize, required this.onPressed});
+
+  const ChangePasswordDialog({
+    super.key,
+    required this.email,
+    required this.screenSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('파산 신청'),
-      content: Text(
-        '파산 신청을 진행하시겠습니까?\n파산을 신청하면 모든 데이터가 초기화되며, 자동으로 로그아웃됩니다. 이 작업은 되돌릴 수 없으니 신중하게 결정해 주세요.',
-        style: TextStyle(
-          fontSize: screenSize.getHeightPerSize(1.8),
-        ),
+      title: const Text('비밀번호 변경'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '비밀번호 변경 안내 이메일이 아래 주소로 발송되었습니다.',
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+          ),
+          SizedBox(height: screenSize.getHeightPerSize(1)),
+          Text(
+            email,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
+          ),
+        ],
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          child: const Text('취소'),
-        ),
-        TextButton(
-          onPressed: () {
-            Get.back();
-            onPressed();
-          },
-          child: const Text('파산'),
+          onPressed: () => Get.back(),
+          child: const Text('확인'),
         ),
       ],
     );

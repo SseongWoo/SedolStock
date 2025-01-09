@@ -47,7 +47,7 @@ Future<void> startGetData() async {
       await fetchDataAndSave(youtubeDataController, publicDataController, today);
     }
   }
-
+  await publicDataController.getConstantsData();
   await youtubeDataController.getYoutubeLiveData();
   myDataController.setMoneyData();
   await myDataController.getTradeHistoryData();
@@ -62,12 +62,15 @@ Future<void> startGetData() async {
 Future<void> reflashGetData(bool timeReFlash) async {
   final MyDataController myDataController = Get.find<MyDataController>();
   await myDataController.getUserData();
+  if (timeReFlash) {
+    await myDataController.updateMyTotalMoney();
+  }
   await myDataController.getWalletData();
 
   // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {
     myDataController.setMoneyData();
     await myDataController.getTradeHistoryData();
+    await myDataController.updateMyTotalMoney();
   }
-  await myDataController.updateMyTotalMoney();
 }

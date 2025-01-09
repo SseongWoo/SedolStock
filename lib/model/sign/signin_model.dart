@@ -19,7 +19,7 @@ class SigninModel {
   // 로그인
   Future<SigninDataClass> signin(String email, String password) async {
     try {
-      final response = await httpService.postRequest('signin', {
+      final response = await httpService.postRequest('/signin', {
         'email': email,
         'password': password,
       });

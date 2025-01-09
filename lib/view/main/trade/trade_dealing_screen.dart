@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/timer.dart';
-import '../../../constants/data_constants.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/trade/trade_dealing_view_model.dart';
@@ -46,6 +45,59 @@ class TradeDealingScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              height: screenSize.getHeightPerSize(5),
+              width: screenSize.getWidthSize(),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.grey,
+                    spreadRadius: 0.1,
+                    blurRadius: 0.1,
+                    offset: Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: screenSize.getHeightPerSize(1)),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Obx(
+                    () => Text.rich(
+                      TextSpan(
+                        text: '거래 가능 자산: ', // 기본 텍스트
+                        style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(2.2),
+                            fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                            text:
+                                '${formatToCurrency(_viewModel.myDataController.myMoney.value)} P',
+                            style: TextStyle(
+                              color: _viewModel.buying ? const Color(0xff47C72C) : Colors.grey,
+                            ),
+                          ),
+                          const TextSpan(
+                            text: ' / ', // 일반 텍스트
+                          ),
+                          TextSpan(
+                            text: '${_viewModel.ownStock.value.stockCount} 주',
+                            style: TextStyle(
+                              color: !_viewModel.buying ? const Color(0xff47C72C) : Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: screenSize.getHeightPerSize(1),
+            ),
+            Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -78,7 +130,7 @@ class TradeDealingScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          '현재 가격 : ${formatToCurrency(_viewModel.itemPriceData.value.price)}원 수수료 : ${formatToCurrency((_viewModel.itemPriceData.value.price * feeRate).round())}원',
+                          '현재 가격 : ${formatToCurrency(_viewModel.itemPriceData.value.price)}원 수수료 : ${formatToCurrency((_viewModel.itemPriceData.value.price * _viewModel.feeRate.value).round())}원',
                           style: TextStyle(
                             fontSize: screenSize.getHeightPerSize(1.4),
                           ),
@@ -134,11 +186,6 @@ class TradeDealingScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Text(
-                      '내 잔고 : ${formatToCurrency(_viewModel.myDataController.myMoney.value)}원 보유 주식 : ${_viewModel.myDataController.ownStock['${_viewModel.channelUID}_${_viewModel.itemType}']?.stockCount}주',
-                      style:
-                          TextStyle(fontSize: screenSize.getHeightPerSize(1.5), color: Colors.grey),
                     ),
                   ],
                 ),
@@ -220,25 +267,53 @@ class TradeDealingScreen extends StatelessWidget {
             SizedBox(
               height: screenSize.getHeightPerSize(1),
             ),
-            SizedBox(
-              height: screenSize.getHeightPerSize(6),
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _viewModel.buttonColor(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+            Row(
+              children: [
+                SizedBox(
+                  height: screenSize.getHeightPerSize(6),
+                  width: screenSize.getWidthPerSize(30),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xffFFC300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () => _viewModel.onPressedAllDealingButton(),
+                    child: Text(
+                      '전량 ${_viewModel.saleTitle()}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenSize.getHeightPerSize(2),
+                      ),
+                    ),
                   ),
                 ),
-                onPressed: () => _viewModel.onPressedDealingButton(),
-                child: Text(
-                  '${_viewModel.saleTitle()} 하기',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenSize.getHeightPerSize(2),
+                SizedBox(
+                  width: screenSize.getWidthPerSize(2),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    height: screenSize.getHeightPerSize(6),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _viewModel.buttonColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => _viewModel.onPressedDealingButton(),
+                      child: Text(
+                        '${_viewModel.saleTitle()} 하기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: screenSize.getHeightPerSize(2),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

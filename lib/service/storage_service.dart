@@ -18,10 +18,6 @@ Future<void> setTokens(String? refreshToken, String? uid) async {
   try {
     await storage.write(key: 'refreshToken', value: refreshToken);
     await storage.write(key: 'uid', value: uid);
-
-    // 쓰기 후 바로 읽기
-    final storedUID = await storage.read(key: 'uid');
-    print('Stored UID: $storedUID');
   } catch (e) {
     logger.e('setTokens error : $e');
   }

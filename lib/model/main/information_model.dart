@@ -48,25 +48,6 @@ class InformationModel {
     }
   }
 
-  // 팬덤 업데이트 기능
-  Future<bool> updateFandom(String myUid, String fandomName) async {
-    try {
-      final response = await httpService.putRequest('/fanname/update', {
-        'uid': myUid,
-        'name': fandomName,
-      });
-
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        throw Exception('error ${response.statusCode}');
-      }
-    } catch (e) {
-      logger.e('updateFandom error : $e');
-      return false;
-    }
-  }
-
   // 비밀번호 변경 기능
   Future<bool> changePW(String email) async {
     try {

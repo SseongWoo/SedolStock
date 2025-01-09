@@ -7,7 +7,7 @@ class FindAccountModel {
   // 비밀번호 찾기 이메일 보내는 함수
   Future<bool> sendFindEmail(String email) async {
     try {
-      final response = await httpService.postRequest('/signin', {'email': email});
+      final response = await httpService.postRequest('/users/reset', {'email': email});
 
       if (response.statusCode == 200) {
         return true;

@@ -118,7 +118,10 @@ class SignupScreen extends StatelessWidget {
                           child: Obx(
                             () => ClipOval(
                               child: Image.asset(
-                                  'assets/image/fan/${fanEnNameList[_viewModel.listIndex.value]}.png'),
+                                  'assets/image/fan/${fanEnNameList[_viewModel.listIndex.value]}.png',
+                                  errorBuilder: (context, error, stackTrace) {
+                                return Image.asset('assets/image/image_error.png');
+                              }),
                             ),
                           ),
                         ),

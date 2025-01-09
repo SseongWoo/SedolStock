@@ -7,13 +7,14 @@ import '../../../viewmodel/main/trade/trade_dealing_view_model.dart';
 class DealingDialog extends StatelessWidget {
   final TradeDealingViewModel viewModel;
   final ScreenSize screenSize;
-  final int price, fee;
+  final int price, fee, count;
   const DealingDialog(
       {super.key,
       required this.viewModel,
       required this.screenSize,
       required this.price,
-      required this.fee});
+      required this.fee,
+      required this.count});
 
   @override
   Widget build(BuildContext context) {
@@ -43,19 +44,12 @@ class DealingDialog extends StatelessWidget {
                     '종목명', viewModel.youtubeDataController.channelMapData[viewModel.channelUID]!),
                 _dealingTableWidget('종목유형', viewModel.typeTitle()),
                 _dealingTableWidget('거래유형', viewModel.saleTitle()),
-                _dealingTableWidget(
-                    '${viewModel.saleTitle()}수량', '${viewModel.calculatorInt.value}주'),
+                _dealingTableWidget('${viewModel.saleTitle()}수량', '$count주'),
                 _dealingTableWidget('${viewModel.saleTitle()}단가', '${formatToCurrency(price)}원'),
-                _dealingTableWidget('총${viewModel.saleTitle()}가격',
-                    '${formatToCurrency((price * viewModel.calculatorInt.value))}원'),
-                viewModel.buying
-                    ? _dealingTableWidget(
-                        '${viewModel.saleTitle()}수수료', '${formatToCurrency(fee)}원')
-                    : const SizedBox(),
-                viewModel.buying
-                    ? _dealingTableWidget('총지불금액',
-                        '${formatToCurrency((price * viewModel.calculatorInt.value) + fee)}원')
-                    : const SizedBox(),
+                _dealingTableWidget(
+                    '총${viewModel.saleTitle()}가격', '${formatToCurrency((price * count))}원'),
+                _dealingTableWidget('${viewModel.saleTitle()}수수료', '${formatToCurrency(fee)}원'),
+                _dealingTableWidget('총금액', '${formatToCurrency((price * count) + fee)}원'),
                 SizedBox(height: screenSize.getHeightPerSize(2)),
                 Row(
                   children: [
@@ -102,7 +96,7 @@ class DealingDialog extends StatelessWidget {
                               backgroundColor: viewModel.buying ? Colors.red : Colors.blue),
                           onPressed: () {
                             Get.back();
-                            viewModel.onPressedSaleButton(price);
+                            viewModel.onPressedSaleButton(price, count);
                           },
                           child: Text(
                             viewModel.saleTitle(),

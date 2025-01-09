@@ -1,6 +1,3 @@
-// 거래 수수료
-const double feeRate = 0.05;
-
 // 채널 이름 리스트 데이터
 const List<String> channelNameList = [
   '우왁굳',

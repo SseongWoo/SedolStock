@@ -13,7 +13,7 @@ void setURL() {
 
   if (kDebugMode) {
     print('디버그 모드에서 실행 중입니다.');
-    httpURL = dotenv.env['TEST_API_URL'] ?? '';
+    //httpURL = dotenv.env['TEST_API_URL'] ?? '';
   } else {
     print('릴리스 모드에서 실행 중입니다.');
   }

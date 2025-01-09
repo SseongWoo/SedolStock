@@ -82,10 +82,14 @@ class TradeViewModel extends GetxController {
 
   // 타이머 바 길이 설정
   double loadingBarWidth() {
-    return !_timerController.checkDataTime.value
+    double width = !_timerController.checkDataTime.value
         ? screenController.screenSize.value.getWidthSize() *
             (_timerController.secondsRemaining.value / 180)
         : 0;
+
+    if (width < 0) width = 0.0;
+
+    return width;
   }
 
   // 가격 텍스트 생성

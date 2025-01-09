@@ -91,80 +91,67 @@ class TradeDetailScreen extends StatelessWidget {
                         ],
                       ),
                       child: Padding(
-                          padding: EdgeInsets.all(
-                            screenSize.getHeightPerSize(1),
-                          ),
-                          child: Obx(
-                            () {
-                              final chartData = _viewModel.tradeDetailChartData.value;
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _viewModel.tradeDetailChartData.value.title,
-                                    style: TextStyle(
-                                      fontSize: screenSize.getHeightPerSize(2.4),
+                        padding: EdgeInsets.all(
+                          screenSize.getHeightPerSize(1),
+                        ),
+                        child: Obx(
+                          () {
+                            final chartData = _viewModel.tradeDetailChartData.value;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _viewModel.tradeDetailChartData.value.title,
+                                  style: TextStyle(
+                                    fontSize: screenSize.getHeightPerSize(2.4),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      chartData.price,
+                                      style: TextStyle(
+                                        fontSize: screenSize.getHeightPerSize(3),
+                                      ),
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        chartData.price,
-                                        style: TextStyle(
-                                          fontSize: screenSize.getHeightPerSize(3),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: screenSize.getWidthPerSize(2),
-                                      ),
-                                      Text(
-                                        chartData.returnRatio,
-                                        style: TextStyle(
-                                          fontSize: screenSize.getHeightPerSize(2.2),
-                                          color: profitAndLossColor(
-                                              _viewModel.itemPriceData.value.differencePrice),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: TradeDatailPriceChartWidget(
-                                      screenSize: screenSize,
-                                      chartSpots: _viewModel.chartSpots,
-                                      chartXTitle: _viewModel.chartXTitle,
-                                      channelUID: _viewModel.channelUID,
+                                    SizedBox(
+                                      width: screenSize.getWidthPerSize(2),
                                     ),
+                                    Text(
+                                      chartData.returnRatio,
+                                      style: TextStyle(
+                                        fontSize: screenSize.getHeightPerSize(2.2),
+                                        color: profitAndLossColor(
+                                            _viewModel.itemPriceData.value.differencePrice),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: TradeDatailPriceChartWidget(
+                                    screenSize: screenSize,
+                                    chartSpots: _viewModel.chartSpots,
+                                    chartXTitle: _viewModel.chartXTitle,
+                                    channelUID: _viewModel.channelUID,
                                   ),
-                                  _chartDetailData(
-                                    screenSize,
-                                    '총 ${_viewModel.typeLabel}',
-                                    formatToCurrency(_viewModel.itemPriceData.value.totalCount),
-                                    1.6,
-                                  ),
-                                  _chartDetailData(
-                                    screenSize,
-                                    '서브채널 총 ${_viewModel.typeLabel}',
-                                    formatToCurrency(_viewModel.itemPriceData.value.subTotalCount),
-                                    1.6,
-                                  ),
-                                  _chartDetailData(
-                                    screenSize,
-                                    '이전 총 ${_viewModel.typeLabel}',
-                                    formatToCurrency(
-                                        _viewModel.itemPriceData.value.beforeTotalCount),
-                                    1.6,
-                                  ),
-                                  _chartDetailData(
-                                    screenSize,
-                                    '서브채널 이전 총 ${_viewModel.typeLabel}',
-                                    formatToCurrency(
-                                        _viewModel.itemPriceData.value.subBeforeTotalCount),
-                                    1.6,
-                                  ),
-                                ],
-                              );
-                            },
-                          )),
+                                ),
+                                _chartDetailData(
+                                  screenSize,
+                                  '총 ${_viewModel.typeLabel}',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalCount)}(+${formatToCurrency(_viewModel.diffText(true))})',
+                                  1.6,
+                                ),
+                                _chartDetailData(
+                                  screenSize,
+                                  '서브채널 총 ${_viewModel.typeLabel}',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.subTotalCount)}(+${formatToCurrency(_viewModel.diffText(false))})',
+                                  1.6,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: screenSize.getHeightPerSize(1),

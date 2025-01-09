@@ -24,12 +24,14 @@ class PublicDataController extends GetxController {
   RxString storeBuild = ''.obs; // 스토어 최신 버전
   RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs; // 랭킹 데이터 리스트
   RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-  }
+  Rx<PercentConfig> percentConfig = PercentConfig(
+          delistingTime: 0,
+          viewPercentage: 0,
+          likePercentage: 0,
+          viewFirstPrice: 0,
+          likeFirstPrice: 0)
+      .obs;
+  Rx<FeeConfig> feeConfig = FeeConfig(buyFeeRate: 0.0, sellFeeRate: 0.0).obs;
 
   // 로그아웃 기능 함수
   void logOut() async {
@@ -56,6 +58,18 @@ class PublicDataController extends GetxController {
       updateDate.value = DateTime.now().toString(); // 예제용 업데이트 날짜 설정
     } catch (e) {
       logger.e('getRankData error : $e');
+    }
+  }
+
+  Future<void> getConstantsData() async {
+    try {
+      final response = await dataModel.fetchConstantsData();
+
+      // feeConfig와 percentConfig에 값 설정
+      feeConfig.value = FeeConfig.fromJson(response['feeConfig']);
+      percentConfig.value = PercentConfig.fromJson(response['percentConfig']);
+    } catch (e) {
+      logger.e('Error loading constants data: $e');
     }
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
+import 'package:stockpj/view/splash_widget.dart';
 import 'package:store_redirect/store_redirect.dart';
 import '../constants/route_constants.dart';
 import '../data/public_data.dart';
@@ -36,7 +37,13 @@ class SplashViewModel extends GetxController {
     bool needsUpdate = _checkVersion();
 
     if (needsUpdate) {
-      _updateDialog();
+      Get.dialog(
+        UpdateDialog(
+          screenSize: screenController.screenSize.value,
+          onPressedCencle: _closeApp,
+          onPressedUpdate: StoreRedirect.redirect,
+        ),
+      );
     } else {
       loadingMessage.value = '로그인 확인중';
       String? token = await getRefreshToken();
@@ -49,7 +56,8 @@ class SplashViewModel extends GetxController {
           goToLogin();
         }
       } else {
-        showSimpleDialog(_closeApp, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.');
+        showSimpleDialog2(
+            screenController.screenSize.value, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.', _closeApp);
       }
     }
   }
@@ -104,36 +112,6 @@ class SplashViewModel extends GetxController {
         int.parse(_publicDataController.appBuild.value);
 
     return (isVersionOutdated || isBuildOutdated);
-  }
-
-  void _updateDialog() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('업데이트'),
-        content: const Text('최신 버전으로 업데이트가 필요합니다.'),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _closeApp();
-                },
-                child: const Text('취소'),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    StoreRedirect.redirect();
-                  },
-                  child: const Text('업데이트'),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
   }
 
   bool _isVersionLower() {

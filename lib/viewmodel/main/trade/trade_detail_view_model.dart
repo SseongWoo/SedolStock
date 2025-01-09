@@ -79,7 +79,7 @@ class TradeDetailViewModel extends GetxController {
 
     myStockDataClass.value.holdAvgPrice = '${formatToCurrency(stockData.stockBuyingPrice)}P';
     myStockDataClass.value.holdCount = stockData.stockCount;
-    myStockDataClass.value.holdTotalPrice = stockData.stockTotalPrice * stockData.stockCount;
+    myStockDataClass.value.holdTotalPrice = stockData.stockTotalPrice;
     if (stockData.stockProfit > 0) {
       pm = '+';
     }
@@ -164,5 +164,13 @@ class TradeDetailViewModel extends GetxController {
   // 상장폐지 텍스트
   String delistingTitle() {
     return '상장 폐지중(${itemPriceData.value.delisting})';
+  }
+
+  int diffText(bool main) {
+    int value = main
+        ? itemPriceData.value.totalCount - itemPriceData.value.beforeTotalCount
+        : itemPriceData.value.subTotalCount - itemPriceData.value.subBeforeTotalCount;
+
+    return value;
   }
 }

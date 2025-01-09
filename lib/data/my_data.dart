@@ -37,11 +37,6 @@ class MyDataController extends GetxController {
       <TotalMoneyDataClass>[].obs; // 사용자 보유 잔고 역사 그래프 데이터
   RxList<MessageClass> messageList = <MessageClass>[].obs; // 메세지 리스트 데이터
 
-  // 사용자의 소지 금액과 주식 금액을 더해서 총 소유 자산을 계산하는 함수
-  void setTotalMoney() {
-    myTotalMoney.value = myMoney.value + myStockMoney.value;
-  }
-
   // 사용자의 자산 데이터를 설정하는 함수
   void setMoneyData() {
     myStockMoney.value = 0;
@@ -56,12 +51,12 @@ class MyDataController extends GetxController {
           // 주식 종류를 구분해서 가격정보를 가져옴
           ItemPriceDataClass itemPriceData = _youtubeDataController.itemPriceDateMap[key]!;
 
-          int stockPrice = itemPriceData.price;
+          int stockPrice = itemPriceData.price * value.stockCount;
           int buyPrice = value.stockPrice ~/ value.stockCount;
 
-          myStockMoney.value += stockPrice * value.stockCount;
+          myStockMoney.value += stockPrice;
           totalBuyPrice += value.stockPrice;
-          int profit = stockPrice - buyPrice; // 이익 계산
+          int profit = itemPriceData.price - buyPrice; // 이익 계산
           myReturnMoney.value += profit;
 
           String itemUid = itemPriceData.uid;
@@ -92,7 +87,7 @@ class MyDataController extends GetxController {
     }
 
     // 전체 자산 업데이트
-    setTotalMoney();
+    myTotalMoney.value = myMoney.value + myStockMoney.value;
   }
 
   // 사용자 데이터를 가져오는 함수

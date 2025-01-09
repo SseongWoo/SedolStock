@@ -75,7 +75,10 @@ class RankingWidget extends StatelessWidget {
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: ClipOval(
                     child: Image.asset(
-                        'assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png'),
+                        'assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png',
+                        errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/image/image_error.png');
+                    }),
                   ),
                 ),
               ],

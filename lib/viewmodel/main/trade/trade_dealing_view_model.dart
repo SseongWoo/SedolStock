@@ -20,15 +20,18 @@ class TradeDealingViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
+  final PublicDataController _publicDataController = Get.find<PublicDataController>();
   final TimerController _timerController = Get.find<TimerController>();
   final AudioController _audioController = Get.find<AudioController>();
 
   bool buying = false; // 판매, 구매 구분 변수
+  RxDouble feeRate = 0.0.obs;
   String channelUID = '';
   String itemType = ''; // 조회수, 좋아요수 구분 텍스트
   RxString calculatorDisplay = ''.obs; // 계산기 디스플레이에 나타날 변수
   RxInt calculatorInt = 0.obs; // 계산기 입력된 값(주식 개수)
   RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
+  Rx<OwnStock> ownStock = OwnStock('', 0, 0).obs;
   Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass(
     '',
     '',
@@ -53,6 +56,10 @@ class TradeDealingViewModel extends GetxController {
     channelUID = arguments['channelUID'];
     itemType = arguments['type'];
     itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
+    ownStock.value = myDataController.ownStock['${channelUID}_$itemType']!;
+    feeRate.value = buying
+        ? _publicDataController.feeConfig.value.buyFeeRate
+        : _publicDataController.feeConfig.value.sellFeeRate;
   }
 
   @override
@@ -67,6 +74,7 @@ class TradeDealingViewModel extends GetxController {
       youtubeDataController.itemPriceDateMap,
       (callback) {
         itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
+        ownStock.value = myDataController.ownStock['${channelUID}_$itemType']!;
       },
     );
   }
@@ -122,10 +130,11 @@ class TradeDealingViewModel extends GetxController {
   void onTapHalf() {
     if (buying) {
       calculatorInt.value =
-          (myDataController.myMoney.value ~/ (itemPriceData.value.price * (1 + feeRate))) ~/ 2;
+          (myDataController.myMoney.value ~/ (itemPriceData.value.price * (1 + feeRate.value))) ~/
+              2;
 
       calculatorDisplay.value = calculatorInt.value.toString();
-    } else if (!buying && myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
+    } else if (!buying && ownStock.value.stockCount > 0) {
       calculatorInt.value = myDataController.ownStock['${channelUID}_$itemType']!.stockCount ~/ 2;
       calculatorDisplay.value = calculatorInt.value.toString();
     }
@@ -135,11 +144,11 @@ class TradeDealingViewModel extends GetxController {
   void onTapMax() {
     if (buying) {
       calculatorInt.value =
-          (myDataController.myMoney.value ~/ (itemPriceData.value.price * (1 + feeRate)));
+          (myDataController.myMoney.value ~/ (itemPriceData.value.price * (1 + feeRate.value)));
 
       calculatorDisplay.value = calculatorInt.value.toString();
-    } else if (!buying && myDataController.ownStock['${channelUID}_$itemType']!.stockCount > 0) {
-      calculatorInt.value = myDataController.ownStock['${channelUID}_$itemType']!.stockCount;
+    } else if (!buying && ownStock.value.stockCount > 0) {
+      calculatorInt.value = ownStock.value.stockCount;
       calculatorDisplay.value = calculatorInt.value.toString();
     }
   }
@@ -155,12 +164,12 @@ class TradeDealingViewModel extends GetxController {
 
   void setSalePrice() {
     int price = calculatorInt.value * itemPriceData.value.price; // 주식 총 가격
-    int fee = (price * feeRate).round();
+    int fee = (price * feeRate.value).round();
     calculatorSum.value = price + fee;
   }
 
   String calculatorDataText() {
-    return '현재 가격 : ${formatToCurrency(itemPriceData.value.price)}원 수수료 : ${formatToCurrency((itemPriceData.value.price * feeRate).round())}원';
+    return '현재 가격 : ${formatToCurrency(itemPriceData.value.price)}원 수수료 : ${formatToCurrency((itemPriceData.value.price * feeRate.value).round())}원';
   }
 
   // 매매 버튼을 클릭했을때 실행
@@ -169,31 +178,61 @@ class TradeDealingViewModel extends GetxController {
             myDataController.myMoney.value < getPrice() * calculatorInt.value) &&
         buying) {
       showSimpleDialog(Get.back, '거래 오류', '구매 수량 혹은 잔액이 충분하지 않습니다.');
-    } else if (myDataController.ownStock['${channelUID}_$itemType']!.stockCount <= 0 && !buying) {
+    } else if (ownStock.value.stockCount <= 0 && !buying) {
       showSimpleDialog(Get.back, '거래 오류', ' 판매 수량이 충분하지 않습니다.');
     } else {
       int price = getPrice();
-      int fee = ((price * calculatorInt.value) * feeRate).round();
+      int fee = ((price * calculatorInt.value) * feeRate.value).round();
       Get.dialog(
         DealingDialog(
           viewModel: this,
           screenSize: screenController.screenSize.value,
           price: price,
           fee: fee,
+          count: calculatorInt.value,
+        ),
+      );
+    }
+  }
+
+  // 매매 버튼을 클릭했을때 실행
+  void onPressedAllDealingButton() {
+    int stockCount = 0;
+    if (buying) {
+      stockCount =
+          (myDataController.myMoney.value ~/ (itemPriceData.value.price * (1 + feeRate.value)));
+    } else if (!buying && ownStock.value.stockCount > 0) {
+      stockCount = ownStock.value.stockCount;
+    }
+
+    if ((stockCount <= 0 || myDataController.myMoney.value < itemPriceData.value.price) && buying) {
+      showSimpleDialog(Get.back, '거래 오류', '구매 수량 혹은 잔액이 충분하지 않습니다.');
+    } else if (ownStock.value.stockCount <= 0 && !buying) {
+      showSimpleDialog(Get.back, '거래 오류', ' 판매 수량이 충분하지 않습니다.');
+    } else {
+      int price = getPrice();
+      int fee = ((price * stockCount) * feeRate.value).round();
+      Get.dialog(
+        DealingDialog(
+          viewModel: this,
+          screenSize: screenController.screenSize.value,
+          price: price,
+          fee: fee,
+          count: stockCount,
         ),
       );
     }
   }
 
   // 매매 다이얼로그에서 매매버튼을 클릭했을떄 실행
-  void onPressedSaleButton(int price) async {
+  void onPressedSaleButton(int price, int count) async {
     if (_timerController.checkDataTime.value) {
       showSimpleDialog(Get.back, '매매 실패', '현재 서버에서 데이터를 갱신 중입니다. 갱신 완료 후 다시 이용해 주세요.');
     } else if (checkDelisting()) {
       showSimpleDialog(
           Get.back, '매매 실패', '현재 상장폐지중인 아이템입니다. ${itemPriceData.value.delisting}턴 후에 다시 이용해주세요');
     } else {
-      await trySale(price, calculatorInt.value);
+      await trySale(price, count);
     }
   }
 

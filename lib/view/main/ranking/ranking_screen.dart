@@ -93,7 +93,10 @@ class RankingScreen extends StatelessWidget {
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child: ClipOval(
                         child: Image.asset(
-                            'assets/image/fan/${fanImageMap[_viewModel.myDataController.myChoicechannel.value]}.png'),
+                            'assets/image/fan/${fanImageMap[_viewModel.myDataController.myChoicechannel.value]}.png',
+                            errorBuilder: (context, error, stackTrace) {
+                          return Image.asset('assets/image/image_error.png');
+                        }),
                       ),
                     ),
                     SizedBox(

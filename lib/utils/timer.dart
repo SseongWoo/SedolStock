@@ -35,6 +35,7 @@ class TimerController extends GetxController {
   void _scheduleNextRun() {
     final now = DateTime.now();
     int nextRunMinute = ((now.minute ~/ 5) + 1) * 5; // 5분단위
+    int day = now.day;
 
     // 60분을 넘는 경우 처리 (시(hour)를 올려주고, 분(minute)은 0으로 설정)
     int nextRunHour = now.hour;
@@ -44,11 +45,12 @@ class TimerController extends GetxController {
       if (nextRunHour >= 24) {
         nextRunHour = 0; // 하루가 넘어가면 시간은 0으로 설정
         nextRunMinute = 5;
+        day + 1;
       }
     }
 
     // 다음 실행 시간을 설정
-    final nextRunTime = DateTime(now.year, now.month, now.day, nextRunHour, nextRunMinute);
+    final nextRunTime = DateTime(now.year, now.month, day, nextRunHour, nextRunMinute);
 
     // 현재 시각과 다음 실행 시간의 차이 계산
     Duration delay = nextRunTime.difference(now);
@@ -102,6 +104,10 @@ class TimerController extends GetxController {
     _scheduleNextRun();
 
     if (_myDataController.myUid.value != '') {
+      if (Get.isDialogOpen == true) {
+        Get.back(); // 다이얼로그 닫기
+      }
+
       EasyLoading.show(status: '데이터 갱신중');
       bool serverState = await checkServer();
       if (serverState) {

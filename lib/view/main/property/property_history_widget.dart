@@ -244,7 +244,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
 
   // 데이터 테이블 1번째 줄 위젯
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    TradeHistoryClass tradeHistoryData = viewModel.myDataController.tradeHistoryList[index];
+    TradeHistoryClass tradeHistoryData = viewModel.historyList[index];
     return Container(
       width: screenSize.getWidthPerSize(40),
       height: 52,
@@ -253,7 +253,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(
-          '${formatDateString2(tradeHistoryData.tradetime)}\n${viewModel.youtubeDataController.channelMapData[tradeHistoryData.itemuid]}(${tradeHistoryData.itemtype})',
+          '${formatDateString2(tradeHistoryData.tradetime)}\n${viewModel.youtubeDataController.channelMapData[tradeHistoryData.itemuid]}(${tradeHistoryData.itemtype == 'view' ? 'main' : 'sub'})',
         ),
       ),
     );
@@ -261,7 +261,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
 
   // 데이터 테이블 데이터 위젯
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    TradeHistoryClass tradeHistoryData = viewModel.myDataController.tradeHistoryList[index];
+    TradeHistoryClass tradeHistoryData = viewModel.historyList[index];
     bool buy = tradeHistoryData.type == 'buy' ? true : false;
 
     return Row(

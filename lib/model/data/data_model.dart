@@ -248,4 +248,19 @@ class DataModel {
       throw Exception('fetchYoutubeVideoData error: $e');
     }
   }
+
+  Future<Map<String, dynamic>> fetchConstantsData() async {
+    final response = await httpService.getRequest('/config');
+
+    try {
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body)['data']; // 'data' 추출
+        return data;
+      } else {
+        throw Exception('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Fetch constants data error: $e');
+    }
+  }
 }

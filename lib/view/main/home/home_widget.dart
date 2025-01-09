@@ -36,7 +36,10 @@ class UserInformationWidget extends StatelessWidget {
                 child: Center(
                   child: ClipOval(
                     child: Image.asset(
-                        'assets/image/fan/${fanImageMap[viewModel.myDataController.myChoicechannel.value]!}.png'),
+                        'assets/image/fan/${fanImageMap[viewModel.myDataController.myChoicechannel.value]!}.png',
+                        errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/image/image_error.png');
+                    }),
                   ),
                 ),
               ),
@@ -306,29 +309,35 @@ class CafeWidget extends StatelessWidget {
           children: [
             // 썸네일 이미지 부분
             ClipOval(
-              child: Image.network(
-                height: screenSize.getHeightPerSize(8),
-                width: screenSize.getHeightPerSize(8),
-                '',
-                fit: BoxFit.cover, // 이미지가 원형에 맞도록 조정
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child; // 로딩이 완료되면 이미지 표시
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(), // 로딩 중인 동안 표시할 위젯
-                  );
-                },
-                errorBuilder: (context, error, stackTrace) {
-                  return Center(
-                    child: Image.asset(
-                        height: screenSize.getHeightPerSize(8),
-                        width: screenSize.getHeightPerSize(8),
-                        'assets/image/image_error.png'), // 오류 시 표시할 텍스트
-                  );
-                },
-              ),
-            ),
+                child: Image.asset(
+              'assets/image/image_error.png',
+              height: screenSize.getHeightPerSize(8),
+              width: screenSize.getHeightPerSize(8),
+            )
+
+                // Image.network(
+                //   height: screenSize.getHeightPerSize(8),
+                //   width: screenSize.getHeightPerSize(8),
+                //   '',
+                //   fit: BoxFit.cover, // 이미지가 원형에 맞도록 조정
+                //   loadingBuilder: (context, child, loadingProgress) {
+                //     if (loadingProgress == null) {
+                //       return child; // 로딩이 완료되면 이미지 표시
+                //     }
+                //     return const Center(
+                //       child: CircularProgressIndicator(), // 로딩 중인 동안 표시할 위젯
+                //     );
+                //   },
+                //   errorBuilder: (context, error, stackTrace) {
+                //     return Center(
+                //       child: Image.asset(
+                //           height: screenSize.getHeightPerSize(8),
+                //           width: screenSize.getHeightPerSize(8),
+                //           'assets/image/image_error.png'), // 오류 시 표시할 텍스트
+                //     );
+                //   },
+                // ),
+                ),
             SizedBox(
               width: screenSize.getWidthPerSize(3),
             ),

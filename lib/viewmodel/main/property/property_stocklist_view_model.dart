@@ -37,27 +37,6 @@ class PropertyStocklistViewModel extends GetxController {
     return expandedState[stockUID] ?? false;
   }
 
-  // 주식 목록 데이터 변환
-  String getFormattedProfit(StockListClass listData) {
-    return '${formatToCurrency(listData.stockProfit)}P';
-  }
-
-  String getFormattedRatio(StockListClass listData) {
-    return '${listData.stockRatio.toStringAsFixed(2)}%';
-  }
-
-  String getFormattedBuyingPrice(StockListClass listData) {
-    return '${formatToCurrency(listData.stockBuyingPrice)}P';
-  }
-
-  String getFormattedCurrentPrice(StockListClass listData) {
-    return '${formatToCurrency(listData.currentPrice)}P';
-  }
-
-  String getStockCount(StockListClass listData) {
-    return '${listData.stockCount}주';
-  }
-
   String getThumbnail(StockListClass listData) {
     return listData.stockType == 'view'
         ? youtubeDataController.youtubeChannelData[listData.stockUID]!.thumbnail
@@ -74,11 +53,5 @@ class PropertyStocklistViewModel extends GetxController {
             .youtubeChannelData[
                 youtubeDataController.channelAndSubChannelMapData[listData.stockUID]]!
             .title;
-  }
-
-  Color getTextColor(StockListClass listData) {
-    if (listData.stockProfit > 0) return Colors.red;
-    if (listData.stockProfit < 0) return Colors.blue;
-    return Colors.black;
   }
 }

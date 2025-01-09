@@ -290,3 +290,46 @@ class TotalMoneyDataClass {
 
   TotalMoneyDataClass(this.money, this.date);
 }
+
+class FeeConfig {
+  final double buyFeeRate;
+  final double sellFeeRate;
+
+  FeeConfig({
+    required this.buyFeeRate,
+    required this.sellFeeRate,
+  });
+
+  factory FeeConfig.fromJson(Map<String, dynamic> json) {
+    return FeeConfig(
+      buyFeeRate: json['buyFeeRate'].toDouble(),
+      sellFeeRate: json['sellFeeRate'].toDouble(),
+    );
+  }
+}
+
+class PercentConfig {
+  final int delistingTime;
+  final int viewPercentage;
+  final int likePercentage;
+  final int viewFirstPrice;
+  final int likeFirstPrice;
+
+  PercentConfig({
+    required this.delistingTime,
+    required this.viewPercentage,
+    required this.likePercentage,
+    required this.viewFirstPrice,
+    required this.likeFirstPrice,
+  });
+
+  factory PercentConfig.fromJson(Map<String, dynamic> json) {
+    return PercentConfig(
+      delistingTime: json['delistingTime'],
+      viewPercentage: json['viewPercentage'],
+      likePercentage: json['likePercentage'],
+      viewFirstPrice: json['viewFirstPrice'],
+      likeFirstPrice: json['likeFirstPrice'],
+    );
+  }
+}
