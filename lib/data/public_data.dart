@@ -7,6 +7,7 @@ import '../main.dart';
 import '../model/data/data_class.dart';
 import '../model/data/data_model.dart';
 import '../service/storage_service.dart';
+import '../utils/date_time.dart';
 import '../utils/timer.dart';
 
 // 팬덤명 맵 데이터
@@ -22,20 +23,17 @@ class PublicDataController extends GetxController {
   RxString appBuild = ''.obs; // 앱 버전
   RxString storeVersion = ''.obs; // 스토어 최신 버전
   RxString storeBuild = ''.obs; // 스토어 최신 버전
+  RxMap<String, List<RankingDataClass>> rankingMap = <String, List<RankingDataClass>>{}.obs;
   RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs; // 랭킹 데이터 리스트
   RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
-  Rx<PercentConfig> percentConfig = PercentConfig(
-          delistingTime: 0,
-          viewPercentage: 0,
-          likePercentage: 0,
-          viewFirstPrice: 0,
-          likeFirstPrice: 0)
-      .obs;
+  Rx<PercentConfig> percentConfig =
+      PercentConfig(delistingTime: 0, firstPrice: 0, percentage: 0).obs;
   Rx<FeeConfig> feeConfig = FeeConfig(buyFeeRate: 0.0, sellFeeRate: 0.0).obs;
 
   // 로그아웃 기능 함수
   void logOut() async {
     EasyLoading.show();
+
     await clearTokens();
     Get.delete<TimerController>();
     EasyLoading.dismiss();
@@ -53,9 +51,11 @@ class PublicDataController extends GetxController {
   // 서버에서 랭킹 데이터를 가져오는 함수
   Future<void> getRankData() async {
     try {
-      List<RankingDataClass> fetchedRankingList = await dataModel.fetchRankingData();
-      rankingList.assignAll(fetchedRankingList);
-      updateDate.value = DateTime.now().toString(); // 예제용 업데이트 날짜 설정
+      final rankingData = await dataModel.fetchRankingData();
+      final Map<String, List<RankingDataClass>> rankings = rankingData['ranking'];
+
+      updateDate.value = formatDateString2(rankingData['updatedate']);
+      rankingMap.value = rankings;
     } catch (e) {
       logger.e('getRankData error : $e');
     }

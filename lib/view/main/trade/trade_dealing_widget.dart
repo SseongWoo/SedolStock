@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:get/get.dart';
@@ -41,8 +42,10 @@ class DealingDialog extends StatelessWidget {
                 ),
                 SizedBox(height: screenSize.getHeightPerSize(2)),
                 _dealingTableWidget(
-                    '종목명', viewModel.youtubeDataController.channelMapData[viewModel.channelUID]!),
-                _dealingTableWidget('종목유형', viewModel.typeTitle()),
+                    '종목명',
+                    viewModel.youtubeDataController.youtubeChannelData[viewModel.channelUID]
+                            ?.title ??
+                        '종목명'),
                 _dealingTableWidget('거래유형', viewModel.saleTitle()),
                 _dealingTableWidget('${viewModel.saleTitle()}수량', '$count주'),
                 _dealingTableWidget('${viewModel.saleTitle()}단가', '${formatToCurrency(price)}원'),
@@ -168,8 +171,9 @@ class DealingDialog extends StatelessWidget {
                 ),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  child: AutoSizeText(
                     ' $content',
+                    maxLines: 1,
                     style: TextStyle(
                       fontSize: screenSize.getHeightPerSize(2),
                     ),

@@ -28,7 +28,6 @@ class DataModel {
   // 지갑 데이터
   Future<Map<String, dynamic>?> fetchWalletData(String uid) async {
     final response = await httpService.getRequest('/users/wallet/$uid');
-
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
       return {
@@ -47,21 +46,25 @@ class DataModel {
       final jsonData = jsonDecode(response.body);
 
       if (jsonData is Map<String, dynamic>) {
+        print(jsonData);
         List<String> itemuids = List<String>.from(jsonData['itemuid'] ?? []);
-        List<String> itemtypes = List<String>.from(jsonData['itemtype'] ?? []);
+        List<String> channeltypes = List<String>.from(jsonData['channeltype'] ?? []);
         List<int> itemcounts = List<int>.from(jsonData['itemcount'] ?? []);
         List<int> transactionprices = List<int>.from(jsonData['transactionprice'] ?? []);
-        List<String> types = List<String>.from(jsonData['type'] ?? []);
+        List<String> tradetypes = List<String>.from(jsonData['tradetype'] ?? []);
         List<String> tradetimes = List<String>.from(jsonData['tradetime'] ?? []);
         List<int> priceavgs = List<int>.from(jsonData['priceavg'] ?? []);
+        List<int> totalcosts = List<int>.from(jsonData['totalcost'] ?? []);
+        List<int> fees = List<int>.from(jsonData['fee'] ?? []);
 
-        if (itemuids.length == itemtypes.length &&
+        if (itemuids.length == channeltypes.length &&
             itemuids.length == itemcounts.length &&
             itemuids.length == transactionprices.length &&
-            itemuids.length == types.length &&
-            itemuids.length == tradetimes.length) {
+            itemuids.length == tradetypes.length &&
+            itemuids.length == tradetimes.length &&
+            itemuids.length == totalcosts.length &&
+            itemuids.length == fees.length) {
           List<TradeHistoryClass> tradeHistoryList = [];
-
           for (int i = 0; i < itemuids.length; i++) {
             int tradePrice = transactionprices[i] * itemcounts[i];
             int profit = (priceavgs[i] - transactionprices[i]) * itemcounts[i];
@@ -70,18 +73,20 @@ class DataModel {
             tradeHistoryList.add(
               TradeHistoryClass(
                 itemuid: itemuids[i],
-                itemtype: itemtypes[i],
+                channeltype: channeltypes[i],
                 itemcount: itemcounts[i],
                 transactionprice: transactionprices[i],
-                type: types[i],
+                tradetype: tradetypes[i],
                 tradetime: tradetimes[i],
-                tradePrice: tradePrice,
+                tradeprice: tradePrice,
                 profit: profit,
                 ratio: ratio,
+                totalcost: totalcosts[i],
+                fee: fees[i],
+                saleavgprice: priceavgs[i],
               ),
             );
           }
-
           return tradeHistoryList;
         } else {
           throw Exception('Data length mismatch between lists.');
@@ -95,10 +100,9 @@ class DataModel {
   }
 
   // 사용자의 총 자산을 서버에 업데이트하는 함수
-  Future<bool> updateTotalMoney(String uid, int totalMoney) async {
-    final response = await httpService.putRequest('/users/updatetotalmoney/$uid', {
-      'totalmoney': totalMoney,
-    });
+  Future<bool> updateTotalMoney(String uid, int totalMoney, String fandom, String name) async {
+    final response = await httpService.putRequest(
+        '/users/updatetotalmoney/$uid', {'totalmoney': totalMoney, 'fandom': fandom, 'name': name});
 
     if (response.statusCode == 200) {
       return true;
@@ -128,15 +132,31 @@ class DataModel {
   }
 
   // 서버에서 랭킹 데이터를 가져오는 함수
-  Future<List<RankingDataClass>> fetchRankingData() async {
+  Future<Map<String, dynamic>> fetchRankingData() async {
     try {
       final response = await httpService.getRequest('/rank/get');
 
       if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body)['data'];
-        final List<dynamic> dataList = jsonData['users'];
+        final jsonData = jsonDecode(response.body);
 
-        return dataList.map((data) => RankingDataClass.fromJson(data)).toList();
+        // updatedate 가져오기
+        final String updatedDate = jsonData['updatedate'] ?? '';
+
+        // 랭킹 데이터를 그룹별로 변환
+        final Map<String, List<RankingDataClass>> rankingData =
+            (jsonData['ranking'] as Map<String, dynamic>).map(
+          (key, value) {
+            final List<dynamic> dataList = value ?? [];
+            final rankingList = dataList.map((data) => RankingDataClass.fromJson(data)).toList();
+            return MapEntry(key, rankingList);
+          },
+        );
+
+        // updatedate와 랭킹 데이터를 포함한 결과 반환
+        return {
+          'updatedate': updatedDate,
+          'ranking': rankingData,
+        };
       } else {
         throw Exception('Failed to fetch ranking data. Status code: ${response.statusCode}');
       }

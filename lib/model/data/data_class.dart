@@ -4,10 +4,9 @@ import '../main/trade_model.dart';
 
 // 보유 주식 클래스
 class OwnStock {
-  String stockName;
   int stockCount;
   int stockPrice;
-  OwnStock(this.stockName, this.stockCount, this.stockPrice);
+  OwnStock(this.stockCount, this.stockPrice);
 }
 
 // 보유 주식 리스트 클래스
@@ -20,7 +19,7 @@ class StockListClass {
   int stockTotalPrice;
   int stockBuyingPrice;
   int currentPrice;
-  String stockType;
+  String stockChannelType;
   Color color;
 
   StockListClass(
@@ -32,7 +31,7 @@ class StockListClass {
     this.stockTotalPrice,
     this.stockBuyingPrice,
     this.currentPrice,
-    this.stockType,
+    this.stockChannelType,
     this.color,
   );
 }
@@ -40,25 +39,31 @@ class StockListClass {
 // 주식 거래 내역 클래스
 class TradeHistoryClass {
   String itemuid;
-  String itemtype;
+  String channeltype;
   int itemcount;
   int transactionprice;
-  String type;
+  String tradetype;
   String tradetime;
-  int tradePrice;
+  int tradeprice;
   int profit;
   double ratio;
+  int saleavgprice;
+  int totalcost;
+  int fee;
 
   TradeHistoryClass({
     required this.itemuid,
-    required this.itemtype,
+    required this.channeltype,
     required this.itemcount,
     required this.transactionprice,
-    required this.type,
+    required this.tradetype,
     required this.tradetime,
-    required this.tradePrice,
+    required this.tradeprice,
     required this.profit,
     required this.ratio,
+    required this.totalcost,
+    required this.fee,
+    required this.saleavgprice,
   });
 }
 
@@ -80,24 +85,21 @@ class MessageClass {
 // 랭킹 데이터 클래스
 class RankingDataClass {
   String name;
-  String choiceChannel;
+  String fandom;
   int rank;
-  int beforeRank;
   int totalMoney;
 
   RankingDataClass(
     this.name,
-    this.choiceChannel,
+    this.fandom,
     this.rank,
-    this.beforeRank,
     this.totalMoney,
   );
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'choicechannel': choiceChannel,
+        'fandom': fandom,
         'rank': rank,
-        'beforerank': beforeRank,
         'totalmoney': totalMoney,
       };
 
@@ -112,9 +114,8 @@ class RankingDataClass {
 
     return RankingDataClass(
       json['name']?.toString() ?? '',
-      json['choicechannel']?.toString() ?? '',
+      json['fandom']?.toString() ?? '',
       json['rank'] ?? 0,
-      json['beforerank'] ?? 0,
       totalMoney!,
     );
   }
@@ -197,91 +198,50 @@ class YoutubeChannelDataClass {
   }
 }
 
-// 차트에 사용될 주식 데이터 리스트 클래스
-class YoutubeChartDataClass {
-  List<SalesData> commentCount;
-  List<SalesData> likeCount;
-  List<SalesData> viewCount;
-
-  YoutubeChartDataClass(this.commentCount, this.likeCount, this.viewCount);
-}
-//
-// // 채널의 가격 데이터 클래스
-// class YoutubeLiveDataClass {
-//   int differenceCommentCount;
-//   int differenceLikeCount;
-//   int differenceViewCount;
-//   int lastDifferenceCommentCount;
-//   int lastDifferenceLikeCount;
-//   int lastDifferenceViewCount;
-//   int lastTotalCommentCount;
-//   int lastTotalLikeCount;
-//   int lastTotalViewCount;
-//   int totalCommentCount;
-//   int totalLikeCount;
-//   int totalViewCount;
-//   int lastCommentCountPrice;
-//   int lastViewCountPrice;
-//   int lastLikeCountPrice;
-//   int commentCountPrice;
-//   int likeCountPrice;
-//   int viewCountPrice;
-//   int viewDelisting;
-//   int likeDelisting;
-//   int commentDelisting;
-//   String updateTime;
-//
-//   YoutubeLiveDataClass(
-//       this.differenceCommentCount,
-//       this.differenceLikeCount,
-//       this.differenceViewCount,
-//       this.lastDifferenceCommentCount,
-//       this.lastDifferenceLikeCount,
-//       this.lastDifferenceViewCount,
-//       this.lastTotalCommentCount,
-//       this.lastTotalLikeCount,
-//       this.lastTotalViewCount,
-//       this.totalCommentCount,
-//       this.totalLikeCount,
-//       this.totalViewCount,
-//       this.lastCommentCountPrice,
-//       this.lastViewCountPrice,
-//       this.lastLikeCountPrice,
-//       this.commentCountPrice,
-//       this.likeCountPrice,
-//       this.viewCountPrice,
-//       this.viewDelisting,
-//       this.likeDelisting,
-//       this.commentDelisting,
-//       this.updateTime,
-//       );
-// }
-
 class ItemPriceDataClass {
-  String type;
   String uid;
-  int totalCount;
+  String channelType;
   int price;
-  int beforeTotalCount;
+  int totalViewCount;
+  int totalLikeCount;
+  int beforeTotalViewCount;
+  int beforeTotalLikeCount;
   int beforePrice;
-  int delisting;
   int differencePrice;
-  int subTotalCount;
-  int subBeforeTotalCount;
+  int delisting;
   double ratio;
 
   ItemPriceDataClass(
       this.uid,
-      this.type,
+      this.channelType,
       this.price,
-      this.totalCount,
+      this.totalViewCount,
+      this.totalLikeCount,
+      this.beforeTotalViewCount,
+      this.beforeTotalLikeCount,
       this.beforePrice,
-      this.beforeTotalCount,
-      this.delisting,
       this.differencePrice,
-      this.ratio,
-      this.subTotalCount,
-      this.subBeforeTotalCount);
+      this.delisting,
+      this.ratio);
+
+  @override
+  String toString() {
+    return '''
+  ItemPriceDataClass {
+  uid: $uid,
+  type: $channelType,
+  price: $price,
+  totalViewCount: $totalViewCount,
+  totalLikeCount: $totalLikeCount,
+  beforeTotalViewCount: $beforeTotalViewCount,
+  beforeTotalLikeCount: $beforeTotalLikeCount,
+  beforePrice: $beforePrice,
+  differencePrice: $differencePrice,
+  delisting: $delisting,
+  ratio: $ratio
+  }
+''';
+  }
 }
 
 class TotalMoneyDataClass {
@@ -310,26 +270,20 @@ class FeeConfig {
 
 class PercentConfig {
   final int delistingTime;
-  final int viewPercentage;
-  final int likePercentage;
-  final int viewFirstPrice;
-  final int likeFirstPrice;
+  final int percentage;
+  final int firstPrice;
 
   PercentConfig({
     required this.delistingTime,
-    required this.viewPercentage,
-    required this.likePercentage,
-    required this.viewFirstPrice,
-    required this.likeFirstPrice,
+    required this.percentage,
+    required this.firstPrice,
   });
 
   factory PercentConfig.fromJson(Map<String, dynamic> json) {
     return PercentConfig(
       delistingTime: json['delistingTime'],
-      viewPercentage: json['viewPercentage'],
-      likePercentage: json['likePercentage'],
-      viewFirstPrice: json['viewFirstPrice'],
-      likeFirstPrice: json['likeFirstPrice'],
+      percentage: json['percentage'],
+      firstPrice: json['firstPrice'],
     );
   }
 }

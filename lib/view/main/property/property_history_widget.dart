@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -223,7 +224,8 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
       _getTitleItemWidget('실현손익\n실현수익률', screenSize.getWidthPerSize(25)),
       _getTitleItemWidget('판매금액\n구매금액', screenSize.getWidthPerSize(25)),
       _getTitleItemWidget('판매수량\n구매수량', screenSize.getWidthPerSize(25)),
-      _getTitleItemWidget('판매비용\n구매비용', screenSize.getWidthPerSize(25)),
+      _getTitleItemWidget('판매수수료\n구매수수료', screenSize.getWidthPerSize(25)),
+      _getTitleItemWidget('판매합계\n구매합계', screenSize.getWidthPerSize(25)),
     ];
   }
 
@@ -248,12 +250,26 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
     return Container(
       width: screenSize.getWidthPerSize(40),
       height: 52,
-      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+      padding: EdgeInsets.fromLTRB(screenSize.getWidthPerSize(2), 0, 0, 0),
       alignment: Alignment.center,
-      child: FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text(
-          '${formatDateString2(tradeHistoryData.tradetime)}\n${viewModel.youtubeDataController.channelMapData[tradeHistoryData.itemuid]}(${tradeHistoryData.itemtype == 'view' ? 'main' : 'sub'})',
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              formatDateString2(tradeHistoryData.tradetime),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              viewModel.youtubeDataController.youtubeChannelData[tradeHistoryData.itemuid]?.title ??
+                  '채널명',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );
@@ -262,7 +278,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
   // 데이터 테이블 데이터 위젯
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     TradeHistoryClass tradeHistoryData = viewModel.historyList[index];
-    bool buy = tradeHistoryData.type == 'buy' ? true : false;
+    bool buy = tradeHistoryData.tradetype == 'buy' ? true : false;
 
     return Row(
       children: <Widget>[
@@ -281,11 +297,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.center,
-          child: Text(
-            '${buy ? '' : formatToCurrency(tradeHistoryData.profit)}\n${buy ? '' : tradeHistoryData.ratio.toStringAsFixed(2)}',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: profitAndLossColor(tradeHistoryData.profit)),
-          ),
+          child: buy ? null : viewModel.getProfitReturnWidget(tradeHistoryData),
         ),
         Container(
           width: screenSize.getWidthPerSize(25),
@@ -293,7 +305,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.center,
           child: Text(
-            '${buy ? '' : formatToCurrency(tradeHistoryData.tradePrice)}\n${buy ? formatToCurrency(tradeHistoryData.tradePrice) : ''}',
+            '${buy ? '' : formatToCurrency(tradeHistoryData.tradeprice)}\n${buy ? formatToCurrency(tradeHistoryData.tradeprice) : ''}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -313,7 +325,17 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.center,
           child: Text(
-            '${buy ? '' : tradeHistoryData.transactionprice}\n${buy ? tradeHistoryData.transactionprice : ''}',
+            '${buy ? '' : formatToCurrency(tradeHistoryData.fee)}\n${buy ? formatToCurrency(tradeHistoryData.fee) : ''}',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Container(
+          width: screenSize.getWidthPerSize(25),
+          height: 52,
+          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+          alignment: Alignment.center,
+          child: Text(
+            '${buy ? '' : formatToCurrency(tradeHistoryData.totalcost)}\n${buy ? formatToCurrency(tradeHistoryData.totalcost) : ''}',
             textAlign: TextAlign.center,
           ),
         ),
@@ -326,7 +348,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
     return Obx(
       () => HorizontalDataTable(
         leftHandSideColumnWidth: 100,
-        rightHandSideColumnWidth: screenSize.getWidthPerSize(125),
+        rightHandSideColumnWidth: screenSize.getWidthPerSize(150),
         isFixedHeader: true,
         headerWidgets: _getTitleWidget(),
         leftSideItemBuilder: _generateFirstColumnRow,

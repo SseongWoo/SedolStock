@@ -11,6 +11,7 @@ import '../utils/color.dart';
 
 class YoutubeDataController extends GetxController {
   final DataModel dataModel = DataModel();
+  List<String> totalChannelIdList = [];
   List<String> channelIdList = []; // 채널 uid 리스트 데이터
   List<String> subChannelIdList = []; // 서브채널 uid 리스트 데이터
 
@@ -18,16 +19,14 @@ class YoutubeDataController extends GetxController {
   Map<String, String> channelMapData = {};
 
   // 채널 UID와 서브채널 UID로 구성된 맵 데이터
-  Map<String, String> channelAndSubChannelMapData = {};
+  Map<String, String> subUidToMainUidMap = {};
 
   RxMap<String, YoutubeVideoDataClass> latestYoutubeData =
       <String, YoutubeVideoDataClass>{}.obs; // 직전 유튜브 데이터 맵 데이터
   RxMap<String, YoutubeChannelDataClass> youtubeChannelData =
       <String, YoutubeChannelDataClass>{}.obs; // 유튜브 채널 데이터 맵 데이터
-  // RxMap<String, YoutubeLiveDataClass> youtubeLiveData =
-  //     <String, YoutubeLiveDataClass>{}.obs; // 유튜브 가격 데이터 맵 데이터
-  RxMap<String, YoutubeChartDataClass> youtubeChartData =
-      <String, YoutubeChartDataClass>{}.obs; // 차트에 사용될 가격 데이터 맵 데이터
+  RxMap<String, List<SalesData>> youtubeChartData =
+      <String, List<SalesData>>{}.obs; // 차트에 사용될 가격 데이터 맵 데이터
   RxMap<String, List<YoutubeVideoDataClass>> youtubeVideoData =
       <String, List<YoutubeVideoDataClass>>{}.obs; // 비디오 데이터 맵 데이터
   RxMap<String, ItemPriceDataClass> itemPriceDateMap =
@@ -37,12 +36,13 @@ class YoutubeDataController extends GetxController {
   void onReady() {
     super.onReady();
 
+    totalChannelIdList = getTotalChannelIdList();
     channelIdList = getChannelIdList();
     subChannelIdList = getSubChannelIdList();
 
     if (channelIdList.isNotEmpty && channelNameList.isNotEmpty) {
       channelMapData = Map.fromIterables(channelIdList, channelNameList);
-      channelAndSubChannelMapData = Map.fromIterables(channelIdList, subChannelIdList);
+      subUidToMainUidMap = Map.fromIterables(subChannelIdList, channelIdList);
     }
 
     setStreamerColorMap();
@@ -97,6 +97,7 @@ class YoutubeDataController extends GetxController {
     try {
       final channelData = await dataModel.fetchYoutubeChannelData();
       youtubeChannelData.assignAll(channelData);
+
       logger.i('getYoutubeChannelData log: YouTube Channel Data stored successfully.');
     } catch (e) {
       logger.e('getYoutubeChannelData error: $e');
@@ -109,68 +110,40 @@ class YoutubeDataController extends GetxController {
       final data = await dataModel.fetchYoutubeLiveData();
 
       final countMapData = data['countMapData'] as Map<String, dynamic>;
-      final countSubMapData = data['countSubMapData'] as Map<String, dynamic>;
       final chartDataList = data['chartDataList'] as Map<String, dynamic>;
 
       // 아이템 가격 데이터 저장
       countMapData.forEach((channelId, videoData) {
-        int diffView = (videoData['viewCountPrice'] ?? 0) - (videoData['lastViewCountPrice'] ?? 0);
-        double ratioView = (diffView / (videoData['lastViewCountPrice'] ?? 1)) * 100;
-        int diffLike = (videoData['likeCountPrice'] ?? 0) - (videoData['lastLikeCountPrice'] ?? 0);
-        double ratioLike = (diffLike / (videoData['lastLikeCountPrice'] ?? 1)) * 100;
+        int diff = (videoData['price'] ?? 0) - (videoData['lastPrice'] ?? 0);
+        double ratio = (diff / (videoData['lastPrice'] ?? 1)) * 100;
+        String channelType = channelIdList.contains(channelId) ? 'main' : 'sub';
 
-        dynamic subData = countSubMapData[channelAndSubChannelMapData[channelId]];
-
-        itemPriceDateMap['${channelId}_view'] = ItemPriceDataClass(
+        itemPriceDateMap[channelId] = ItemPriceDataClass(
           channelId,
-          'view',
-          videoData['viewCountPrice'] ?? 0,
+          channelType,
+          videoData['price'] ?? 0,
           videoData['totalViewCount'] ?? 0,
-          videoData['lastViewCountPrice'] ?? 0,
-          videoData['lastTotalViewCount'] ?? 0,
-          videoData['viewDelisting'] ?? 0,
-          diffView,
-          ratioView,
-          subData?['totalViewCount'] ?? 0,
-          subData?['lastTotalViewCount'] ?? 0,
-        );
-
-        itemPriceDateMap['${channelId}_like'] = ItemPriceDataClass(
-          channelId,
-          'like',
-          videoData['likeCountPrice'] ?? 0,
           videoData['totalLikeCount'] ?? 0,
-          videoData['lastLikeCountPrice'] ?? 0,
+          videoData['lastTotalViewCount'] ?? 0,
           videoData['lastTotalLikeCount'] ?? 0,
-          videoData['likeDelisting'] ?? 0,
-          diffLike,
-          ratioLike,
-          subData?['totalLikeCount'] ?? 0,
-          subData?['lastTotalLikeCount'] ?? 0,
+          videoData['lastPrice'] ?? 0,
+          diff,
+          videoData['delisting'] ?? 0,
+          ratio,
         );
       });
 
       // 차트 데이터 저장
       chartDataList.forEach((channelId, videoData) {
-        youtubeChartData[channelId] = YoutubeChartDataClass(
-          convertViewCountToSalesData(
-            (videoData['commentCount'] as List<dynamic>?)
-                    ?.map((e) => int.tryParse(e.toString()) ?? 0)
-                    .toList() ??
-                [0],
-          ),
-          convertViewCountToSalesData(
-            (videoData['likeCount'] as List<dynamic>?)
-                    ?.map((e) => int.tryParse(e.toString()) ?? 0)
-                    .toList() ??
-                [0],
-          ),
-          convertViewCountToSalesData(
-            (videoData['viewCount'] as List<dynamic>?)
-                    ?.map((e) => int.tryParse(e.toString()) ?? 0)
-                    .toList() ??
-                [0],
-          ),
+        youtubeChartData[channelId] = convertViewCountToSalesData(
+          (videoData['price'] as List<dynamic>?)?.map((e) {
+                if (e is double) {
+                  return e.round(); // double이면 반올림하여 int로 변환
+                } else {
+                  return int.tryParse(e.toString()) ?? 0; // 그 외 값은 int로 변환
+                }
+              }).toList() ??
+              [0],
         );
       });
       logger.i('getYoutubeLiveData log: YouTube Live Data stored successfully.');

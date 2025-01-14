@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
 import '../data/youtube_data.dart';
@@ -221,7 +222,15 @@ Future<void> loadYoutubeVideoData() async {
 void saveRankingData() {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
-    final jsonData = publicDataController.rankingList.map((data) => data.toJson()).toList();
+
+    final Map<String, dynamic> jsonData = publicDataController.rankingMap.map(
+      (key, value) => MapEntry(
+        key,
+        value.map((data) => data.toJson()).toList(),
+      ),
+    );
+
+    // 데이터를 로컬 저장
     box.write('rankingData', jsonEncode(jsonData));
     box.write('rankingDataDate', publicDataController.updateDate.value);
   } catch (e) {
@@ -230,19 +239,36 @@ void saveRankingData() {
 }
 
 // 기기에 저장되어있는 랭킹 데이터 리스트를 읽어오는 함수
-Future<void> loadRankingData() async {
+Future<bool> loadRankingData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final jsonData = await box.read('rankingData');
 
     if (jsonData != null) {
-      final List<dynamic> dataList = jsonDecode(jsonData);
-      publicDataController.rankingList.assignAll(
-        dataList.map((data) => RankingDataClass.fromJson(Map<String, dynamic>.from(data))).toList(),
+      // JSON 데이터를 Map 형식으로 디코딩
+      final Map<String, dynamic> decodedData = jsonDecode(jsonData);
+
+      // 각 그룹의 데이터를 RankingDataClass로 변환하여 rankingMap에 할당
+      publicDataController.rankingMap.value = decodedData.map(
+        (key, value) => MapEntry(
+          key,
+          (value as List<dynamic>)
+              .map((data) => RankingDataClass.fromJson(Map<String, dynamic>.from(data)))
+              .toList(),
+        ),
       );
     }
+
+    // 저장된 날짜 가져오기
     publicDataController.updateDate.value = await box.read('rankingDataDate');
+
+    DateTime currentTime = DateTime.now();
+    DateTime serverUpdateDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분')
+        .parse('${currentTime.year}년 ${publicDataController.updateDate.value}');
+
+    return currentTime.difference(serverUpdateDate).inHours >= 1;
   } catch (e) {
     logger.e('loadRankingData error : $e');
+    return true;
   }
 }

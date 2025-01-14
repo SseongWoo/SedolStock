@@ -1,8 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/view/main/property/property_history_widget.dart';
+import '../../../constants/color_constants.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/property/property_history_view_model.dart';
 
@@ -16,6 +18,11 @@ class PropertyHistoryScreen extends StatelessWidget {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Column(
       children: [
+        Container(
+          height: screenSize.getHeightPerSize(1),
+          width: screenSize.getWidthSize(),
+          color: colorSUB,
+        ),
         Row(
           children: [
             Container(
@@ -171,9 +178,10 @@ class PropertyHistoryScreen extends StatelessWidget {
               ),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(
+                child: AutoSizeText(
                   value,
                   textAlign: TextAlign.right,
+                  maxLines: 1,
                   style: TextStyle(
                     fontSize: screenSize.getHeightPerSize(2),
                   ),

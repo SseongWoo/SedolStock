@@ -65,10 +65,10 @@ class InformationModel {
   }
 
   // 회원탈퇴 기능
-  Future<bool> deleteUserData(String myUID, String myName) async {
+  Future<bool> deleteUserData(String myUID, String myName, String myFandom) async {
     try {
-      final response =
-          await httpService.deleteRequest('/deleteUser', {'uid': myUID, 'name': myName});
+      final response = await httpService
+          .deleteRequest('/deleteUser', {'uid': myUID, 'name': myName, 'fandom': myFandom});
 
       if (response.statusCode == 200) {
         return true;

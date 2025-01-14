@@ -32,33 +32,33 @@ class SplashViewModel extends GetxController {
     loadingMessage.value = '서버 상태 확인중';
     bool isServerRunning = await checkServer();
 
-    loadingMessage.value = '앱 버전 확인중';
-    await _publicDataController.getAppVersion();
-    bool needsUpdate = _checkVersion();
+    if (isServerRunning) {
+      loadingMessage.value = '앱 버전 확인중';
+      await _publicDataController.getAppVersion();
+      bool needsUpdate = _checkVersion();
 
-    if (needsUpdate) {
-      Get.dialog(
-        UpdateDialog(
-          screenSize: screenController.screenSize.value,
-          onPressedCencle: _closeApp,
-          onPressedUpdate: StoreRedirect.redirect,
-        ),
-      );
-    } else {
-      loadingMessage.value = '로그인 확인중';
-      String? token = await getRefreshToken();
+      if (needsUpdate) {
+        Get.dialog(
+          UpdateDialog(
+            screenSize: screenController.screenSize.value,
+            onPressedCencle: _closeApp,
+            onPressedUpdate: StoreRedirect.redirect,
+          ),
+        );
+      } else {
+        loadingMessage.value = '로그인 확인중';
+        String? token = await getRefreshToken();
 
-      if (isServerRunning) {
         if (token != null) {
           loadingMessage.value = '사용자 정보를 불러오는 중';
           await _handleAutoLogin();
         } else {
           goToLogin();
         }
-      } else {
-        showSimpleDialog2(
-            screenController.screenSize.value, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.', _closeApp);
       }
+    } else {
+      showSimpleDialog2(
+          screenController.screenSize.value, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.', _closeApp);
     }
   }
 

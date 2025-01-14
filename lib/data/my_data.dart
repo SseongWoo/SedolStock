@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockpj/constants/color_constants.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/service/storage_service.dart';
@@ -20,7 +21,7 @@ class MyDataController extends GetxController {
   RxInt myMoney = 0.obs; // *
   RxInt myStockMoney = 0.obs; // *
   RxInt myRank = 0.obs; // *
-  RxInt myBeforeRank = 0.obs; // *
+  RxInt myFandomRank = 0.obs; // *
   RxInt myTotalMoney = 0.obs; // *
   RxInt myReturnMoney = 0.obs; // *
   RxDouble myRatioMoney = 0.0.obs; // *
@@ -29,7 +30,7 @@ class MyDataController extends GetxController {
   RxMap<String, OwnStock> ownStock = <String, OwnStock>{}.obs; // 보유 주식 맵 데이터
   RxMap<String, StockListClass> stockListItem = <String, StockListClass>{}.obs; // 보유 주식 리스트 데이터
   RxList<TradeHistoryClass> tradeHistoryList = <TradeHistoryClass>[].obs; // 거래 내역 리스트 데이터
-  RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs; // 주식 정보 맵 데이터
+  //RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs; // 주식 정보 맵 데이터
   RxInt totalMoneyHistory = 0.obs; // 거래 내역 정보
   RxInt totalSellHistory = 0.obs; // *
   RxInt totalBuyHistory = 0.obs; // //
@@ -50,31 +51,34 @@ class MyDataController extends GetxController {
         if (_youtubeDataController.itemPriceDateMap[key] != null) {
           // 주식 종류를 구분해서 가격정보를 가져옴
           ItemPriceDataClass itemPriceData = _youtubeDataController.itemPriceDateMap[key]!;
-
           int stockPrice = itemPriceData.price * value.stockCount;
-          int buyPrice = value.stockPrice ~/ value.stockCount;
+          int buyPrice = value.stockPrice;
 
           myStockMoney.value += stockPrice;
-          totalBuyPrice += value.stockPrice;
-          int profit = itemPriceData.price - buyPrice; // 이익 계산
+          totalBuyPrice += buyPrice;
+          int profit = stockPrice - (buyPrice * value.stockCount); // 이익 계산
           myReturnMoney.value += profit;
 
           String itemUid = itemPriceData.uid;
 
-          stockListItem['${itemUid}_${itemPriceData.type}'] = StockListClass(
+          final mappedUid = itemPriceData.channelType == 'main'
+              ? itemUid
+              : _youtubeDataController.subUidToMainUidMap[itemUid]!;
+
+          stockListItem[itemUid] = StockListClass(
               itemUid,
-              _youtubeDataController.channelMapData[itemUid]!,
+              _youtubeDataController.channelMapData[mappedUid] ?? '채널이름',
               profit,
-              (profit / buyPrice) * 100,
+              (profit / (buyPrice * value.stockCount)) * 100,
               value.stockCount,
               stockPrice,
               buyPrice,
               itemPriceData.price,
-              itemPriceData.type,
-              streamerColorMap[itemUid]!);
+              itemPriceData.channelType,
+              streamerColorMap[mappedUid] ?? colorMAIN);
 
-          itemHistory[key] = ItemHistoryClass(
-              itemUid, itemPriceData.type ?? '', value.stockPrice ~/ value.stockCount);
+          // itemHistory[key] =
+          //     ItemHistoryClass(itemUid, itemPriceData.channelType ?? '', value.stockPrice);
         }
       }
     });
@@ -111,8 +115,6 @@ class MyDataController extends GetxController {
         myName.value = userData['name'];
         myChoicechannel.value = userData['choicechannel'];
         myMoney.value = userData['money'];
-        myRank.value = userData['rank'];
-        myBeforeRank.value = userData['beforerank'];
         return true;
       }
 
@@ -153,20 +155,23 @@ class MyDataController extends GetxController {
         myStockCount.value = 0;
         myStockList.value = 0;
 
-        jsonData.forEach((key, value) {
-          final stock = OwnStock(
-            value['stockName'] ?? 'Unknown',
-            value['stockCount'] ?? 0,
-            value['stockPrice'] ?? 0,
-          );
-          ownStock[key] = stock;
+        if (jsonData.isNotEmpty) {
+          jsonData.forEach((key, value) {
+            int roundedStockPrice =
+                (value['stockPrice'] is num) ? (value['stockPrice'] as num).round() : 0; // 기본값 0 설정
 
-          if (stock.stockCount > 0) {
-            myStockCount += stock.stockCount;
-            myStockList++;
-          }
-        });
+            final stock = OwnStock(
+              value['stockCount'] ?? 0,
+              roundedStockPrice,
+            );
+            ownStock[key] = stock;
 
+            if (stock.stockCount > 0) {
+              myStockCount += stock.stockCount;
+              myStockList++;
+            }
+          });
+        }
         return true;
       } else {
         return false;
@@ -200,10 +205,10 @@ class MyDataController extends GetxController {
         totalSellHistory.value = 0;
 
         for (var trade in tradeHistoryList) {
-          if (trade.type == 'buy') {
-            totalBuyHistory += trade.tradePrice;
+          if (trade.tradetype == 'buy') {
+            totalBuyHistory += trade.totalcost;
           } else {
-            totalSellHistory += trade.tradePrice;
+            totalSellHistory += trade.totalcost;
           }
         }
         // 총 수익 계산
@@ -228,7 +233,8 @@ class MyDataController extends GetxController {
         }
       }
 
-      final isSuccess = await dataModel.updateTotalMoney(myUid.value, myTotalMoney.value);
+      final isSuccess = await dataModel.updateTotalMoney(
+          myUid.value, myTotalMoney.value, myChoicechannel.value, myName.value);
 
       if (isSuccess) {
         logger.i('updateMyTotalMoney log: Total money updated successfully');

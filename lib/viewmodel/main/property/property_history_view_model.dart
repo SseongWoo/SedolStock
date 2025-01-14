@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
+import '../../../utils/color.dart';
+import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../view/main/property/property_history_widget.dart';
 
@@ -11,10 +14,11 @@ import '../../../view/main/property/property_history_widget.dart';
 class PropertyHistoryViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
 
   List<String> itemList = ['전체'] + channelNameList; // 채널 필터
-  List<String> itemTypeList = ['전체', '조회수', '좋아요수']; // 아이템 타입 필터
+  List<String> itemTypeList = ['전체', '메인채널', '서브채널']; // 아이템 타입 필터
   List<String> saleTypeList = ['전체', '구매', '판매']; // 매매 타입 필터
   RxList<String> selectedFilters = <String>['전체'].obs; // 채널 필터 선택 목록 리스트
   RxString selectItemType = '전체'.obs; // 선택한 아이템 필터 타입
@@ -28,8 +32,33 @@ class PropertyHistoryViewModel extends GetxController {
     historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList);
   }
 
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    ever(
+      myDataController.tradeHistoryList,
+      (callback) =>
+          historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList),
+    );
+  }
+
   List<TradeHistoryClass> setOriginalHistoryList() {
     return List<TradeHistoryClass>.from(myDataController.tradeHistoryList);
+  }
+
+  Widget getProfitReturnWidget(TradeHistoryClass tradeHistoryData) {
+    int salePrice = tradeHistoryData.saleavgprice * tradeHistoryData.itemcount;
+    int profit = tradeHistoryData.totalcost - salePrice;
+    double realizedReturn = (tradeHistoryData.totalcost / salePrice) * 100;
+    String pm1 = profit > 0 ? '+' : '';
+    String pm2 = profit < 0 ? '-' : '+';
+
+    return Text(
+      '$pm1${formatToCurrency(profit)}\n$pm2${realizedReturn.toStringAsFixed(2)}',
+      textAlign: TextAlign.center,
+      style: TextStyle(color: profitAndLossColor(profit)),
+    );
   }
 
   // 아이템 타입 필터 설정
@@ -77,18 +106,21 @@ class PropertyHistoryViewModel extends GetxController {
       '판매': 'sale',
       '전체': '전체',
     };
-    final Map<String, String> itemTypeMapping = {
-      '조회수': 'view',
-      '좋아요수': 'like',
+    final Map<String, String> channelTypeMapping = {
+      '메인채널': 'main',
+      '서브채널': 'sub',
       '전체': '전체',
     };
+
     setHistoryList = myDataController.tradeHistoryList.where((trade) {
       final matchItem = selectedFilters.contains('전체') ||
-          selectedFilters.any((filter) => trade.itemuid == itemMapping[filter]);
-      final matchItemType =
-          selectItemType.value == '전체' || trade.itemtype == itemTypeMapping[selectItemType.value];
+          selectedFilters.any((filter) =>
+              trade.itemuid == itemMapping[filter] ||
+              youtubeDataController.subUidToMainUidMap[trade.itemuid] == itemMapping[filter]);
+      final matchItemType = selectItemType.value == '전체' ||
+          trade.channeltype == channelTypeMapping[selectItemType.value];
       final matchSaleType =
-          selectSaleType.value == '전체' || trade.type == tradeTypeMapping[selectSaleType.value];
+          selectSaleType.value == '전체' || trade.tradetype == tradeTypeMapping[selectSaleType.value];
       return matchItem && matchItemType && matchSaleType;
     }).toList();
     historyList.value = setHistoryList;

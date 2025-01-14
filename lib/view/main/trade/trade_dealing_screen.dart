@@ -23,12 +23,22 @@ class TradeDealingScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AutoSizeText(
-                '${_viewModel.youtubeDataController.channelMapData[_viewModel.channelUID]!}(${_viewModel.typeTitle()})'),
-            Obx(
-              () => AutoSizeText(
-                '(${_viewModel.setPlus()}${_viewModel.itemPriceData.value.ratio.toStringAsFixed(2)}%)',
-                style: TextStyle(color: profitAndLossColor(_viewModel.itemPriceData.value.ratio)),
+            Expanded(
+              child: AutoSizeText(
+                _viewModel.youtubeDataController.youtubeChannelData[_viewModel.channelUID]?.title ??
+                    '타이틀',
+                textAlign: TextAlign.right,
+                maxLines: 1,
+              ),
+            ),
+            Expanded(
+              child: Obx(
+                () => AutoSizeText(
+                  '(${_viewModel.setPlus()}${_viewModel.itemPriceData.value.ratio.toStringAsFixed(2)}%)',
+                  maxLines: 1,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: profitAndLossColor(_viewModel.itemPriceData.value.ratio)),
+                ),
               ),
             ),
           ],

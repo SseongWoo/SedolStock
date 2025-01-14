@@ -44,8 +44,8 @@ class TimerController extends GetxController {
       nextRunHour += 1;
       if (nextRunHour >= 24) {
         nextRunHour = 0; // 하루가 넘어가면 시간은 0으로 설정
-        nextRunMinute = 5;
-        day + 1;
+        nextRunMinute = 0;
+        day = day + 1;
       }
     }
 
@@ -63,11 +63,12 @@ class TimerController extends GetxController {
   // 5분 타이머 후 갱신된 데이터를 불러오기위해 n초만큼 기다린 후 데이터 가져오게 하는 함수
   void _getDataTime() {
     Random random = Random();
-    int countdown = random.nextInt(15) + 1;
+    int countdown = random.nextInt(10) + 5;
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (countdown > 0) {
         countdown--;
         secondsRemaining.value = countdown;
+
         _updateTimeDisplay();
       } else {
         timer.cancel();

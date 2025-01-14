@@ -75,17 +75,20 @@ class SigninViewModel extends GetxController {
         showSimpleSnackbar('입력 오류', '이메일과 비밀번호를 입력해주세요.', SnackPosition.TOP, Colors.red);
         return;
       }
-
+      print('signin1');
       String email = _processEmail(controllerEmail.text);
       String password = controllerPassword.text;
 
+      print('signin2');
       final signinData = await signinModel.signin(email, password);
-
+      print('signin3');
       if (!signinData.checkemail) {
         showSimpleDialog(goCheckEmail, '회원가입 미완료', '회원가입이 중단된 상태입니다. 아래 버튼을 눌러 계속 진행해주세요!');
         return;
       }
+      print('signin4');
       await _initializeUserData(signinData.uid, signinData.token);
+      print('signin5');
       goHome();
     } catch (e) {
       logger.e(e);

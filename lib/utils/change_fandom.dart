@@ -13,12 +13,13 @@ import '../widget/simple_widget.dart';
 import 'color.dart';
 
 // 팬덤 업데이트 기능
-Future<bool> _updateFandom(String myUid, String fandomName) async {
+Future<bool> _updateFandom(String myUid, String originalFandom, String newFandom) async {
   final HttpService httpService = HttpService();
   try {
     final response = await httpService.putRequest('/fanname/update', {
       'uid': myUid,
-      'name': fandomName,
+      'originalFandom': originalFandom,
+      'newFandom': newFandom,
     });
 
     if (response.statusCode == 200) {
@@ -36,7 +37,8 @@ Future<bool> _updateFandom(String myUid, String fandomName) async {
 void changeFandom(int index, MyDataController myDataController) async {
   EasyLoading.show(status: '등록중');
   if (fanNameList[index] != myDataController.myChoicechannel.value) {
-    bool checkFandom = await _updateFandom(myDataController.myUid.value, fanNameList[index]);
+    bool checkFandom = await _updateFandom(
+        myDataController.myUid.value, myDataController.myChoicechannel.value, fanNameList[index]);
     EasyLoading.dismiss();
     if (checkFandom) {
       myDataController.myChoicechannel.value = fanNameList[index];

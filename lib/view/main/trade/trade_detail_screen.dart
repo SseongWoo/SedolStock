@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/service/storage_service.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/screen_size.dart';
@@ -27,10 +28,14 @@ class TradeDetailScreen extends StatelessWidget {
               opacity: _viewModel.opacity.value,
               child: Column(
                 children: [
-                  Text(
-                    '${_viewModel.youtubeDataController.channelMapData[_viewModel.channelUID]!} (${_viewModel.type == 'view' ? '조회수' : '좋아요수'})',
-                    style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(1.6),
+                  SizedBox(
+                    width: screenSize.getWidthPerSize(20),
+                    child: AutoSizeText(
+                      _viewModel
+                          .youtubeDataController.youtubeChannelData[_viewModel.channelUID]!.title,
+                      style: TextStyle(
+                        fontSize: screenSize.getHeightPerSize(1.6),
+                      ),
                     ),
                   ),
                   Row(
@@ -100,10 +105,15 @@ class TradeDetailScreen extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _viewModel.tradeDetailChartData.value.title,
-                                  style: TextStyle(
-                                    fontSize: screenSize.getHeightPerSize(2.4),
+                                SizedBox(
+                                  width: screenSize.getWidthPerSize(80),
+                                  child: AutoSizeText(
+                                    _viewModel.youtubeDataController
+                                        .youtubeChannelData[_viewModel.channelUID]!.title,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: screenSize.getHeightPerSize(2.4),
+                                    ),
                                   ),
                                 ),
                                 Row(
@@ -117,12 +127,15 @@ class TradeDetailScreen extends StatelessWidget {
                                     SizedBox(
                                       width: screenSize.getWidthPerSize(2),
                                     ),
-                                    Text(
-                                      chartData.returnRatio,
-                                      style: TextStyle(
-                                        fontSize: screenSize.getHeightPerSize(2.2),
-                                        color: profitAndLossColor(
-                                            _viewModel.itemPriceData.value.differencePrice),
+                                    Expanded(
+                                      child: AutoSizeText(
+                                        chartData.returnRatio,
+                                        style: TextStyle(
+                                          fontSize: screenSize.getHeightPerSize(2.2),
+                                          color: profitAndLossColor(
+                                              _viewModel.itemPriceData.value.differencePrice),
+                                        ),
+                                        maxLines: 1,
                                       ),
                                     ),
                                   ],
@@ -137,14 +150,14 @@ class TradeDetailScreen extends StatelessWidget {
                                 ),
                                 _chartDetailData(
                                   screenSize,
-                                  '총 ${_viewModel.typeLabel}',
-                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalCount)}(+${formatToCurrency(_viewModel.diffText(true))})',
+                                  '총 조회수',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount)}(+${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount - _viewModel.itemPriceData.value.beforeTotalViewCount)})',
                                   1.6,
                                 ),
                                 _chartDetailData(
                                   screenSize,
-                                  '서브채널 총 ${_viewModel.typeLabel}',
-                                  '${formatToCurrency(_viewModel.itemPriceData.value.subTotalCount)}(+${formatToCurrency(_viewModel.diffText(false))})',
+                                  '총 좋아요수',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount)}(+${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount - _viewModel.itemPriceData.value.beforeTotalLikeCount)})',
                                   1.6,
                                 ),
                               ],
@@ -174,56 +187,61 @@ class TradeDetailScreen extends StatelessWidget {
                           screenSize.getHeightPerSize(1),
                         ),
                         child: Obx(
-                          () => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '보유 주식',
-                                style: TextStyle(
-                                  fontSize: screenSize.getHeightPerSize(3),
-                                ),
-                              ),
-                              _chartDetailData(
-                                screenSize,
-                                '1주 평균 구매 금액',
-                                _viewModel.myStockDataClass.value.holdAvgPrice,
-                                1.8,
-                              ),
-                              _chartDetailData(
-                                screenSize,
-                                '보유 수량',
-                                '${_viewModel.myStockDataClass.value.holdCount}주',
-                                1.8,
-                              ),
-                              ListTile(
-                                title: Text(
-                                  '총 금액',
+                          () {
+                            final stockData =
+                                _viewModel.myDataController.stockListItem[_viewModel.channelUID];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '보유 주식',
                                   style: TextStyle(
-                                    fontSize: screenSize.getHeightPerSize(1.8),
+                                    fontSize: screenSize.getHeightPerSize(3),
                                   ),
                                 ),
-                                trailing: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '${formatToCurrency(_viewModel.myStockDataClass.value.holdTotalPrice)}원',
-                                      style: TextStyle(
-                                        fontSize: screenSize.getHeightPerSize(1.8),
-                                      ),
-                                      textAlign: TextAlign.right,
-                                    ),
-                                    AutoSizeText(
-                                      _viewModel.myStockDataClass.value.holdReturnRatio,
-                                      style: TextStyle(
-                                          fontSize: screenSize.getHeightPerSize(1.8),
-                                          color: profitAndLossColor(_viewModel.profit.value)),
-                                      textAlign: TextAlign.right,
-                                    ),
-                                  ],
+                                _chartDetailData(
+                                  screenSize,
+                                  '1주 평균 구매 금액',
+                                  '${formatToCurrency(stockData?.stockBuyingPrice ?? 0)}P',
+                                  1.8,
                                 ),
-                              )
-                            ],
-                          ),
+                                _chartDetailData(
+                                  screenSize,
+                                  '보유 수량',
+                                  '${stockData?.stockCount ?? 0}주',
+                                  1.8,
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    '총 금액',
+                                    style: TextStyle(
+                                      fontSize: screenSize.getHeightPerSize(1.8),
+                                    ),
+                                  ),
+                                  trailing: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
+                                        style: TextStyle(
+                                          fontSize: screenSize.getHeightPerSize(1.8),
+                                        ),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                      AutoSizeText(
+                                        _viewModel.setReturnRatio(stockData?.stockProfit ?? 0,
+                                            stockData?.stockRatio ?? 0),
+                                        style: TextStyle(
+                                            fontSize: screenSize.getHeightPerSize(1.8),
+                                            color: profitAndLossColor(stockData?.stockProfit ?? 0)),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -231,11 +249,7 @@ class TradeDetailScreen extends StatelessWidget {
                       height: screenSize.getHeightPerSize(1),
                     ),
                     TradeDeTailVideoListWidget(
-                      screenSize: screenSize,
-                      onTapInkWell: _viewModel.onTapVideoListInkWell,
-                      onTapIconButton: _viewModel.onTapVideListIconButton,
-                      typeMain: _viewModel.typeMain.value,
-                      videoDataList: _viewModel.getVideoListData(),
+                      viewModel: _viewModel,
                     ),
                     SizedBox(
                       height: screenSize.getHeightPerSize(8),

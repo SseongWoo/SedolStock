@@ -46,14 +46,6 @@ class TradeDetailChartInfoClass {
   TradeDetailChartInfoClass(this.title, this.trailing);
 }
 
-class MyStockDataClass {
-  String holdAvgPrice;
-  int holdCount;
-  int holdTotalPrice;
-  String holdReturnRatio;
-  MyStockDataClass(this.holdAvgPrice, this.holdCount, this.holdTotalPrice, this.holdReturnRatio);
-}
-
 // 그래프 데이터 클래스
 class SalesData {
   SalesData(this.time, this.sales);
@@ -63,16 +55,16 @@ class SalesData {
 
 class TradeModel {
   // 매매 실행
-  Future<bool> fetchTrySale(String myUID, int price, int count, String channelUID, String itemType,
-      String saleType, int priceAVG) async {
+  Future<bool> fetchTrySale(String myUID, int price, int count, String channelUID,
+      String channelType, String saleType, int priceAVG) async {
     final HttpService httpService = HttpService();
     try {
       final response = await httpService.putRequest('/trade/$myUID/trade/0', {
         'itemuid': channelUID,
-        'itemtype': itemType,
+        'channeltype': channelType,
         'itemcount': count,
         'transactionprice': price,
-        'type': saleType,
+        'tradetype': saleType,
         'priceavg': priceAVG,
       });
 

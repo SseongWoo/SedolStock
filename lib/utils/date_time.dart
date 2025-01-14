@@ -11,7 +11,7 @@ String formatDateTime(DateTime dateTime) {
 String formatDateString(String isoString) {
   DateTime dateTime = DateTime.parse(isoString);
 
-  DateFormat formatter = DateFormat('MM월 dd일 hh시 mm분');
+  DateFormat formatter = DateFormat('MM월 dd일 HH시 mm분');
   return formatter.format(dateTime);
 }
 

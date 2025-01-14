@@ -27,11 +27,10 @@ class TradeDealingViewModel extends GetxController {
   bool buying = false; // 판매, 구매 구분 변수
   RxDouble feeRate = 0.0.obs;
   String channelUID = '';
-  String itemType = ''; // 조회수, 좋아요수 구분 텍스트
   RxString calculatorDisplay = ''.obs; // 계산기 디스플레이에 나타날 변수
   RxInt calculatorInt = 0.obs; // 계산기 입력된 값(주식 개수)
   RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
-  Rx<OwnStock> ownStock = OwnStock('', 0, 0).obs;
+  Rx<OwnStock> ownStock = OwnStock(0, 0).obs;
   Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass(
     '',
     '',
@@ -41,7 +40,7 @@ class TradeDealingViewModel extends GetxController {
     0,
     0,
     0,
-    0.0,
+    0,
     0,
     0,
   ).obs; // 아이템 가격데이터
@@ -54,9 +53,10 @@ class TradeDealingViewModel extends GetxController {
     final arguments = Get.arguments as Map<String, dynamic>;
     buying = arguments['buying'];
     channelUID = arguments['channelUID'];
-    itemType = arguments['type'];
-    itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
-    ownStock.value = myDataController.ownStock['${channelUID}_$itemType']!;
+    itemPriceData.value = youtubeDataController.itemPriceDateMap[channelUID]!;
+    if (myDataController.ownStock[channelUID] != null) {
+      ownStock.value = myDataController.ownStock[channelUID]!;
+    }
     feeRate.value = buying
         ? _publicDataController.feeConfig.value.buyFeeRate
         : _publicDataController.feeConfig.value.sellFeeRate;
@@ -73,14 +73,12 @@ class TradeDealingViewModel extends GetxController {
     ever(
       youtubeDataController.itemPriceDateMap,
       (callback) {
-        itemPriceData.value = youtubeDataController.itemPriceDateMap['${channelUID}_$itemType']!;
-        ownStock.value = myDataController.ownStock['${channelUID}_$itemType']!;
+        itemPriceData.value = youtubeDataController.itemPriceDateMap[channelUID]!;
+        if (myDataController.ownStock[channelUID] != null) {
+          ownStock.value = myDataController.ownStock[channelUID]!;
+        }
       },
     );
-  }
-
-  String typeTitle() {
-    return itemType == 'view' ? '조회수' : '좋아요수';
   }
 
   String saleTitle() {
@@ -135,7 +133,7 @@ class TradeDealingViewModel extends GetxController {
 
       calculatorDisplay.value = calculatorInt.value.toString();
     } else if (!buying && ownStock.value.stockCount > 0) {
-      calculatorInt.value = myDataController.ownStock['${channelUID}_$itemType']!.stockCount ~/ 2;
+      calculatorInt.value = ownStock.value.stockCount ~/ 2;
       calculatorDisplay.value = calculatorInt.value.toString();
     }
   }
@@ -241,14 +239,20 @@ class TradeDealingViewModel extends GetxController {
     EasyLoading.show();
     try {
       int priceAvg = 0;
-      String type = buying ? 'buy' : 'sell';
+      String tradeType = buying ? 'buy' : 'sell';
 
       if (!buying) {
-        priceAvg = myDataController.itemHistory['${channelUID}_$itemType']!.itemPriceAvg;
+        priceAvg = myDataController.stockListItem[channelUID]?.stockBuyingPrice ?? 0;
       }
 
       bool checkSale = await tradeModel.fetchTrySale(
-          myDataController.myUid.value, price, count, channelUID, itemType, type, priceAvg);
+          myDataController.myUid.value,
+          price,
+          count,
+          channelUID,
+          youtubeDataController.itemPriceDateMap[channelUID]?.channelType ?? 'main',
+          tradeType,
+          priceAvg);
       if (checkSale) {
         _audioController.playSound('assets/sound/testsound.wav');
         Get.back();

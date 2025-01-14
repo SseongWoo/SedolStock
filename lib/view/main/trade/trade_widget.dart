@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../constants/color_constants.dart';
 import '../../../data/youtube_data.dart';
@@ -19,7 +21,7 @@ class TradeItemTitleWidget extends StatelessWidget {
     return Container(
       height: screenSize.getHeightPerSize(5),
       width: screenSize.getWidthSize(),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
             color: colorSUB,
@@ -131,13 +133,28 @@ Widget differenceTextWidget(ScreenSize screenSize, ItemPriceDataClass itemPriceD
     }
     textColor = profitAndLossColor(itemPriceDate.differencePrice);
 
-    return Text(
-      '$pm${itemPriceDate.differencePrice.toString()}\n($pm${itemPriceDate.ratio.toStringAsFixed(2)}%)',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: textColor,
-        fontSize: screenSize.getHeightPerSize(1.6),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AutoSizeText(
+          '$pm${formatToCurrency(itemPriceDate.differencePrice)}',
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          style: TextStyle(
+            color: textColor,
+            fontSize: screenSize.getHeightPerSize(1.6),
+          ),
+        ),
+        AutoSizeText(
+          '($pm${itemPriceDate.ratio.toStringAsFixed(2)}%)',
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          style: TextStyle(
+            color: textColor,
+            fontSize: screenSize.getHeightPerSize(1.6),
+          ),
+        ),
+      ],
     );
   }
 }

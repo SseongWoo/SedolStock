@@ -120,69 +120,49 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
 
 // 채널의 최신 10개의 영상을 나타내는 위젯
 class TradeDeTailVideoListWidget extends StatelessWidget {
-  final ScreenSize screenSize;
-  final Function onTapInkWell;
-  final Function(int index) onTapIconButton;
-  final bool typeMain;
-  final List<YoutubeVideoDataClass> videoDataList;
-
-  const TradeDeTailVideoListWidget(
-      {super.key,
-      required this.screenSize,
-      required this.onTapInkWell,
-      required this.onTapIconButton,
-      required this.typeMain,
-      required this.videoDataList});
+  final TradeDetailViewModel viewModel;
+  const TradeDeTailVideoListWidget({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(
-          screenSize.getHeightPerSize(1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${typeMain ? '메인 채널' : '서브 채널'} 최근 업로드된 영상',
-                  style: TextStyle(
-                    fontSize: screenSize.getHeightPerSize(1.8),
-                  ),
-                ),
-                InkWell(
-                  onTap: () => onTapInkWell(),
-                  child: Text(
-                    typeMain ? '서브' : '메인',
+          padding: EdgeInsets.all(
+            viewModel.screenController.screenSize.value.getHeightPerSize(1),
+          ),
+          child: Obx(
+            () {
+              final videoDataList =
+                  viewModel.youtubeDataController.youtubeVideoData[viewModel.channelUID];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '최근 업로드된 영상',
                     style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(1.4),
+                      fontSize: viewModel.screenController.screenSize.value.getHeightPerSize(1.8),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: videoDataList.length,
-                itemBuilder: (context, index) {
-                  return buildVideoItem(
-                    screenSize,
-                    videoDataList[index],
-                    index,
-                    (index) => onTapIconButton(index),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+                  SizedBox(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: videoDataList != null ? videoDataList.length : 0,
+                      itemBuilder: (context, index) {
+                        return buildVideoItem(
+                          viewModel.screenController.screenSize.value,
+                          videoDataList![index],
+                          index,
+                          (index) => viewModel.onTapVideListIconButton(index),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          )),
     );
   }
 }

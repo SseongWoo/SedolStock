@@ -1,13 +1,18 @@
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:flutter/material.dart';
+import 'package:stockpj/service/storage_service.dart';
 import '../../constants/color_constants.dart';
+import '../../constants/data_constants.dart';
 import '../../data/my_data.dart';
 import '../../data/youtube_data.dart';
+import '../../model/data/data_class.dart';
 import '../../utils/color.dart';
 import '../../utils/date_time.dart';
 import '../../utils/screen_size.dart';
 import '../../utils/timer.dart';
+import '../../view/main/ranking/ranking_screen.dart';
+import '../../view/main/ranking/ranking_widget.dart';
 
 // 랭킹 뷰 모델
 class RankingViewModel extends GetxController {
@@ -16,13 +21,53 @@ class RankingViewModel extends GetxController {
   final TimerController timerController = Get.find<TimerController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  RxString timeText = ''.obs; // 랭킹 업데이트 시간 텍스트
+  RxString selectCategoryLargeItem = '전체'.obs;
+  RxString selectCategorySmallItem = '전체'.obs;
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    timeText.value = '${formatDateString4(publicDataController.updateDate.value)} 01시 00분 기준';
+  List<String> categoryLargeList = ['전체', '팬덤'];
+  List<String> categorySmallList = ['전체'];
+
+  Rx<Color> backgroundColor = Colors.white.obs;
+  Rx<Color> textColor = Colors.black.obs;
+
+  void selectCategortLarge(String filter) {
+    selectCategoryLargeItem.value = filter;
+
+    if (selectCategoryLargeItem.value == '전체') {
+      categorySmallList = ['전체'];
+      selectCategorySmallItem.value = '전체';
+      backgroundColor.value = Colors.white;
+    } else {
+      categorySmallList = List.from(fanNameList);
+      selectCategortSmall(myDataController.myChoicechannel.value);
+    }
+
+    Get.back(); // 다이얼로그 닫기
+  }
+
+  void selectCategortSmall(String filter) {
+    selectCategorySmallItem.value = filter;
+    backgroundColor.value = fanColorMap[filter] ?? Colors.white;
+    textColor.value = filter == '박쥐단' ? Colors.white : Colors.black;
+
+    Get.back(); // 다이얼로그 닫기
+  }
+
+  void showCategoryDialog(bool large) {
+    Get.dialog(
+        transitionDuration: const Duration(milliseconds: 180),
+        CategoryDialog(
+          screenSize: screenController.screenSize.value,
+          categoryList: large ? categoryLargeList : categorySmallList,
+          selectCategory: (String newValue) {
+            if (large) {
+              selectCategortLarge(newValue);
+            } else {
+              selectCategortSmall(newValue);
+            }
+          },
+          selectCategoryItem: large ? selectCategoryLargeItem : selectCategorySmallItem,
+        ));
   }
 
   Color rankingColor(int ranking) {

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
@@ -72,7 +73,7 @@ class TradeScreen extends StatelessWidget {
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10), // 모서리를 각지게 설정
-                          side: BorderSide(
+                          side: const BorderSide(
                             color: colorSUB,
                             width: 1.5,
                           ),
@@ -110,14 +111,13 @@ class TradeScreen extends StatelessWidget {
                   return Obx(
                     () {
                       final item = _viewModel.itemPriceDataList[index];
-                      final itemUID = _viewModel.getItemUID(item);
+                      final itemUID = item.uid;
                       YoutubeChannelDataClass youtubeData =
                           _viewModel.youtubeDataController.youtubeChannelData[itemUID]!;
-
                       return _listItemWidget(
                         screenSize,
-                        () => _viewModel.goTradeItem(item.uid, item.type),
-                        _viewModel.setPriceTitle(item.uid, item.type),
+                        () => _viewModel.goTradeItem(item.uid),
+                        _viewModel.setPriceTitle(item.uid),
                         youtubeData.title,
                         youtubeData.thumbnail,
                         index,
@@ -194,11 +194,13 @@ class TradeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              Text(
-                priceTitle,
-                style: TextStyle(
-                  fontSize: screenSize.getHeightPerSize(1.8),
+              Expanded(
+                child: AutoSizeText(
+                  priceTitle,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(1.8),
+                  ),
                 ),
               ),
               SizedBox(

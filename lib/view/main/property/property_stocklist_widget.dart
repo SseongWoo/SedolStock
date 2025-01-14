@@ -60,13 +60,13 @@ class PropertyStockListItemWidget extends StatelessWidget {
 
   Widget _buildThumbnail(ScreenSize screenSize) {
     return GestureDetector(
-      onTap: () => viewModel.goTradeItem(stockData.stockUID, stockData.stockType),
+      onTap: () => viewModel.goTradeItem(stockData.stockUID),
       child: SizedBox(
         width: screenSize.getHeightPerSize(6),
         height: screenSize.getHeightPerSize(6),
         child: ClipOval(
           child: Image.network(
-            viewModel.getThumbnail(stockData),
+            viewModel.youtubeDataController.youtubeChannelData[stockData.stockUID]!.thumbnail,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return const Center(child: CircularProgressIndicator());
@@ -82,11 +82,11 @@ class PropertyStockListItemWidget extends StatelessWidget {
 
   Widget _buildChannelTitle(ScreenSize screenSize) {
     return GestureDetector(
-      onTap: () => viewModel.goTradeItem(stockData.stockUID, stockData.stockType),
+      onTap: () => viewModel.goTradeItem(stockData.stockUID),
       child: SizedBox(
         width: screenSize.getWidthPerSize(30),
         child: Text(
-          viewModel.getChannelTitle(stockData),
+          viewModel.youtubeDataController.youtubeChannelData[stockData.stockUID]!.title,
           softWrap: true,
           style: TextStyle(
             fontSize: screenSize.getHeightPerSize(1.8),
@@ -331,13 +331,8 @@ class PropertyStockPieChartWidget extends StatelessWidget {
 
   // 배지 생성
   Widget _buildBadge(ScreenSize screenSize, StockListClass stock) {
-    final String thumbnail = stock.stockType == 'view'
-        ? viewModel.youtubeDataController.youtubeChannelData[stock.stockUID]!.thumbnail
-        : viewModel
-            .youtubeDataController
-            .youtubeChannelData[
-                viewModel.youtubeDataController.channelAndSubChannelMapData[stock.stockUID]]!
-            .thumbnail;
+    final String thumbnail =
+        viewModel.youtubeDataController.youtubeChannelData[stock.stockUID]!.thumbnail;
 
     return AnimatedContainer(
       duration: PieChart.defaultDuration,

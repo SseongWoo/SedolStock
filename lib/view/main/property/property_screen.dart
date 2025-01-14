@@ -13,30 +13,33 @@ class PropertyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2, // 탭의 개수
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          title: TabBar(
-            labelColor: colorMAIN,
-            unselectedLabelColor: colorSUB,
-            dividerColor: Colors.white,
-            indicator: BoxDecoration(
-              color: colorSUB,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Tab(
-                child: _tapTextWidget('주식 잔고'),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            TabBar(
+              labelColor: colorMAIN,
+              unselectedLabelColor: colorSUB,
+              dividerColor: Colors.white,
+              indicator: const BoxDecoration(
+                color: colorSUB,
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)),
               ),
-              Tab(child: _tapTextWidget('거래 내역')),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: _viewModel.pages,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(
+                  child: _tapTextWidget('주식 잔고'),
+                ),
+                Tab(child: _tapTextWidget('거래 내역')),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: _viewModel.pages,
+              ),
+            ),
+          ],
         ),
       ),
     );

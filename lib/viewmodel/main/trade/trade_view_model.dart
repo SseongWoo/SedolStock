@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/data/public_data.dart';
 import '../../../constants/route_constants.dart';
 import '../../../constants/color_constants.dart';
 import '../../../data/my_data.dart';
@@ -16,7 +15,7 @@ class TradeViewModel extends GetxController {
   final MyDataController _myDataController = Get.find<MyDataController>();
   final TimerController _timerController = Get.find<TimerController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  final List<String> dropdownItemList = ['전체', '조회수', '좋아요수']; // 거래 아이템 필터
+  final List<String> dropdownItemList = ['전체', '메인', '서브']; // 거래 아이템 필터
   final RxList<ItemPriceDataClass> itemPriceDataList = <ItemPriceDataClass>[].obs; // 아이템 가격 데이터
   RxString selectItemType = '전체'.obs; // 아이템 타입 필터
   RxBool ascending = true.obs; // 정렬 기능 오름차순 내림차순
@@ -39,10 +38,10 @@ class TradeViewModel extends GetxController {
   }
 
   // 아이템 상세 정보 화면으로 이동
-  void goTradeItem(String channelUID, String type) {
+  void goTradeItem(String channelUID) {
     Get.toNamed(
       AppRoute.tradeDetail,
-      arguments: {'channelUID': channelUID, 'type': type},
+      arguments: {'channelUID': channelUID},
     );
   }
 
@@ -93,10 +92,10 @@ class TradeViewModel extends GetxController {
   }
 
   // 가격 텍스트 생성
-  String setPriceTitle(String channelUID, String type) {
-    return youtubeDataController.itemPriceDateMap['${channelUID}_$type']!.delisting > 0
+  String setPriceTitle(String channelUID) {
+    return youtubeDataController.itemPriceDateMap[channelUID]!.delisting > 0
         ? '상장 폐지'
-        : formatToCurrency(youtubeDataController.itemPriceDateMap['${channelUID}_$type']!.price);
+        : formatToCurrency(youtubeDataController.itemPriceDateMap[channelUID]!.price);
   }
 
   // 아이템 정렬
@@ -114,7 +113,7 @@ class TradeViewModel extends GetxController {
         sortList = youtubeDataController.itemPriceDateMap.values
             .where((item) =>
                 selectItemType.value == '전체' ||
-                selectItemType.value == (item.type == 'view' ? '조회수' : '좋아요수'))
+                selectItemType.value == (item.channelType == 'main' ? '메인' : '서브'))
             .toList()
           ..sort((a, b) => a.price.compareTo(b.price));
         sortList = sortList.reversed.toList();
@@ -124,7 +123,7 @@ class TradeViewModel extends GetxController {
         sortList = youtubeDataController.itemPriceDateMap.values
             .where((item) =>
                 selectItemType.value == '전체' ||
-                selectItemType.value == (item.type == 'view' ? '조회수' : '좋아요수'))
+                selectItemType.value == (item.channelType == 'main' ? '메인' : '서브'))
             .toList()
           ..sort((a, b) => a.differencePrice.compareTo(b.differencePrice));
         sortList = sortList.reversed.toList();
@@ -141,23 +140,17 @@ class TradeViewModel extends GetxController {
   // 기본 정렬 리스트
   List<ItemPriceDataClass> basicSort() {
     List<ItemPriceDataClass> basicList = [];
-    for (var item in youtubeDataController.channelIdList) {
-      if (selectItemType.value == '전체' || selectItemType.value == '조회수') {
-        basicList.add(youtubeDataController.itemPriceDateMap['${item}_view']!);
+    if (selectItemType.value == '전체' || selectItemType.value == '메인') {
+      for (var item in youtubeDataController.channelIdList) {
+        basicList.add(youtubeDataController.itemPriceDateMap[item]!);
       }
-      if (selectItemType.value == '전체' || selectItemType.value == '좋아요수') {
-        basicList.add(youtubeDataController.itemPriceDateMap['${item}_like']!);
+    }
+    for (var item in youtubeDataController.subChannelIdList) {
+      if (selectItemType.value == '전체' || selectItemType.value == '서브') {
+        basicList.add(youtubeDataController.itemPriceDateMap[item]!);
       }
     }
 
     return basicList;
-  }
-
-  // 리스트뷰 아이템 uid 정보
-  String getItemUID(ItemPriceDataClass item) {
-    final channelUID = item.uid;
-    final subChannelUID = youtubeDataController.channelAndSubChannelMapData[channelUID]!;
-    final type = item.type;
-    return type == 'view' ? channelUID : subChannelUID;
   }
 }

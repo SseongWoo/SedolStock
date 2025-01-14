@@ -23,8 +23,8 @@ class DeleteAccountViewModel extends GetxController {
     try {
       EasyLoading.show();
       if (checkBox.value) {
-        bool checkDelete = await informationModel.deleteUserData(
-            _myDataController.myUid.value, _myDataController.myName.value);
+        bool checkDelete = await informationModel.deleteUserData(_myDataController.myUid.value,
+            _myDataController.myName.value, _myDataController.myChoicechannel.value);
         if (checkDelete) {
           showSimpleSnackbar('회원탈퇴 성공', '회원탈퇴에 성공했습니다.', SnackPosition.TOP, Colors.black);
           _publicDataController.logOut();

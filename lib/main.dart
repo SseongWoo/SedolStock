@@ -127,7 +127,7 @@ class MyApp extends StatelessWidget {
         );
       },
       debugShowCheckedModeBanner: false,
-      title: 'StockGame',
+      title: '세돌스탁',
       theme: ThemeData(
         fontFamily: 'Maple',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),

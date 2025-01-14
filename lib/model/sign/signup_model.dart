@@ -13,7 +13,7 @@ class SignupModel {
   Future<bool> signup(String email, String password) async {
     Map<String, dynamic>? jsonData;
     try {
-      final response = await httpService.postRequest('signup', {
+      final response = await httpService.postRequest('/signup', {
         'email': email,
         'password': password,
       });

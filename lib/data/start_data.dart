@@ -7,16 +7,13 @@ import '../viewmodel/main/trade/trade_detail_view_model.dart';
 import 'my_data.dart';
 
 // 하루에 한번만 실행되는 함수
-Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController,
-    PublicDataController publicDataController, String today) async {
+Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController, String today) async {
   await youtubeDataController.getLatestYoutubeData();
   saveLatestYoutubeData();
   await youtubeDataController.getYoutubeChannelData();
   saveYoutubeChannelData();
   await youtubeDataController.getYoutubeVideoData();
   saveYoutubeVideoData();
-  await publicDataController.getRankData();
-  saveRankingData();
   await setDataDate(today);
 }
 
@@ -33,20 +30,26 @@ Future<void> startGetData() async {
   if (date == null ||
       date != today ||
       (dateTime != null && dateTime.hour < 2 && DateTime.now().hour >= 2)) {
-    await fetchDataAndSave(youtubeDataController, publicDataController, today);
+    await fetchDataAndSave(youtubeDataController, today);
   } else {
     await loadLatestYoutubeData();
     await loadYoutubeChannelData();
     await loadYoutubeVideoData();
-    await loadRankingData();
 
     if (youtubeDataController.latestYoutubeData.isEmpty ||
         youtubeDataController.youtubeChannelData.isEmpty ||
-        youtubeDataController.youtubeVideoData.isEmpty ||
-        publicDataController.rankingList.isEmpty) {
-      await fetchDataAndSave(youtubeDataController, publicDataController, today);
+        youtubeDataController.youtubeVideoData.isEmpty) {
+      await fetchDataAndSave(youtubeDataController, today);
     }
   }
+
+  // 랭킹데이터를 가져오는 기능
+  bool checkRankData = await loadRankingData();
+  if (checkRankData) {
+    await publicDataController.getRankData();
+    saveRankingData();
+  }
+
   await publicDataController.getConstantsData();
   await youtubeDataController.getYoutubeLiveData();
   myDataController.setMoneyData();

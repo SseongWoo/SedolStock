@@ -18,7 +18,7 @@ class PropertyStocklistScreen extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: screenSize.getHeightPerSize(1.5),
+            height: screenSize.getHeightPerSize(1),
             width: screenSize.getWidthSize(),
             color: colorSUB,
           ),

@@ -2,10 +2,70 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stockpj/service/storage_service.dart';
 import 'package:stockpj/utils/screen_size.dart';
+import 'package:stockpj/viewmodel/main/ranking_view_model.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
+
+class RankingTapScreen extends StatelessWidget {
+  final ScreenSize screenSize;
+  final List<RankingDataClass> rankingList;
+  final Color Function(int rank) rankingColor;
+  final Color backgroundColor;
+  final Color textColor;
+  const RankingTapScreen({
+    super.key,
+    required this.screenSize,
+    required this.rankingList,
+    required this.rankingColor,
+    required this.backgroundColor,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: screenSize.getWidthPerSize(2),
+          right: screenSize.getWidthPerSize(2),
+        ),
+        child: rankingList.isNotEmpty
+            ? ListView.builder(
+                itemCount: rankingList.length,
+                itemBuilder: (context, index) {
+                  final rankingData = rankingList[index];
+                  final rankingColor = this.rankingColor(rankingData.rank);
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenSize.getHeightPerSize(1),
+                      horizontal: screenSize.getHeightPerSize(0.2),
+                    ),
+                    child: GestureDetector(
+                      child: RankingWidget(
+                        rankingData: rankingData,
+                        screenSize: screenSize,
+                        rankColor: rankingColor,
+                      ),
+                    ),
+                  );
+                },
+              )
+            : Center(
+                child: Text(
+                  '랭킹 데이터를 불러오지 못했습니다.',
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(2), color: textColor),
+                ),
+              ),
+      ),
+    );
+  }
+}
 
 // 랭킹 리스트에 사용되는 랭킹 데이터 위젯
 class RankingWidget extends StatelessWidget {
@@ -53,6 +113,9 @@ class RankingWidget extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(
+              width: screenSize.getWidthPerSize(2),
+            ),
             Stack(
               clipBehavior: Clip.none,
               children: [
@@ -74,8 +137,7 @@ class RankingWidget extends StatelessWidget {
                   width: screenSize.getHeightPerSize(6),
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: ClipOval(
-                    child: Image.asset(
-                        'assets/image/fan/${fanImageMap[rankingData.choiceChannel]}.png',
+                    child: Image.asset('assets/image/fan/${fanImageMap[rankingData.fandom]}.png',
                         errorBuilder: (context, error, stackTrace) {
                       return Image.asset('assets/image/image_error.png');
                     }),
@@ -115,11 +177,6 @@ class RankingWidget extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: screenSize.getHeightPerSize(6),
-              width: screenSize.getHeightPerSize(6),
-              child: rankingChangeWidget(screenSize, rankingData.rank, rankingData.beforeRank),
-            ),
           ],
         ),
       ),
@@ -127,55 +184,43 @@ class RankingWidget extends StatelessWidget {
   }
 }
 
-// 랭킹 변동 표시 위젯
-Widget rankingChangeWidget(ScreenSize screenSize, int rank, int beforeRank) {
-  String title = '-';
-  Color color = Colors.black;
-  Color iconColor = Colors.black;
-  IconData icon = Icons.horizontal_rule;
-  if (beforeRank == 0 && rank == 0) {
-    title = '-';
-    color = Colors.black;
-    iconColor = Colors.black;
-    icon = Icons.add;
-  } else if (beforeRank == 0) {
-    title = 'NEW!';
-    color = Colors.yellow;
-    icon = Icons.add;
-  } else if (rank < beforeRank) {
-    title = '${beforeRank - rank}';
-    color = Colors.black;
-    iconColor = Colors.red;
-    icon = Icons.arrow_drop_up;
-  } else if (rank > beforeRank) {
-    title = '${rank - beforeRank}';
-    color = Colors.black;
-    iconColor = Colors.blue;
-    icon = Icons.arrow_drop_down;
-  } else {
-    title = '-';
-    color = Colors.black;
-    iconColor = Colors.black;
-    icon = Icons.add;
-  }
+class CategoryDialog extends StatelessWidget {
+  final ScreenSize screenSize;
+  final List<String> categoryList;
+  final RxString selectCategoryItem;
+  final ValueChanged<String> selectCategory;
+  const CategoryDialog(
+      {super.key,
+      required this.screenSize,
+      required this.categoryList,
+      required this.selectCategoryItem,
+      required this.selectCategory});
 
-  return Row(
-    //mainAxisAlignment: icon != Icons.add ? MainAxisAlignment.start : MainAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      icon != Icons.add
-          ? Icon(
-              icon,
-              color: iconColor,
-            )
-          : const SizedBox.shrink(),
-      AutoSizeText(
-        title,
-        style: TextStyle(
-          fontSize: screenSize.getHeightPerSize(2),
-          color: color,
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: screenSize.getWidthPerSize(80),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: categoryList.map((filter) {
+              return RadioListTile(
+                value: filter,
+                groupValue: selectCategoryItem.value,
+                title: Text(filter),
+                onChanged: (String? newValue) {
+                  selectCategory(newValue!);
+                },
+              );
+            }).toList(),
+          ),
         ),
       ),
-    ],
-  );
+    );
+  }
 }

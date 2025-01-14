@@ -23,6 +23,13 @@ void setURL() {
 }
 
 // 각각 메인, 서브 채널의 uid를 가져오는 함수
+List<String> getTotalChannelIdList() {
+  return [
+    ...dotenv.get('CHANNEL_ID_LIST').split(','),
+    ...dotenv.get('SUB_CHANNEL_ID_LIST').split(',')
+  ];
+}
+
 List<String> getChannelIdList() {
   return dotenv.get('CHANNEL_ID_LIST').split(',');
 }
