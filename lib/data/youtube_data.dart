@@ -19,7 +19,7 @@ class YoutubeDataController extends GetxController {
   Map<String, String> channelMapData = {};
 
   // 채널 UID와 서브채널 UID로 구성된 맵 데이터
-  Map<String, String> subUidToMainUidMap = {};
+  //Map<String, String> subUidToMainUidMap = {};
 
   RxMap<String, YoutubeVideoDataClass> latestYoutubeData =
       <String, YoutubeVideoDataClass>{}.obs; // 직전 유튜브 데이터 맵 데이터
@@ -41,8 +41,7 @@ class YoutubeDataController extends GetxController {
     subChannelIdList = getSubChannelIdList();
 
     if (channelIdList.isNotEmpty && channelNameList.isNotEmpty) {
-      channelMapData = Map.fromIterables(channelIdList, channelNameList);
-      subUidToMainUidMap = Map.fromIterables(subChannelIdList, channelIdList);
+      channelMapData = Map.fromIterables(totalChannelIdList, channelNameList);
     }
 
     setStreamerColorMap();

@@ -61,13 +61,9 @@ class MyDataController extends GetxController {
 
           String itemUid = itemPriceData.uid;
 
-          final mappedUid = itemPriceData.channelType == 'main'
-              ? itemUid
-              : _youtubeDataController.subUidToMainUidMap[itemUid]!;
-
           stockListItem[itemUid] = StockListClass(
               itemUid,
-              _youtubeDataController.channelMapData[mappedUid] ?? '채널이름',
+              _youtubeDataController.channelMapData[itemUid] ?? '채널이름',
               profit,
               (profit / (buyPrice * value.stockCount)) * 100,
               value.stockCount,
@@ -75,7 +71,7 @@ class MyDataController extends GetxController {
               buyPrice,
               itemPriceData.price,
               itemPriceData.channelType,
-              streamerColorMap[mappedUid] ?? colorMAIN);
+              streamerColorMap[itemUid] ?? colorMAIN);
 
           // itemHistory[key] =
           //     ItemHistoryClass(itemUid, itemPriceData.channelType ?? '', value.stockPrice);

@@ -7,6 +7,7 @@ import '../../../utils/color.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/information/information_view_model.dart';
+import '../../../widget/divider.dart';
 import 'information_widget.dart';
 
 // 정보 화면
@@ -112,63 +113,75 @@ class InformationScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          right: BorderSide(color: Colors.grey, width: 0.25),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '전일 대비 자산 변동률',
-                            style: TextStyle(
-                              fontSize: screenSize.getHeightPerSize(1.4),
-                            ),
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '전일 대비 자산 변동률',
+                          style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(1.4),
                           ),
-                          Obx(
-                            () {
-                              RateConfigClass rateConfig = _viewModel.profitRate();
-                              return Text(
-                                '${rateConfig.rate.toStringAsFixed(2)}%',
-                                style: TextStyle(
-                                  fontSize: screenSize.getHeightPerSize(2),
-                                  color: rateConfig.rateColor,
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(color: Colors.grey, width: 0.25),
                         ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '랭킹',
-                            style: TextStyle(
-                              fontSize: screenSize.getHeightPerSize(1.4),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              _viewModel.myRank(),
+                        Obx(
+                          () {
+                            RateConfigClass rateConfig = _viewModel.profitRate();
+                            return Text(
+                              '${rateConfig.rate.toStringAsFixed(2)}%',
                               style: TextStyle(
                                 fontSize: screenSize.getHeightPerSize(2),
+                                color: rateConfig.rateColor,
                               ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  settingVerticalDivider(screenSize),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '전체랭킹',
+                          style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(1.4),
+                          ),
+                        ),
+                        Obx(
+                          () => Text(
+                            '${_viewModel.myDataController.myRank.value != 0 ? _viewModel.myDataController.myRank.value : '-'}',
+                            style: TextStyle(
+                              fontSize: screenSize.getHeightPerSize(2),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  settingVerticalDivider(screenSize),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '팬덤랭킹',
+                          style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(1.4),
+                          ),
+                        ),
+                        Obx(
+                          () => Text(
+                            '${_viewModel.myDataController.myFandomRank.value != 0 ? _viewModel.myDataController.myFandomRank.value : '-'}',
+                            style: TextStyle(
+                              fontSize: screenSize.getHeightPerSize(2),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

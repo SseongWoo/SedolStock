@@ -3,10 +3,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:stockpj/main.dart';
 import '../data/youtube_data.dart';
 import '../model/data/data_class.dart';
+import '../utils/set_myRank.dart';
 
 // 토큰을 안전하게 저장하기 위한 보안 저장소
 const storage = FlutterSecureStorage();
@@ -222,6 +224,7 @@ Future<void> loadYoutubeVideoData() async {
 void saveRankingData() {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
+    final MyDataController myDataController = Get.find<MyDataController>();
 
     final Map<String, dynamic> jsonData = publicDataController.rankingMap.map(
       (key, value) => MapEntry(
@@ -229,6 +232,14 @@ void saveRankingData() {
         value.map((data) => data.toJson()).toList(),
       ),
     );
+
+    setMyRank(myDataController, publicDataController);
+
+    // 내 랭킹 저장
+    box.write('myRankingData', {
+      'totalRanking': myDataController.myRank.value,
+      'fandomRanking': myDataController.myFandomRank.value
+    });
 
     // 데이터를 로컬 저장
     box.write('rankingData', jsonEncode(jsonData));
@@ -242,7 +253,14 @@ void saveRankingData() {
 Future<bool> loadRankingData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
+    final MyDataController myDataController = Get.find<MyDataController>();
     final jsonData = await box.read('rankingData');
+    final myRankingData = box.read('myRankingData');
+
+    if (myRankingData != null) {
+      myDataController.myRank.value = myRankingData['totalRanking'];
+      myDataController.myFandomRank.value = myRankingData['fandomRanking'];
+    }
 
     if (jsonData != null) {
       // JSON 데이터를 Map 형식으로 디코딩
@@ -263,12 +281,62 @@ Future<bool> loadRankingData() async {
     publicDataController.updateDate.value = await box.read('rankingDataDate');
 
     DateTime currentTime = DateTime.now();
-    DateTime serverUpdateDate = DateFormat('yyyy년 MM월 dd일 HH시 mm분')
+    DateTime serverUpdateDate = DateFormat('yyyy년 MM.dd HH:mm')
         .parse('${currentTime.year}년 ${publicDataController.updateDate.value}');
 
     return currentTime.difference(serverUpdateDate).inHours >= 1;
   } catch (e) {
     logger.e('loadRankingData error : $e');
     return true;
+  }
+}
+
+void saveEventData() {
+  try {
+    final PublicDataController publicDataController = Get.find<PublicDataController>();
+
+    final jsonData = publicDataController.eventMap.map(
+      (key, value) => MapEntry(
+        key,
+        value.map((e) => e.toJson()).toList(),
+      ),
+    );
+
+    box.write('eventDate', publicDataController.eventDate.value);
+    box.write('event', jsonEncode(jsonData));
+
+    logger.i('Event data saved successfully');
+  } catch (e) {
+    logger.e('saveEventData error: $e');
+  }
+}
+
+// 기기에 저장되어있는 각각의 채널의 최신10개 영상의 데이터 리스트를 읽어오는 함수
+Future<bool> loadEventData() async {
+  try {
+    final PublicDataController publicDataController = Get.find<PublicDataController>();
+    final jsonData = await box.read('event');
+    publicDataController.eventDate.value = await box.read('eventDate');
+
+    if (jsonData != null) {
+      final decodedData = jsonDecode(jsonData);
+
+      publicDataController.eventMap['ongoing'] =
+          (decodedData['ongoing'] as List).map((e) => EventClass.fromJson(e)).toList();
+      publicDataController.eventMap['upcoming'] =
+          (decodedData['upcoming'] as List).map((e) => EventClass.fromJson(e)).toList();
+      publicDataController.eventMap['completed'] =
+          (decodedData['completed'] as List).map((e) => EventClass.fromJson(e)).toList();
+    }
+
+    if (publicDataController.eventDate.value.isNotEmpty) {
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+      return publicDataController.eventDate.value == today;
+    }
+    return false;
+  } catch (e) {
+    logger.e('loadEventData error : $e');
+    return false;
   }
 }

@@ -24,3 +24,21 @@ const List<Color> colorList = [
   colorGOSEGU,
   colorVIICHAN,
 ];
+
+const List<Color> channelColorList = [
+  colorWAKGOOD,
+  colorIfari,
+  colorINE,
+  colorJINGBURGER,
+  colorLILPA,
+  colorJURURU,
+  colorGOSEGU,
+  colorVIICHAN,
+  colorIfari,
+  colorINE,
+  colorJINGBURGER,
+  colorLILPA,
+  colorJURURU,
+  colorGOSEGU,
+  colorVIICHAN,
+];

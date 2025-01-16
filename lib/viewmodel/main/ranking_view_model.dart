@@ -21,15 +21,15 @@ class RankingViewModel extends GetxController {
   final TimerController timerController = Get.find<TimerController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  RxString selectCategoryLargeItem = '전체'.obs;
-  RxString selectCategorySmallItem = '전체'.obs;
+  RxString selectCategoryLargeItem = '전체'.obs; // 대분류 선택 아이템
+  RxString selectCategorySmallItem = '전체'.obs; // 소분류 선택 아이템
+  List<String> categoryLargeList = ['전체', '팬덤']; // 대분류 아이템 리스트
+  List<String> categorySmallList = ['전체']; // 소분류 아이템 리스트
 
-  List<String> categoryLargeList = ['전체', '팬덤'];
-  List<String> categorySmallList = ['전체'];
+  Rx<Color> backgroundColor = Colors.white.obs; // 배경색
+  Rx<Color> textColor = Colors.black.obs; // 글자색
 
-  Rx<Color> backgroundColor = Colors.white.obs;
-  Rx<Color> textColor = Colors.black.obs;
-
+  // 대분류 카태고리 선택
   void selectCategortLarge(String filter) {
     selectCategoryLargeItem.value = filter;
 
@@ -45,6 +45,7 @@ class RankingViewModel extends GetxController {
     Get.back(); // 다이얼로그 닫기
   }
 
+  // 소분류 카테고리 선택
   void selectCategortSmall(String filter) {
     selectCategorySmallItem.value = filter;
     backgroundColor.value = fanColorMap[filter] ?? Colors.white;
@@ -53,23 +54,26 @@ class RankingViewModel extends GetxController {
     Get.back(); // 다이얼로그 닫기
   }
 
+  // 카테고리 다이얼로그 호출
   void showCategoryDialog(bool large) {
     Get.dialog(
-        transitionDuration: const Duration(milliseconds: 180),
-        CategoryDialog(
-          screenSize: screenController.screenSize.value,
-          categoryList: large ? categoryLargeList : categorySmallList,
-          selectCategory: (String newValue) {
-            if (large) {
-              selectCategortLarge(newValue);
-            } else {
-              selectCategortSmall(newValue);
-            }
-          },
-          selectCategoryItem: large ? selectCategoryLargeItem : selectCategorySmallItem,
-        ));
+      transitionDuration: const Duration(milliseconds: 180),
+      CategoryDialog(
+        screenSize: screenController.screenSize.value,
+        categoryList: large ? categoryLargeList : categorySmallList,
+        selectCategory: (String newValue) {
+          if (large) {
+            selectCategortLarge(newValue);
+          } else {
+            selectCategortSmall(newValue);
+          }
+        },
+        selectCategoryItem: large ? selectCategoryLargeItem : selectCategorySmallItem,
+      ),
+    );
   }
 
+  // 랭킹 순위 색
   Color rankingColor(int ranking) {
     switch (ranking) {
       case 1:
@@ -90,11 +94,12 @@ class RankingViewModel extends GetxController {
 
   // 내 랭킹 순위
   String myRankingChange() {
-    return myDataController.myRank.value == 0 ? '-' : myDataController.myRank.string;
-  }
-
-  // 랭킹 순위 크기
-  double myRankingTextSize() {
-    return myDataController.myRank < 100 ? 3 : 2;
+    if (selectCategorySmallItem.value == '전체') {
+      return myDataController.myRank.value == 0 ? '-' : myDataController.myRank.string;
+    } else if (selectCategorySmallItem == myDataController.myChoicechannel) {
+      return myDataController.myFandomRank.value == 0 ? '-' : myDataController.myFandomRank.string;
+    } else {
+      return 'X';
+    }
   }
 }

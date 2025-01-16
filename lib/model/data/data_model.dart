@@ -46,7 +46,6 @@ class DataModel {
       final jsonData = jsonDecode(response.body);
 
       if (jsonData is Map<String, dynamic>) {
-        print(jsonData);
         List<String> itemuids = List<String>.from(jsonData['itemuid'] ?? []);
         List<String> channeltypes = List<String>.from(jsonData['channeltype'] ?? []);
         List<int> itemcounts = List<int>.from(jsonData['itemcount'] ?? []);
@@ -271,6 +270,21 @@ class DataModel {
 
   Future<Map<String, dynamic>> fetchConstantsData() async {
     final response = await httpService.getRequest('/config');
+
+    try {
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body)['data']; // 'data' 추출
+        return data;
+      } else {
+        throw Exception('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Fetch constants data error: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> fetchEventData() async {
+    final response = await httpService.getRequest('/event');
 
     try {
       if (response.statusCode == 200) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
-import '../../../constants/data_constants.dart';
 import '../../../constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/start_data.dart';
@@ -32,12 +31,15 @@ class SettingAppViewModel extends GetxController {
 
 // 데이터 수동 새로 고침
   void tryGetData() async {
-    if (_timerController.checkDataTime.value) {
+    if (_publicDataController.manualRefresh > 5) {
+      showSimpleDialog(Get.back, '데이터 갱신 실패', '새로고침 한도를 초과했습니다. 잠시 후 다시 시도해주세요.');
+    } else if (_timerController.checkDataTime.value) {
       showSimpleDialog(Get.back, '데이터 갱신 실패', '현재 서버에서 데이터를 갱신 중입니다. 갱신 완료 후 다시 이용해 주세요.');
     } else {
       EasyLoading.show(status: '데이터 불러오는중');
       await startGetData();
       EasyLoading.dismiss();
+      _publicDataController.manualRefresh++;
       showSimpleSnackbar(
           '데이터 수동 갱신 성공', '데이터 갱신이 완료되었습니다. 최신 정보로 업데이트되었습니다!', SnackPosition.TOP, Colors.black);
     }
@@ -51,12 +53,6 @@ class SettingAppViewModel extends GetxController {
         '파산 신청을 진행하시겠습니까?\n파산을 신청하면 모든 데이터가 초기화되며, 자동으로 로그아웃됩니다. 이 작업은 되돌릴 수 없으니 신중하게 결정해 주세요.',
         '파산 신청',
         restart);
-    // Get.dialog(
-    //   RestartDialog(
-    //     screenSize: screenController.screenSize.value,
-    //     onPressed: restart,
-    //   ),
-    // );
   }
 
   // 계정 정보 초기화 함수(파산 신청)
@@ -85,7 +81,7 @@ class SettingAppViewModel extends GetxController {
   void nameChange() async {
     EasyLoading.show(status: '중복 검사중');
     overlapName = await searchName(controllerName.text);
-    if (!overlapName && formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
       bool chaekUpdateName = await _informationModel.updateName(
           myDataController.myUid.value, myDataController.myName.value, controllerName.text);
       if (chaekUpdateName) {
@@ -118,7 +114,7 @@ class SettingAppViewModel extends GetxController {
     }
     if (overlapName) {
       controllerName.clear();
-      return '이미 사용 중인 이름입니다. 다른 이름을 선택해 주세요.';
+      return '해당 이름은 사용할 수 없습니다. 다른 이름을 입력해 주세요.';
     }
     return null;
   }
@@ -142,8 +138,6 @@ class SettingAppViewModel extends GetxController {
   // 로그아웃 다이얼로그 호출
   void logoutDialog() {
     showSimpleDialog3(screenController.screenSize.value, '로그아웃', '로그아웃하시겠습니까?', '로그아웃', logout);
-
-    //Get.dialog(LogoutDialog(viewModel: this));
   }
 
   // 비밀번호 변경 이메일 발송

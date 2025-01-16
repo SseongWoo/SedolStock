@@ -27,6 +27,12 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: screenSize.getHeightPerSize(1.5),
               ),
+              EventWidget(
+                viewModel: _viewModel,
+              ),
+              SizedBox(
+                height: screenSize.getHeightPerSize(1.5),
+              ),
               NewVideoListWidget(
                 viewModel: _viewModel,
               ),

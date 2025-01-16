@@ -11,4 +11,5 @@ class AppRoute {
   static const String notification = '/notification'; // 알림 화면
   static const String settingApp = '/setting-app'; // 알림 화면
   static const String deleteAccount = '/delete-account'; // 회원탈퇴 화면
+  static const String event = '/event'; // 이벤트 화면
 }

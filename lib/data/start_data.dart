@@ -14,6 +14,7 @@ Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController, Strin
   saveYoutubeChannelData();
   await youtubeDataController.getYoutubeVideoData();
   saveYoutubeVideoData();
+
   await setDataDate(today);
 }
 
@@ -50,6 +51,14 @@ Future<void> startGetData() async {
     saveRankingData();
   }
 
+  // 이벤트 데이터를 가져오는 기능
+  bool checkEventData = await loadEventData();
+  if (!checkEventData) {
+    await publicDataController.getEventData();
+    saveEventData();
+  }
+  publicDataController.setEventCheck();
+
   await publicDataController.getConstantsData();
   await youtubeDataController.getYoutubeLiveData();
   myDataController.setMoneyData();
@@ -59,6 +68,9 @@ Future<void> startGetData() async {
     tradeDetailViewModel.setChartData();
   }
   await myDataController.getMessage();
+
+  // 수동 새로고침 횟수를 초기화
+  publicDataController.manualRefresh.value = 0;
 }
 
 // 앱 실행중 5분마다 실행되거나, 특정 동작으로 실행되는 함수로 사용자의 정보와 주식의 정보를 업데이트 함

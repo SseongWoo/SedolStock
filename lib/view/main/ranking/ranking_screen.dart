@@ -1,13 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/constants/data_constants.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/view/main/ranking/ranking_widget.dart';
 import 'package:stockpj/viewmodel/main/ranking_view_model.dart';
 import '../../../constants/color_constants.dart';
 import '../../../data/public_data.dart';
-import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
+import '../../../utils/set_myRank.dart';
 
 // 랭킹 화면
 class RankingScreen extends StatelessWidget {
@@ -37,10 +37,14 @@ class RankingScreen extends StatelessWidget {
                   child: Obx(
                     () => Row(
                       children: [
-                        Text(
-                          '${_viewModel.publicDataController.updateDate.value} 기준',
-                          style: TextStyle(
-                              fontSize: screenSize.getHeightPerSize(1.4), color: textColor),
+                        GestureDetector(
+                          onTap: () => setMyRank(
+                              _viewModel.myDataController, _viewModel.publicDataController),
+                          child: Text(
+                            '${_viewModel.publicDataController.updateDate.value} 기준',
+                            style: TextStyle(
+                                fontSize: screenSize.getHeightPerSize(1.4), color: textColor),
+                          ),
                         ),
                         const Spacer(),
                         _categoryButton(screenSize, () => _viewModel.showCategoryDialog(true),
@@ -87,13 +91,13 @@ class RankingScreen extends StatelessWidget {
                           height: screenSize.getHeightPerSize(8),
                           width: screenSize.getHeightPerSize(4),
                           child: Center(
-                            child: Text(
+                            child: AutoSizeText(
                               _viewModel.myRankingChange(),
                               style: TextStyle(
-                                fontSize:
-                                    screenSize.getHeightPerSize(_viewModel.myRankingTextSize()),
+                                fontSize: screenSize.getHeightPerSize(3),
                                 color: myTextColor,
                               ),
+                              maxLines: 1,
                             ),
                           ),
                         ),
@@ -131,8 +135,7 @@ class RankingScreen extends StatelessWidget {
                                     right: screenSize.getWidthPerSize(2),
                                   ),
                                   child: Text(
-                                    formatToCurrency(
-                                        _viewModel.myDataController.myTotalMoney.value),
+                                    '${formatToCurrency(_viewModel.myDataController.myTotalMoney.value)} P',
                                     style: TextStyle(
                                       fontSize: screenSize.getHeightPerSize(1.8),
                                       color: myTextColor,

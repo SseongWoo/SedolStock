@@ -166,7 +166,7 @@ class RankingWidget extends StatelessWidget {
                         right: screenSize.getWidthPerSize(2),
                       ),
                       child: AutoSizeText(
-                        formatToCurrency(rankingData.totalMoney),
+                        '${formatToCurrency(rankingData.totalMoney)} P',
                         style: TextStyle(
                           fontSize: screenSize.getHeightPerSize(1.8),
                         ),

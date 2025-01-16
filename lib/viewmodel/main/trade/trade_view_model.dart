@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/data/public_data.dart';
 import '../../../constants/route_constants.dart';
 import '../../../constants/color_constants.dart';
 import '../../../data/my_data.dart';
@@ -15,6 +16,7 @@ class TradeViewModel extends GetxController {
   final MyDataController _myDataController = Get.find<MyDataController>();
   final TimerController _timerController = Get.find<TimerController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final List<String> dropdownItemList = ['전체', '메인', '서브']; // 거래 아이템 필터
   final RxList<ItemPriceDataClass> itemPriceDataList = <ItemPriceDataClass>[].obs; // 아이템 가격 데이터
   RxString selectItemType = '전체'.obs; // 아이템 타입 필터
@@ -142,12 +144,17 @@ class TradeViewModel extends GetxController {
     List<ItemPriceDataClass> basicList = [];
     if (selectItemType.value == '전체' || selectItemType.value == '메인') {
       for (var item in youtubeDataController.channelIdList) {
-        basicList.add(youtubeDataController.itemPriceDateMap[item]!);
+        if (youtubeDataController.itemPriceDateMap[item] != null) {
+          basicList.add(youtubeDataController.itemPriceDateMap[item]!);
+        }
       }
     }
-    for (var item in youtubeDataController.subChannelIdList) {
-      if (selectItemType.value == '전체' || selectItemType.value == '서브') {
-        basicList.add(youtubeDataController.itemPriceDateMap[item]!);
+
+    if (selectItemType.value == '전체' || selectItemType.value == '서브') {
+      for (var item in youtubeDataController.subChannelIdList) {
+        if (youtubeDataController.itemPriceDateMap[item] != null) {
+          basicList.add(youtubeDataController.itemPriceDateMap[item]!);
+        }
       }
     }
 

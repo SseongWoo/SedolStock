@@ -10,8 +10,8 @@ Map<String, Color> fanColorMap = Map.fromIterables(fanNameList, colorList); // �
 // streamerColorMap 맵 데이터의 값을 설정하는 함수
 void setStreamerColorMap() {
   final YoutubeDataController youtubeVideoDataClass = Get.find<YoutubeDataController>();
-  List<Color> filteredColors = List.from(colorList)..removeAt(1);
-  streamerColorMap = Map.fromIterables(youtubeVideoDataClass.channelIdList, filteredColors);
+  List<Color> filteredColors = List.from(channelColorList);
+  streamerColorMap = Map.fromIterables(youtubeVideoDataClass.totalChannelIdList, filteredColors);
 }
 
 // 이득일경우 붉은색 손해일경우 푸른색 둘다 아닐경우 회색을 반환하는 함수

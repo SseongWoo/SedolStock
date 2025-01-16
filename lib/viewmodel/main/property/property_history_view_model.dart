@@ -17,7 +17,7 @@ class PropertyHistoryViewModel extends GetxController {
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
 
-  List<String> itemList = ['전체'] + channelNameList; // 채널 필터
+  List<String> itemList = ['전체'] + channelNameSimpleList; // 채널 필터
   List<String> itemTypeList = ['전체', '메인채널', '서브채널']; // 아이템 타입 필터
   List<String> saleTypeList = ['전체', '구매', '판매']; // 매매 타입 필터
   RxList<String> selectedFilters = <String>['전체'].obs; // 채널 필터 선택 목록 리스트
@@ -98,12 +98,16 @@ class PropertyHistoryViewModel extends GetxController {
 
   // 사용자가 설정한 필터를 적용하는 함수
   void setfilter() {
+    List<String> mainList = List.from(youtubeDataController.channelIdList);
+    mainList.removeAt(0);
+    Map<String, String> mainToSub =
+        Map.fromIterables(youtubeDataController.subChannelIdList, mainList);
     List<TradeHistoryClass> setHistoryList = [];
     final Map<String, String> itemMapping = {'전체': '전체'}
-      ..addAll(Map.fromIterables(channelNameList, youtubeDataController.channelIdList));
+      ..addAll(Map.fromIterables(channelNameSimpleList, youtubeDataController.channelIdList));
     final Map<String, String> tradeTypeMapping = {
       '구매': 'buy',
-      '판매': 'sale',
+      '판매': 'sell',
       '전체': '전체',
     };
     final Map<String, String> channelTypeMapping = {
@@ -116,7 +120,7 @@ class PropertyHistoryViewModel extends GetxController {
       final matchItem = selectedFilters.contains('전체') ||
           selectedFilters.any((filter) =>
               trade.itemuid == itemMapping[filter] ||
-              youtubeDataController.subUidToMainUidMap[trade.itemuid] == itemMapping[filter]);
+              mainToSub[trade.itemuid] == itemMapping[filter]);
       final matchItemType = selectItemType.value == '전체' ||
           trade.channeltype == channelTypeMapping[selectItemType.value];
       final matchSaleType =

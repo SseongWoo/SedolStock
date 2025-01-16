@@ -114,6 +114,9 @@ class TradeScreen extends StatelessWidget {
                       final itemUID = item.uid;
                       YoutubeChannelDataClass youtubeData =
                           _viewModel.youtubeDataController.youtubeChannelData[itemUID]!;
+                      bool event =
+                          _viewModel.publicDataController.eventChannelList[itemUID] != null;
+
                       return _listItemWidget(
                         screenSize,
                         () => _viewModel.goTradeItem(item.uid),
@@ -122,6 +125,7 @@ class TradeScreen extends StatelessWidget {
                         youtubeData.thumbnail,
                         index,
                         item,
+                        event,
                       );
                     },
                   );
@@ -136,7 +140,7 @@ class TradeScreen extends StatelessWidget {
 
   // 리스트뷰 아이템 위젯
   Widget _listItemWidget(ScreenSize screenSize, Function onTapItem, String priceTitle, String title,
-      String thumbnail, int index, ItemPriceDataClass itemPriceData) {
+      String thumbnail, int index, ItemPriceDataClass itemPriceData, bool event) {
     return Container(
       height: screenSize.getHeightPerSize(8),
       decoration: const BoxDecoration(
@@ -187,7 +191,7 @@ class TradeScreen extends StatelessWidget {
               SizedBox(
                 width: screenSize.getWidthPerSize(30),
                 child: Text(
-                  title,
+                  '$title${event ? ' 🔥' : ''}',
                   softWrap: true,
                   style: TextStyle(
                     fontSize: screenSize.getHeightPerSize(1.6),

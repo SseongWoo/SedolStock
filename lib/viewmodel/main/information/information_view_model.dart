@@ -84,10 +84,6 @@ class InformationViewModel extends GetxController {
     return ((maxValue / 500000).ceil() * 500000).toDouble();
   }
 
-  String myRank() {
-    return '${myDataController.myRank.value != 0 ? myDataController.myRank.value : '-'}';
-  }
-
   // 사용자의 자산 변동률을 계산하는 함수
   RateConfigClass profitRate() {
     double myRate;

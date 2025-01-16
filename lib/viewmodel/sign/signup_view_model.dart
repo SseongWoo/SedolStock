@@ -10,6 +10,7 @@ import '../../constants/data_constants.dart';
 import '../../main.dart';
 import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
+import '../../utils/search_name.dart';
 
 // 회원가입 2단계 뷰 모델
 class SignupViewModel extends GetxController {
@@ -21,7 +22,7 @@ class SignupViewModel extends GetxController {
   final TextEditingController controllerPasswordCheck = TextEditingController();
   final TextEditingController controllerName = TextEditingController();
   final enFilter = english_filter.ProfanityFilter(); // 비속어 감지 필터
-  late int overlapName = 0; // 설정할 이름이 이미 존재하는지 확인하는 변수
+  bool overlapName = true; // 설정할 이름이 이미 존재하는지 확인하는 변수
   late bool email; // 이메일
   late String idLabel; // 텍스트필드 이메일,아이디 선택 문장
   RxString labelText = ''.obs; // 팬덤
@@ -98,10 +99,7 @@ class SignupViewModel extends GetxController {
     if (value.containsBadWords || enFilter.hasProfanity(value)) {
       return '부적절한 언어 사용은 허용되지 않습니다. 다시 입력해 주세요.';
     }
-    if (overlapName == 1) {
-      return '이미 사용 중인 이름입니다. 다른 이름을 선택해 주세요.';
-    }
-    if (overlapName == 2) {
+    if (overlapName) {
       return '해당 이름은 사용할 수 없습니다. 다른 이름을 입력해 주세요.';
     }
     return null;
@@ -144,6 +142,7 @@ class SignupViewModel extends GetxController {
   void signup() async {
     EasyLoading.show();
     try {
+      overlapName = await searchName(controllerName.text);
       if (!formKey.currentState!.validate()) return;
       final id = _processId(controllerID.text);
       final password = controllerPassword.text;
@@ -165,12 +164,6 @@ class SignupViewModel extends GetxController {
 
   // 닉네임 중복 확인, 유저 데이터 DB에 등록 작업
   Future<bool> _validateNameAndSignup(String id, String password) async {
-    final overlapName = await signupModel.searchName(controllerName.text);
-    if (overlapName) {
-      _showErrorSnackbar('회원가입 오류', '이미 사용 중인 이름입니다.');
-      return false;
-    }
-
     final checkSignup = await signupModel.signup(id, password);
     if (!checkSignup) {
       _clearSignupFields();

@@ -34,26 +34,6 @@ class SignupModel {
     }
   }
 
-  // 닉네임 중복 탐색 기능
-  Future<bool> searchName(String name) async {
-    try {
-      final response = await httpService.postRequest('/names/$name', {});
-
-      if (response.statusCode == 200) {
-        logger.i('searchName successful: ${response.body}');
-        return true;
-      } else if (response.statusCode == 404) {
-        return false; // 중복된 닉네임이 없음
-      } else {
-        logger.w('searchName failed with status: ${response.statusCode}');
-        return true;
-      }
-    } catch (e) {
-      logger.e('searchName error: $e');
-      return true;
-    }
-  }
-
   // 유저 데이터 등록 기능
   Future<bool> signupUserData(String id, String name, String choicechannel) async {
     try {

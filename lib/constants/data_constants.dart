@@ -1,6 +1,25 @@
 // 채널 이름 리스트 데이터
 const List<String> channelNameList = [
   '우왁굳',
+  '왁타버스',
+  '아이네',
+  '징버거',
+  '릴파',
+  '주르르',
+  '고세구',
+  '비챤',
+  '왁타버스',
+  '아이네',
+  '징버거',
+  '릴파',
+  '주르르',
+  '고세구',
+  '비챤',
+];
+
+const List<String> channelNameSimpleList = [
+  '우왁굳',
+  '왁타버스',
   '아이네',
   '징버거',
   '릴파',
@@ -21,4 +40,15 @@ const List<String> fanEnNameList = [
   'Jupukdo',
   'Segyundan',
   'Rani'
+];
+
+const List<String> channelEnNameList = [
+  'WOOWAKGOOD',
+  'WAKTAVERSE',
+  'INE',
+  'JINGBURGER',
+  'LILPA',
+  'JURURU',
+  'GOSEGU',
+  'VIICHAN',
 ];

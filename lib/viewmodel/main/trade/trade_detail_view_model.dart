@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/data/public_data.dart';
 import '../../../constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
@@ -16,6 +17,7 @@ class TradeDetailViewModel extends GetxController {
   final HttpService _httpService = HttpService();
   final ScreenController screenController = Get.find<ScreenController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final ScrollController scrollController = ScrollController();
   RxDouble opacity = 0.0.obs; // 화면 스크롤 위치 값
@@ -26,6 +28,7 @@ class TradeDetailViewModel extends GetxController {
   Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData('', '', '').obs; // 초기화 추가
   Rx<ItemPriceDataClass> itemPriceData =
       ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0).obs; // 아이템 가격 데이터 클래스
+  RxBool event = false.obs;
 
   @override
   void onInit() {
@@ -44,6 +47,8 @@ class TradeDetailViewModel extends GetxController {
     //setMyHoldStockData();
     setChartData();
     videoList.value = youtubeDataController.youtubeVideoData[channelUID]!;
+
+    event.value = publicDataController.eventChannelList[channelUID] != null;
   }
 
   // 주식 매매 화면으로 이동하는 볒변수
@@ -110,5 +115,9 @@ class TradeDetailViewModel extends GetxController {
   // 상장폐지 텍스트
   String delistingTitle() {
     return '상장 폐지중(${itemPriceData.value.delisting})';
+  }
+
+  String setToolTip() {
+    return '${publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
   }
 }

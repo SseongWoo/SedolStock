@@ -105,16 +105,32 @@ class TradeDetailScreen extends StatelessWidget {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
-                                  width: screenSize.getWidthPerSize(80),
-                                  child: AutoSizeText(
-                                    _viewModel.youtubeDataController
-                                        .youtubeChannelData[_viewModel.channelUID]!.title,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: screenSize.getHeightPerSize(2.4),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: screenSize.getWidthPerSize(80),
+                                      child: AutoSizeText(
+                                        _viewModel.youtubeDataController
+                                            .youtubeChannelData[_viewModel.channelUID]!.title,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          fontSize: screenSize.getHeightPerSize(2.4),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    _viewModel.event.value
+                                        ? Tooltip(
+                                            message: _viewModel.setToolTip(),
+                                            triggerMode: TooltipTriggerMode.tap,
+                                            child: Icon(
+                                              Icons.local_fire_department,
+                                              size: screenSize.getHeightPerSize(3),
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ],
                                 ),
                                 Row(
                                   children: [

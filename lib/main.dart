@@ -10,6 +10,7 @@ import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/utils/timer.dart';
+import 'package:stockpj/view/main/event/event_screen.dart';
 import 'package:stockpj/view/main/information/delete_account_screen.dart';
 import 'package:stockpj/view/main/information/setting_app_screen.dart';
 import 'package:stockpj/view/main/main_screen.dart';
@@ -92,7 +93,7 @@ void main() async {
 
   logger.d("Logger is working!");
 
-  runApp(const MyApp());
+  runApp(MyApp());
   configLoading();
 }
 
@@ -107,9 +108,14 @@ void startController() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ScreenController _screenController = Get.find<ScreenController>();
+  MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    _screenController.updateScreenSize(context);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //
+    // });
     return GetMaterialApp(
       builder: (context, child) {
         child = EasyLoading.init()(context, child);
@@ -184,6 +190,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoute.deleteAccount,
           page: () => DeleteAccountScreen(),
+        ),
+        GetPage(
+          name: AppRoute.event,
+          page: () => EventScreen(),
         ),
       ],
     );

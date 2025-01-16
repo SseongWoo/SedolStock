@@ -84,12 +84,14 @@ class MessageClass {
 
 // 랭킹 데이터 클래스
 class RankingDataClass {
+  String uid;
   String name;
   String fandom;
   int rank;
   int totalMoney;
 
   RankingDataClass(
+    this.uid,
     this.name,
     this.fandom,
     this.rank,
@@ -97,6 +99,7 @@ class RankingDataClass {
   );
 
   Map<String, dynamic> toJson() => {
+        'uid': uid,
         'name': name,
         'fandom': fandom,
         'rank': rank,
@@ -113,6 +116,7 @@ class RankingDataClass {
     }
 
     return RankingDataClass(
+      json['uid']?.toString() ?? '',
       json['name']?.toString() ?? '',
       json['fandom']?.toString() ?? '',
       json['rank'] ?? 0,
@@ -223,25 +227,6 @@ class ItemPriceDataClass {
       this.differencePrice,
       this.delisting,
       this.ratio);
-
-  @override
-  String toString() {
-    return '''
-  ItemPriceDataClass {
-  uid: $uid,
-  type: $channelType,
-  price: $price,
-  totalViewCount: $totalViewCount,
-  totalLikeCount: $totalLikeCount,
-  beforeTotalViewCount: $beforeTotalViewCount,
-  beforeTotalLikeCount: $beforeTotalLikeCount,
-  beforePrice: $beforePrice,
-  differencePrice: $differencePrice,
-  delisting: $delisting,
-  ratio: $ratio
-  }
-''';
-  }
 }
 
 class TotalMoneyDataClass {
@@ -262,8 +247,8 @@ class FeeConfig {
 
   factory FeeConfig.fromJson(Map<String, dynamic> json) {
     return FeeConfig(
-      buyFeeRate: json['buyFeeRate'].toDouble(),
-      sellFeeRate: json['sellFeeRate'].toDouble(),
+      buyFeeRate: json['feeratebuy'].toDouble(),
+      sellFeeRate: json['feeratesell'].toDouble(),
     );
   }
 }
@@ -281,9 +266,55 @@ class PercentConfig {
 
   factory PercentConfig.fromJson(Map<String, dynamic> json) {
     return PercentConfig(
-      delistingTime: json['delistingTime'],
-      percentage: json['percentage'],
-      firstPrice: json['firstPrice'],
+      delistingTime: json['delistingtime'],
+      percentage: json['pricepercentage'],
+      firstPrice: json['firstprice'],
     );
+  }
+}
+
+class EventClass {
+  final String id;
+  final String eventStart;
+  final String eventEnd;
+  final List<String> channel;
+  final double multiplier;
+  final String title;
+  final String description;
+
+  EventClass({
+    required this.id,
+    required this.eventStart,
+    required this.eventEnd,
+    required this.channel,
+    required this.multiplier,
+    required this.title,
+    required this.description,
+  });
+
+  // JSON 데이터를 EventClass로 변환
+  factory EventClass.fromJson(Map<String, dynamic> json) {
+    return EventClass(
+      id: json['id'],
+      eventStart: json['eventstart'],
+      eventEnd: json['eventend'],
+      channel: List<String>.from(json['channel']),
+      multiplier: (json['multiplier'] as num).toDouble(),
+      title: json['title'],
+      description: json['description'],
+    );
+  }
+
+  // EventClass를 JSON으로 변환
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'eventstart': eventStart,
+      'eventend': eventEnd,
+      'channel': channel,
+      'multiplier': multiplier,
+      'title': title,
+      'description': description,
+    };
   }
 }

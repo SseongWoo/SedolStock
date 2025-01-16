@@ -24,11 +24,14 @@ class PublicDataController extends GetxController {
   RxString storeVersion = ''.obs; // 스토어 최신 버전
   RxString storeBuild = ''.obs; // 스토어 최신 버전
   RxMap<String, List<RankingDataClass>> rankingMap = <String, List<RankingDataClass>>{}.obs;
-  RxList<RankingDataClass> rankingList = <RankingDataClass>[].obs; // 랭킹 데이터 리스트
   RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
   Rx<PercentConfig> percentConfig =
       PercentConfig(delistingTime: 0, firstPrice: 0, percentage: 0).obs;
   Rx<FeeConfig> feeConfig = FeeConfig(buyFeeRate: 0.0, sellFeeRate: 0.0).obs;
+  RxString eventDate = ''.obs; // 이벤트 기준 날짜
+  RxMap<String, List<EventClass>> eventMap = <String, List<EventClass>>{}.obs; // 이벤트 데이터
+  RxMap<String, double> eventChannelList = <String, double>{}.obs; // 이벤트가 있는 채널 모음
+  RxInt manualRefresh = 0.obs; // 수동 새로고침 카운트
 
   // 로그아웃 기능 함수
   void logOut() async {
@@ -66,10 +69,46 @@ class PublicDataController extends GetxController {
       final response = await dataModel.fetchConstantsData();
 
       // feeConfig와 percentConfig에 값 설정
-      feeConfig.value = FeeConfig.fromJson(response['feeConfig']);
-      percentConfig.value = PercentConfig.fromJson(response['percentConfig']);
+      feeConfig.value = FeeConfig.fromJson(response);
+      percentConfig.value = PercentConfig.fromJson(response);
     } catch (e) {
       logger.e('Error loading constants data: $e');
+    }
+  }
+
+  Future<void> getEventData() async {
+    try {
+      final PublicDataController publicDataController = Get.find<PublicDataController>();
+      final response = await dataModel.fetchEventData();
+
+      if (response != null) {
+        final ongoing = (response['ongoing'] as List).map((e) => EventClass.fromJson(e)).toList();
+        final upcoming = (response['upcoming'] as List).map((e) => EventClass.fromJson(e)).toList();
+        final completed =
+            (response['completed'] as List).map((e) => EventClass.fromJson(e)).toList();
+
+        // eventMap에 데이터 저장
+        publicDataController.eventMap['ongoing'] = ongoing;
+        publicDataController.eventMap['upcoming'] = upcoming;
+        publicDataController.eventMap['completed'] = completed;
+      }
+    } catch (e) {
+      logger.e('Error loading event data: $e');
+    }
+  }
+
+  void setEventCheck() {
+    final ongoingEvents = eventMap['ongoing'];
+
+    if (ongoingEvents != null) {
+      for (var item in ongoingEvents) {
+        for (var channel in item.channel) {
+          eventChannelList[channel] =
+              ((eventChannelList[channel] == null || eventChannelList[channel]! < item.multiplier)
+                  ? item.multiplier
+                  : eventChannelList[channel])!;
+        }
+      }
     }
   }
 }

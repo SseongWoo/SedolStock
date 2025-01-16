@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/data/youtube_data.dart';
+import 'package:stockpj/constants/color_constants.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
@@ -83,6 +83,73 @@ class UserInformationWidget extends StatelessWidget {
 }
 
 // 최신영상 리스트 위젯
+class EventWidget extends StatelessWidget {
+  final HomeViewModel viewModel;
+  const EventWidget({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenSize screenSize = viewModel.screenController.screenSize.value;
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '이벤트',
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+                ),
+                InkWell(
+                  onTap: () => viewModel.goEvent(),
+                  child: Text(
+                    '더보기',
+                    style: TextStyle(fontSize: screenSize.getHeightPerSize(1.2)),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: screenSize.getHeightPerSize(1),
+            ),
+            Obx(
+              () {
+                final List<EventClass> eventList =
+                    viewModel.publicDataController.eventMap['ongoing'] ?? [];
+                return Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: colorMAIN),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: eventList.isNotEmpty
+                      ? Column(
+                          children: eventList.take(3).map((event) {
+                            return ListTile(
+                              title: Text(event.title),
+                              subtitle: Text('${event.eventStart} ~ ${event.eventEnd}'),
+                            );
+                          }).toList(),
+                        )
+                      : SizedBox(
+                          height: screenSize.getHeightPerSize(10),
+                          child: const Center(
+                            child: Text('진행중인 이벤트가 없습니다.'),
+                          ),
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 최신영상 리스트 위젯
 class NewVideoListWidget extends StatelessWidget {
   final HomeViewModel viewModel;
   const NewVideoListWidget({super.key, required this.viewModel});
@@ -152,8 +219,6 @@ class NewVideoListWidget extends StatelessWidget {
       ),
     );
   }
-
-  // 리스트뷰 아이템 위젯
 }
 
 // 채널 리스트 위젯
@@ -309,41 +374,36 @@ class CafeWidget extends StatelessWidget {
           children: [
             // 썸네일 이미지 부분
             ClipOval(
-                child: Image.asset(
-              'assets/image/image_error.png',
-              height: screenSize.getHeightPerSize(8),
-              width: screenSize.getHeightPerSize(8),
-            )
-
-                // Image.network(
-                //   height: screenSize.getHeightPerSize(8),
-                //   width: screenSize.getHeightPerSize(8),
-                //   '',
-                //   fit: BoxFit.cover, // 이미지가 원형에 맞도록 조정
-                //   loadingBuilder: (context, child, loadingProgress) {
-                //     if (loadingProgress == null) {
-                //       return child; // 로딩이 완료되면 이미지 표시
-                //     }
-                //     return const Center(
-                //       child: CircularProgressIndicator(), // 로딩 중인 동안 표시할 위젯
-                //     );
-                //   },
-                //   errorBuilder: (context, error, stackTrace) {
-                //     return Center(
-                //       child: Image.asset(
-                //           height: screenSize.getHeightPerSize(8),
-                //           width: screenSize.getHeightPerSize(8),
-                //           'assets/image/image_error.png'), // 오류 시 표시할 텍스트
-                //     );
-                //   },
-                // ),
-                ),
+              child: Image.network(
+                height: screenSize.getHeightPerSize(8),
+                width: screenSize.getHeightPerSize(8),
+                viewModel.youtubeDataController.youtubeChannelData['UCzh4yY8rl38knH33XpNqXbQ']!
+                    .thumbnail,
+                fit: BoxFit.cover, // 이미지가 원형에 맞도록 조정
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child; // 로딩이 완료되면 이미지 표시
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(), // 로딩 중인 동안 표시할 위젯
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(
+                    child: Image.asset(
+                        height: screenSize.getHeightPerSize(8),
+                        width: screenSize.getHeightPerSize(8),
+                        'assets/image/image_error.png'), // 오류 시 표시할 텍스트
+                  );
+                },
+              ),
+            ),
             SizedBox(
               width: screenSize.getWidthPerSize(3),
             ),
             Expanded(
               child: Text(
-                '왁물원',
+                '왁물원 바로가기',
                 style: TextStyle(
                   fontSize: screenSize.getHeightPerSize(1.8),
                 ),
