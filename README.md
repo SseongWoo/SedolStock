@@ -93,6 +93,9 @@ lib
 │   │   ├── ranking                                   # 랭킹 화면
 │   │   │   ├── ranking_screen.dart
 │   │   │   └── ranking_widget.dart
+│   │   ├── event                                  # 이벤트 화면
+│   │   │   ├── event_screen.dart
+│   │   │   └── event_widget.dart
 │   │   └── trade                                     # 거래 화면
 │   │       ├── trade_dealing_screen.dart
 │   │       ├── trade_dealing_widget.dart
@@ -128,6 +131,7 @@ lib                               # 로딩 화면
 │   │   │   ├── information_view_model.dart     # 정보 탭 뷰모델
 │   │   │   └── setting_app_view_model.dart     # 상세 설정 뷰모델
 │   │   ├── main_view_model.dart                      # 메인 뷰모델
+│   │   ├── event_view_model.dart                      # 이벤트 뷰모델
 │   │   ├── notification_view_model.dart              # 알림 뷰모델
 │   │   ├── property
 │   │   │   ├── property_history_view_model.dart    # 거래 내역 뷰모델
@@ -214,20 +218,96 @@ lib
 │   ├── start_data.dart                       # 앱을 실행, 특정 실행으로 데이터를 호출하는 파일
 │   └── youtube_data.dart                     # 유튜브 데이터 파일
 ├── main.dart
+├── view                                                      ## 뷰 폴더
+│   ├── main                                            # 메인 폴더
+│   │   ├── home                                  # 홈 탭 화면
+│   │   │   ├── home_screen.dart
+│   │   │   └── home_widget.dart
+│   │   ├── information                           # 정보 탭 화면
+│   │   │   ├── delete_account_screen.dart
+│   │   │   ├── information_screen.dart
+│   │   │   ├── information_widget.dart
+│   │   │   ├── setting_app_screen.dart
+│   │   │   └── setting_widget.dart
+│   │   ├── main_screen.dart                      # 메인 화면
+│   │   ├── notification                          # 알림 화면
+│   │   │   ├── notification_screen.dart
+│   │   │   └── notification_widget.dart
+│   │   ├── property                                  # 내 지갑 탭 화면
+│   │   │   ├── property_history_screen.dart
+│   │   │   ├── property_history_widget.dart
+│   │   │   ├── property_screen.dart
+│   │   │   ├── property_stocklist_screen.dart
+│   │   │   ├── property_stocklist_widget.dart
+│   │   │   └── property_widget.dart
+│   │   ├── ranking                                   # 랭킹 화면
+│   │   │   ├── ranking_screen.dart
+│   │   │   └── ranking_widget.dart
+│   │   ├── event                                  # 이벤트 화면
+│   │   │   ├── event_screen.dart
+│   │   │   └── event_widget.dart
+│   │   └── trade                                     # 거래 화면
+│   │       ├── trade_dealing_screen.dart
+│   │       ├── trade_dealing_widget.dart
+│   │       ├── trade_detail_screen.dart
+│   │       ├── trade_detail_widget.dart
+│   │       ├── trade_screen.dart
+│   │       └── trade_widget.dart
+│   ├── sign                                                ## 계정 관련 폴더
+│   │   ├── find                                      # 계정 찾기 화면
+│   │   │   └── find_account_screen.dart
+│   │   ├── signin                                    # 로그인 화면
+│   │   │   ├── signin_screen.dart
+│   │   │   └── signin_widget.dart
+│   │   └── signup                                    # 회원가입 화면
+│   │       ├── signup_checkemail_screen.dart
+│   │       ├── signup_checkemail_widget.dart
+│   │       ├── signup_choice_screen.dart
+│   │       ├── signup_choice_widget.dart
+│   │       ├── signup_screen.dart
+│   │       └── signup_widget.dart
+│   ├── splash_screen.dart                                  # 로딩 화면       
+│   └── splash_widget.dart
 ├── model                                           ## 모델 파일 폴더
-│   ├── data                                  ## 앱 구성 데이터 모델 폴더
-│   │   ├── data_class.dart             # 앱 구성 데이터 클래스 파일
-│   │   └── data_model.dart             # 앱 구성 데이터 모델
-│   ├── main                                  ## 앱 메인 화면 모델 폴더
-│   │   ├── information_model.dart      # 정보 탭 화면 모델
-│   │   ├── notification_model.dart     # 알림 화면 모델
-│   │   └── trade_model.dart            # 거래 탭 모델
-│   ├── scarch_name_model.dart                # 이름 검색 모델
-│   ├── sign                                  ## 계정 부분 폴더
-│   │   ├── find_account_model.dart     # 계정 찾기 모델
-│   │   ├── signin_model.dart           # 로그인 모델
-│   │   └── signup_model.dart           # 회원가입 모델
-│   └── splash_model.dart                     # 로딩 화면 모델
+│   ├── data                                  ## 앱 구성 데이터 모델 폴더
+│   │   ├── data_class.dart             # 앱 구성 데이터 클래스 파일
+│   │   └── data_model.dart             # 앱 구성 데이터 모델
+│   ├── main                                  ## 앱 메인 화면 모델 폴더
+│   │   ├── information_model.dart      # 정보 탭 화면 모델
+│   │   ├── notification_model.dart     # 알림 화면 모델
+│   │   └── trade_model.dart            # 거래 탭 모델
+│   ├── scarch_name_model.dart                # 이름 검색 모델
+│   ├── sign                                  ## 계정 부분 폴더
+│   │   ├── find_account_model.dart     # 계정 찾기 모델
+│   │   ├── signin_model.dart           # 로그인 모델
+│   │   └── signup_model.dart           # 회원가입 모델
+│   └── splash_model.dart                     # 로딩 화면 모델
+├── viewmodel                                                     ## 뷰모델 폴더
+│   ├── main
+│   │   ├── home_view_model.dart                      # 홈 탭 뷰모델
+│   │   ├── information
+│   │   │   ├── delete_account_view_model.dart  # 계정 삭제 뷰모델
+│   │   │   ├── information_view_model.dart     # 정보 탭 뷰모델
+│   │   │   └── setting_app_view_model.dart     # 상세 설정 뷰모델
+│   │   ├── main_view_model.dart                      # 메인 뷰모델
+│   │   ├── event_view_model.dart                      # 이벤트 뷰모델
+│   │   ├── notification_view_model.dart              # 알림 뷰모델
+│   │   ├── property
+│   │   │   ├── property_history_view_model.dart    # 거래 내역 뷰모델
+│   │   │   ├── property_stocklist_view_model.dart  # 보유 주식 뷰모델
+│   │   │   └── property_view_model.dart            # 지갑 탭 뷰모델
+│   │   ├── ranking_view_model.dart                       # 랭킹 탭 뷰모델
+│   │   └── trade
+│   │       ├── trade_dealing_view_model.dart             # 매매 뷰모델
+│   │       ├── trade_detail_view_model.dart              # 종목 상세 뷰모델
+│   │       └── trade_view_model.dart                     # 거래 탭 뷰모델
+│   ├── sign
+│   │   ├── find_account_view_model.dart                  # 계정 찾기 뷰모델
+│   │   ├── signin_view_model.dart                        # 로그인 뷰모델
+│   │   ├── signup_checkemail_view_model.dart             # 이메일 인증 뷰모델
+│   │   ├── signup_choice_view_model.dart                 # 이메일,게스트 선택 뷰모델
+│   │   └── signup_view_model.dart                        # 회원가입 뷰모델
+│   └── splash_view_model.dart                                  # 로딩 뷰모델
 ├── service                                         
 │   ├── http_service.dart                     # 외부와 통신하는 파일
 │   └── storage_service.dart                  # 로컬에 데이터를 저장하거나 불러오는 기능
@@ -270,9 +350,9 @@ lib
     
 |홈 탭|랭킹 탭|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/58628368-3570-4369-ac35-10fd33cabc57" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/9e417713-a9c5-4439-ae14-502f19442495" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/06b6e8cb-77d5-4a72-8615-ce90d3c48205" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/5920e47f-5ee2-428f-ac1d-02539c0e43b1" width="350" height="750">|
 |지갑 탭 주식잔고|지갑 탭 거래내역|
-|<img src = "https://github.com/user-attachments/assets/a29fb1be-c6da-4758-a4a1-797a9b957c2e" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/17050ee2-5365-4dbe-af08-2d5a292c91ec" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/8f25ad5e-be3d-48b5-a789-606b5ab7f0ca" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/40b8f166-3443-4b4f-814c-160fc9793649" width="350" height="750">|
 |알림 화면||
 |<img src = "https://github.com/user-attachments/assets/d00a1aeb-b133-47c4-a619-efee416616e0" width="350" height="750">|<img src = "" width="350" height="750">|
 </details>
@@ -281,18 +361,18 @@ lib
     
 |거래 탭|종목 상세 정보|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/34c6729c-33f2-4449-bfa2-09d3c24f6975" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/316faf49-9c46-4bfb-8762-c60a3ba69d84" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/6098b688-04e4-43c6-81de-d00d3d4a0fc3" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/98a12325-d0f9-4dcd-9cb4-802698e8e54c" width="350" height="750">|
 |종목 판매|종목 구매|
-|<img src = "https://github.com/user-attachments/assets/b8011a32-d5cb-408d-b192-5336aed5301a" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/64a19553-36bd-4c3d-a5a0-33bdb734b79e" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/567f8c67-9067-4e82-9629-a29173f1c0fc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/f539ab57-9734-4f33-8c62-afbf8d0168cf" width="350" height="750">|
 |종목 판매 확인|종목 구매 확인|
-|<img src = "https://github.com/user-attachments/assets/adc09cf2-3946-458c-bdd1-91c9d24f0cbc" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/da0a9953-ada5-4a52-8506-000b59d186b3" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/ec9f39b6-a6e6-435f-9391-7226d2da1bfa" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/e07bba20-8cb2-4a5f-9f6b-d2d484e42d58" width="350" height="750">|
 </details>
 
 <details><summary>정보 화면 부분</summary>
     
 |정보 탭|관리 화면|
 |:---:|:---:|
-|<img src = "https://github.com/user-attachments/assets/6aa04fdc-ca86-4b30-8025-b6318210bac7" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1dcf662a-c19d-437f-bc38-0f3836063918" width="350" height="750">|
+|<img src = "https://github.com/user-attachments/assets/acc470de-0a61-4f25-b0a5-e15245505991" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/1dcf662a-c19d-437f-bc38-0f3836063918" width="350" height="750">|
 |이름 변경|팬덤 변경|
 |<img src = "https://github.com/user-attachments/assets/d41e25a2-7371-415e-801e-656a9ba49ed6" width="350" height="750">|<img src = "https://github.com/user-attachments/assets/331a0cd8-0f91-494c-8577-734c9995eb54" width="350" height="750">|
 |회원 탈퇴||
