@@ -52,6 +52,12 @@
 
 ## 프로젝트 구성
 
+### 프로젝트 구조
+<img src = "https://github.com/user-attachments/assets/1ffee098-8365-4be3-b8e9-b76f6645d9c7" width="900" height="300">
+
+- 프론트엔드 - 플러터를 사용하여 UI구현, 상태관리로 getX 사용, RESTful API 를 통해 백엔드와 데이터를 주고받음
+- 백엔드 - AWS EC2에서 호스팅하고 Node.js를 사용해 프론트엔드에서 오는 요청을 처리, Firebase와 통신하여 데이터 저장 및 인증 처리.
+- 데이터베이스 - Firestore 와 Realtime Database를 사용해 데이터를 저장 및 Authentication 으로 사용자 계정 관리
 
 ### 디렉토리 구조
 
