@@ -8,9 +8,9 @@ Widget settingDivider(
   return Divider(
     indent: screenSize.getWidthPerSize(4),
     endIndent: screenSize.getWidthPerSize(4),
-    color: Colors.grey, // 경계선 색상
-    thickness: 0.5, // 경계선 두께
-    height: 0, // 경계선 위아래 여백
+    color: Colors.grey,
+    thickness: 0.5,
+    height: 0,
   );
 }
 
@@ -19,9 +19,9 @@ Widget settingVerticalDivider(
   ScreenSize screenSize,
 ) {
   return VerticalDivider(
-    thickness: 0.5, // 구분선 두께
-    color: Colors.grey, // 구분선 색상
-    indent: screenSize.getHeightPerSize(1), // 구분선 위쪽 여백
-    endIndent: screenSize.getHeightPerSize(1), // 구분선 아래쪽 여백
+    thickness: 0.5,
+    color: Colors.grey,
+    indent: screenSize.getHeightPerSize(1),
+    endIndent: screenSize.getHeightPerSize(1),
   );
 }

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,7 @@ class TradeDetailViewModel extends GetxController {
   Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData('', '', '').obs; // 초기화 추가
   Rx<ItemPriceDataClass> itemPriceData =
       ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0).obs; // 아이템 가격 데이터 클래스
-  RxBool event = false.obs;
+  RxBool event = false.obs; // 이벤트 유무
 
   @override
   void onInit() {
@@ -117,6 +116,7 @@ class TradeDetailViewModel extends GetxController {
     return '상장 폐지중(${itemPriceData.value.delisting})';
   }
 
+  // 툴팁 설정
   String setToolTip() {
     return '${publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
   }

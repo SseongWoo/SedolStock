@@ -291,6 +291,7 @@ Future<bool> loadRankingData() async {
   }
 }
 
+// 이벤트 데이터 저장 함수
 void saveEventData() {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();

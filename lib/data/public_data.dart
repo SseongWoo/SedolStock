@@ -13,10 +13,6 @@ import '../utils/timer.dart';
 // 팬덤명 맵 데이터
 final Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
 
-final Map<String, int> streamerIndexMap = {
-  for (int i = 0; i < fanNameList.length; i++) fanNameList[i]: i
-};
-
 class PublicDataController extends GetxController {
   final DataModel dataModel = DataModel();
   RxString appVersion = ''.obs; // 앱 버전
@@ -64,6 +60,7 @@ class PublicDataController extends GetxController {
     }
   }
 
+  // 서버 상수파일 가져오는 함수
   Future<void> getConstantsData() async {
     try {
       final response = await dataModel.fetchConstantsData();
@@ -76,6 +73,7 @@ class PublicDataController extends GetxController {
     }
   }
 
+  // 이벤트 데이터 가져오는 함수
   Future<void> getEventData() async {
     try {
       final PublicDataController publicDataController = Get.find<PublicDataController>();
@@ -97,6 +95,7 @@ class PublicDataController extends GetxController {
     }
   }
 
+  // 오늘의 이벤트가 있는지 확인해서 데이터를 정리하는 함수
   void setEventCheck() {
     final ongoingEvents = eventMap['ongoing'];
 

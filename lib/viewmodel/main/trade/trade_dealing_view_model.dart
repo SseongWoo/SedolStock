@@ -2,7 +2,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/model/main/trade_model.dart';
-import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
@@ -15,6 +14,7 @@ import '../../../widget/simple_widget.dart';
 import '../../../utils/timer.dart';
 import '../../../view/main/trade/trade_dealing_widget.dart';
 
+// 거래 뷰 모델
 class TradeDealingViewModel extends GetxController {
   final TradeModel tradeModel = TradeModel();
   final ScreenController screenController = Get.find<ScreenController>();
@@ -160,6 +160,7 @@ class TradeDealingViewModel extends GetxController {
     return buying ? Colors.red : Colors.blue;
   }
 
+  // 매매 가격 설정
   void setSalePrice() {
     int price = calculatorInt.value * itemPriceData.value.price; // 주식 총 가격
     int fee = (price * feeRate.value).round();

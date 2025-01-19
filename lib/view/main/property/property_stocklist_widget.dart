@@ -3,11 +3,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import 'package:get/get.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/property/property_stocklist_view_model.dart';
 
+// 보유 주식 리스트 아이템 위젯
 class PropertyStockListItemWidget extends StatelessWidget {
   final PropertyStocklistViewModel viewModel;
   final StockListClass stockData;
@@ -153,45 +153,6 @@ class PropertyStockListItemWidget extends StatelessWidget {
         ),
       ),
     );
-    //   AnimatedCrossFade(
-    //   duration: const Duration(milliseconds: 100),
-    //   firstChild: SizedBox(
-    //     width: screenSize.getWidthSize(),
-    //   ),
-    //   secondChild: Container(
-    //     height: screenSize.getHeightPerSize(8),
-    //     decoration: const BoxDecoration(
-    //       border: Border(
-    //         bottom: BorderSide(color: Colors.grey, width: 1),
-    //       ),
-    //     ),
-    //     child: Padding(
-    //       padding: EdgeInsets.symmetric(horizontal: screenSize.getWidthPerSize(3)),
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           _buildStockDetailColumn(
-    //             screenSize: screenSize,
-    //             title1: '보유 잔고',
-    //             value1: viewModel.getStockCount(stockData),
-    //             title2: '현재가',
-    //             value2: viewModel.getFormattedCurrentPrice(stockData),
-    //           ),
-    //           _buildStockDetailColumn(
-    //             screenSize: screenSize,
-    //             title1: '매입가',
-    //             value1: viewModel.getFormattedBuyingPrice(stockData),
-    //             title2: '현재가',
-    //             value2: viewModel.getFormattedCurrentPrice(stockData),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    //   crossFadeState: viewModel.isItemExpanded(stockData.stockUID)
-    //       ? CrossFadeState.showSecond
-    //       : CrossFadeState.showFirst,
-    // );
   }
 
   Widget _buildStockDetailRow({

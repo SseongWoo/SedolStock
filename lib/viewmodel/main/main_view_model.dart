@@ -8,6 +8,7 @@ import 'package:stockpj/view/main/trade/trade_screen.dart';
 import '../../constants/route_constants.dart';
 import '../../view/main/information/information_screen.dart';
 
+// 메인화면 뷰모델
 class MainViewModel extends GetxController {
   // 현재 선택된 탭 인덱스
   RxInt selectedIndex = 0.obs;

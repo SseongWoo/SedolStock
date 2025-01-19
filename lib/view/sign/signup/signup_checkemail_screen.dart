@@ -4,15 +4,16 @@ import 'package:stockpj/utils/screen_size.dart';
 import '../../../constants/color_constants.dart';
 import '../../../viewmodel/sign/signup_checkemail_view_model.dart';
 
+// 회원가입 이메일 인증 화면
 class SignupCheckemailScreen extends StatelessWidget {
   final SignupCheckemailViewModel _viewModel = Get.put(SignupCheckemailViewModel());
   SignupCheckemailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _viewModel.screenController.updateScreenSize(context);
+    // });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(

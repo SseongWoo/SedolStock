@@ -1,22 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:korean_profanity_filter/korean_profanity_filter.dart' as korean_filter;
-import 'package:profanity_filter/profanity_filter.dart' as english_filter;
 import 'package:stockpj/constants/route_constants.dart';
 import 'package:stockpj/utils/color.dart';
-import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
-import '../../../main.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/change_fandom.dart';
 import '../../../utils/screen_size.dart';
-import '../../../utils/search_name.dart';
-import '../../../widget/simple_widget.dart';
-import '../../../view/main/information/information_widget.dart';
 
+// 정보 탭 뷰모델
 class InformationViewModel extends GetxController {
   final InformationModel informationModel = InformationModel();
   final ScreenController screenController = Get.find<ScreenController>();
@@ -53,6 +46,7 @@ class InformationViewModel extends GetxController {
     Get.toNamed(AppRoute.settingApp);
   }
 
+  // 사용자 자산 변동 그래프 데이터 설정
   void setMoneyHistoryChartSpots() {
     final list = myDataController.totalMoneyHistoryList
         .asMap()
@@ -120,6 +114,7 @@ class InformationViewModel extends GetxController {
     );
   }
 
+  // 파산 확인
   void checkNotBankruptcy() {
     notBankruptcy.value = myDataController.myTotalMoney.value > 0 ? true : false;
   }

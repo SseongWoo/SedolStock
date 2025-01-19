@@ -5,6 +5,7 @@ import '../../data/my_data.dart';
 import '../../data/youtube_data.dart';
 import '../../utils/screen_size.dart';
 
+// 이벤트 뷰모델
 class EventViewModel extends GetxController {
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final ScreenController screenController = Get.find<ScreenController>();
@@ -12,6 +13,7 @@ class EventViewModel extends GetxController {
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   List<String> eventStatusList = ["예정된", "진행중인", "종료된"];
 
+  // 채널 이름 설정
   String channelText(List<String> channelList) {
     int length = channelList.length;
 

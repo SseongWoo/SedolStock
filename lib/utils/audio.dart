@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:stockpj/main.dart';
-
 import '../service/storage_service.dart';
 
 // 오디오 재생 관련 함수

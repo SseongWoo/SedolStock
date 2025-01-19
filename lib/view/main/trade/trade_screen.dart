@@ -4,9 +4,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/view/main/trade/trade_widget.dart';
 import '../../../constants/color_constants.dart';
-import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
-import '../../../utils/color.dart';
 import '../../../viewmodel/main/trade/trade_view_model.dart';
 
 // 거래 화면
@@ -16,9 +14,6 @@ class TradeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -148,11 +143,11 @@ class TradeScreen extends StatelessWidget {
         border: Border(
           top: BorderSide(
             color: Color(0xffA6A6A6),
-            width: 0.25,
+            width: 0.5,
           ),
           bottom: BorderSide(
             color: Color(0xffA6A6A6),
-            width: 0.25,
+            width: 0.5,
           ),
         ),
       ),

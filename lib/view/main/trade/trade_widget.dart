@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../constants/color_constants.dart';
-import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 
@@ -33,80 +32,76 @@ class TradeItemTitleWidget extends StatelessWidget {
           ),
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: screenSize.getWidthPerSize(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: [
-                  Text(
-                    '채널',
-                    style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(2),
-                      color: Colors.black,
-                    ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: screenSize.getWidthPerSize(40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '채널',
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(2),
+                    color: Colors.black,
                   ),
-                  Obx(
-                    () => IconButton(
-                      onPressed: () => onPressed('age'),
-                      icon: icon('age'),
-                    ),
+                ),
+                Obx(
+                  () => IconButton(
+                    onPressed: () => onPressed('age'),
+                    icon: icon('age'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(
-              width: screenSize.getWidthPerSize(1),
+          ),
+          SizedBox(
+            width: screenSize.getWidthPerSize(1),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '가격',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(2),
+                    color: Colors.black,
+                  ),
+                ),
+                Obx(
+                  () => IconButton(
+                    onPressed: () => onPressed('price'),
+                    icon: icon('price'),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: Row(
-                children: [
-                  Text(
-                    '가격',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(2),
-                      color: Colors.black,
-                    ),
+          ),
+          SizedBox(
+            width: screenSize.getWidthPerSize(24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '등락폭',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(2),
+                    color: Colors.black,
                   ),
-                  Obx(
-                    () => IconButton(
-                      onPressed: () => onPressed('price'),
-                      icon: icon('price'),
-                    ),
+                ),
+                Obx(
+                  () => IconButton(
+                    onPressed: () => onPressed('diffPrice'),
+                    icon: icon('diffPrice'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(
-              width: screenSize.getWidthPerSize(25),
-              child: Row(
-                children: [
-                  Text(
-                    '등락폭',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: screenSize.getHeightPerSize(2),
-                      color: Colors.black,
-                    ),
-                  ),
-                  Obx(
-                    () => IconButton(
-                      onPressed: () => onPressed('diffPrice'),
-                      icon: icon('diffPrice'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

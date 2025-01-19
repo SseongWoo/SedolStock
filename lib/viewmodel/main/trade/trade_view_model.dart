@@ -11,6 +11,7 @@ import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/timer.dart';
 
+// 거러탭 화면 뷰 모델
 class TradeViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();

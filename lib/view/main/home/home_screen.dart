@@ -19,37 +19,37 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
               UserInformationWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
               EventWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
               NewVideoListWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
               ChannelListWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
               CafeWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(
-                height: screenSize.getHeightPerSize(1.5),
+                height: screenSize.getHeightPerSize(1),
               ),
             ],
           ),

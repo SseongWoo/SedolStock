@@ -1,7 +1,5 @@
-import '../../data/youtube_data.dart';
 import '../../main.dart';
 import '../../service/http_service.dart';
-
 import '../data/data_class.dart';
 
 // TradeItemWidget에 필요한 데이터를 포함하는 클래스
@@ -23,6 +21,7 @@ class TradeItemData {
   });
 }
 
+// 앱바 정보 클래스
 class AppBarTitleDataClass {
   String title;
   String price;
@@ -31,19 +30,13 @@ class AppBarTitleDataClass {
   AppBarTitleDataClass(this.title, this.price, this.retnRatio);
 }
 
+// 차트 제목 클래스
 class TradeDetailChartData {
   String title;
   String price;
   String returnRatio;
 
   TradeDetailChartData(this.title, this.price, this.returnRatio);
-}
-
-class TradeDetailChartInfoClass {
-  String title;
-  String trailing;
-
-  TradeDetailChartInfoClass(this.title, this.trailing);
 }
 
 // 그래프 데이터 클래스

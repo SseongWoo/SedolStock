@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../main/trade_model.dart';
-
 // 보유 주식 클래스
 class OwnStock {
   int stockCount;
@@ -125,6 +123,7 @@ class RankingDataClass {
   }
 }
 
+// 유튜브 영상 데이터 클래스
 class YoutubeVideoDataClass {
   final String videoUrl;
   final String title;
@@ -181,7 +180,6 @@ class YoutubeChannelDataClass {
     this.subscribercount,
   );
 
-  // 객체를 JSON으로 변환
   Map<String, dynamic> toJson() => {
         'title': title,
         'thumbnail': thumbnail,
@@ -190,7 +188,6 @@ class YoutubeChannelDataClass {
         'subscribercount': subscribercount,
       };
 
-  // JSON을 객체로 변환
   factory YoutubeChannelDataClass.fromJson(Map<String, dynamic> json) {
     return YoutubeChannelDataClass(
       json['title'],
@@ -202,6 +199,7 @@ class YoutubeChannelDataClass {
   }
 }
 
+// 아이템 정보 클래스
 class ItemPriceDataClass {
   String uid;
   String channelType;
@@ -273,6 +271,7 @@ class PercentConfig {
   }
 }
 
+// 이벤트 정보 클래스
 class EventClass {
   final String id;
   final String eventStart;
@@ -305,7 +304,6 @@ class EventClass {
     );
   }
 
-  // EventClass를 JSON으로 변환
   Map<String, dynamic> toJson() {
     return {
       'id': id,

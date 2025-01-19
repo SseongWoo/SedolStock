@@ -201,6 +201,7 @@ class SignupViewModel extends GetxController {
     showSimpleSnackbar(title, message, SnackPosition.TOP, Colors.red);
   }
 
+  // 텍스트 필드 정리
   void _clearSignupFields() {
     controllerID.clear();
     controllerPassword.clear();
@@ -208,6 +209,7 @@ class SignupViewModel extends GetxController {
     signupModel.deleteUser();
   }
 
+  // 비밀번호 표현 유무
   void changeVisPW() {
     visPW.value = !visPW.value;
   }

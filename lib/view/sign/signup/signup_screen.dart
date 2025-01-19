@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stockpj/view/sign/signup/signup_widget.dart';
 import '../../../constants/color_constants.dart';
 import '../../../constants/data_constants.dart';
-import '../../../data/public_data.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/sign/signup_view_model.dart';
 
@@ -13,9 +12,9 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _viewModel.screenController.updateScreenSize(context);
+    // });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       backgroundColor: Colors.white,

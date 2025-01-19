@@ -72,9 +72,6 @@ class MyDataController extends GetxController {
               itemPriceData.price,
               itemPriceData.channelType,
               streamerColorMap[itemUid] ?? colorMAIN);
-
-          // itemHistory[key] =
-          //     ItemHistoryClass(itemUid, itemPriceData.channelType ?? '', value.stockPrice);
         }
       }
     });

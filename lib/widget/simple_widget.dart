@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
-
 import '../constants/color_constants.dart';
 import 'button.dart';
 

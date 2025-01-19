@@ -59,15 +59,17 @@ Future<void> startGetData() async {
   }
   publicDataController.setEventCheck();
 
-  await publicDataController.getConstantsData();
-  await youtubeDataController.getYoutubeLiveData();
-  myDataController.setMoneyData();
-  await myDataController.getTradeHistoryData();
+  await publicDataController.getConstantsData(); // 서버 상수데이터 가져오는 기능
+  await youtubeDataController.getYoutubeLiveData(); // 유튜브 가격 데이터 가져오는 함수
+  myDataController.setMoneyData(); // 사용자의 자산 데이터 정리
+  await myDataController.getTradeHistoryData(); // 사용자의 거래 리스트 데이터 가져오는 함수
+
+  // 거래 상세 화면에 있을시 그래프데이터 정리
   if (Get.isRegistered<TradeDetailViewModel>()) {
     final TradeDetailViewModel tradeDetailViewModel = Get.find<TradeDetailViewModel>();
     tradeDetailViewModel.setChartData();
   }
-  await myDataController.getMessage();
+  await myDataController.getMessage(); // 메세지 데이터 가져오는 함수
 
   // 수동 새로고침 횟수를 초기화
   publicDataController.manualRefresh.value = 0;
@@ -78,9 +80,9 @@ Future<void> reflashGetData(bool timeReFlash) async {
   final MyDataController myDataController = Get.find<MyDataController>();
   await myDataController.getUserData();
   if (timeReFlash) {
-    await myDataController.updateMyTotalMoney();
+    await myDataController.updateMyTotalMoney(); // 사용자 총 자산 업데이트
   }
-  await myDataController.getWalletData();
+  await myDataController.getWalletData(); // 사용자 자산 데이터 가져오는 기능
 
   // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {

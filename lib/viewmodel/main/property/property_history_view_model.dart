@@ -43,6 +43,7 @@ class PropertyHistoryViewModel extends GetxController {
     );
   }
 
+  // 리스트 복사
   List<TradeHistoryClass> setOriginalHistoryList() {
     return List<TradeHistoryClass>.from(myDataController.tradeHistoryList);
   }
@@ -138,6 +139,7 @@ class PropertyHistoryViewModel extends GetxController {
     selectSaleType.value = '전체';
   }
 
+  // 필터 바텀시트 생성
   void createBottomSheet() {
     Get.bottomSheet(PropertyHistoryBottomSheet(
       viewModel: this,

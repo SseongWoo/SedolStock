@@ -1,11 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
-import '../../../utils/color.dart';
 import '../../../utils/date_time.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/property/property_history_view_model.dart';

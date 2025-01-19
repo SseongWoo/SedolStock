@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/service/storage_service.dart';
 import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/screen_size.dart';
@@ -16,9 +15,6 @@ class TradeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(

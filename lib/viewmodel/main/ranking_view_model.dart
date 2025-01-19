@@ -1,17 +1,13 @@
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
 import 'package:flutter/material.dart';
-import 'package:stockpj/service/storage_service.dart';
 import '../../constants/color_constants.dart';
 import '../../constants/data_constants.dart';
 import '../../data/my_data.dart';
 import '../../data/youtube_data.dart';
-import '../../model/data/data_class.dart';
 import '../../utils/color.dart';
-import '../../utils/date_time.dart';
 import '../../utils/screen_size.dart';
 import '../../utils/timer.dart';
-import '../../view/main/ranking/ranking_screen.dart';
 import '../../view/main/ranking/ranking_widget.dart';
 
 // 랭킹 뷰 모델

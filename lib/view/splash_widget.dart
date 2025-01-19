@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockpj/constants/color_constants.dart';
 import 'package:stockpj/utils/screen_size.dart';
-
 import '../widget/button.dart';
 
 class UpdateDialog extends StatelessWidget {

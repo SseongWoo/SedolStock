@@ -7,6 +7,7 @@ import '../../utils/check_list.dart';
 import '../../utils/screen_size.dart';
 import '../../widget/simple_widget.dart';
 
+// 계정 찾기 뷰모델
 class FindAccountViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final FindAccountModel findAccountModel = FindAccountModel();

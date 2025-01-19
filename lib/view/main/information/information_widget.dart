@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import '../../../constants/data_constants.dart';
-import '../../../data/public_data.dart';
-import '../../../model/main/information_model.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/information/information_view_model.dart';
@@ -13,6 +10,7 @@ import '../../../viewmodel/main/information/information_view_model.dart';
 // 보유 자산 비율 그래프 위젯
 class MyMoneyChartLine extends StatelessWidget {
   final InformationViewModel viewModel;
+
   const MyMoneyChartLine({
     super.key,
     required this.viewModel,
@@ -143,64 +141,3 @@ class MyMoneyChartLine extends StatelessWidget {
     );
   }
 }
-//
-// // 보유 자산 원형 그래프 위젯
-// class MoneyPieChartWidget extends StatelessWidget {
-//   final InformationViewModel viewModel;
-//   const MoneyPieChartWidget({
-//     super.key,
-//     required this.viewModel,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     ScreenSize screenSize = viewModel.screenController.screenSize.value;
-//     return Column(
-//       children: [
-//         Padding(
-//           padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
-//           child: Text(
-//             '보유 자산 비율 그래프',
-//             style: TextStyle(
-//               fontSize: screenSize.getHeightPerSize(2),
-//             ),
-//           ),
-//         ),
-//         Expanded(
-//           child: Obx(() {
-//             // 반응형 데이터 사용
-//             List<MoneyChartClass> moneyChartList = viewModel.moneyChartList();
-//             final totalMoney = moneyChartList.fold<int>(0, (sum, item) => sum + item.money);
-//
-//             List<PieChartSectionData> sections = moneyChartList.map((money) {
-//               final double percentage = (money.money / totalMoney) * 100;
-//
-//               return PieChartSectionData(
-//                 value: money.money.toDouble(),
-//                 color: money.name == '현금 자산'
-//                     ? fanColorMap[viewModel.myDataController.myChoicechannel.value]
-//                     : Colors.grey,
-//                 title:
-//                     '${money.name}\n${formatToCurrency(money.money)}(${percentage.toStringAsFixed(1)})%',
-//                 titleStyle: TextStyle(
-//                   fontSize: screenSize.getHeightPerSize(1.8),
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.white,
-//                 ),
-//                 radius: screenSize.getHeightPerSize(14),
-//               );
-//             }).toList();
-//
-//             return PieChart(
-//               PieChartData(
-//                 sections: sections,
-//                 centerSpaceRadius: 0,
-//                 sectionsSpace: 2,
-//               ),
-//             );
-//           }),
-//         ),
-//       ],
-//     );
-//   }
-// }

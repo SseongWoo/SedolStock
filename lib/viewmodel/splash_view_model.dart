@@ -14,6 +14,7 @@ import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
 
+// 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
   final SplashModel splashModel = SplashModel();
   final ScreenController screenController = Get.find<ScreenController>();
@@ -32,11 +33,13 @@ class SplashViewModel extends GetxController {
     loadingMessage.value = '서버 상태 확인중';
     bool isServerRunning = await checkServer();
 
+    // 서버가 구동중일경우
     if (isServerRunning) {
       loadingMessage.value = '앱 버전 확인중';
       await _publicDataController.getAppVersion();
       bool needsUpdate = _checkVersion();
 
+      // 업데이트가 있을경우
       if (needsUpdate) {
         Get.dialog(
           UpdateDialog(

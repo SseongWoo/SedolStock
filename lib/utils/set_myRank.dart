@@ -2,6 +2,7 @@ import '../data/my_data.dart';
 import '../data/public_data.dart';
 import '../model/data/data_class.dart';
 
+// 내 랭킹 정보를 가져오는 함수
 void setMyRank(MyDataController myDataController, PublicDataController publicDataController) {
   final totalRankList = publicDataController.rankingMap['전체']!;
   final fandomRankList = publicDataController.rankingMap[myDataController.myChoicechannel.value]!;
@@ -14,6 +15,7 @@ void setMyRank(MyDataController myDataController, PublicDataController publicDat
   myDataController.myFandomRank.value = fandomRank ?? 0;
 }
 
+// 내 랭킹 정보를 랭킹 리스트에서 찾는 함수
 int? getRank(List<RankingDataClass> rankList, String myUid) {
   return rankList
       .firstWhere(

@@ -17,7 +17,6 @@ class HttpService {
     return response;
   }
 
-  // GET 요청
   Future<http.Response> getRequest(String endpoint) async {
     final response = await http.get(
       Uri.parse('$httpURL$endpoint'),

@@ -124,7 +124,7 @@ class EventWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border.all(color: colorMAIN),
                       borderRadius: BorderRadius.circular(15)),
-                  child: eventList.isNotEmpty
+                  child: eventList.isEmpty
                       ? Column(
                           children: eventList.take(3).map((event) {
                             return ListTile(
@@ -134,7 +134,7 @@ class EventWidget extends StatelessWidget {
                           }).toList(),
                         )
                       : SizedBox(
-                          height: screenSize.getHeightPerSize(10),
+                          height: screenSize.getHeightPerSize(8),
                           child: const Center(
                             child: Text('진행중인 이벤트가 없습니다.'),
                           ),
@@ -181,6 +181,9 @@ class NewVideoListWidget extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: screenSize.getHeightPerSize(1),
             ),
             Obx(
               () {

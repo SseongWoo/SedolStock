@@ -7,6 +7,7 @@ import '../../service/http_service.dart';
 import '../../utils/get_env.dart';
 import '../../utils/screen_size.dart';
 
+// 홈 뷰 모델
 class HomeViewModel extends GetxController {
   final HttpService _httpService = HttpService();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
@@ -18,6 +19,7 @@ class HomeViewModel extends GetxController {
   RxString currentVideoTitle = '메인'.obs;
   RxString currentChannelTitle = '메인'.obs;
 
+  // 이벤트 화면 이동
   void goEvent() {
     Get.toNamed(AppRoute.event);
   }

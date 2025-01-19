@@ -11,6 +11,7 @@ import '../../service/storage_service.dart';
 import '../../utils/screen_size.dart';
 import '../../widget/simple_widget.dart';
 
+// 로그인 뷰 모델
 class SigninViewModel extends GetxController {
   final SigninModel signinModel = SigninModel();
   final ScreenController screenController = Get.find<ScreenController>();

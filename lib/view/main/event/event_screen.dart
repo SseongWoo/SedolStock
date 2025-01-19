@@ -5,7 +5,7 @@ import '../../../model/data/data_class.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/event_view_model.dart';
 
-// 홈 화면
+// 이벤트 화면
 class EventScreen extends StatelessWidget {
   final EventViewModel _viewModel = Get.put(EventViewModel());
   EventScreen({super.key});
@@ -46,6 +46,7 @@ class EventScreen extends StatelessWidget {
     );
   }
 
+  // 이벤트 탭 화면
   Widget _eventListScreen(ScreenSize screenSize, List<EventClass> eventList, String text) {
     return eventList.isNotEmpty
         ? ListView.builder(
@@ -60,6 +61,7 @@ class EventScreen extends StatelessWidget {
           );
   }
 
+  // 이벤트 리스트 아이템 위젯
   Widget _eventListItemWidget(ScreenSize screenSize, EventClass eventItem) {
     return Container(
       decoration: const BoxDecoration(border: Border(bottom: BorderSide())),

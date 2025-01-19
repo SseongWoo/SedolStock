@@ -3,8 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/viewmodel/main/trade/trade_detail_view_model.dart';
-import '../../../data/youtube_data.dart';
-import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
 import 'package:get/get.dart';
@@ -128,41 +126,42 @@ class TradeDeTailVideoListWidget extends StatelessWidget {
     return Card(
       color: Colors.white,
       child: Padding(
-          padding: EdgeInsets.all(
-            viewModel.screenController.screenSize.value.getHeightPerSize(1),
-          ),
-          child: Obx(
-            () {
-              final videoDataList =
-                  viewModel.youtubeDataController.youtubeVideoData[viewModel.channelUID];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '최근 업로드된 영상',
-                    style: TextStyle(
-                      fontSize: viewModel.screenController.screenSize.value.getHeightPerSize(1.8),
-                    ),
+        padding: EdgeInsets.all(
+          viewModel.screenController.screenSize.value.getHeightPerSize(1),
+        ),
+        child: Obx(
+          () {
+            final videoDataList =
+                viewModel.youtubeDataController.youtubeVideoData[viewModel.channelUID];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '최근 업로드된 영상',
+                  style: TextStyle(
+                    fontSize: viewModel.screenController.screenSize.value.getHeightPerSize(1.8),
                   ),
-                  SizedBox(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: videoDataList != null ? videoDataList.length : 0,
-                      itemBuilder: (context, index) {
-                        return buildVideoItem(
-                          viewModel.screenController.screenSize.value,
-                          videoDataList![index],
-                          index,
-                          (index) => viewModel.onTapVideListIconButton(index),
-                        );
-                      },
-                    ),
+                ),
+                SizedBox(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: videoDataList != null ? videoDataList.length : 0,
+                    itemBuilder: (context, index) {
+                      return buildVideoItem(
+                        viewModel.screenController.screenSize.value,
+                        videoDataList![index],
+                        index,
+                        (index) => viewModel.onTapVideListIconButton(index),
+                      );
+                    },
                   ),
-                ],
-              );
-            },
-          )),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }

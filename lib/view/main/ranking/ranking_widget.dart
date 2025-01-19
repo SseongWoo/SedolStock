@@ -1,15 +1,12 @@
-import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stockpj/service/storage_service.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import 'package:stockpj/viewmodel/main/ranking_view_model.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
 
+// 랭킹 탭 화면
 class RankingTapScreen extends StatelessWidget {
   final ScreenSize screenSize;
   final List<RankingDataClass> rankingList;

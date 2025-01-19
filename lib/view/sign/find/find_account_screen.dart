@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/find_account_view_model.dart';
 import '../../../constants/color_constants.dart';
-import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
 // 계정 찾기 화면
@@ -12,9 +11,6 @@ class FindAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(

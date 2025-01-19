@@ -2,22 +2,8 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:stockpj/data/public_data.dart';
-import 'package:stockpj/data/youtube_data.dart';
 import 'package:stockpj/main.dart';
-import '../constants/data_constants.dart';
-import '../service/http_service.dart';
 import 'get_env.dart';
-
-// 구동중인 기기의 os를 체크하는 함수
-String checkPlatform() {
-  if (GetPlatform.isAndroid) {
-    return 'AOS';
-  } else if (GetPlatform.isIOS) {
-    return 'IOS';
-  } else {
-    return 'WEB';
-  }
-}
 
 // 서버가 열렸는지 확인하는 함수
 Future<bool> checkServer() async {

@@ -6,6 +6,7 @@ import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/property/property_stocklist_view_model.dart';
 
+// 보유 주식 리스트 화면
 class PropertyStocklistScreen extends StatelessWidget {
   final PropertyStocklistViewModel _viewModel = Get.put(PropertyStocklistViewModel());
   PropertyStocklistScreen({super.key});

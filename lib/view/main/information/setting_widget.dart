@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/main/information/setting_app_view_model.dart';
 import 'package:stockpj/widget/button.dart';
 import '../../../constants/color_constants.dart';
-import '../../../constants/data_constants.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
 
@@ -214,6 +213,7 @@ class NameChangeDialog extends StatelessWidget {
   }
 }
 
+// 비밀번호 변경 다이얼로그
 class ChangePasswordDialog extends StatelessWidget {
   final String email;
   final ScreenSize screenSize;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/color_constants.dart';
 import '../../../data/public_data.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/color.dart';

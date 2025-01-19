@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/signin_view_model.dart';
-
 import '../../../constants/color_constants.dart';
 import '../../../utils/screen_size.dart';
-import './signin_widget.dart';
 
+// 로그인 화면
 class SigninScreen extends StatelessWidget {
   final SigninViewModel _viewModel = Get.put(SigninViewModel());
   SigninScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       backgroundColor: colorMAIN,

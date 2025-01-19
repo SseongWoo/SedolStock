@@ -39,6 +39,7 @@ class DataModel {
     }
   }
 
+  // 거래 내역 리스트 데이터
   Future<List<TradeHistoryClass>?> fetchTradeHistory(String uid) async {
     final response = await httpService.getRequest('/users/tradeList/$uid');
 
@@ -268,6 +269,7 @@ class DataModel {
     }
   }
 
+  // 서버의 상수 데이터를 가져오는 함수
   Future<Map<String, dynamic>> fetchConstantsData() async {
     final response = await httpService.getRequest('/config');
 
@@ -283,6 +285,7 @@ class DataModel {
     }
   }
 
+  // 이벤트 데이터를 가져오는 함수
   Future<Map<String, dynamic>?> fetchEventData() async {
     final response = await httpService.getRequest('/event');
 

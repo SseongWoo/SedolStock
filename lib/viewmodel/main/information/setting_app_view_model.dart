@@ -17,6 +17,7 @@ import '../../../view/main/information/setting_widget.dart';
 import 'package:korean_profanity_filter/korean_profanity_filter.dart' as korean_filter;
 import 'package:profanity_filter/profanity_filter.dart' as english_filter;
 
+// 설정 화면 뷰모델
 class SettingAppViewModel extends GetxController {
   final InformationModel _informationModel = InformationModel();
   final TimerController _timerController = Get.find<TimerController>();
@@ -156,7 +157,6 @@ class SettingAppViewModel extends GetxController {
     if (emailSent) {
       showSimpleDialog2(screenController.screenSize.value, '비밀번호 변경',
           '비밀번호 변경 안내 이메일이 아래 주소로 발송되었습니다.\n\n$email', Get.back);
-      //Get.dialog(ChangePasswordDialog(email: email, screenSize: screenController.screenSize.value));
     } else {
       showSimpleDialog(Get.back, '오류', '이메일 전송에 실패했습니다.\n다시 시도해 주세요.');
     }

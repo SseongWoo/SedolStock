@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/color_constants.dart';
 import '../../data/my_data.dart';
-import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../utils/timer.dart';
@@ -17,9 +16,6 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _screenController.updateScreenSize(context);
-    // });
     return Scaffold(
       appBar: AppBar(
         leading: Obx(

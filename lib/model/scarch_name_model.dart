@@ -1,4 +1,3 @@
-import '../../main.dart';
 import '../../service/http_service.dart';
 
 class NameModel {

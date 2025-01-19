@@ -9,9 +9,6 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _viewModel.screenController.updateScreenSize(context);
-    // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('알림'),

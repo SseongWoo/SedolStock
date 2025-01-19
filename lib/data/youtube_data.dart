@@ -36,6 +36,7 @@ class YoutubeDataController extends GetxController {
   void onReady() {
     super.onReady();
 
+    // 각각 전체, 메인, 서브 채널의 uid를 저장하는 리스트
     totalChannelIdList = getTotalChannelIdList();
     channelIdList = getChannelIdList();
     subChannelIdList = getSubChannelIdList();

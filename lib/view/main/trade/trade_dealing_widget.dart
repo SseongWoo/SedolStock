@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../utils/format.dart';
 import '../../../viewmodel/main/trade/trade_dealing_view_model.dart';
 
+// 거래 다이얼로그
 class DealingDialog extends StatelessWidget {
   final TradeDealingViewModel viewModel;
   final ScreenSize screenSize;

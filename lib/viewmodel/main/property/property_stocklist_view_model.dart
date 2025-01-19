@@ -4,6 +4,7 @@ import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
 import '../../../utils/screen_size.dart';
 
+// 거래 내역 리스트 뷰 모델
 class PropertyStocklistViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();

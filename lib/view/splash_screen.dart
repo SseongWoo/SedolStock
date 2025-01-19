@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import '../../utils/color.dart';
 import '../../utils/screen_size.dart';
 import '../constants/color_constants.dart';
 import '../viewmodel/splash_view_model.dart';
@@ -12,9 +11,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _viewModel.screenController.updateScreenSize(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _viewModel.screenController.updateScreenSize(context);
+    // });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       body: Container(
