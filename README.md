@@ -23,10 +23,37 @@
 - 프로젝트 : 모의 투자 시뮬레이션 팬게임
 - 분류 : 소규모 팀 프로젝트
 - 제작기간 : 24.11~24.12
-- 사용기술 : Flutter, Dart, JavaScript, Node.js, AWS EC2, FireBase,
 - 사용 IDE : Android Studio(프론트앤드), Visual Studio Code(백엔드)
-- 사용 API : YouTube Data API v3, Google Play Android Developer API, FireBase Authentication API, FireBase Cloud Firestore API
 - 사용 디바이스 : iPhone 16 pro max, Galaxy S23+, Galaxy Tap S9+, Galaxy Tap A7 Lite
+
+## 기술스택
+### 프론트엔드 (Frontend)
+- 사용 기술:
+    - Flutter (UI 프레임워크)
+    - Dart (프로그래밍 언어)
+    
+- 사용 IDE:
+    - Android Studio
+
+### 백엔드 (Backend)
+- 사용 기술:
+    - Node.js (백엔드 런타임)
+    - JavaScript (프로그래밍 언어)
+    - Express (Node.js 기반 웹 프레임워크)
+    - nginx (웹서버, 리버스 프록시)
+    - RESTful API (API 설계 및 구현)
+    - AWS S3 (파일 저장)
+    - AWS CloudFront (콘텐츠 배포 네트워크)
+    - AWS Route53 (도메인 관리)
+    - AWS EC2 (서버 호스팅)
+    - YouTube Data API v3 (유튜브 데이터 API)
+    - Google Play Android Developer API (플레이스토어 데이터 API)
+    - Firebase Authentication API (인증 서비스 API)
+    - Firebase Cloud Firestore API (실시간 데이터베이스 API)
+    - Firebase Realtime Database API (데이터 읽기/쓰기, 실시간 데이터 처리 API)
+    
+- 사용 IDE:
+    - Visual Studio Code
 
 ## 개발환경
 - Android Studio Koala Feature Drop 2024.1.2
