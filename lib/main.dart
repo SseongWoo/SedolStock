@@ -72,16 +72,16 @@ Future<void> _setResolution(String resolution) async {
 
   switch (resolution) {
     case 'FHD': // 1080x1920 (iPhone 15 비율)
-      size = Size(1080, 1080 / aspectRatio);
+      size = Size(1080 / aspectRatio, 1080);
       break;
     case 'QHD': // 1440x2560 (iPhone 15 비율)
-      size = Size(1440, 1440 / aspectRatio);
+      size = Size(1440 / aspectRatio, 1440);
       break;
     case 'UHD': // 2160x3840 (iPhone 15 비율)
-      size = Size(2160, 2160 / aspectRatio);
+      size = Size(2160 / aspectRatio, 2160);
       break;
     default:
-      size = Size(1080, 1080 / aspectRatio); // 기본값: FHD
+      size = Size(1080 / aspectRatio, 1080); // 기본값: FHD
   }
 
   await DesktopWindow.setWindowSize(size); // 창 크기 설정
