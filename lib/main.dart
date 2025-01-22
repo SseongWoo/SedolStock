@@ -38,12 +38,14 @@ void main() async {
   ]);
 
   if (GetPlatform.isDesktop) {
-    await DesktopWindow.setMinWindowSize(const Size(450, 800));
-    await DesktopWindow.setMaxWindowSize(const Size(2160, 3840));
+    // 창 크기 조정 비활성화
+    const Size initialSize = Size(1280 / (19.5 / 9), 1280); // FHD 기본 크기
+    await DesktopWindow.setMinWindowSize(initialSize);
+    await DesktopWindow.setMaxWindowSize(initialSize);
   }
 
   // 초기 창 크기를 FHD로 설정
-  await _setResolution('FHD');
+  await _setResolution('HD');
 
   await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
@@ -68,23 +70,28 @@ void startController() {
 // 해상도에 따른 창 크기 설정 함수
 Future<void> _setResolution(String resolution) async {
   double aspectRatio = 19.5 / 9; // iPhone 15 비율
-  Size size;
+  Size newSize;
 
   switch (resolution) {
+    case 'HD': // 1080x1920 (iPhone 15 비율)
+      newSize = Size(720 / aspectRatio, 720);
+      break;
     case 'FHD': // 1080x1920 (iPhone 15 비율)
-      size = Size(1080 / aspectRatio, 1080);
+      newSize = Size(1080 / aspectRatio, 1080);
       break;
     case 'QHD': // 1440x2560 (iPhone 15 비율)
-      size = Size(1440 / aspectRatio, 1440);
+      newSize = Size(1440 / aspectRatio, 1440);
       break;
     case 'UHD': // 2160x3840 (iPhone 15 비율)
-      size = Size(2160 / aspectRatio, 2160);
+      newSize = Size(2160 / aspectRatio, 2160);
       break;
     default:
-      size = Size(1080 / aspectRatio, 1080); // 기본값: FHD
+      newSize = Size(1080 / aspectRatio, 1080); // 기본값: FHD
   }
 
-  await DesktopWindow.setWindowSize(size); // 창 크기 설정
+  await DesktopWindow.setWindowSize(newSize);
+  await DesktopWindow.setMinWindowSize(newSize);
+  await DesktopWindow.setMaxWindowSize(newSize);
 }
 
 class MyApp extends StatelessWidget {
