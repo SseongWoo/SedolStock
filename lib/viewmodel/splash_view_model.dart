@@ -151,5 +151,9 @@ class WindowsViewModel extends GetxController {
     double targetWidth = targetHeight * (9 / 19.5);
 
     await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
+    await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));
+    await DesktopWindow.setMinWindowSize(Size(targetWidth, targetHeight));
+
+    Get.offAllNamed(AppRoute.splash);
   }
 }
