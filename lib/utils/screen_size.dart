@@ -99,5 +99,5 @@ void switchResolution(String resolutions) async {
   await DesktopWindow.setWindowSize(size);
   await DesktopWindow.setMinWindowSize(size);
   await DesktopWindow.setMaxWindowSize(size);
-  print('해상도가 ${resolutions}로 변경되었습니다.');
+  print('해상도가 ${resolutions} ${size.height}:${size.width}로 변경되었습니다.');
 }
