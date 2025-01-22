@@ -93,17 +93,11 @@ Future<Size> setResolution(String resolution) async {
   return newSize;
 }
 
-void switchResolution() async {
-  // 해상도 목록과 현재 인덱스
-  final List<String> resolutions = ['HD', 'FHD', 'QHD', 'UHD'];
-  int currentResolutionIndex = 1;
-
-  currentResolutionIndex++;
-
-  final size = await setResolution(resolutions[currentResolutionIndex]);
+void switchResolution(String resolutions) async {
+  final size = await setResolution(resolutions);
 
   await DesktopWindow.setWindowSize(size);
   await DesktopWindow.setMinWindowSize(size);
   await DesktopWindow.setMaxWindowSize(size);
-  print('해상도가 ${resolutions[currentResolutionIndex]}로 변경되었습니다.');
+  print('해상도가 ${resolutions}로 변경되었습니다.');
 }

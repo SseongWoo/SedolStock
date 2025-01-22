@@ -80,12 +80,26 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         child = EasyLoading.init()(context, child);
         final FocusNode focusNode = FocusNode();
+        final List<String> resolutions = ['HD', 'FHD', 'QHD', 'UHD'];
+        int currentResolutionIndex = 1;
+
         return KeyboardListener(
           focusNode: focusNode,
           onKeyEvent: (KeyEvent event) {
             if (event is KeyDownEvent && event.logicalKey.keyLabel == 'F11') {
-              switchResolution();
+              currentResolutionIndex++;
+              if (currentResolutionIndex > 3) {
+                currentResolutionIndex = 0;
+              }
             }
+            if (event is KeyDownEvent && event.logicalKey.keyLabel == 'F10') {
+              currentResolutionIndex--;
+              if (currentResolutionIndex <= 0) {
+                currentResolutionIndex = 3;
+              }
+            }
+
+            switchResolution(resolutions[currentResolutionIndex]);
           },
           child: Center(
             child: Container(
