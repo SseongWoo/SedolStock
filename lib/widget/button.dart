@@ -17,11 +17,14 @@ class SimpleBackButtonWidget extends StatelessWidget {
   }
 }
 
-Widget informationButton(String title, Function function) {
+Widget informationButton(String title, Function function, ScreenSize screenSize) {
   return Container(
     color: Colors.white,
     child: ListTile(
-      title: Text(title),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+      ),
       trailing: const Icon(Icons.arrow_forward_ios),
       onTap: () {
         function();

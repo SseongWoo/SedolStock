@@ -33,7 +33,7 @@ class InformationScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: screenSize.getHeightPerSize(12),
+                    height: screenSize.getHeightPerSize(14),
                     width: screenSize.getWidthSize(),
                     color: Colors.white,
                     child: Padding(

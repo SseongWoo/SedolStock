@@ -235,7 +235,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
       alignment: Alignment.center,
       child: Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: screenSize.getHeightPerSize(1.6)),
         textAlign: TextAlign.center,
       ),
     );
@@ -265,6 +265,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
                   '채널명',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
             ),
           ],
         ),
@@ -287,6 +288,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           child: Text(
             buy ? '구매' : '판매',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
         ),
         Container(
@@ -304,6 +306,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           child: Text(
             '${buy ? '' : formatToCurrency(tradeHistoryData.tradeprice)}\n${buy ? formatToCurrency(tradeHistoryData.tradeprice) : ''}',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
         ),
         Container(
@@ -314,6 +317,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           child: Text(
             '${buy ? '' : tradeHistoryData.itemcount}\n${buy ? tradeHistoryData.itemcount : ''}',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
         ),
         Container(
@@ -324,6 +328,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           child: Text(
             '${buy ? '' : formatToCurrency(tradeHistoryData.fee)}\n${buy ? formatToCurrency(tradeHistoryData.fee) : ''}',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
         ),
         Container(
@@ -334,6 +339,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           child: Text(
             '${buy ? '' : formatToCurrency(tradeHistoryData.totalcost)}\n${buy ? formatToCurrency(tradeHistoryData.totalcost) : ''}',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
         ),
       ],

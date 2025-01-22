@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/utils/screen_size.dart';
 import '../../../constants/color_constants.dart';
 import '../../../viewmodel/main/property/property_view_model.dart';
 
@@ -47,8 +48,9 @@ class PropertyScreen extends StatelessWidget {
   Widget _tapTextWidget(String text) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontWeight: FontWeight.bold,
+        fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(1.8),
       ),
     );
   }

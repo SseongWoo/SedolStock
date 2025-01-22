@@ -148,7 +148,7 @@ class WindowsViewModel extends GetxController {
     await DesktopWindow.setFullScreen(false);
 
     double targetHeight = _screenController.windowsSize.height * 0.8;
-    double targetWidth = targetHeight * (9 / 19.5);
+    double targetWidth = targetHeight * (10 / 19);
 
     await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
     await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));

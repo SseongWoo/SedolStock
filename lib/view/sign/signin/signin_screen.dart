@@ -55,6 +55,7 @@ class SigninScreen extends StatelessWidget {
                       '아이디',
                       TextInputType.emailAddress,
                       false,
+                      screenSize,
                     ),
                     SizedBox(
                       height: screenSize.getHeightPerSize(2),
@@ -64,6 +65,7 @@ class SigninScreen extends StatelessWidget {
                       '비밀번호',
                       TextInputType.text,
                       true,
+                      screenSize,
                     ),
                     SizedBox(
                       height: screenSize.getHeightPerSize(4),
@@ -146,13 +148,13 @@ class SigninScreen extends StatelessWidget {
   }
 
   Widget _signinTextField(TextEditingController controller, String labelText,
-      TextInputType keyboardType, bool obscureText) {
+      TextInputType keyboardType, bool obscureText, ScreenSize screenSize) {
     return TextField(
       controller: controller,
       maxLines: 1,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: const TextStyle(color: Colors.white),
+        labelStyle: TextStyle(color: Colors.white, fontSize: screenSize.getHeightPerSize(2)),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),

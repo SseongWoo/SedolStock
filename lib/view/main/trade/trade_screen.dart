@@ -62,15 +62,16 @@ class TradeScreen extends StatelessWidget {
                         selectedColor: colorSUB,
                         backgroundColor: Colors.white,
                         labelStyle: TextStyle(
+                          fontSize: screenSize.getHeightPerSize(1.6),
                           color: _viewModel.selectItemType.value == filter
                               ? Colors.white
                               : Colors.black,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10), // 모서리를 각지게 설정
-                          side: const BorderSide(
+                          side: BorderSide(
                             color: colorSUB,
-                            width: 1.5,
+                            width: screenSize.getWidthPerSize(0.3),
                           ),
                         ),
                       );

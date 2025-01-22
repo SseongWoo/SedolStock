@@ -22,7 +22,12 @@ class SignupCheckemailScreen extends StatelessWidget {
           onPressed: _viewModel.cancelSignUp,
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: const Text('회원가입'),
+        title: Text(
+          '회원가입',
+          style: TextStyle(
+            fontSize: screenSize.getHeightPerSize(2.6),
+          ),
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.all(

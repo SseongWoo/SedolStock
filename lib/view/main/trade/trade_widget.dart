@@ -18,7 +18,7 @@ class TradeItemTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenSize.getHeightPerSize(5),
+      height: screenSize.getHeightPerSize(GetPlatform.isDesktop ? 6 : 5),
       width: screenSize.getWidthSize(),
       decoration: const BoxDecoration(
         border: Border(

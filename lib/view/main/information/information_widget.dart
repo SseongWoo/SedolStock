@@ -123,10 +123,10 @@ class MyMoneyChartLine extends StatelessWidget {
                             return touchedSpots.map((spot) {
                               return LineTooltipItem(
                                 '${formatToCurrency(spot.y.toInt())} units', // 단위 추가
-                                const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenSize.getHeightPerSize(1.6)),
                               );
                             }).toList();
                           },

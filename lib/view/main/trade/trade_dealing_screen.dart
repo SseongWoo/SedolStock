@@ -26,6 +26,9 @@ class TradeDealingScreen extends StatelessWidget {
                 child: IntrinsicWidth(
                   child: Text(
                     '${_viewModel.youtubeDataController.youtubeChannelData[_viewModel.channelUID]?.title ?? '타이틀'} ',
+                    style: TextStyle(
+                      fontSize: screenSize.getHeightPerSize(2.5),
+                    ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
@@ -36,7 +39,10 @@ class TradeDealingScreen extends StatelessWidget {
                   '(${_viewModel.setPlus()}${_viewModel.itemPriceData.value.ratio.toStringAsFixed(2)}%)',
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: profitAndLossColor(_viewModel.itemPriceData.value.ratio)),
+                  style: TextStyle(
+                    color: profitAndLossColor(_viewModel.itemPriceData.value.ratio),
+                    fontSize: screenSize.getHeightPerSize(2.5),
+                  ),
                 ),
               ),
             ],
@@ -49,7 +55,7 @@ class TradeDealingScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
           child: Column(

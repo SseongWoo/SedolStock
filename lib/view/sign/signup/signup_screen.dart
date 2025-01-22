@@ -20,7 +20,10 @@ class SignupScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: colorMAIN,
-        title: Text('${_viewModel.idLabel} 회원가입'),
+        title: Text(
+          '${_viewModel.idLabel} 회원가입',
+          style: TextStyle(fontSize: screenSize.getHeightPerSize(2.6)),
+        ),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -192,7 +195,7 @@ class SignupScreen extends StatelessWidget {
           decoration: InputDecoration(
               border: const OutlineInputBorder(),
               labelText: labelText,
-              //counterText: '',
+              labelStyle: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
               suffixIcon: onPressed != null
                   ? IconButton(
                       onPressed: () {

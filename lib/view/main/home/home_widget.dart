@@ -128,8 +128,19 @@ class EventWidget extends StatelessWidget {
                       ? Column(
                           children: eventList.take(3).map((event) {
                             return ListTile(
-                              title: Text(event.title),
-                              subtitle: Text('${event.eventStart} ~ ${event.eventEnd}'),
+                              title: Text(
+                                event.title,
+                                style: TextStyle(
+                                  fontSize: screenSize.getHeightPerSize(2),
+                                ),
+                              ),
+                              subtitle: Text(
+                                '${event.eventStart} ~ ${event.eventEnd}',
+                                style: TextStyle(
+                                  fontSize: screenSize.getHeightPerSize(1.6),
+                                ),
+                              ),
+                              dense: true,
                             );
                           }).toList(),
                         )
