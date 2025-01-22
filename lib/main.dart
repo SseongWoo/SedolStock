@@ -10,6 +10,7 @@ import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/utils/timer.dart';
+import 'package:stockpj/utils/window_appbar.dart';
 import 'package:stockpj/view/main/event/event_screen.dart';
 import 'package:stockpj/view/main/information/delete_account_screen.dart';
 import 'package:stockpj/view/main/information/setting_app_screen.dart';
@@ -88,7 +89,12 @@ class MyApp extends StatelessWidget {
                         : 500,
                   )
                 : null, // 화면 너비 제한
-            child: child,
+            child: Column(
+              children: [
+                GetPlatform.isDesktop ? CustomWindowScreen() : SizedBox.shrink(),
+                child,
+              ],
+            ),
           ),
         );
       },
