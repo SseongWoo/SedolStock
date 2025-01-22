@@ -91,15 +91,8 @@ class MyApp extends StatelessWidget {
               if (currentResolutionIndex > 3) {
                 currentResolutionIndex = 0;
               }
+              switchResolution(resolutions[currentResolutionIndex]);
             }
-            if (event is KeyDownEvent && event.logicalKey.keyLabel == 'F10') {
-              currentResolutionIndex--;
-              if (currentResolutionIndex <= 0) {
-                currentResolutionIndex = 3;
-              }
-            }
-
-            switchResolution(resolutions[currentResolutionIndex]);
           },
           child: Center(
             child: Container(

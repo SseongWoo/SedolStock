@@ -72,19 +72,19 @@ Future<Size> setResolution(String resolution) async {
 
   switch (resolution) {
     case 'HD':
-      newSize = Size(1280 / aspectRatio, 1280);
+      newSize = Size(600, 1280);
       break;
     case 'FHD': // 1080x1920 (iPhone 15 비율)
-      newSize = Size(1920 / aspectRatio, 1920);
+      newSize = Size(900, 1920);
       break;
     case 'QHD': // 1440x2560 (iPhone 15 비율)
-      newSize = Size(2560 / aspectRatio, 2560);
+      newSize = Size(1200, 2560);
       break;
     case 'UHD': // 2160x3840 (iPhone 15 비율)
-      newSize = Size(3840 / aspectRatio, 3840);
+      newSize = Size(1500, 3840);
       break;
     default:
-      newSize = Size(1920 / aspectRatio, 1920); // 기본값: FHD
+      newSize = Size(900, 1920); // 기본값: FHD
   }
 
   // await DesktopWindow.setWindowSize(newSize);
@@ -99,5 +99,16 @@ void switchResolution(String resolutions) async {
   await DesktopWindow.setWindowSize(size);
   await DesktopWindow.setMinWindowSize(size);
   await DesktopWindow.setMaxWindowSize(size);
+
   print('해상도가 ${resolutions} ${size.height}:${size.width}로 변경되었습니다.');
+
+  Size newSize = await DesktopWindow.getWindowSize();
+  if (size != newSize) {
+    final size = await setResolution('HD');
+
+    await DesktopWindow.setWindowSize(size);
+    await DesktopWindow.setMinWindowSize(size);
+    await DesktopWindow.setMaxWindowSize(size);
+    print('해상도가 맞지않아 롤백합니다');
+  }
 }

@@ -1,9 +1,9 @@
-#include <flutter/dart_project.h>
+﻿#include <flutter/dart_project.h>
 #include <flutter/flutter_view_controller.h>
 #include <windows.h>
 
-#include "flutter_window.h"
-#include "utils.h"
+#include "../../../../.pub-cache/hosted/pub.dev/just_audio-0.9.42/example/windows/runner/flutter_window.h"
+#include "../../../../.pub-cache/hosted/pub.dev/flutter_secure_storage_windows-3.1.2/example/windows/runner/utils.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
@@ -30,7 +30,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   if (!window.Create(L"세돌스탁", origin, size)) {
     return EXIT_FAILURE;
   }
-  window.SetQuitOnClose(true);
+// 창 크기 조절 비활성화
+HWND hwnd = window.GetHandle();              // 윈도우 핸들 가져오기
+LONG style = GetWindowLong(hwnd, GWL_STYLE); // 현재 스타일 가져오기
+style &= ~WS_SIZEBOX;                        // 크기 조절 막기
+style &= ~WS_MAXIMIZEBOX;                    // 최대화 버튼 비활성화
+SetWindowLong(hwnd, GWL_STYLE, style);       // 수정된 스타일 적용
+window.SetQuitOnClose(true);
 
   ::MSG msg;
   while (::GetMessage(&msg, nullptr, 0, 0)) {
