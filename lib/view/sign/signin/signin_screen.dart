@@ -154,16 +154,17 @@ class SigninScreen extends StatelessWidget {
       maxLines: 1,
       decoration: InputDecoration(
         labelText: labelText,
-        labelStyle: TextStyle(color: Colors.white, fontSize: screenSize.getHeightPerSize(2)),
+        labelStyle: TextStyle(color: Colors.white, fontSize: screenSize.getHeightPerSize(1.8)),
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: colorIfari, width: 2.0),
         ),
       ),
-      style: const TextStyle(
+      style: TextStyle(
         color: Colors.white,
+        fontSize: screenSize.getHeightPerSize(2),
       ),
       obscureText: obscureText,
       cursorColor: Colors.white,

@@ -195,7 +195,8 @@ class SignupScreen extends StatelessWidget {
           decoration: InputDecoration(
               border: const OutlineInputBorder(),
               labelText: labelText,
-              labelStyle: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
+              labelStyle:
+                  TextStyle(color: Colors.white, fontSize: screenSize.getHeightPerSize(1.8)),
               suffixIcon: onPressed != null
                   ? IconButton(
                       onPressed: () {
@@ -203,6 +204,10 @@ class SignupScreen extends StatelessWidget {
                       },
                       icon: Icon(visPW ? Icons.visibility : Icons.visibility_off))
                   : null),
+          style: TextStyle(
+            color: colorSUB,
+            fontSize: screenSize.getHeightPerSize(2),
+          ),
           obscureText: visPW,
           textInputAction: TextInputAction.next,
           maxLines: 1,
