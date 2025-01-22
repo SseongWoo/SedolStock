@@ -10,7 +10,6 @@ import 'package:stockpj/data/my_data.dart';
 import 'package:stockpj/utils/get_env.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/utils/timer.dart';
-import 'package:stockpj/utils/window_appbar.dart';
 import 'package:stockpj/view/main/event/event_screen.dart';
 import 'package:stockpj/view/main/information/delete_account_screen.dart';
 import 'package:stockpj/view/main/information/setting_app_screen.dart';
@@ -40,7 +39,7 @@ void main() async {
 
   if (GetPlatform.isDesktop) {
     // 창 크기 조정 비활성화
-    const Size initialSize = Size(1280 / (19.5 / 9), 1280);
+    const Size initialSize = Size(1280 / (19.5 / 9), 1280); // FHD 기본 크기
     await DesktopWindow.setMinWindowSize(initialSize);
     await DesktopWindow.setMaxWindowSize(initialSize);
   }
@@ -80,20 +79,24 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       builder: (context, child) {
         child = EasyLoading.init()(context, child);
-        return Center(
-          child: Container(
-            constraints: GetPlatform.isWeb
-                ? BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.height > 750
-                        ? MediaQuery.of(context).size.height * (10 / 16)
-                        : 500,
-                  )
-                : null, // 화면 너비 제한
-            child: Column(
-              children: [
-                GetPlatform.isDesktop ? CustomWindowScreen() : SizedBox.shrink(),
-                child,
-              ],
+        final FocusNode focusNode = FocusNode();
+        return KeyboardListener(
+          focusNode: focusNode,
+          onKeyEvent: (KeyEvent event) {
+            if (event is KeyDownEvent && event.logicalKey.keyLabel == 'F11') {
+              switchResolution();
+            }
+          },
+          child: Center(
+            child: Container(
+              constraints: GetPlatform.isWeb
+                  ? BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.height > 750
+                          ? MediaQuery.of(context).size.height * (10 / 16)
+                          : 500,
+                    )
+                  : null, // 화면 너비 제한
+              child: child,
             ),
           ),
         );

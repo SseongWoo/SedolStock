@@ -66,7 +66,7 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
 }
 
 // 해상도에 따른 창 크기 설정 함수
-Future<void> setResolution(String resolution) async {
+Future<Size> setResolution(String resolution) async {
   double aspectRatio = 19.5 / 9; // iPhone 15 비율
   Size newSize;
 
@@ -87,7 +87,23 @@ Future<void> setResolution(String resolution) async {
       newSize = Size(1920 / aspectRatio, 1920); // 기본값: FHD
   }
 
-  await DesktopWindow.setWindowSize(newSize);
-  await DesktopWindow.setMinWindowSize(newSize);
-  await DesktopWindow.setMaxWindowSize(newSize);
+  // await DesktopWindow.setWindowSize(newSize);
+  // await DesktopWindow.setMinWindowSize(newSize);
+  // await DesktopWindow.setMaxWindowSize(newSize);
+  return newSize;
+}
+
+void switchResolution() async {
+  // 해상도 목록과 현재 인덱스
+  final List<String> resolutions = ['HD', 'FHD', 'QHD', 'UHD'];
+  int currentResolutionIndex = 1;
+
+  currentResolutionIndex++;
+
+  final size = await setResolution(resolutions[currentResolutionIndex]);
+
+  await DesktopWindow.setWindowSize(size);
+  await DesktopWindow.setMinWindowSize(size);
+  await DesktopWindow.setMaxWindowSize(size);
+  print('해상도가 ${resolutions[currentResolutionIndex]}로 변경되었습니다.');
 }
