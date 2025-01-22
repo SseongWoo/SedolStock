@@ -72,12 +72,26 @@ class EventScreen extends StatelessWidget {
           children: [
             Text(
               eventItem.title,
-              style: TextStyle(
-                fontSize: screenSize.getHeightPerSize(2),
-              ),
+              style:
+                  TextStyle(fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: screenSize.getHeightPerSize(1),
+            ),
+            // const Text(
+            //   '대상 채널: ',
+            // ),
+            // _viewModel.channelText(eventItem.channel),
+            Row(
+              children: [
+                const Text(
+                  '대상 채널: ',
+                ),
+                _viewModel.channelText(eventItem.channel),
+              ],
+            ),
+            SizedBox(
+              height: screenSize.getHeightPerSize(2),
             ),
             Text(
               eventItem.description,
@@ -88,9 +102,11 @@ class EventScreen extends StatelessWidget {
             SizedBox(
               height: screenSize.getHeightPerSize(1),
             ),
-            Text('이벤트 기간 : ${eventItem.eventStart} ~ ${eventItem.eventEnd}'),
             Text(
-              '대상 채널: ${_viewModel.channelText(eventItem.channel)}',
+              '이벤트 기간 : ${eventItem.eventStart} ~ ${eventItem.eventEnd}',
+              style: TextStyle(
+                fontSize: screenSize.getHeightPerSize(1.4),
+              ),
             ),
           ],
         ),

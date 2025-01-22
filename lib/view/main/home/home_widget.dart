@@ -124,7 +124,7 @@ class EventWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       border: Border.all(color: colorMAIN),
                       borderRadius: BorderRadius.circular(15)),
-                  child: eventList.isEmpty
+                  child: eventList.isNotEmpty
                       ? Column(
                           children: eventList.take(3).map((event) {
                             return ListTile(

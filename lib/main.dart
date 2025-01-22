@@ -1,3 +1,4 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -36,6 +37,14 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  if (GetPlatform.isDesktop) {
+    await DesktopWindow.setMinWindowSize(const Size(450, 800));
+    await DesktopWindow.setMaxWindowSize(const Size(2160, 3840));
+  }
+
+  // 초기 창 크기를 FHD로 설정
+  await _setResolution('FHD');
+
   await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
   startController(); // 컨트롤러들 생성
@@ -54,6 +63,28 @@ void startController() {
   Get.put(TimerController(), permanent: true);
   Get.put(PublicDataController());
   Get.put(AudioController());
+}
+
+// 해상도에 따른 창 크기 설정 함수
+Future<void> _setResolution(String resolution) async {
+  double aspectRatio = 19.5 / 9; // iPhone 15 비율
+  Size size;
+
+  switch (resolution) {
+    case 'FHD': // 1080x1920 (iPhone 15 비율)
+      size = Size(1080, 1080 / aspectRatio);
+      break;
+    case 'QHD': // 1440x2560 (iPhone 15 비율)
+      size = Size(1440, 1440 / aspectRatio);
+      break;
+    case 'UHD': // 2160x3840 (iPhone 15 비율)
+      size = Size(2160, 2160 / aspectRatio);
+      break;
+    default:
+      size = Size(1080, 1080 / aspectRatio); // 기본값: FHD
+  }
+
+  await DesktopWindow.setWindowSize(size); // 창 크기 설정
 }
 
 class MyApp extends StatelessWidget {

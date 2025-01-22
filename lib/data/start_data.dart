@@ -20,17 +20,22 @@ Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController, Strin
 
 // 앱을 실행할때 실행되는 함수
 Future<void> startGetData() async {
+  DateTime now = DateTime.now();
+
+  // 데이터를 가져오는 시간이 데이터 갱신 시간일 경우 5초 기다린 후 데이터를 가져옴
+  if (_checkRefreshTime(now)) {
+    await Future.delayed(const Duration(seconds: 5));
+  }
+
   final MyDataController myDataController = Get.find<MyDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   String? date = await getDataDate();
-  String today = DateFormat('MM월 dd일 hh시').format(DateTime.now());
+  String today = DateFormat('MM월 dd일 hh시').format(now);
   DateTime? dateTime = date != null ? DateFormat('MM월 dd일 hh시').parse(date) : null;
 
   // 금일 새벽 2시 이후 실행된 이력이 있으면 일부 데이터만 가져오고, 없으면 모든 데이터를 가져오도록 동작
-  if (date == null ||
-      date != today ||
-      (dateTime != null && dateTime.hour < 2 && DateTime.now().hour >= 2)) {
+  if (date == null || date != today || (dateTime != null && dateTime.hour < 2 && now.hour >= 2)) {
     await fetchDataAndSave(youtubeDataController, today);
   } else {
     await loadLatestYoutubeData();
@@ -77,6 +82,13 @@ Future<void> startGetData() async {
 
 // 앱 실행중 5분마다 실행되거나, 특정 동작으로 실행되는 함수로 사용자의 정보와 주식의 정보를 업데이트 함
 Future<void> reflashGetData(bool timeReFlash) async {
+  DateTime now = DateTime.now();
+
+  // 데이터를 가져오는 시간이 데이터 갱신 시간일 경우 5초 기다린 후 데이터를 가져옴
+  if (_checkRefreshTime(now)) {
+    await Future.delayed(const Duration(seconds: 5));
+  }
+
   final MyDataController myDataController = Get.find<MyDataController>();
   await myDataController.getUserData();
   if (timeReFlash) {
@@ -90,4 +102,8 @@ Future<void> reflashGetData(bool timeReFlash) async {
     await myDataController.getTradeHistoryData();
     await myDataController.updateMyTotalMoney();
   }
+}
+
+bool _checkRefreshTime(DateTime dateTime) {
+  return dateTime.minute % 5 == 0 && dateTime.second < 5;
 }

@@ -12,18 +12,42 @@ import 'package:stockpj/widget/simple_widget.dart';
 import '../data/my_data.dart';
 import '../data/start_data.dart';
 
-class TimerController extends GetxController {
+class TimerController extends GetxController with WidgetsBindingObserver {
   final MyDataController _myDataController = Get.find<MyDataController>();
   Timer? _countdownTimer; // 카운트다운 타이머
   RxInt secondsRemaining = 0.obs; // 총 남은 시간을 초 단위로 저장
   RxString timeDisplay = '00:00'.obs; // 남은 시간을 "분:초"로 저장
   RxString currentTime = ''.obs; // 현재 시간
   RxBool checkDataTime = false.obs; // 카운트다운 타이머와 데이터 갱신 카운트다운 타이머 구분 변수
+  DateTime lastRefreshTime = DateTime.now(); // 마지막으로 갱신한 시간
 
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addObserver(this); // 라이프사이클 이벤트 감지
     _startTimer(); // 타이머 시작
+    lastRefreshTime = adjustToNearest5Minutes(DateTime.now());
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this); // 감지 중지
+    _countdownTimer?.cancel(); // 카운트다운 타이머 취소
+    super.onClose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      onAppResume();
+    }
+  }
+
+  // 시간 5분 단위 내림 처리
+  DateTime adjustToNearest5Minutes(DateTime time) {
+    int adjustedMinutes = (time.minute ~/ 5) * 5;
+
+    return DateTime(time.year, time.month, time.day, time.hour, adjustedMinutes);
   }
 
   // 타이머 시작 함수
@@ -100,10 +124,16 @@ class TimerController extends GetxController {
 
   // 5분이 다 되면 실행되는 작업
   void _executeTask() async {
-    currentTime.value = '5분 단위로 실행됨: ${DateTime.now()}';
+    DateTime nowTime = DateTime.now();
+    currentTime.value = '5분 단위로 실행됨: $nowTime';
+    lastRefreshTime = nowTime;
     logger.i(currentTime.value);
     _scheduleNextRun();
 
+    reflashData();
+  }
+
+  void reflashData() async {
     if (_myDataController.myUid.value != '') {
       if (Get.isDialogOpen == true) {
         Get.back(); // 다이얼로그 닫기
@@ -136,10 +166,22 @@ class TimerController extends GetxController {
         '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
-  @override
-  void onClose() {
-    _countdownTimer?.cancel(); // 카운트다운 타이머 취소
-    super.onClose();
+  void onAppResume() {
+    print('앱이 다시 활성화되었습니다.');
+    DateTime nowTime = DateTime.now();
+
+    // 5분 단위 범위 확인 (현재 시간과 마지막 갱신 시간 비교)
+    Duration difference = nowTime.difference(lastRefreshTime);
+    if (difference.inMinutes >= 5) {
+      print('조건을 충족하여 함수 실행!');
+      reflashData();
+      lastRefreshTime = adjustToNearest5Minutes(nowTime); // 컨트롤러의 값 업데이트
+    } else {
+      print('지정된 시간 범위 안에 있으므로 실행하지 않습니다.$lastRefreshTime ${difference.inMinutes}');
+    }
+
+    _countdownTimer?.cancel();
+    _startTimer();
   }
 }
 
