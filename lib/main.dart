@@ -79,32 +79,16 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       builder: (context, child) {
         child = EasyLoading.init()(context, child);
-        final FocusNode focusNode = FocusNode();
-        final List<String> resolutions = ['HD', 'FHD', 'QHD', 'UHD'];
-        int currentResolutionIndex = 1;
-
-        return KeyboardListener(
-          focusNode: focusNode,
-          onKeyEvent: (KeyEvent event) {
-            if (event is KeyDownEvent && event.logicalKey.keyLabel == 'F11') {
-              currentResolutionIndex++;
-              if (currentResolutionIndex > 3) {
-                currentResolutionIndex = 0;
-              }
-              switchResolution(resolutions[currentResolutionIndex]);
-            }
-          },
-          child: Center(
-            child: Container(
-              constraints: GetPlatform.isWeb
-                  ? BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.height > 750
-                          ? MediaQuery.of(context).size.height * (10 / 16)
-                          : 500,
-                    )
-                  : null, // 화면 너비 제한
-              child: child,
-            ),
+        return Center(
+          child: Container(
+            constraints: GetPlatform.isWeb
+                ? BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.height > 750
+                        ? MediaQuery.of(context).size.height * (10 / 16)
+                        : 500,
+                  )
+                : null, // 화면 너비 제한
+            child: child,
           ),
         );
       },

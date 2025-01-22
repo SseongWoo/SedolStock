@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
@@ -129,5 +130,26 @@ class SplashViewModel extends GetxController {
 
   void _closeApp() {
     exit(0);
+  }
+}
+
+class WindowsViewModel extends GetxController {
+  final ScreenController _screenController = Get.find<ScreenController>();
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    startGetWindowsSize();
+  }
+
+  void startGetWindowsSize() async {
+    await DesktopWindow.setFullScreen(true);
+    _screenController.windowsSize = await DesktopWindow.getWindowSize();
+    await DesktopWindow.setFullScreen(false);
+
+    double targetHeight = _screenController.windowsSize.height * 0.8;
+    double targetWidth = targetHeight * (9 / 19.5);
+
+    await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
   }
 }

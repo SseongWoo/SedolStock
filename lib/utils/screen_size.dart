@@ -54,6 +54,7 @@ class ScreenSize {
 
 class ScreenController extends GetxController with WidgetsBindingObserver {
   var screenSize = ScreenSize(const Size(0.0, 0.0)).obs; // 화면 사이즈 변수
+  Size windowsSize = const Size(0.0, 0.0);
 
   // 화면 사이즈 업데이트
   void updateScreenSize(BuildContext context) {

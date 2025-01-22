@@ -59,3 +59,15 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
+
+class WindowsScreen extends StatelessWidget {
+  final WindowsViewModel _viewModel = Get.put(WindowsViewModel());
+  WindowsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+    );
+  }
+}
