@@ -1,3 +1,4 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -62,4 +63,31 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     screenSize.value = ScreenSize(Size(MediaQuery.of(context).size.width,
         MediaQuery.of(context).size.height - viewPadding.bottom));
   }
+}
+
+// 해상도에 따른 창 크기 설정 함수
+Future<void> setResolution(String resolution) async {
+  double aspectRatio = 19.5 / 9; // iPhone 15 비율
+  Size newSize;
+
+  switch (resolution) {
+    case 'HD':
+      newSize = Size(1280 / aspectRatio, 1280);
+      break;
+    case 'FHD': // 1080x1920 (iPhone 15 비율)
+      newSize = Size(1920 / aspectRatio, 1920);
+      break;
+    case 'QHD': // 1440x2560 (iPhone 15 비율)
+      newSize = Size(2560 / aspectRatio, 2560);
+      break;
+    case 'UHD': // 2160x3840 (iPhone 15 비율)
+      newSize = Size(3840 / aspectRatio, 3840);
+      break;
+    default:
+      newSize = Size(1920 / aspectRatio, 1920); // 기본값: FHD
+  }
+
+  await DesktopWindow.setWindowSize(newSize);
+  await DesktopWindow.setMinWindowSize(newSize);
+  await DesktopWindow.setMaxWindowSize(newSize);
 }
