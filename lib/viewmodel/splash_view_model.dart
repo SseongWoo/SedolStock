@@ -147,11 +147,7 @@ class WindowsViewModel extends GetxController {
     int? windowsPer;
 
     windowsPer = await loadWindowsSizeData();
-    print('windowPer = $windowsPer');
-
-    //await DesktopWindow.setFullScreen(true);
     _screenController.windowsMaxSize = _screenController.getPhysicalScreenSize();
-    //await DesktopWindow.setFullScreen(false);
     _screenController.setWindowsSize(windowsPer ?? 70);
 
     Get.offAllNamed(AppRoute.splash);
