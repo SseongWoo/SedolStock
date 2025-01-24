@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:stockpj/utils/audio.dart';
 import 'package:stockpj/data/my_data.dart';
@@ -36,6 +37,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  GetStorage.init();
 
   await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
