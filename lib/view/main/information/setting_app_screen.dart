@@ -50,6 +50,7 @@ class SettingAppScreen extends StatelessWidget {
             informationButton('로그아웃', _viewModel.logoutDialog, screenSize),
             SizedBox(height: screenSize.getHeightPerSize(1)),
             Visibility(
+              visible: GetPlatform.isDesktop,
               child: Column(
                 children: [
                   _settingTitle(screenSize, '어플 설정'),

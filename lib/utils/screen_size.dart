@@ -59,6 +59,7 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
   var screenSize = ScreenSize(const Size(0.0, 0.0)).obs; // 화면 사이즈 변수
   Size windowsMaxSize = const Size(0.0, 0.0);
   RxInt sizePer = 60.obs;
+  List<int> windowSizeList = [70, 80, 90];
 
   // 화면 사이즈 업데이트
   void updateScreenSize(BuildContext context) {
@@ -69,11 +70,21 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
         MediaQuery.of(context).size.height - viewPadding.bottom));
   }
 
+  void setWindowSizeList(double heightSize) {
+    if (heightSize <= 1200) {
+      windowSizeList = [70, 80, 90];
+    } else if (heightSize <= 1500) {
+      windowSizeList = [60, 70, 80, 90];
+    } else {
+      windowSizeList = [40, 50, 60, 70, 80, 90];
+    }
+  }
+
   void setWindowsSize(int percent) async {
     double targetHeight = windowsMaxSize.height * (percent / 100);
     double targetWidth = targetHeight * (10 / 19);
     EasyLoading.show();
-    print('${windowsMaxSize.height}, ${windowsMaxSize.width}');
+    setWindowSizeList(windowsMaxSize.height);
     await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
     await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));
     await DesktopWindow.setMinWindowSize(Size(targetWidth, targetHeight));

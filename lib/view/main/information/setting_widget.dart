@@ -254,12 +254,10 @@ class ChangePasswordDialog extends StatelessWidget {
 
 class WindowsSizeDialog extends StatelessWidget {
   final ScreenController screenController;
-  final List<int> sizeList;
 
   const WindowsSizeDialog({
     super.key,
     required this.screenController,
-    required this.sizeList,
   });
 
   @override
@@ -274,7 +272,7 @@ class WindowsSizeDialog extends StatelessWidget {
         child: Obx(
           () => Column(
             mainAxisSize: MainAxisSize.min,
-            children: sizeList.map((size) {
+            children: screenController.windowSizeList.map((size) {
               return RadioListTile(
                 value: size.toString(),
                 groupValue: screenController.sizePer.toString(),

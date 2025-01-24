@@ -29,7 +29,6 @@ class SettingAppViewModel extends GetxController {
   final formKey = GlobalKey<FormState>();
   final filter = english_filter.ProfanityFilter(); // 비속어 감지 필터
   bool overlapName = true;
-  final List<int> windowSizeList = [40, 50, 60, 70, 80, 90];
 
   void goInformation() {
     Get.offAllNamed(AppRoute.home, arguments: 4);
@@ -172,7 +171,6 @@ class SettingAppViewModel extends GetxController {
     Get.dialog(
       WindowsSizeDialog(
         screenController: screenController,
-        sizeList: windowSizeList,
       ),
     );
   }
