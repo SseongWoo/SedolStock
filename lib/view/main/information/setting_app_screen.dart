@@ -47,7 +47,8 @@ class SettingAppScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _settingTitle(screenSize, '어플 설정'),
-                  informationButton('해상도 설정', _viewModel.windowsSizeDialog, screenSize),
+                  informationButton(
+                      '해상도 설정', () => _viewModel.windowsSizeDialog(context), screenSize),
                 ],
               ),
             ),
