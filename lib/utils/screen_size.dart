@@ -73,7 +73,7 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     double targetHeight = windowsMaxSize.height * (percent / 100);
     double targetWidth = targetHeight * (10 / 19);
     EasyLoading.show();
-
+    print('${windowsMaxSize.height}, ${windowsMaxSize.width}');
     await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
     await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));
     await DesktopWindow.setMinWindowSize(Size(targetWidth, targetHeight));
