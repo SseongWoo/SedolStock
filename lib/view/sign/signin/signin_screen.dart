@@ -31,7 +31,7 @@ class SigninScreen extends StatelessWidget {
               height: screenSize.getHeightPerSize(2),
             ),
             Container(
-              height: screenSize.getHeightPerSize(38),
+              height: screenSize.getHeightPerSize(40),
               width: screenSize.getWidthPerSize(94),
               decoration: const BoxDecoration(
                 image: DecorationImage(

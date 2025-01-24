@@ -48,6 +48,7 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: screenSize.getHeightPerSize(1.8),
                       ),
+                      maxLines: 1,
                     );
                   },
                 ),
