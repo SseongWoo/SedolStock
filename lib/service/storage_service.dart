@@ -354,7 +354,7 @@ void saveWindowsSizeData(int size) {
 Future<int?> loadWindowsSizeData() async {
   try {
     final sizeData = await box.read('windowsSize');
-    logger.i('WindowsSize data saved successfully');
+    logger.i('WindowsSize data load successfully $sizeData');
     return sizeData;
   } catch (e) {
     logger.e('loadWindowsSizeData error : $e');
