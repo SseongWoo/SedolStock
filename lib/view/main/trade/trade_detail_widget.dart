@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpj/utils/screen_size.dart';
@@ -42,7 +43,7 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
                   showTitles: true,
                   reservedSize: screenSize.getWidthPerSize(8),
                   getTitlesWidget: (double value, TitleMeta meta) {
-                    return Text(
+                    return AutoSizeText(
                       formatValue(value), // 포맷팅된 값 표시
                       style: TextStyle(
                         fontSize: screenSize.getHeightPerSize(1.8),
