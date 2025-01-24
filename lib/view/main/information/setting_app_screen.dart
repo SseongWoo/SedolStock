@@ -8,14 +8,14 @@ import '../../../widget/divider.dart';
 
 // 정보 탭 관리 화면
 class SettingAppScreen extends StatelessWidget {
-  final SettingAppViewModel _viewModel = Get.put(SettingAppViewModel())    WidgetsBinding.instance.addPostFrameCallback((_) {
-  _viewModel.screenController.updateScreenSize(context);
-  });;
+  final SettingAppViewModel _viewModel = Get.put(SettingAppViewModel());
   SettingAppScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _viewModel.screenController.updateScreenSize(context);
+    });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(
