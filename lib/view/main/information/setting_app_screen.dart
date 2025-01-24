@@ -60,7 +60,7 @@ class SettingAppScreen extends StatelessWidget {
             ),
             SizedBox(height: screenSize.getHeightPerSize(1)),
             _settingTitle(screenSize,
-                '${_viewModel.screenController.windowsMaxSize.height}, ${_viewModel.screenController.windowsMaxSize.width}'),
+                '${_viewModel.screenController.getPhysicalScreenSize().height}, ${_viewModel.screenController.getPhysicalScreenSize().width}'),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../service/storage_service.dart';
+import 'package:win32/win32.dart';
 
 // 화면 사이즈 클래스
 class ScreenSize {
@@ -91,5 +92,14 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     EasyLoading.dismiss();
     saveWindowsSizeData(percent);
     sizePer.value = percent;
+  }
+
+  Size getPhysicalScreenSize() {
+    final hdc = GetDC(0); // Get the device context for the entire screen
+    final width = GetDeviceCaps(hdc, GET_DEVICE_CAPS_INDEX.HORZRES); // Screen width in pixels
+    final height = GetDeviceCaps(hdc, GET_DEVICE_CAPS_INDEX.VERTRES); // Screen height in pixels
+    ReleaseDC(0, hdc);
+
+    return Size(width.toDouble(), height.toDouble());
   }
 }
