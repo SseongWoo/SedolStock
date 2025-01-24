@@ -16,7 +16,10 @@ class SettingAppScreen extends StatelessWidget {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('관리'),
+        title: Text(
+          '관리',
+          style: TextStyle(fontSize: screenSize.getHeightPerSize(2.5)),
+        ),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
