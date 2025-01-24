@@ -138,9 +138,9 @@ class MyApp extends StatelessWidget {
           page: () => NotificationScreen(),
         ),
         GetPage(
-          name: AppRoute.settingApp,
-          page: () => SettingAppScreen(),
-        ),
+            name: AppRoute.settingApp,
+            page: () => SettingAppScreen(),
+            transition: Transition.leftToRight),
         GetPage(
           name: AppRoute.deleteAccount,
           page: () => DeleteAccountScreen(),

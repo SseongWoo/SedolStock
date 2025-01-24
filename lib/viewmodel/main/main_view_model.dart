@@ -17,6 +17,16 @@ class MainViewModel extends GetxController {
   // 현재 선택된 탭 인덱스
   RxInt selectedIndex = 0.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    int? index = Get.arguments;
+    if (index != null) {
+      selectedIndex.value = index;
+    }
+  }
+
   void onPressed() {
     Get.toNamed(
       AppRoute.notification,

@@ -16,6 +16,9 @@ class SettingAppScreen extends StatelessWidget {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return Scaffold(
       appBar: AppBar(
+        leading: SimpleBackButtonWidget(
+          function: _viewModel.goInformation,
+        ),
         title: Text(
           '관리',
           style: TextStyle(fontSize: screenSize.getHeightPerSize(2.5)),
@@ -47,8 +50,7 @@ class SettingAppScreen extends StatelessWidget {
               child: Column(
                 children: [
                   _settingTitle(screenSize, '어플 설정'),
-                  informationButton(
-                      '해상도 설정', () => _viewModel.windowsSizeDialog(context), screenSize),
+                  informationButton('해상도 설정', _viewModel.windowsSizeDialog, screenSize),
                 ],
               ),
             ),

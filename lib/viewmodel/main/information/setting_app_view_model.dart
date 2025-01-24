@@ -31,6 +31,10 @@ class SettingAppViewModel extends GetxController {
   bool overlapName = true;
   final List<int> windowSizeList = [70, 80, 90];
 
+  void goInformation() {
+    Get.offAllNamed(AppRoute.home, arguments: 4);
+  }
+
 // 데이터 수동 새로 고침
   void tryGetData() async {
     if (_publicDataController.manualRefresh > 5) {
@@ -164,12 +168,11 @@ class SettingAppViewModel extends GetxController {
   }
 
   // 이름 변경 다이얼로그 호출
-  void windowsSizeDialog(BuildContext context) {
+  void windowsSizeDialog() {
     Get.dialog(
       WindowsSizeDialog(
         screenController: screenController,
         sizeList: windowSizeList,
-        buildContext: context,
       ),
     );
   }
