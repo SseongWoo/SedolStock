@@ -164,9 +164,13 @@ class SettingAppViewModel extends GetxController {
   }
 
   // 이름 변경 다이얼로그 호출
-  void windowsSizeDialog() {
+  void windowsSizeDialog(BuildContext context) {
     Get.dialog(
-      WindowsSizeDialog(screenController: screenController, sizeList: windowSizeList),
+      WindowsSizeDialog(
+        screenController: screenController,
+        sizeList: windowSizeList,
+        buildContext: context,
+      ),
     );
   }
 }

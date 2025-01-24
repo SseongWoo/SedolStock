@@ -196,7 +196,7 @@ class SignupScreen extends StatelessWidget {
               border: const OutlineInputBorder(),
               labelText: labelText,
               labelStyle:
-                  TextStyle(color: Colors.white, fontSize: screenSize.getHeightPerSize(1.8)),
+                  TextStyle(color: Colors.black, fontSize: screenSize.getHeightPerSize(1.8)),
               suffixIcon: onPressed != null
                   ? IconButton(
                       onPressed: () {

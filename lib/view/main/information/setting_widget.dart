@@ -253,6 +253,7 @@ class ChangePasswordDialog extends StatelessWidget {
 }
 
 class WindowsSizeDialog extends StatelessWidget {
+  final BuildContext buildContext;
   final ScreenController screenController;
   final List<int> sizeList;
 
@@ -260,6 +261,7 @@ class WindowsSizeDialog extends StatelessWidget {
     super.key,
     required this.screenController,
     required this.sizeList,
+    required this.buildContext,
   });
 
   @override
@@ -282,7 +284,7 @@ class WindowsSizeDialog extends StatelessWidget {
                 onChanged: (String? newValue) {
                   if (newValue != null) {
                     int selectedPercent = int.parse(newValue);
-                    screenController.setWindowsSize(selectedPercent);
+                    screenController.setWindowsSize(selectedPercent, buildContext);
                   }
                 },
               );

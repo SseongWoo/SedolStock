@@ -66,6 +66,7 @@ class WindowsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _viewModel.startGetWindowsSize(context);
     return Container(
       color: Colors.white,
     );
