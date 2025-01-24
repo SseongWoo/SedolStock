@@ -29,7 +29,7 @@ class SettingAppViewModel extends GetxController {
   final formKey = GlobalKey<FormState>();
   final filter = english_filter.ProfanityFilter(); // 비속어 감지 필터
   bool overlapName = true;
-  final List<int> windowSizeList = [40, 60, 80];
+  final List<int> windowSizeList = [60, 80, 100];
 
 // 데이터 수동 새로 고침
   void tryGetData() async {
