@@ -89,7 +89,11 @@ class PropertyStocklistScreen extends StatelessWidget {
             () {
               final stockDataList = _viewModel.myDataController.stockListItem.values.toList();
               if (stockDataList.isEmpty) {
-                return const Center(child: Text('보유중인 주식이 없습니다.'));
+                return Center(
+                    child: Text(
+                  '보유중인 주식이 없습니다.',
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
+                ));
               }
 
               return ListView.builder(

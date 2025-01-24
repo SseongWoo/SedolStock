@@ -40,7 +40,15 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: screenSize.getWidthPerSize(12),
+                  reservedSize: screenSize.getWidthPerSize(8),
+                  getTitlesWidget: (double value, TitleMeta meta) {
+                    return Text(
+                      formatValue(value), // 포맷팅된 값 표시
+                      style: TextStyle(
+                        fontSize: screenSize.getHeightPerSize(1.8),
+                      ),
+                    );
+                  },
                 ),
               ),
               bottomTitles: AxisTitles(

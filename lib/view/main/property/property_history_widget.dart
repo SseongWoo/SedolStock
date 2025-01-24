@@ -162,6 +162,7 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
                     selectedColor: Colors.blue,
                     backgroundColor: Colors.white,
                     labelStyle: TextStyle(
+                      fontSize: screenSize.getHeightPerSize(1.6),
                       color: selectedItems.contains(filter) ? Colors.white : Colors.black,
                     ),
                   )
@@ -172,6 +173,7 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
                     selectedColor: Colors.blue,
                     backgroundColor: Colors.white,
                     labelStyle: TextStyle(
+                      fontSize: screenSize.getHeightPerSize(1.6),
                       color: selectedItems.contains(filter) ? Colors.white : Colors.black,
                     ),
                   );
@@ -259,6 +261,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
               formatDateString2(tradeHistoryData.tradetime),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
             ),
             Text(
               viewModel.youtubeDataController.youtubeChannelData[tradeHistoryData.itemuid]?.title ??

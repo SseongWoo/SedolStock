@@ -11,13 +11,21 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('알림'),
+        title: Text(
+          '알림',
+          style: TextStyle(
+              fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(2.5)),
+        ),
         actions: [
           TextButton(
               onPressed: () {
                 _viewModel.clearMessage();
               },
-              child: const Text('알림 지우기'))
+              child: Text(
+                '알림 지우기',
+                style: TextStyle(
+                    fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(2.2)),
+              ))
         ],
       ),
       body: Obx(

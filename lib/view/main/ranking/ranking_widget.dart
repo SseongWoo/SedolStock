@@ -209,7 +209,12 @@ class CategoryDialog extends StatelessWidget {
               return RadioListTile(
                 value: filter,
                 groupValue: selectCategoryItem.value,
-                title: Text(filter),
+                title: Text(
+                  filter,
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(2),
+                  ),
+                ),
                 onChanged: (String? newValue) {
                   selectCategory(newValue!);
                 },

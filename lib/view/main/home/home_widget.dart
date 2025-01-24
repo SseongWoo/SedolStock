@@ -282,7 +282,7 @@ class ChannelListWidget extends StatelessWidget {
               () {
                 List<String> channelList = viewModel.getChannelList();
                 return SizedBox(
-                  height: screenSize.getHeightPerSize(18),
+                  height: screenSize.getHeightPerSize(20),
                   child: channelList.isEmpty
                       ? Center(
                           child: Text(

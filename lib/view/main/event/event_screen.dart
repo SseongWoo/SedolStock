@@ -20,15 +20,28 @@ class EventScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: const Text('이벤트'),
+          title: Text(
+            '이벤트',
+            style: TextStyle(
+                fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(2.5)),
+          ),
           bottom: TabBar(
             labelColor: colorSUB,
             unselectedLabelColor: Colors.grey,
             indicatorColor: colorSUB,
             tabs: [
-              Tab(text: '${_viewModel.eventStatusList[0]} 이벤트'),
-              Tab(text: '${_viewModel.eventStatusList[1]} 이벤트'),
-              Tab(text: '${_viewModel.eventStatusList[2]} 이벤트'),
+              Tab(
+                text: '${_viewModel.eventStatusList[0]} 이벤트',
+                height: _viewModel.screenController.screenSize.value.getHeightPerSize(2.2),
+              ),
+              Tab(
+                text: '${_viewModel.eventStatusList[1]} 이벤트',
+                height: _viewModel.screenController.screenSize.value.getHeightPerSize(2.2),
+              ),
+              Tab(
+                text: '${_viewModel.eventStatusList[2]} 이벤트',
+                height: _viewModel.screenController.screenSize.value.getHeightPerSize(2.2),
+              ),
             ],
           ),
         ),
