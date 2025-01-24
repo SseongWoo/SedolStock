@@ -21,36 +21,33 @@ class SettingAppScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          AudioSettingWidget(
-            viewModel: _viewModel,
-          ),
-          SizedBox(
-            height: screenSize.getHeightPerSize(1),
-          ),
+          AudioSettingWidget(viewModel: _viewModel),
+          SizedBox(height: screenSize.getHeightPerSize(1)),
           _settingTitle(screenSize, '정보 설정'),
           informationButton('데이터 새로고침', _viewModel.tryGetData, screenSize),
           settingDivider(screenSize),
           informationButton('내 이름 변경', _viewModel.nameChangeDialog, screenSize),
-          settingDivider(
-            screenSize,
-          ),
+          settingDivider(screenSize),
           informationButton('대표 팬덤 변경', _viewModel.changeFandomDialog, screenSize),
-          SizedBox(
-            height: screenSize.getHeightPerSize(1),
-          ),
+          SizedBox(height: screenSize.getHeightPerSize(1)),
           _settingTitle(screenSize, '계정 설정'),
           informationButton('파산 신청', _viewModel.restartDialog, screenSize),
           settingDivider(screenSize),
           informationButton('회원탈퇴', _viewModel.goDeleteAccount, screenSize),
           settingDivider(screenSize),
           informationButton('비밀번호 변경', _viewModel.sendPasswordResetEmail, screenSize),
-          settingDivider(
-            screenSize,
-          ),
+          settingDivider(screenSize),
           informationButton('로그아웃', _viewModel.logoutDialog, screenSize),
-          SizedBox(
-            height: screenSize.getHeightPerSize(1),
+          SizedBox(height: screenSize.getHeightPerSize(1)),
+          Visibility(
+            child: Column(
+              children: [
+                _settingTitle(screenSize, '어플 설정'),
+                informationButton('해상도 설정', _viewModel.windowsSizeDialog, screenSize),
+              ],
+            ),
           ),
+          SizedBox(height: screenSize.getHeightPerSize(1)),
         ],
       ),
     );

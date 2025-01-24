@@ -312,7 +312,6 @@ void saveEventData() {
   }
 }
 
-// 기기에 저장되어있는 각각의 채널의 최신10개 영상의 데이터 리스트를 읽어오는 함수
 Future<bool> loadEventData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
@@ -339,5 +338,26 @@ Future<bool> loadEventData() async {
   } catch (e) {
     logger.e('loadEventData error : $e');
     return false;
+  }
+}
+
+// 윈도우 사이즈
+void saveWindowsSizeData(int size) {
+  try {
+    box.write('windowsSize', size);
+    logger.i('WindowsSize data saved successfully');
+  } catch (e) {
+    logger.e('saveWindowsSize error: $e');
+  }
+}
+
+Future<int?> loadWindowsSizeData() async {
+  try {
+    final sizeData = await box.read('windowsSize');
+    logger.i('WindowsSize data saved successfully');
+    return sizeData;
+  } catch (e) {
+    logger.e('loadWindowsSizeData error : $e');
+    return null;
   }
 }

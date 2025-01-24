@@ -1,6 +1,9 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+
+import '../service/storage_service.dart';
 
 // 화면 사이즈 클래스
 class ScreenSize {
@@ -54,7 +57,8 @@ class ScreenSize {
 
 class ScreenController extends GetxController with WidgetsBindingObserver {
   var screenSize = ScreenSize(const Size(0.0, 0.0)).obs; // 화면 사이즈 변수
-  Size windowsSize = const Size(0.0, 0.0);
+  Size windowsMaxSize = const Size(0.0, 0.0);
+  RxInt sizePer = 40.obs;
 
   // 화면 사이즈 업데이트
   void updateScreenSize(BuildContext context) {
@@ -64,52 +68,17 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     screenSize.value = ScreenSize(Size(MediaQuery.of(context).size.width,
         MediaQuery.of(context).size.height - viewPadding.bottom));
   }
-}
 
-// 해상도에 따른 창 크기 설정 함수
-Future<Size> setResolution(String resolution) async {
-  double aspectRatio = 19.5 / 9; // iPhone 15 비율
-  Size newSize;
+  void setWindowsSize(int percent) async {
+    double targetHeight = windowsMaxSize.height * (percent / 100);
+    double targetWidth = targetHeight * (10 / 19);
+    EasyLoading.show();
 
-  switch (resolution) {
-    case 'HD':
-      newSize = Size(600, 1280);
-      break;
-    case 'FHD': // 1080x1920 (iPhone 15 비율)
-      newSize = Size(900, 1920);
-      break;
-    case 'QHD': // 1440x2560 (iPhone 15 비율)
-      newSize = Size(1200, 2560);
-      break;
-    case 'UHD': // 2160x3840 (iPhone 15 비율)
-      newSize = Size(1500, 3840);
-      break;
-    default:
-      newSize = Size(900, 1920); // 기본값: FHD
-  }
-
-  // await DesktopWindow.setWindowSize(newSize);
-  // await DesktopWindow.setMinWindowSize(newSize);
-  // await DesktopWindow.setMaxWindowSize(newSize);
-  return newSize;
-}
-
-void switchResolution(String resolutions) async {
-  final size = await setResolution(resolutions);
-
-  await DesktopWindow.setWindowSize(size);
-  await DesktopWindow.setMinWindowSize(size);
-  await DesktopWindow.setMaxWindowSize(size);
-
-  print('해상도가 ${resolutions} ${size.height}:${size.width}로 변경되었습니다.');
-
-  Size newSize = await DesktopWindow.getWindowSize();
-  if (size != newSize) {
-    final size = await setResolution('HD');
-
-    await DesktopWindow.setWindowSize(size);
-    await DesktopWindow.setMinWindowSize(size);
-    await DesktopWindow.setMaxWindowSize(size);
-    print('해상도가 맞지않아 롤백합니다');
+    await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
+    await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));
+    await DesktopWindow.setMinWindowSize(Size(targetWidth, targetHeight));
+    EasyLoading.dismiss();
+    saveWindowsSizeData(percent);
+    sizePer.value = percent;
   }
 }

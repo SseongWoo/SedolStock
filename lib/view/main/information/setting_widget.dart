@@ -251,3 +251,45 @@ class ChangePasswordDialog extends StatelessWidget {
     );
   }
 }
+
+class WindowsSizeDialog extends StatelessWidget {
+  final ScreenController screenController;
+  final List<int> sizeList;
+
+  const WindowsSizeDialog({
+    super.key,
+    required this.screenController,
+    required this.sizeList,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: screenController.screenSize.value.getWidthPerSize(80),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: sizeList.map((size) {
+              return RadioListTile(
+                value: size.toString(),
+                groupValue: screenController.sizePer.toString(),
+                title: Text('$size%'),
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    int selectedPercent = int.parse(newValue);
+                    screenController.setWindowsSize(selectedPercent);
+                  }
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}

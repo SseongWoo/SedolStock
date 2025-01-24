@@ -29,6 +29,7 @@ class SettingAppViewModel extends GetxController {
   final formKey = GlobalKey<FormState>();
   final filter = english_filter.ProfanityFilter(); // 비속어 감지 필터
   bool overlapName = true;
+  final List<int> windowSizeList = [40, 60, 80];
 
 // 데이터 수동 새로 고침
   void tryGetData() async {
@@ -160,5 +161,12 @@ class SettingAppViewModel extends GetxController {
     } else {
       showSimpleDialog(Get.back, '오류', '이메일 전송에 실패했습니다.\n다시 시도해 주세요.');
     }
+  }
+
+  // 이름 변경 다이얼로그 호출
+  void windowsSizeDialog() {
+    Get.dialog(
+      WindowsSizeDialog(screenController: screenController, sizeList: windowSizeList),
+    );
   }
 }

@@ -37,16 +37,6 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  if (GetPlatform.isDesktop) {
-    // 창 크기 조정 비활성화
-    const Size initialSize = Size(1280 / (19.5 / 9), 1280); // FHD 기본 크기
-    await DesktopWindow.setMinWindowSize(initialSize);
-    await DesktopWindow.setMaxWindowSize(initialSize);
-  }
-
-  // 초기 창 크기를 FHD로 설정
-  await setResolution('HD');
-
   await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
   startController(); // 컨트롤러들 생성
