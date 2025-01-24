@@ -136,7 +136,14 @@ class SplashViewModel extends GetxController {
 class WindowsViewModel extends GetxController {
   final ScreenController _screenController = Get.find<ScreenController>();
 
-  void startGetWindowsSize(BuildContext context) async {
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    startGetWindowsSize();
+  }
+
+  void startGetWindowsSize() async {
     int? windowsPer;
 
     windowsPer = await loadWindowsSizeData();
@@ -144,7 +151,7 @@ class WindowsViewModel extends GetxController {
     await DesktopWindow.setFullScreen(true);
     _screenController.windowsMaxSize = await DesktopWindow.getWindowSize();
     await DesktopWindow.setFullScreen(false);
-    _screenController.setWindowsSize(windowsPer ?? 70, context);
+    _screenController.setWindowsSize(windowsPer ?? 70);
 
     Get.offAllNamed(AppRoute.splash);
   }

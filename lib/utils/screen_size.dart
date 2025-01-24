@@ -69,7 +69,7 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
         MediaQuery.of(context).size.height - viewPadding.bottom));
   }
 
-  void setWindowsSize(int percent, BuildContext context) async {
+  void setWindowsSize(int percent) async {
     double targetHeight = windowsMaxSize.height * (percent / 100);
     double targetWidth = targetHeight * (10 / 19);
     EasyLoading.show();
@@ -80,8 +80,5 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     EasyLoading.dismiss();
     saveWindowsSizeData(percent);
     sizePer.value = percent;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      updateScreenSize(context);
-    });
   }
 }

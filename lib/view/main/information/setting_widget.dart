@@ -284,7 +284,11 @@ class WindowsSizeDialog extends StatelessWidget {
                 onChanged: (String? newValue) {
                   if (newValue != null) {
                     int selectedPercent = int.parse(newValue);
-                    screenController.setWindowsSize(selectedPercent, buildContext);
+                    screenController.setWindowsSize(selectedPercent);
+                    Get.back();
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      screenController.updateScreenSize(buildContext);
+                    });
                   }
                 },
               );
