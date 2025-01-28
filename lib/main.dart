@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.splash,
+      initialRoute: GetPlatform.isWindows ? AppRoute.desktop : AppRoute.splash,
 
       getPages: [
         GetPage(

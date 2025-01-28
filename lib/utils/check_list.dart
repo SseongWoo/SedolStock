@@ -11,7 +11,13 @@ Future<bool> checkServer() async {
 
   try {
     Uri uri = Uri.parse('$httpURL/running');
-    final running = await http.get(uri);
+    final running = await http.get(uri).timeout(
+      const Duration(seconds: 5),
+      onTimeout: () {
+        logger.e('checkServer timeout');
+        return http.Response('Timeout', 408);
+      },
+    );
 
     if (running.statusCode == 200) {
       final jsonData = jsonDecode(running.body);

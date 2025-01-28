@@ -83,7 +83,18 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
             ),
             minX: 0,
             maxX: chartSpots.isEmpty ? 1 : (chartSpots.length - 1).toDouble(),
-            minY: 0,
+            minY: chartSpots.isEmpty
+                ? 0
+                : (() {
+                    final minValue =
+                        chartSpots.map((spot) => spot.y).reduce((a, b) => a < b ? a : b);
+                    int digitCount = minValue.toInt().toString().length; // 자릿수 계산
+                    int baseValue = pow(10, digitCount - 1).toInt(); // 베이스 값 계산
+
+                    return minValue.toInt() > 100000
+                        ? ((minValue / baseValue).floor() * baseValue).toDouble()
+                        : 0.0; // 내림 처리
+                  })(),
             maxY: chartSpots.isEmpty
                 ? 1
                 : (() {

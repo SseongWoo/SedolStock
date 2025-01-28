@@ -19,11 +19,24 @@ String truncateText(String text, int maxLength) {
 }
 
 String formatValue(double value) {
+  String formatNumber(double num) {
+    // 소수점이 0이면 정수로, 아니면 소수점 포함
+    return num % 1 == 0 ? num.toStringAsFixed(0) : num.toStringAsFixed(1);
+  }
+
   if (value >= 1000000) {
-    return '${(value / 1000000).toStringAsFixed(0)}m'; // 백만 단위
+    return '${formatNumber(value / 1000000)}m'; // 백만 단위
   } else if (value >= 1000) {
-    return '${(value / 1000).toStringAsFixed(0)}k'; // 천 단위
+    return '${formatNumber(value / 1000)}k'; // 천 단위
   } else {
-    return value.toStringAsFixed(0); // 그대로 표시
+    return formatNumber(value); // 그대로 표시
+  }
+}
+
+String versionText(String appVersion, String appBuild) {
+  if (appBuild == '') {
+    return appVersion;
+  } else {
+    return '$appVersion+$appBuild';
   }
 }

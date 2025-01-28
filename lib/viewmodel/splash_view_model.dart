@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
@@ -9,8 +8,10 @@ import '../constants/route_constants.dart';
 import '../data/public_data.dart';
 import '../data/my_data.dart';
 import '../data/start_data.dart';
+import '../service/http_service.dart';
 import '../utils/check_list.dart';
 import '../service/storage_service.dart';
+import '../utils/get_windows_size.dart';
 import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
@@ -18,6 +19,7 @@ import '../model/splash_model.dart';
 // 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
   final SplashModel splashModel = SplashModel();
+  final HttpService _httpService = HttpService();
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
@@ -27,6 +29,13 @@ class SplashViewModel extends GetxController {
   void onInit() {
     super.onInit();
     initializeSplash();
+  }
+
+  void _goUpdate() {
+    GetPlatform.isMobile
+        ? StoreRedirect.redirect()
+        : _httpService.openUrl('https://cafe.naver.com/steamindiegame/19096888',
+            '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
   }
 
   // 로딩
@@ -46,7 +55,7 @@ class SplashViewModel extends GetxController {
           UpdateDialog(
             screenSize: screenController.screenSize.value,
             onPressedCencle: _closeApp,
-            onPressedUpdate: StoreRedirect.redirect,
+            onPressedUpdate: _goUpdate,
           ),
         );
       } else {
@@ -144,12 +153,12 @@ class WindowsViewModel extends GetxController {
   }
 
   void startGetWindowsSize() async {
-    int? windowsPer;
-
-    windowsPer = await loadWindowsSizeData();
-    _screenController.windowsMaxSize = _screenController.getPhysicalScreenSize();
-    _screenController.setWindowsSize(windowsPer ?? 70);
-
-    Get.offAllNamed(AppRoute.splash);
+    // int? windowsPer;
+    //
+    // windowsPer = await loadWindowsSizeData();
+    // _screenController.windowsMaxSize = getPhysicalScreenSize();
+    // _screenController.setWindowsSize(windowsPer ?? 70);
+    //
+    // Get.offAllNamed(AppRoute.splash);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/signin_view_model.dart';
 import '../../../constants/color_constants.dart';
+import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 
 // 로그인 화면
@@ -136,7 +137,7 @@ class SigninScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  'ver.${_viewModel.publicDataController.appVersion}+${_viewModel.publicDataController.appBuild}',
+                  'ver.${versionText(_viewModel.publicDataController.appVersion.value, _viewModel.publicDataController.appBuild.value)}',
                   style: TextStyle(fontSize: screenSize.getHeightPerSize(2), fontFamily: 'Dot'),
                 ),
               ),

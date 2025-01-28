@@ -9,6 +9,7 @@ import '../../../main.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/audio.dart';
 import '../../../utils/change_fandom.dart';
+import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/search_name.dart';
 import '../../../widget/simple_widget.dart';
@@ -171,6 +172,33 @@ class SettingAppViewModel extends GetxController {
     Get.dialog(
       WindowsSizeDialog(
         screenController: screenController,
+      ),
+    );
+  }
+
+  void showAppVersion() {
+    showSimpleDialog2(
+        screenController.screenSize.value,
+        '앱 버전',
+        versionText(_publicDataController.appVersion.value, _publicDataController.appBuild.value),
+        Get.back);
+  }
+
+  void showLicenses(BuildContext context) {
+    showLicensePage(
+      context: context,
+      applicationName: '세돌스탁',
+      applicationVersion: '${_publicDataController.appVersion}',
+      applicationIcon: SizedBox(
+        height: screenController.screenSize.value.getWidthPerSize(50),
+        width: screenController.screenSize.value.getWidthPerSize(50),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Image.asset(
+            'assets/image/image_logo.png',
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

@@ -32,10 +32,9 @@ Future<void> startGetData() async {
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   String? date = await getDataDate();
   String today = DateFormat('MM월 dd일 hh시').format(now);
-  DateTime? dateTime = date != null ? DateFormat('MM월 dd일 hh시').parse(date) : null;
 
-  // 금일 새벽 2시 이후 실행된 이력이 있으면 일부 데이터만 가져오고, 없으면 모든 데이터를 가져오도록 동작
-  if (date == null || date != today || (dateTime != null && dateTime.hour < 2 && now.hour >= 2)) {
+  // 오늘 실행된 이력이 있으면 일부 데이터만 가져오고, 없으면 모든 데이터를 가져오도록 동작
+  if (date == null || date != today) {
     await fetchDataAndSave(youtubeDataController, today);
   } else {
     await loadLatestYoutubeData();
