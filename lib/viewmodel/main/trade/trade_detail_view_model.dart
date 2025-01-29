@@ -16,7 +16,7 @@ class TradeDetailViewModel extends GetxController {
   final HttpService _httpService = HttpService();
   final ScreenController screenController = Get.find<ScreenController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  final PublicDataController publicDataController = Get.find<PublicDataController>();
+  final PublicDataController _publicDataController = Get.find<PublicDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final ScrollController scrollController = ScrollController();
   RxDouble opacity = 0.0.obs; // 화면 스크롤 위치 값
@@ -47,7 +47,7 @@ class TradeDetailViewModel extends GetxController {
     setChartData();
     videoList.value = youtubeDataController.youtubeVideoData[channelUID]!;
 
-    event.value = publicDataController.eventChannelList[channelUID] != null;
+    event.value = _publicDataController.eventChannelList[channelUID] != null;
   }
 
   // 주식 매매 화면으로 이동하는 볒변수
@@ -74,7 +74,7 @@ class TradeDetailViewModel extends GetxController {
     tradeDetailChartData.value.price = formatToCurrency(itemPriceData.value.price);
 
     tradeDetailChartData.value.returnRatio =
-        '${itemPriceData.value.differencePrice > 0 ? '+' : ''}${formatToCurrency(itemPriceData.value.differencePrice)} (${itemPriceData.value.ratio > 0 ? '+' : ''}${itemPriceData.value.ratio.toStringAsFixed(2)}%)';
+        '${itemPriceData.value.differencePrice > 0 ? '+' : ''}${formatToCurrency(itemPriceData.value.differencePrice)} (${itemPriceData.value.ratio > 0 ? '+' : ''}${(itemPriceData.value.ratio.isFinite) ? itemPriceData.value.ratio.toStringAsFixed(2) : '0.00'}%)';
 
     List<SalesData> reversedCount = [];
     reversedCount = youtubeDataController.youtubeChartData[channelUID]!.take(10).toList();
@@ -92,23 +92,14 @@ class TradeDetailViewModel extends GetxController {
     chartXTitle.value = xtitle;
   }
 
-  // 그래프 y축 최대값 설정
-  double chartMaxValue() {
-    final maxValue = chartSpots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
-    int digitCount = maxValue.toInt().toString().length;
-    int baseValue = pow(10, digitCount - 1).toInt();
-
-    return ((maxValue / baseValue).ceil() * baseValue) + baseValue.toDouble();
-  }
-
   // 유튜브 이동 버튼
   void onTapVideListIconButton(int index) {
     _httpService.openUrl(videoList[index].videoUrl, '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
   }
 
   // 상장폐지 확인 함수
-  bool delistingState() {
-    return itemPriceData.value.delisting > 0;
+  bool delistingState(int delisting) {
+    return delisting > 0;
   }
 
   // 상장폐지 텍스트
@@ -118,6 +109,6 @@ class TradeDetailViewModel extends GetxController {
 
   // 툴팁 설정
   String setToolTip() {
-    return '${publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
+    return '${_publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
   }
 }

@@ -67,7 +67,7 @@ class TradeDealingViewModel extends GetxController {
     // 주식 매매 개수가 변경되는걸 감지해서 실행시킴
     ever(
       calculatorInt,
-      (callback) => setSalePrice(),
+      (callback) => _setSalePrice(),
     );
 
     ever(
@@ -85,7 +85,7 @@ class TradeDealingViewModel extends GetxController {
     return buying ? '구매' : '판매';
   }
 
-  int getPrice() {
+  int _getPrice() {
     return itemPriceData.value.price;
   }
 
@@ -161,26 +161,22 @@ class TradeDealingViewModel extends GetxController {
   }
 
   // 매매 가격 설정
-  void setSalePrice() {
+  void _setSalePrice() {
     int price = calculatorInt.value * itemPriceData.value.price; // 주식 총 가격
     int fee = (price * feeRate.value).round();
     calculatorSum.value = price + fee;
   }
 
-  String calculatorDataText() {
-    return '현재 가격 : ${formatToCurrency(itemPriceData.value.price)}원 수수료 : ${formatToCurrency((itemPriceData.value.price * feeRate.value).round())}원';
-  }
-
   // 매매 버튼을 클릭했을때 실행
   void onPressedDealingButton() {
     if ((calculatorInt.value <= 0 ||
-            myDataController.myMoney.value < getPrice() * calculatorInt.value) &&
+            myDataController.myMoney.value < _getPrice() * calculatorInt.value) &&
         buying) {
       showSimpleDialog(Get.back, '거래 오류', '구매 수량 혹은 잔액이 충분하지 않습니다.');
     } else if (ownStock.value.stockCount <= 0 && !buying) {
       showSimpleDialog(Get.back, '거래 오류', ' 판매 수량이 충분하지 않습니다.');
     } else {
-      int price = getPrice();
+      int price = _getPrice();
       int fee = ((price * calculatorInt.value) * feeRate.value).round();
       Get.dialog(
         DealingDialog(
@@ -209,7 +205,7 @@ class TradeDealingViewModel extends GetxController {
     } else if (ownStock.value.stockCount <= 0 && !buying) {
       showSimpleDialog(Get.back, '거래 오류', ' 판매 수량이 충분하지 않습니다.');
     } else {
-      int price = getPrice();
+      int price = _getPrice();
       int fee = ((price * stockCount) * feeRate.value).round();
       Get.dialog(
         DealingDialog(

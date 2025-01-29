@@ -8,12 +8,12 @@ import '../../utils/screen_size.dart';
 class NotificationViewModel extends GetxController {
   final NotificationModel notificationModel = NotificationModel();
   final ScreenController screenController = Get.find<ScreenController>();
-  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
 
   // 메세지 내용 설정
   String convertMessage(String itemUID, int stockCount) {
-    return '${youtubeDataController.channelMapData[itemUID]} 주식이 상장폐지되어\n보유 중이던 $stockCount개의 주식이 삭제되었습니다.';
+    return '${_youtubeDataController.channelMapData[itemUID]} 주식이 상장폐지되어\n보유 중이던 $stockCount개의 주식이 삭제되었습니다.';
   }
 
   // 단일 메세지 삭제

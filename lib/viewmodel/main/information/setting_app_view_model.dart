@@ -58,11 +58,11 @@ class SettingAppViewModel extends GetxController {
         '파산 신청',
         '파산 신청을 진행하시겠습니까?\n파산을 신청하면 모든 데이터가 초기화되며, 자동으로 로그아웃됩니다. 이 작업은 되돌릴 수 없으니 신중하게 결정해 주세요.',
         '파산 신청',
-        restart);
+        _restart);
   }
 
   // 계정 정보 초기화 함수(파산 신청)
-  void restart() async {
+  void _restart() async {
     EasyLoading.show(status: '초기화 중');
 
     String uid = myDataController.myUid.value;
@@ -167,7 +167,7 @@ class SettingAppViewModel extends GetxController {
     }
   }
 
-  // 이름 변경 다이얼로그 호출
+  // 해상도 변경 다이얼로그 호출
   void windowsSizeDialog() {
     Get.dialog(
       WindowsSizeDialog(
@@ -176,6 +176,7 @@ class SettingAppViewModel extends GetxController {
     );
   }
 
+  // 앱 버전 확인 다이얼로그 호출
   void showAppVersion() {
     showSimpleDialog2(
         screenController.screenSize.value,
@@ -184,6 +185,7 @@ class SettingAppViewModel extends GetxController {
         Get.back);
   }
 
+  // 라이선스 페이지 이동
   void showLicenses(BuildContext context) {
     showLicensePage(
       context: context,

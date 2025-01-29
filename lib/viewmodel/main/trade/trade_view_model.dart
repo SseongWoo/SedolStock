@@ -28,7 +28,7 @@ class TradeViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    sortList();
+    _sortList();
   }
 
   @override
@@ -36,7 +36,7 @@ class TradeViewModel extends GetxController {
     // TODO: implement onReady
     super.onReady();
     ever(youtubeDataController.itemPriceDateMap, (value) {
-      sortList();
+      _sortList();
     });
   }
 
@@ -65,7 +65,7 @@ class TradeViewModel extends GetxController {
       sortType.value = itemType;
       ascending.value = true;
     }
-    sortList();
+    _sortList();
   }
 
   // 아이템 필터 조정 함수
@@ -74,7 +74,7 @@ class TradeViewModel extends GetxController {
       selectItemType.value = filter;
     }
 
-    sortList();
+    _sortList();
   }
 
   // 타이머 바 색 설정
@@ -102,14 +102,14 @@ class TradeViewModel extends GetxController {
   }
 
   // 아이템 정렬
-  void sortList() {
+  void _sortList() {
     List<ItemPriceDataClass> sortList = [];
     itemPriceDataList.clear();
 
     switch (sortType.value) {
       // 기본 정렬상태
       case 'age':
-        sortList = basicSort();
+        sortList = _basicSort();
         break;
       // price 기준 오름차순 정렬
       case 'price':
@@ -141,7 +141,7 @@ class TradeViewModel extends GetxController {
   }
 
   // 기본 정렬 리스트
-  List<ItemPriceDataClass> basicSort() {
+  List<ItemPriceDataClass> _basicSort() {
     List<ItemPriceDataClass> basicList = [];
     if (selectItemType.value == '전체' || selectItemType.value == '메인') {
       for (var item in youtubeDataController.channelIdList) {

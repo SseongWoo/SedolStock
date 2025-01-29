@@ -14,9 +14,7 @@ import '../../view/main/ranking/ranking_widget.dart';
 class RankingViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
-  final TimerController timerController = Get.find<TimerController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
-  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
   RxString selectCategoryLargeItem = '전체'.obs; // 대분류 선택 아이템
   RxString selectCategorySmallItem = '전체'.obs; // 소분류 선택 아이템
   List<String> categoryLargeList = ['전체', '팬덤']; // 대분류 아이템 리스트
@@ -26,7 +24,7 @@ class RankingViewModel extends GetxController {
   Rx<Color> textColor = Colors.black.obs; // 글자색
 
   // 대분류 카태고리 선택
-  void selectCategortLarge(String filter) {
+  void _selectCategortLarge(String filter) {
     selectCategoryLargeItem.value = filter;
 
     if (selectCategoryLargeItem.value == '전체') {
@@ -35,14 +33,14 @@ class RankingViewModel extends GetxController {
       backgroundColor.value = Colors.white;
     } else {
       categorySmallList = List.from(fanNameList);
-      selectCategortSmall(myDataController.myChoicechannel.value);
+      _selectCategortSmall(myDataController.myChoicechannel.value);
     }
 
     Get.back(); // 다이얼로그 닫기
   }
 
   // 소분류 카테고리 선택
-  void selectCategortSmall(String filter) {
+  void _selectCategortSmall(String filter) {
     selectCategorySmallItem.value = filter;
     backgroundColor.value = fanColorMap[filter] ?? Colors.white;
     textColor.value = filter == '박쥐단' ? Colors.white : Colors.black;
@@ -59,9 +57,9 @@ class RankingViewModel extends GetxController {
         categoryList: large ? categoryLargeList : categorySmallList,
         selectCategory: (String newValue) {
           if (large) {
-            selectCategortLarge(newValue);
+            _selectCategortLarge(newValue);
           } else {
-            selectCategortSmall(newValue);
+            _selectCategortSmall(newValue);
           }
         },
         selectCategoryItem: large ? selectCategoryLargeItem : selectCategorySmallItem,

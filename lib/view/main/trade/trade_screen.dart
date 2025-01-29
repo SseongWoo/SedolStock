@@ -83,7 +83,7 @@ class TradeScreen extends StatelessWidget {
                     right: screenSize.getWidthPerSize(2),
                   ),
                   child: Tooltip(
-                    message: '툴팁 메세지',
+                    message: '서브 채널의 가격 데이터는 등락폭이 작은\n로우리스크 로우리턴 아이템입니다.',
                     triggerMode: TooltipTriggerMode.tap,
                     child: Icon(
                       Icons.info_outline,

@@ -9,9 +9,8 @@ import 'package:flutter/material.dart';
 
 // 이벤트 뷰모델
 class EventViewModel extends GetxController {
-  final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
+  final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   final ScreenController screenController = Get.find<ScreenController>();
-  final MyDataController myDataController = Get.find<MyDataController>();
   final PublicDataController publicDataController = Get.find<PublicDataController>();
   List<String> eventStatusList = ["예정된", "진행중인", "종료된"];
 
@@ -20,19 +19,19 @@ class EventViewModel extends GetxController {
     int length = channelList.length;
 
     // 모든 채널인지 확인
-    if (length >= youtubeDataController.totalChannelIdList.length) {
+    if (length >= _youtubeDataController.totalChannelIdList.length) {
       return const Text('모든 채널');
     }
 
     // 모든 메인채널인지 확인
-    else if (length >= youtubeDataController.channelIdList.length &&
-        _areListsEqual(channelList, youtubeDataController.channelIdList)) {
+    else if (length >= _youtubeDataController.channelIdList.length &&
+        _areListsEqual(channelList, _youtubeDataController.channelIdList)) {
       return const Text('모든 메인채널');
     }
 
     // 모든 서브채널인지 확인
-    else if (length >= youtubeDataController.subChannelIdList.length &&
-        _areListsEqual(channelList, youtubeDataController.subChannelIdList)) {
+    else if (length >= _youtubeDataController.subChannelIdList.length &&
+        _areListsEqual(channelList, _youtubeDataController.subChannelIdList)) {
       return const Text('모든 서브채널');
     }
 
@@ -40,7 +39,7 @@ class EventViewModel extends GetxController {
     return Wrap(
       spacing: screenController.screenSize.value.getWidthPerSize(1),
       children: channelList.map((channel) {
-        final channelData = youtubeDataController.youtubeChannelData[channel];
+        final channelData = _youtubeDataController.youtubeChannelData[channel];
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [

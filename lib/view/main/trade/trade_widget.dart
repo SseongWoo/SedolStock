@@ -108,14 +108,14 @@ class TradeItemTitleWidget extends StatelessWidget {
 }
 
 // 가격 변동값 설정
-Widget differenceTextWidget(ScreenSize screenSize, ItemPriceDataClass itemPriceDate) {
+Widget differenceTextWidget(ScreenSize screenSize, ItemPriceDataClass itemPriceData) {
   String pm = '';
   Color textColor;
 
-  if (itemPriceDate.delisting > 0) {
+  if (itemPriceData.delisting > 0) {
     textColor = Colors.grey;
     return Text(
-      itemPriceDate.delisting.toString(),
+      itemPriceData.delisting.toString(),
       textAlign: TextAlign.center,
       style: TextStyle(
         color: textColor,
@@ -123,16 +123,16 @@ Widget differenceTextWidget(ScreenSize screenSize, ItemPriceDataClass itemPriceD
       ),
     );
   } else {
-    if (itemPriceDate.differencePrice > 0) {
+    if (itemPriceData.differencePrice > 0) {
       pm = '+';
     }
-    textColor = profitAndLossColor(itemPriceDate.differencePrice);
+    textColor = profitAndLossColor(itemPriceData.differencePrice);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AutoSizeText(
-          '$pm${formatToCurrency(itemPriceDate.differencePrice)}',
+          '$pm${formatToCurrency(itemPriceData.differencePrice)}',
           textAlign: TextAlign.center,
           maxLines: 1,
           style: TextStyle(
@@ -141,7 +141,7 @@ Widget differenceTextWidget(ScreenSize screenSize, ItemPriceDataClass itemPriceD
           ),
         ),
         AutoSizeText(
-          '($pm${itemPriceDate.ratio.toStringAsFixed(2)}%)',
+          '($pm${(itemPriceData.ratio.isFinite) ? itemPriceData.ratio.toStringAsFixed(2) : '0.00'}%)',
           textAlign: TextAlign.center,
           maxLines: 1,
           style: TextStyle(

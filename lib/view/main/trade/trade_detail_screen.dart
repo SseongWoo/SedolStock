@@ -275,40 +275,45 @@ class TradeDetailScreen extends StatelessWidget {
               right: 0,
               bottom: screenSize.getHeightPerSize(1),
               child: Padding(
-                padding: EdgeInsets.only(
-                    left: screenSize.getWidthPerSize(4), right: screenSize.getWidthPerSize(4)),
-                child: _viewModel.delistingState()
-                    ? _saleButton(
-                        screenSize,
-                        _viewModel.delistingTitle(),
-                        Colors.grey,
-                        () {},
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: _saleButton(
+                  padding: EdgeInsets.only(
+                      left: screenSize.getWidthPerSize(4), right: screenSize.getWidthPerSize(4)),
+                  child: Obx(
+                    () {
+                      bool checkDelistingState =
+                          _viewModel.delistingState(_viewModel.itemPriceData.value.delisting);
+                      return checkDelistingState
+                          ? _saleButton(
                               screenSize,
-                              '판매하기',
-                              Colors.blue,
-                              () => _viewModel.goTransaction(false),
-                            ),
-                          ),
-                          SizedBox(
-                            width: screenSize.getWidthPerSize(4),
-                          ),
-                          Expanded(
-                            child: _saleButton(
-                              screenSize,
-                              '구매하기',
-                              Colors.red,
-                              () => _viewModel.goTransaction(true),
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
+                              _viewModel.delistingTitle(),
+                              Colors.grey,
+                              () {},
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: _saleButton(
+                                    screenSize,
+                                    '판매하기',
+                                    Colors.blue,
+                                    () => _viewModel.goTransaction(false),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: screenSize.getWidthPerSize(4),
+                                ),
+                                Expanded(
+                                  child: _saleButton(
+                                    screenSize,
+                                    '구매하기',
+                                    Colors.red,
+                                    () => _viewModel.goTransaction(true),
+                                  ),
+                                ),
+                              ],
+                            );
+                    },
+                  )),
             ),
           ],
         ),

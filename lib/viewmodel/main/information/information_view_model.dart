@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:stockpj/constants/route_constants.dart';
 import 'package:stockpj/utils/color.dart';
 import '../../../data/my_data.dart';
-import '../../../data/public_data.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/change_fandom.dart';
 import '../../../utils/screen_size.dart';
@@ -14,18 +13,15 @@ class InformationViewModel extends GetxController {
   final InformationModel informationModel = InformationModel();
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
-  final PublicDataController publicDataController = Get.find<PublicDataController>();
-  final TextEditingController controllerName = TextEditingController();
   RxList<FlSpot> chartSpots = <FlSpot>[].obs;
-
   RxBool notBankruptcy = true.obs; // 파산 확인 변수
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    checkNotBankruptcy();
-    setMoneyHistoryChartSpots();
+    _checkNotBankruptcy();
+    _setMoneyHistoryChartSpots();
   }
 
   @override
@@ -35,8 +31,8 @@ class InformationViewModel extends GetxController {
     ever(
       myDataController.myTotalMoney,
       (callback) {
-        checkNotBankruptcy();
-        setMoneyHistoryChartSpots();
+        _checkNotBankruptcy();
+        _setMoneyHistoryChartSpots();
       },
     );
   }
@@ -50,7 +46,7 @@ class InformationViewModel extends GetxController {
   }
 
   // 사용자 자산 변동 그래프 데이터 설정
-  void setMoneyHistoryChartSpots() {
+  void _setMoneyHistoryChartSpots() {
     final list = myDataController.totalMoneyHistoryList
         .asMap()
         .entries
@@ -66,14 +62,6 @@ class InformationViewModel extends GetxController {
     // x 값을 0부터 다시 설정
     chartSpots.value =
         last10.asMap().entries.map((entry) => FlSpot(entry.key.toDouble(), entry.value.y)).toList();
-  }
-
-  // 차트 데이터 설정 함수
-  List<MoneyChartClass> moneyChartList() {
-    return [
-      MoneyChartClass('현금 자산', myDataController.myMoney.value),
-      MoneyChartClass('주식 자산', myDataController.myStockMoney.value)
-    ];
   }
 
   double chartMaxValue() {
@@ -118,7 +106,7 @@ class InformationViewModel extends GetxController {
   }
 
   // 파산 확인
-  void checkNotBankruptcy() {
+  void _checkNotBankruptcy() {
     notBankruptcy.value = myDataController.myTotalMoney.value > 0 ? true : false;
   }
 }

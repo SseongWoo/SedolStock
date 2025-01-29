@@ -14,7 +14,6 @@ import '../../../view/main/property/property_history_widget.dart';
 class PropertyHistoryViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
-  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
 
   List<String> itemList = ['전체'] + channelNameSimpleList; // 채널 필터
@@ -41,11 +40,6 @@ class PropertyHistoryViewModel extends GetxController {
       (callback) =>
           historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList),
     );
-  }
-
-  // 리스트 복사
-  List<TradeHistoryClass> setOriginalHistoryList() {
-    return List<TradeHistoryClass>.from(myDataController.tradeHistoryList);
   }
 
   Widget getProfitReturnWidget(TradeHistoryClass tradeHistoryData) {

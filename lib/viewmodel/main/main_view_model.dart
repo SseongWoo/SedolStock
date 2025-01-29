@@ -4,7 +4,6 @@ import 'package:stockpj/view/main/home/home_screen.dart';
 import 'package:stockpj/view/main/property/property_screen.dart';
 import 'package:stockpj/view/main/ranking/ranking_screen.dart';
 import 'package:stockpj/view/main/trade/trade_screen.dart';
-
 import '../../constants/route_constants.dart';
 import '../../data/my_data.dart';
 import '../../utils/screen_size.dart';
