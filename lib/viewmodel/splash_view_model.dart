@@ -153,12 +153,12 @@ class WindowsViewModel extends GetxController {
   }
 
   void startGetWindowsSize() async {
-    // int? windowsPer;
-    //
-    // windowsPer = await loadWindowsSizeData();
-    // _screenController.windowsMaxSize = getPhysicalScreenSize();
-    // _screenController.setWindowsSize(windowsPer ?? 70);
-    //
-    // Get.offAllNamed(AppRoute.splash);
+    int? windowsPer;
+
+    windowsPer = await loadWindowsSizeData();
+    _screenController.windowsMaxSize = getPhysicalScreenSize();
+    _screenController.setWindowsSize(windowsPer ?? 70);
+
+    Get.offAllNamed(AppRoute.splash);
   }
 }

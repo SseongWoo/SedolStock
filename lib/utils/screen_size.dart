@@ -93,6 +93,4 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     saveWindowsSizeData(percent);
     sizePer.value = percent;
   }
-
-  // 데스크탑 모드일시 윈도우 디스플레이 크기를 가져오는 함수
 }
