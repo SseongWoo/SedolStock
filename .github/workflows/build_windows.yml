@@ -30,9 +30,6 @@ jobs:
           echo "SUB_CHANNEL_ID_LIST=${{ secrets.SUB_CHANNEL_ID_LIST }}" >> assets/.env
           echo "PACKAGE_NAME=${{ secrets.PACKAGE_NAME }}" >> assets/.env
 
-      - name: Debug .env file
-        run: cat assets/.env
-
       - name: Install Dependencies
         run: flutter pub get
 
