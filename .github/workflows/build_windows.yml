@@ -36,6 +36,9 @@ jobs:
       - name: Verify Assets Directory (Windows)
         run: Get-ChildItem -Path assets -Recurse
 
+      - name: Clean Flutter Build
+        run: flutter clean
+
       - name: Install Dependencies
         run: flutter pub get
 
