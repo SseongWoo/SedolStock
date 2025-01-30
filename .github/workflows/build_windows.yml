@@ -24,11 +24,14 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "API_URL=${{ secrets.API_URL }}" > .env
-          echo "CAFE_URL=${{ secrets.CAFE_URL }}" >> .env
-          echo "CHANNEL_ID_LIST=${{ secrets.CHANNEL_ID_LIST }}" >> .env
-          echo "SUB_CHANNEL_ID_LIST=${{ secrets.SUB_CHANNEL_ID_LIST }}" >> .env
-          echo "PACKAGE_NAME=${{ secrets.PACKAGE_NAME }}" >> .env
+          echo "API_URL=${{ secrets.API_URL }}" > assets/.env
+          echo "CAFE_URL=${{ secrets.CAFE_URL }}" >> assets/.env
+          echo "CHANNEL_ID_LIST=${{ secrets.CHANNEL_ID_LIST }}" >> assets/.env
+          echo "SUB_CHANNEL_ID_LIST=${{ secrets.SUB_CHANNEL_ID_LIST }}" >> assets/.env
+          echo "PACKAGE_NAME=${{ secrets.PACKAGE_NAME }}" >> assets/.env
+
+      - name: Debug .env file
+        run: cat assets/.env
 
       - name: Install Dependencies
         run: flutter pub get
