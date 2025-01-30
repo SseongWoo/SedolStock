@@ -17,10 +17,15 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.4'  # 원하는 Flutter 버전
+          flutter-version: '3.24.4'
 
       - name: Enable Windows Support
         run: flutter config --enable-windows-desktop
+
+      - name: Create .env file
+        run: echo "$ENV_FILE" > .env
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
 
       - name: Install Dependencies
         run: flutter pub get

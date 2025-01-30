@@ -17,9 +17,6 @@ void setURL() {
   } else {
     print('릴리스 모드에서 실행 중입니다.');
   }
-
-  // httpURL = 'http://localhost:3000/api';
-  // httpURL = 'http://10.0.2.2:3000/api';
 }
 
 // 각각 메인, 서브 채널의 uid를 가져오는 함수
