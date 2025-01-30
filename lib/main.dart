@@ -40,7 +40,7 @@ void main() async {
 
   await GetStorage.init();
 
-  await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
+  await dotenv.load(fileName: 'assets/.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
   startController(); // 컨트롤러들 생성
 

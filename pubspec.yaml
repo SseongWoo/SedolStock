@@ -79,7 +79,7 @@ flutter_icons:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - .env
+    - assets/.env
     - assets/image/
     - assets/image/fan/
     - assets/image/ui/
