@@ -155,9 +155,7 @@ class WindowsViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    if (GetPlatform.isWindows) {
-      startGetWindowsSize();
-    }
+    startGetWindowsSize();
   }
 
   void startGetWindowsSize() async {
