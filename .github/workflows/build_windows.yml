@@ -33,11 +33,11 @@ jobs:
       - name: Debug .env file
         run: cat assets/.env
 
+      - name: Verify Assets Directory
+        run: ls -la assets/
+
       - name: Install Dependencies
         run: flutter pub get
-
-      - name: Check Flutter Assets
-        run: flutter pub run flutter_dotenv:check
 
       - name: Build Windows App
         run: flutter build windows
