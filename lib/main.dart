@@ -40,7 +40,7 @@ void main() async {
 
   await GetStorage.init();
 
-  await dotenv.load(fileName: GetPlatform.isWindows ? 'env.production' : '.env'); // 환경변수 파일 로드
+  await dotenv.load(fileName: '.env'); // 환경변수 파일 로드
   setURL(); // 로드된 환경변수 데이터를 사용해서 주소 설정
   startController(); // 컨트롤러들 생성
 
@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      initialRoute: GetPlatform.isWindows ? AppRoute.desktop : AppRoute.splash,
+      initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.splash,
 
       getPages: [
         GetPage(
