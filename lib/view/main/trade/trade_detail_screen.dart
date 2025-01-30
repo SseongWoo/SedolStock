@@ -20,6 +20,7 @@ class TradeDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Obx(
           () {
+            final chartData = _viewModel.tradeDetailChartData.value;
             return Opacity(
               opacity: _viewModel.opacity.value,
               child: Column(
@@ -27,8 +28,7 @@ class TradeDetailScreen extends StatelessWidget {
                   SizedBox(
                     width: screenSize.getWidthPerSize(20),
                     child: AutoSizeText(
-                      _viewModel
-                          .youtubeDataController.youtubeChannelData[_viewModel.channelUID]!.title,
+                      chartData.title,
                       style: TextStyle(
                         fontSize: screenSize.getHeightPerSize(1.6),
                       ),
@@ -38,7 +38,7 @@ class TradeDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        formatToCurrency(_viewModel.itemPriceData.value.price),
+                        chartData.price,
                         style: TextStyle(
                           fontSize: screenSize.getHeightPerSize(1.6),
                         ),
@@ -47,7 +47,7 @@ class TradeDetailScreen extends StatelessWidget {
                         width: screenSize.getWidthPerSize(2),
                       ),
                       Text(
-                        '${_viewModel.itemPriceData.value.differencePrice > 0 ? '+' : ''}${formatToCurrency(_viewModel.itemPriceData.value.differencePrice)} (${_viewModel.itemPriceData.value.ratio.toStringAsFixed(2)}%)',
+                        chartData.returnRatio,
                         style: TextStyle(
                           fontSize: screenSize.getHeightPerSize(1.6),
                           color: profitAndLossColor(_viewModel.itemPriceData.value.differencePrice),
@@ -163,13 +163,13 @@ class TradeDetailScreen extends StatelessWidget {
                                 _chartDetailData(
                                   screenSize,
                                   '총 조회수',
-                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount)}(+${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount - _viewModel.itemPriceData.value.beforeTotalViewCount)})',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount)}(${_viewModel.itemPriceData.value.totalViewCount - _viewModel.itemPriceData.value.beforeTotalViewCount > 0 ? '+' : ''}${formatToCurrency(_viewModel.itemPriceData.value.totalViewCount - _viewModel.itemPriceData.value.beforeTotalViewCount)})',
                                   1.6,
                                 ),
                                 _chartDetailData(
                                   screenSize,
                                   '총 좋아요수',
-                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount)}(+${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount - _viewModel.itemPriceData.value.beforeTotalLikeCount)})',
+                                  '${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount)}(${_viewModel.itemPriceData.value.totalLikeCount - _viewModel.itemPriceData.value.beforeTotalLikeCount > 0 ? '+' : ''}${formatToCurrency(_viewModel.itemPriceData.value.totalLikeCount - _viewModel.itemPriceData.value.beforeTotalLikeCount)})',
                                   1.6,
                                 ),
                               ],
