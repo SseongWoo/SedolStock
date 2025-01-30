@@ -1,8 +1,5 @@
-import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import '../service/storage_service.dart';
 
 // 화면 사이즈 클래스
 class ScreenSize {
@@ -78,19 +75,5 @@ class ScreenController extends GetxController with WidgetsBindingObserver {
     } else {
       windowSizeList = [40, 50, 60, 70, 80, 90];
     }
-  }
-
-  // 데스크탑 모드일시 창 크기를 조절하는 함수
-  void setWindowsSize(int percent) async {
-    double targetHeight = windowsMaxSize.height * (percent / 100);
-    double targetWidth = targetHeight * (10 / 19);
-    EasyLoading.show();
-    setWindowSizeList(windowsMaxSize.height);
-    await DesktopWindow.setWindowSize(Size(targetWidth, targetHeight));
-    await DesktopWindow.setMaxWindowSize(Size(targetWidth, targetHeight));
-    await DesktopWindow.setMinWindowSize(Size(targetWidth, targetHeight));
-    EasyLoading.dismiss();
-    saveWindowsSizeData(percent);
-    sizePer.value = percent;
   }
 }

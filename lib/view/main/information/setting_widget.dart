@@ -5,6 +5,8 @@ import 'package:stockpj/widget/button.dart';
 import '../../../constants/color_constants.dart';
 import '../../../utils/color.dart';
 import '../../../utils/screen_size.dart';
+import 'dart:io' show Platform;
+import '../../../utils/get_windows_size.dart' if (dart.library.html) '../../../utils/web_stub.dart';
 
 class AudioSettingWidget extends StatelessWidget {
   final SettingAppViewModel viewModel;
@@ -280,7 +282,7 @@ class WindowsSizeDialog extends StatelessWidget {
                 onChanged: (String? newValue) {
                   if (newValue != null) {
                     int selectedPercent = int.parse(newValue);
-                    screenController.setWindowsSize(selectedPercent);
+                    setWindowsSize(selectedPercent);
                     Get.back();
                   }
                 },

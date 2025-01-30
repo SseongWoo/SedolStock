@@ -11,10 +11,12 @@ import '../data/start_data.dart';
 import '../service/http_service.dart';
 import '../utils/check_list.dart';
 import '../service/storage_service.dart';
-import '../utils/get_windows_size.dart';
+import '../utils/format.dart';
 import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
+import 'dart:io' show Platform;
+import '../../../utils/get_windows_size.dart' if (dart.library.html) '../../../utils/web_stub.dart';
 
 // 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
@@ -56,6 +58,10 @@ class SplashViewModel extends GetxController {
             screenSize: screenController.screenSize.value,
             onPressedCencle: _closeApp,
             onPressedUpdate: _goUpdate,
+            appVersion: versionText(
+                _publicDataController.appVersion.value, _publicDataController.appBuild.value),
+            newVersion: versionText(
+                _publicDataController.storeVersion.value, _publicDataController.storeBuild.value),
           ),
         );
       } else {
@@ -149,7 +155,9 @@ class WindowsViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    startGetWindowsSize();
+    if (GetPlatform.isWindows) {
+      startGetWindowsSize();
+    }
   }
 
   void startGetWindowsSize() async {
@@ -157,7 +165,7 @@ class WindowsViewModel extends GetxController {
 
     windowsPer = await loadWindowsSizeData();
     _screenController.windowsMaxSize = getPhysicalScreenSize();
-    _screenController.setWindowsSize(windowsPer ?? 70);
+    setWindowsSize(windowsPer ?? 70);
 
     Get.offAllNamed(AppRoute.splash);
   }

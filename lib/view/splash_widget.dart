@@ -7,11 +7,15 @@ class UpdateDialog extends StatelessWidget {
   final ScreenSize screenSize;
   final Function onPressedCencle;
   final Function onPressedUpdate;
+  final String appVersion;
+  final String newVersion;
   const UpdateDialog(
       {super.key,
       required this.screenSize,
       required this.onPressedCencle,
-      required this.onPressedUpdate});
+      required this.onPressedUpdate,
+      required this.appVersion,
+      required this.newVersion});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class UpdateDialog extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요',
+                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요\n현재버전 : \n최신버전 : \n',
                 style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
               ),
               const Spacer(),
