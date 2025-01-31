@@ -185,12 +185,15 @@ class TradeScreen extends StatelessWidget {
                 width: screenSize.getHeightPerSize(1),
               ),
               SizedBox(
-                width: screenSize.getWidthPerSize(30),
-                child: Text(
-                  '$title${event ? ' 🔥' : ''}',
-                  softWrap: true,
-                  style: TextStyle(
-                    fontSize: screenSize.getHeightPerSize(1.6),
+                width: screenSize.getWidthPerSize(32),
+                child: Padding(
+                  padding: EdgeInsets.only(right: screenSize.getWidthPerSize(2)),
+                  child: Text(
+                    '$title${event ? ' 🔥' : ''}',
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: screenSize.getHeightPerSize(1.6),
+                    ),
                   ),
                 ),
               ),

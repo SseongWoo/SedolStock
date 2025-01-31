@@ -211,6 +211,7 @@ class ItemPriceDataClass {
   int beforePrice;
   int differencePrice;
   int delisting;
+  int continuous;
   double ratio;
 
   ItemPriceDataClass(
@@ -224,6 +225,7 @@ class ItemPriceDataClass {
       this.beforePrice,
       this.differencePrice,
       this.delisting,
+      this.continuous,
       this.ratio);
 }
 

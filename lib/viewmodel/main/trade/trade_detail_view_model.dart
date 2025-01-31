@@ -26,7 +26,7 @@ class TradeDetailViewModel extends GetxController {
   RxList<YoutubeVideoDataClass> videoList = <YoutubeVideoDataClass>[].obs;
   Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData('', '', '').obs; // 초기화 추가
   Rx<ItemPriceDataClass> itemPriceData =
-      ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0).obs; // 아이템 가격 데이터 클래스
+      ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).obs; // 아이템 가격 데이터 클래스
   RxBool event = false.obs; // 이벤트 유무
 
   @override

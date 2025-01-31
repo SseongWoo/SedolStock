@@ -43,6 +43,7 @@ class TradeDealingViewModel extends GetxController {
     0,
     0,
     0,
+    0,
   ).obs; // 아이템 가격데이터
 
   @override

@@ -129,6 +129,7 @@ class YoutubeDataController extends GetxController {
           videoData['lastPrice'] ?? 0,
           diff,
           videoData['delisting'] ?? 0,
+          videoData['continuous'] ?? 0,
           ratio,
         );
       });
