@@ -1,19 +1,20 @@
 import 'package:get/get.dart';
 import 'package:stockpj/constants/route_constants.dart';
+import 'package:stockpj/widget/simple_widget.dart';
 import '../../../data/my_data.dart';
 import '../../../data/youtube_data.dart';
+import '../../../model/main/trade_model.dart';
 import '../../../utils/screen_size.dart';
 
 // 거래 내역 리스트 뷰 모델
 class PropertyStocklistViewModel extends GetxController {
+  final TradeModel tradeModel = TradeModel();
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
 
   // 파이차트 확장 상태관리
   RxBool isExpandedChart = false.obs;
-  // 각 아이템의 확장 상태 관리
-  RxMap<String, bool> expandedState = <String, bool>{}.obs;
 
   // 보유 주식을 클릭했을때 해당 주식 상세정보로 이동
   void goTradeItem(String channelUID) {
@@ -25,13 +26,17 @@ class PropertyStocklistViewModel extends GetxController {
     isExpandedChart.value = !isExpandedChart.value;
   }
 
-  // 특정 아이템의 확장 상태 토글
-  void toggleItemExpansion(String stockUID) {
-    expandedState[stockUID] = !(expandedState[stockUID] ?? false);
-  }
-
-  // 특정 아이템의 확장 상태 가져오기
-  bool isItemExpanded(String stockUID) {
-    return expandedState[stockUID] ?? false;
+  void deleteDelistingItem(String channelUID) {
+    showSimpleDialog3(
+      screenController.screenSize.value,
+      '종목 삭제',
+      '상장폐지된 아이템을 삭제하시겠습니끼?',
+      '확인',
+      () {
+        tradeModel.fetchDeleteItem(myDataController.myUid.value, channelUID);
+        myDataController.stockListItem.remove(channelUID);
+        Get.back();
+      },
+    );
   }
 }

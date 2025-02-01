@@ -67,13 +67,11 @@ void showSimpleDialog2(ScreenSize screenSize, String title, String content, Func
               SizedBox(
                 height: screenSize.getHeightPerSize(6),
                 width: screenSize.getWidthPerSize(80),
-                child: Expanded(
-                  child: dialogButton(
-                    screenSize,
-                    '확인',
-                    colorMAIN,
-                    function,
-                  ),
+                child: dialogButton(
+                  screenSize,
+                  '확인',
+                  colorMAIN,
+                  function,
                 ),
               ),
             ],

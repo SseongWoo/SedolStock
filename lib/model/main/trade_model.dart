@@ -72,4 +72,28 @@ class TradeModel {
       return false;
     }
   }
+
+  // 상장 폐지된 아이템 지갑 리스트에서 삭제
+  Future<bool> fetchDeleteItem(
+    String myUID,
+    String channelUID,
+  ) async {
+    final HttpService httpService = HttpService();
+    try {
+      final response = await httpService.putRequest('/trade/delete/delistingitem', {
+        'uid': myUID,
+        'itemuid': channelUID,
+      });
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        logger.e('fetchDeleteItem error : ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      logger.e('fetchDeleteItem error : $e');
+      return false;
+    }
+  }
 }

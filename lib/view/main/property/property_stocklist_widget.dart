@@ -22,15 +22,14 @@ class PropertyStockListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = viewModel.screenController.screenSize.value;
 
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () => viewModel.toggleItemExpansion(stockData.stockUID),
-          child: _buildStockOverview(screenSize),
-        ),
-        _buildStockDetails(screenSize),
-        //Obx(() => _buildStockDetails(screenSize)),
-      ],
+    return GestureDetector(
+      onLongPress: () => viewModel.deleteDelistingItem(stockData.stockUID),
+      child: Column(
+        children: [
+          _buildStockOverview(screenSize),
+          _buildStockDetails(screenSize),
+        ],
+      ),
     );
   }
 
@@ -105,13 +104,13 @@ class PropertyStockListItemWidget extends StatelessWidget {
         children: [
           _buildStockDetailRow(
             title: '평가손익',
-            value: '${formatToCurrency(stockData.stockProfit)}P',
+            value: stockData.delisting ? '-' : '${formatToCurrency(stockData.stockProfit)}P',
             color: profitAndLossColor(stockData.stockProfit),
             screenSize: screenSize,
           ),
           _buildStockDetailRow(
             title: '수익률',
-            value: '${stockData.stockRatio.toStringAsFixed(2)}%',
+            value: stockData.delisting ? '-' : '${stockData.stockRatio.toStringAsFixed(2)}%',
             color: profitAndLossColor(stockData.stockProfit),
             screenSize: screenSize,
           ),
@@ -136,17 +135,18 @@ class PropertyStockListItemWidget extends StatelessWidget {
             _buildStockDetailColumn(
               screenSize: screenSize,
               title1: '보유 잔고',
-              value1: '${stockData.stockCount}주',
+              value1: stockData.delisting ? '-' : '${stockData.stockCount}주',
               title2: '평가 금액',
-              value2: '${formatToCurrency(stockData.stockTotalPrice)}P',
+              value2: stockData.delisting ? '-' : '${formatToCurrency(stockData.stockTotalPrice)}P',
               color: Colors.black,
             ),
             _buildStockDetailColumn(
               screenSize: screenSize,
               title1: '매입가',
-              value1: '${formatToCurrency(stockData.stockBuyingPrice)}P',
+              value1:
+                  stockData.delisting ? '-' : '${formatToCurrency(stockData.stockBuyingPrice)}P',
               title2: '현재가',
-              value2: '${formatToCurrency(stockData.currentPrice)}P',
+              value2: stockData.delisting ? '-' : '${formatToCurrency(stockData.currentPrice)}P',
               color: profitAndLossColor(stockData.stockProfit),
             ),
           ],

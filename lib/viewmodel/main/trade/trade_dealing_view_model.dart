@@ -30,7 +30,7 @@ class TradeDealingViewModel extends GetxController {
   RxString calculatorDisplay = ''.obs; // 계산기 디스플레이에 나타날 변수
   RxInt calculatorInt = 0.obs; // 계산기 입력된 값(주식 개수)
   RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
-  Rx<OwnStock> ownStock = OwnStock(0, 0).obs;
+  Rx<OwnStock> ownStock = OwnStock(0, 0, false).obs;
   Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass(
     '',
     '',

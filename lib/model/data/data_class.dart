@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class OwnStock {
   int stockCount;
   int stockPrice;
-  OwnStock(this.stockCount, this.stockPrice);
+  bool delisting;
+  OwnStock(this.stockCount, this.stockPrice, this.delisting);
 }
 
 // 보유 주식 리스트 클래스
@@ -19,6 +20,7 @@ class StockListClass {
   int currentPrice;
   String stockChannelType;
   Color color;
+  bool delisting;
 
   StockListClass(
     this.stockUID,
@@ -31,6 +33,7 @@ class StockListClass {
     this.currentPrice,
     this.stockChannelType,
     this.color,
+    this.delisting,
   );
 }
 

@@ -47,7 +47,7 @@ class MyDataController extends GetxController {
     stockListItem.clear();
 
     ownStock.forEach((key, value) {
-      if (value.stockCount > 0) {
+      if (value.stockCount > 0 || value.delisting == true) {
         if (_youtubeDataController.itemPriceDateMap[key] != null) {
           // 주식 종류를 구분해서 가격정보를 가져옴
           ItemPriceDataClass itemPriceData = _youtubeDataController.itemPriceDateMap[key]!;
@@ -71,10 +71,31 @@ class MyDataController extends GetxController {
               buyPrice,
               itemPriceData.price,
               itemPriceData.channelType,
-              streamerColorMap[itemUid] ?? colorMAIN);
+              streamerColorMap[itemUid] ?? colorMAIN,
+              value.delisting);
         }
       }
     });
+
+    List<String> stockKeys = stockListItem.keys.toList();
+    List<String> channelIdList = _youtubeDataController.totalChannelIdList;
+
+    stockKeys.sort((a, b) {
+      int indexA = channelIdList.indexOf(a);
+      int indexB = channelIdList.indexOf(b);
+
+      if (indexA == -1) indexA = channelIdList.length; // 없는 항목은 마지막으로 배치
+      if (indexB == -1) indexB = channelIdList.length; // 없는 항목은 마지막으로 배치
+
+      return indexA.compareTo(indexB);
+    });
+
+    final sortedStockList = RxMap<String, StockListClass>();
+    for (String key in stockKeys) {
+      sortedStockList[key] = stockListItem[key]!;
+    }
+
+    stockListItem.assignAll(sortedStockList);
 
     // 수익률 계산
     if (totalBuyPrice > 0) {
@@ -153,10 +174,8 @@ class MyDataController extends GetxController {
             int roundedStockPrice =
                 (value['stockPrice'] is num) ? (value['stockPrice'] as num).round() : 0; // 기본값 0 설정
 
-            final stock = OwnStock(
-              value['stockCount'] ?? 0,
-              roundedStockPrice,
-            );
+            final stock =
+                OwnStock(value['stockCount'] ?? 0, roundedStockPrice, value['delisting'] ?? false);
             ownStock[key] = stock;
 
             if (stock.stockCount > 0) {
