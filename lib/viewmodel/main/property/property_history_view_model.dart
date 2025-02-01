@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stockpj/data/youtube_data.dart';
 import '../../../constants/data_constants.dart';
 import '../../../data/my_data.dart';
-import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
@@ -28,7 +27,7 @@ class PropertyHistoryViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList);
+    historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList.reversed);
   }
 
   @override
@@ -36,10 +35,9 @@ class PropertyHistoryViewModel extends GetxController {
     // TODO: implement onReady
     super.onReady();
     ever(
-      myDataController.tradeHistoryList,
-      (callback) =>
-          historyList.value = List<TradeHistoryClass>.from(myDataController.tradeHistoryList),
-    );
+        myDataController.tradeHistoryList,
+        (callback) => historyList.value =
+            List<TradeHistoryClass>.from(myDataController.tradeHistoryList.reversed));
   }
 
   Widget getProfitReturnWidget(TradeHistoryClass tradeHistoryData) {
@@ -138,5 +136,11 @@ class PropertyHistoryViewModel extends GetxController {
     Get.bottomSheet(PropertyHistoryBottomSheet(
       viewModel: this,
     ));
+  }
+
+  String salesTypeText(String salesType) {
+    if (salesType == 'buy') return '구매';
+    if (salesType == 'sell') return '판매';
+    return '상장폐지';
   }
 }

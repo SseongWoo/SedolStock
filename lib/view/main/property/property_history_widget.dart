@@ -289,7 +289,7 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.center,
           child: Text(
-            buy ? '구매' : '판매',
+            viewModel.salesTypeText(tradeHistoryData.tradetype),
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
           ),
@@ -299,7 +299,9 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           height: 52,
           padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
           alignment: Alignment.center,
-          child: buy ? null : viewModel.getProfitReturnWidget(tradeHistoryData),
+          child: tradeHistoryData.tradetype == 'sell'
+              ? viewModel.getProfitReturnWidget(tradeHistoryData)
+              : null,
         ),
         Container(
           width: screenSize.getWidthPerSize(25),

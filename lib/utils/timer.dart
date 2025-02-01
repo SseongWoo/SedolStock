@@ -166,18 +166,15 @@ class TimerController extends GetxController with WidgetsBindingObserver {
         '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
+  // 화면을 나갔다가 들어올때를 감지해서 실행하는 함수
   void onAppResume() {
-    print('앱이 다시 활성화되었습니다.');
     DateTime nowTime = DateTime.now();
 
     // 5분 단위 범위 확인 (현재 시간과 마지막 갱신 시간 비교)
     Duration difference = nowTime.difference(lastRefreshTime);
-    if (difference.inMinutes >= 5) {
-      print('조건을 충족하여 함수 실행!');
+    if (difference.inMinutes >= 5 && !checkDataTime.value && secondsRemaining.value > 5) {
       reflashData();
-      lastRefreshTime = adjustToNearest5Minutes(nowTime); // 컨트롤러의 값 업데이트
-    } else {
-      print('지정된 시간 범위 안에 있으므로 실행하지 않습니다.$lastRefreshTime ${difference.inMinutes}');
+      lastRefreshTime = adjustToNearest5Minutes(nowTime);
     }
 
     _countdownTimer?.cancel();

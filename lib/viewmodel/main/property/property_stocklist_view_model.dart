@@ -27,16 +27,18 @@ class PropertyStocklistViewModel extends GetxController {
   }
 
   void deleteDelistingItem(String channelUID) {
-    showSimpleDialog3(
-      screenController.screenSize.value,
-      '종목 삭제',
-      '상장폐지된 아이템을 삭제하시겠습니끼?',
-      '확인',
-      () {
-        tradeModel.fetchDeleteItem(myDataController.myUid.value, channelUID);
-        myDataController.stockListItem.remove(channelUID);
-        Get.back();
-      },
-    );
+    if (myDataController.stockListItem[channelUID]!.stockCount <= 0) {
+      showSimpleDialog3(
+        screenController.screenSize.value,
+        '종목 삭제',
+        '상장폐지된 아이템을 삭제하시겠습니끼?',
+        '확인',
+        () {
+          tradeModel.fetchDeleteItem(myDataController.myUid.value, channelUID);
+          myDataController.stockListItem.remove(channelUID);
+          Get.back();
+        },
+      );
+    }
   }
 }
