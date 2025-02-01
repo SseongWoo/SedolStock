@@ -2,8 +2,16 @@
 ## 세돌스탁
 <img src = "https://github.com/user-attachments/assets/8a8fbb0f-8ebd-432c-bf9b-44a294c380e4" width="350" height="350">
 
+## 웹 데모 링크
+⚠️ 해당 웹 버전은 정식 버전이 아닌, 모바일 UI를 기반으로 이식된 버전입니다. 정상적으로 작동하지 않을 수도 있습니다.
+
+🔄 업데이트가 필요한 경우, 쿠키 데이터를 삭제해 주세요.
+
+[웹 데모 링크](https://sedolstock.com/)
+
 ## 서버 프로젝트
 [서버 프로젝트](https://github.com/SseongWoo/SedolStock_Server)
+
 
 ## 프로젝트 소개
 - 이 프로젝트는 인터넷 방송인 우왁굳과 버츄얼 아이돌 그룹 이세계 아이돌의 유튜브 채널 활동을 기반으로 한 모의 투자 시뮬레이션 팬게임입니다.
