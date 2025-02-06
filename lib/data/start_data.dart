@@ -14,7 +14,6 @@ Future<void> fetchDataAndSave(YoutubeDataController youtubeDataController, Strin
   saveYoutubeChannelData();
   await youtubeDataController.getYoutubeVideoData();
   saveYoutubeVideoData();
-
   await setDataDate(today);
 }
 
@@ -90,17 +89,14 @@ Future<void> reflashGetData(bool timeReFlash) async {
 
   final MyDataController myDataController = Get.find<MyDataController>();
   await myDataController.getUserData();
-  if (timeReFlash) {
-    await myDataController.updateMyTotalMoney(); // 사용자 총 자산 업데이트
-  }
-  await myDataController.getWalletData(); // 사용자 자산 데이터 가져오는 기능
 
   // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {
     myDataController.setMoneyData();
     await myDataController.getTradeHistoryData();
-    await myDataController.updateMyTotalMoney();
   }
+  await myDataController.updateMyTotalMoney();
+  await myDataController.getWalletData(); // 사용자 자산 데이터 가져오는 기능
 }
 
 bool _checkRefreshTime(DateTime dateTime) {

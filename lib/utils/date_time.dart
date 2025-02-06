@@ -11,6 +11,12 @@ String formatDateTime(DateTime dateTime) {
 String formatDateString(String isoString) {
   DateTime dateTime = DateTime.parse(isoString);
 
+  // 분이 0이 아닐경우 한시간 올림
+  if (dateTime.minute > 0) {
+    dateTime = dateTime.add(const Duration(hours: 1));
+    dateTime = DateTime(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, 0, 0);
+  }
+
   DateFormat formatter = DateFormat('MM월 dd일 HH시 mm분');
   return formatter.format(dateTime);
 }

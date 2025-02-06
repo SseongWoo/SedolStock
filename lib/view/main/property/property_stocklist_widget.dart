@@ -24,10 +24,26 @@ class PropertyStockListItemWidget extends StatelessWidget {
 
     return GestureDetector(
       onLongPress: () => viewModel.deleteDelistingItem(stockData.stockUID),
-      child: Column(
+      child: Stack(
         children: [
-          _buildStockOverview(screenSize),
-          _buildStockDetails(screenSize),
+          Column(
+            children: [
+              _buildStockOverview(screenSize),
+              _buildStockDetails(screenSize),
+            ],
+          ),
+          Visibility(
+            visible: stockData.delisting,
+            child: SizedBox(
+              height: screenSize.getHeightPerSize(16),
+              child: Center(
+                child: Image.asset(
+                  'assets/image/ui/delisting.png',
+                  height: screenSize.getHeightPerSize(14),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -38,7 +54,6 @@ class PropertyStockListItemWidget extends StatelessWidget {
       height: screenSize.getHeightPerSize(8),
       decoration: const BoxDecoration(
         border: Border(
-          //top: BorderSide(color: Colors.grey, width: 1),
           bottom: BorderSide(color: Colors.grey, width: 1),
         ),
       ),
