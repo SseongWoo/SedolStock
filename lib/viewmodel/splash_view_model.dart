@@ -128,7 +128,7 @@ class SplashViewModel extends GetxController {
   bool _checkVersion() {
     final isVersionOutdated = _isVersionLower();
     bool isBuildOutdated = false;
-    if (_publicDataController.appBuild.value == '' ||
+    if (_publicDataController.appBuild.value.isNotEmpty &&
         _publicDataController.appBuild.value != _publicDataController.appVersion.value) {
       isBuildOutdated = int.parse(_publicDataController.storeBuild.value) >
           int.parse(_publicDataController.appBuild.value);

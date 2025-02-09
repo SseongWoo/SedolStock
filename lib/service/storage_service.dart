@@ -255,11 +255,11 @@ Future<bool> loadRankingData() async {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final MyDataController myDataController = Get.find<MyDataController>();
     final jsonData = await box.read('rankingData');
-    final myRankingData = box.read('myRankingData');
+    final myRankingData = await box.read('myRankingData');
 
     if (myRankingData != null) {
-      myDataController.myRank.value = myRankingData['totalRanking'];
-      myDataController.myFandomRank.value = myRankingData['fandomRanking'];
+      myDataController.myRank.value = myRankingData['totalRanking'] ?? 0;
+      myDataController.myFandomRank.value = myRankingData['fandomRanking'] ?? 0;
     }
 
     if (jsonData != null) {
@@ -278,7 +278,8 @@ Future<bool> loadRankingData() async {
     }
 
     // 저장된 날짜 가져오기
-    publicDataController.updateDate.value = await box.read('rankingDataDate');
+    final String? updateDateStr = await box.read('rankingDataDate');
+    publicDataController.updateDate.value = updateDateStr ?? '0000-00-00 00:00:00';
 
     DateTime currentTime = DateTime.now();
     DateTime serverUpdateDate = DateFormat('yyyy년 MM.dd HH:mm')
@@ -316,7 +317,7 @@ Future<bool> loadEventData() async {
   try {
     final PublicDataController publicDataController = Get.find<PublicDataController>();
     final jsonData = await box.read('event');
-    publicDataController.eventDate.value = await box.read('eventDate');
+    publicDataController.eventDate.value = (await box.read('eventDate')) as String? ?? "";
 
     if (jsonData != null) {
       final decodedData = jsonDecode(jsonData);
