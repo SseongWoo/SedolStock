@@ -21,11 +21,19 @@ String formatDateString(String isoString) {
   return formatter.format(dateTime);
 }
 
-String formatDateString2(String isoString) {
-  DateTime dateTime = DateTime.parse(isoString);
+String formatDateString2(String dateString) {
+  DateTime? dateTime;
+  try {
+    dateTime = DateTime.tryParse(dateString);
 
-  DateFormat formatter = DateFormat('MM.dd hh:mm');
-  return formatter.format(dateTime);
+    if (dateTime == null) {
+      dateString = dateString.replaceAll('오전', 'AM').replaceAll('오후', 'PM');
+      dateTime = DateFormat('yyyy. M. d. a h:mm:ss', 'en_US').parse(dateString);
+    }
+  } catch (e) {
+    return "날짜 형식 오류"; // 🚨 예외 발생 시 오류 메시지 반환
+  }
+  return DateFormat('MM.dd HH:mm').format(dateTime);
 }
 
 String formatDateString3(String isoString) {

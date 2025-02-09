@@ -10,6 +10,7 @@ import '../../../model/main/information_model.dart';
 import '../../../utils/audio.dart';
 import '../../../utils/change_fandom.dart';
 import '../../../utils/format.dart';
+import '../../../utils/logout.dart';
 import '../../../utils/screen_size.dart';
 import '../../../utils/search_name.dart';
 import '../../../widget/simple_widget.dart';
@@ -71,7 +72,7 @@ class SettingAppViewModel extends GetxController {
 
     if (restart) {
       showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
-      _publicDataController.logOut();
+      logOut();
     } else {
       showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
     }
@@ -137,7 +138,7 @@ class SettingAppViewModel extends GetxController {
 
   // 로그아웃 기능
   void logout() {
-    _publicDataController.logOut();
+    logOut();
     Get.back();
   }
 

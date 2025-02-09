@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
 import '../../../model/main/information_model.dart';
+import '../../../utils/logout.dart';
 import '../../../utils/screen_size.dart';
 import '../../../widget/simple_widget.dart';
 
@@ -27,7 +28,7 @@ class DeleteAccountViewModel extends GetxController {
             _myDataController.myName.value, _myDataController.myChoicechannel.value);
         if (checkDelete) {
           showSimpleSnackbar('회원탈퇴 성공', '회원탈퇴에 성공했습니다.', SnackPosition.TOP, Colors.black);
-          _publicDataController.logOut();
+          logOut();
         } else {
           showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
         }

@@ -29,16 +29,6 @@ class PublicDataController extends GetxController {
   RxMap<String, double> eventChannelList = <String, double>{}.obs; // 이벤트가 있는 채널 모음
   RxInt manualRefresh = 0.obs; // 수동 새로고침 카운트
 
-  // 로그아웃 기능 함수
-  void logOut() async {
-    EasyLoading.show();
-
-    await clearTokens();
-    Get.delete<TimerController>();
-    EasyLoading.dismiss();
-    Get.offAllNamed(AppRoute.signin);
-  }
-
   // 앱의 버전을 가져오는 작업
   Future<void> getAppVersion() async {
     final packageInfo = await PackageInfo.fromPlatform();

@@ -34,7 +34,7 @@ String formatValue(double value) {
 }
 
 String versionText(String appVersion, String appBuild) {
-  if (appBuild == '') {
+  if (appBuild == '' || appBuild == appVersion) {
     return appVersion;
   } else {
     return '$appVersion+$appBuild';

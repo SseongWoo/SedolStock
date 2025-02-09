@@ -8,7 +8,7 @@ import '../model/scarch_name_model.dart';
 Future<bool> searchName(String name) async {
   final NameModel nameModel = NameModel();
   try {
-    if (channelNameSimpleList.contains(name) ||
+    if (channelNameList.contains(name) ||
         fanNameList.contains(name) ||
         fanEnNameList.contains(name.toUpperCase()) ||
         channelEnNameList.contains(name.toUpperCase())) {

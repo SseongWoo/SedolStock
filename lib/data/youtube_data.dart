@@ -42,7 +42,8 @@ class YoutubeDataController extends GetxController {
     subChannelIdList = getSubChannelIdList();
 
     if (channelIdList.isNotEmpty && channelNameList.isNotEmpty) {
-      channelMapData = Map.fromIterables(totalChannelIdList, channelNameList);
+      channelMapData =
+          Map.fromIterables(totalChannelIdList, [...channelNameList, ...channelNameList]);
     }
 
     setStreamerColorMap();

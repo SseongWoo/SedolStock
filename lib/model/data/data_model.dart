@@ -43,7 +43,7 @@ class DataModel {
   Future<List<TradeHistoryClass>?> fetchTradeHistory(String uid) async {
     final response = await httpService.getRequest('/users/tradeList/$uid');
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 404) {
       final jsonData = jsonDecode(response.body);
 
       if (jsonData is Map<String, dynamic>) {

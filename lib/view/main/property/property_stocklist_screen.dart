@@ -95,7 +95,6 @@ class PropertyStocklistScreen extends StatelessWidget {
                   style: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
                 ));
               }
-
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
