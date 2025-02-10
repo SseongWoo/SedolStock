@@ -7,7 +7,12 @@
 
 🔄 업데이트가 필요한 경우, 쿠키 데이터를 삭제해 주세요.
 
-[웹 데모 링크](https://sedolstock.com/)
+[웹 데모](https://sedolstock.com/)
+
+## 앱 링크
+[윈도우 앱 버전](https://github.com/SseongWoo/SedolStock/releases)
+
+[안드로이드 앱 버전]()
 
 ## 서버 프로젝트
 [서버 프로젝트](https://github.com/SseongWoo/SedolStock_Server)
