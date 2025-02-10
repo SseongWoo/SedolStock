@@ -2,17 +2,24 @@
 ## 세돌스탁
 <img src = "https://github.com/user-attachments/assets/8a8fbb0f-8ebd-432c-bf9b-44a294c380e4" width="350" height="350">
 
-## 웹 데모 링크
-⚠️ 해당 웹 버전은 정식 버전이 아닌, 모바일 UI를 기반으로 이식된 버전입니다. 정상적으로 작동하지 않을 수도 있습니다.
+## 🚀 설치 안내
 
-🔄 업데이트가 필요한 경우, 쿠키 데이터를 삭제해 주세요.
+### 🌐 Web 버전
+- ⚠️ 해당 웹 버전은 **정식 버전이 아니며**, 모바일 UI 기반으로 이식되었습니다.  
+  일부 기능이 정상적으로 작동하지 않을 수 있습니다.
 
-[웹 데모](https://sedolstock.com/)
+  **업데이트 후 문제가 발생한다면, 쿠키 데이터를 삭제해 주세요.**
 
-## 앱 링크
-[윈도우 앱 버전](https://github.com/SseongWoo/SedolStock/releases)
+- 🔗 **[웹 바로가기](https://sedolstock.com/)**
 
-[안드로이드 앱 버전]()
+### 🖥️ Windows 버전 
+- 🔗 **[Windows 앱 다운로드](https://github.com/SseongWoo/SedolStock/releases)**
+
+### 📱 Android 버전
+- Google Play 스토어에서 다운로드하세요!  
+<a href="https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME" target="_blank">
+  <img src="https://github.com/user-attachments/assets/cef364ec-5f9f-4756-a6c3-49d65bee3ad6" width="30%">
+</a>
 
 ## 서버 프로젝트
 [서버 프로젝트](https://github.com/SseongWoo/SedolStock_Server)
