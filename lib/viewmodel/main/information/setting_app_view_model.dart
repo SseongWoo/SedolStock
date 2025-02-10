@@ -179,11 +179,8 @@ class SettingAppViewModel extends GetxController {
 
   // 앱 버전 확인 다이얼로그 호출
   void showAppVersion() {
-    showSimpleDialog2(
-        screenController.screenSize.value,
-        '앱 버전',
-        versionText(_publicDataController.appVersion.value, _publicDataController.appBuild.value),
-        Get.back);
+    showSimpleDialog2(screenController.screenSize.value, '앱 버전',
+        _publicDataController.appVersion.value, Get.back);
   }
 
   // 라이선스 페이지 이동

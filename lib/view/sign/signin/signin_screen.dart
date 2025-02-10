@@ -137,7 +137,7 @@ class SigninScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  'ver.${versionText(_viewModel.publicDataController.appVersion.value, _viewModel.publicDataController.appBuild.value)}',
+                  'ver.${_viewModel.publicDataController.appVersion.value}',
                   style: TextStyle(fontSize: screenSize.getHeightPerSize(2), fontFamily: 'Dot'),
                 ),
               ),

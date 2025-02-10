@@ -58,10 +58,8 @@ class SplashViewModel extends GetxController {
             screenSize: screenController.screenSize.value,
             onPressedCencle: _closeApp,
             onPressedUpdate: _goUpdate,
-            appVersion: versionText(
-                _publicDataController.appVersion.value, _publicDataController.appBuild.value),
-            newVersion: versionText(
-                _publicDataController.storeVersion.value, _publicDataController.storeBuild.value),
+            appVersion: _publicDataController.appVersion.value,
+            newVersion: _publicDataController.storeVersion.value,
           ),
         );
       } else {
@@ -126,7 +124,7 @@ class SplashViewModel extends GetxController {
 
   // 앱 버전과 최소 요구 버전 비교
   bool _checkVersion() {
-    final isVersionOutdated = _isVersionLower();
+    //final isVersionOutdated = _isVersionLower();
     bool isBuildOutdated = false;
     if (_publicDataController.appBuild.value.isNotEmpty &&
         _publicDataController.appBuild.value != _publicDataController.appVersion.value) {
@@ -134,18 +132,19 @@ class SplashViewModel extends GetxController {
           int.parse(_publicDataController.appBuild.value);
     }
 
-    return (isVersionOutdated || isBuildOutdated);
+    //return (isVersionOutdated || isBuildOutdated);
+    return isBuildOutdated;
   }
 
-  bool _isVersionLower() {
-    final appParts = _publicDataController.appVersion.split('.').map(int.parse).toList();
-    final storeParts = _publicDataController.storeVersion.split('.').map(int.parse).toList();
-    for (int i = 0; i < appParts.length; i++) {
-      if (storeParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
-      if (storeParts[i] < appParts[i]) return false; // 현재 버전이 더 높음
-    }
-    return false; // 버전이 같음
-  }
+  // bool _isVersionLower() {
+  //   final appParts = _publicDataController.appVersion.split('.').map(int.parse).toList();
+  //   final storeParts = _publicDataController.storeVersion.split('.').map(int.parse).toList();
+  //   for (int i = 0; i < appParts.length; i++) {
+  //     if (storeParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
+  //     if (storeParts[i] < appParts[i]) return false; // 현재 버전이 더 높음
+  //   }
+  //   return false; // 버전이 같음
+  // }
 
   void _closeApp() {
     exit(0);

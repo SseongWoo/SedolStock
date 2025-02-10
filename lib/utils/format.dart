@@ -32,11 +32,3 @@ String formatValue(double value) {
     return formatNumber(value); // 그대로 표시
   }
 }
-
-String versionText(String appVersion, String appBuild) {
-  if (appBuild == '' || appBuild == appVersion) {
-    return appVersion;
-  } else {
-    return '$appVersion+$appBuild';
-  }
-}
