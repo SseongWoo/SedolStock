@@ -71,17 +71,13 @@ class WaktaverseGames extends StatelessWidget {
       builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.black, // 검은 배경
-          body: GestureDetector(
-            onTap: controller.goToSplash,
-            child: Center(
-              child: controller.videoController.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: controller.videoController.value.aspectRatio,
-                      child: VideoPlayer(controller.videoController), // 재생 바 없음
-                    )
-                  : const CircularProgressIndicator(
-                      color: Colors.white,
-                    ), // 로딩 표시
+          body: Obx(
+            () => Center(
+              child: AnimatedOpacity(
+                duration: const Duration(seconds: 1), // 애니메이션 지속 시간
+                opacity: controller.opacity.value,
+                child: Image.asset('assets/image/waktaverseLogo.png', width: 200),
+              ),
             ),
           ),
         );

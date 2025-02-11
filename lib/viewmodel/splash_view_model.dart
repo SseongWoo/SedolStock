@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -155,40 +156,28 @@ class SplashViewModel extends GetxController {
 }
 
 class WaktaverseGamesViewModel extends GetxController {
-  late VideoPlayerController videoController;
-  final String videoPath = 'assets/video/LogoAnimation_SFX.mp4';
-
+  RxDouble opacity = 0.0.obs;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    _initializeVideo();
+    Future.delayed(const Duration(milliseconds: 100), startAnimation);
   }
 
-  void _initializeVideo() {
-    videoController = VideoPlayerController.asset(videoPath)
-      ..initialize().then((_) {
-        videoController.setLooping(false);
-        videoController.play();
-        update();
-      });
+  void startAnimation() async {
+    opacity.value = 1.0;
 
-    // 비디오 끝나면 자동으로 홈 화면 이동
-    videoController.addListener(() {
-      if (videoController.value.position == videoController.value.duration) {
-        goToSplash();
-      }
+    await Future.delayed(const Duration(seconds: 1), () {
+      opacity.value = 0.0;
+    });
+
+    Future.delayed(const Duration(seconds: 1), () {
+      goToSplash();
     });
   }
 
   void goToSplash() {
     Get.offAllNamed(AppRoute.splash); // 홈 화면 이동
-  }
-
-  @override
-  void onClose() {
-    videoController.dispose(); // 메모리 해제
-    super.onClose();
   }
 }
 
