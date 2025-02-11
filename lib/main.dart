@@ -93,17 +93,15 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.splash,
-
+      //initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.waktaverseGames,
+      initialRoute: AppRoute.waktaverseGames,
       getPages: [
         GetPage(
           name: AppRoute.desktop,
           page: () => WindowsScreen(),
         ),
         GetPage(
-          name: AppRoute.splash,
-          page: () => SplashScreen(),
-        ),
+            name: AppRoute.splash, page: () => SplashScreen(), transition: Transition.noTransition),
         GetPage(
           name: AppRoute.signupChoice,
           page: () => SignupChoiceScreen(),
@@ -151,6 +149,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoute.event,
           page: () => EventScreen(),
+        ),
+        GetPage(
+          name: AppRoute.waktaverseGames,
+          page: () => WaktaverseGames(),
         ),
       ],
     );

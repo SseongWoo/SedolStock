@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:stockpj/main.dart';
 import 'package:stockpj/view/splash_widget.dart';
 import 'package:store_redirect/store_redirect.dart';
+import 'package:video_player/video_player.dart';
 import '../constants/route_constants.dart';
 import '../data/public_data.dart';
 import '../data/my_data.dart';
@@ -16,7 +17,9 @@ import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
 import 'dart:io' show Platform;
-import '../../../utils/get_windows_size.dart' if (dart.library.html) '../../../utils/web_stub.dart';
+import '../../../utils/get_windows_size.dart'
+    if (dart.library.html) '../../../utils/web_stub.dart'
+    if (dart.library.io) '../../../utils/web_stub.dart';
 
 // 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
@@ -151,6 +154,44 @@ class SplashViewModel extends GetxController {
   }
 }
 
+class WaktaverseGamesViewModel extends GetxController {
+  late VideoPlayerController videoController;
+  final String videoPath = 'assets/video/LogoAnimation_SFX.mp4';
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() {
+    videoController = VideoPlayerController.asset(videoPath)
+      ..initialize().then((_) {
+        videoController.setLooping(false);
+        videoController.play();
+        update();
+      });
+
+    // 비디오 끝나면 자동으로 홈 화면 이동
+    videoController.addListener(() {
+      if (videoController.value.position == videoController.value.duration) {
+        goToSplash();
+      }
+    });
+  }
+
+  void goToSplash() {
+    Get.offAllNamed(AppRoute.splash); // 홈 화면 이동
+  }
+
+  @override
+  void onClose() {
+    videoController.dispose(); // 메모리 해제
+    super.onClose();
+  }
+}
+
 class WindowsViewModel extends GetxController {
   final ScreenController _screenController = Get.find<ScreenController>();
 
@@ -168,6 +209,6 @@ class WindowsViewModel extends GetxController {
     _screenController.windowsMaxSize = getPhysicalScreenSize();
     setWindowsSize(windowsPer ?? 70);
 
-    Get.offAllNamed(AppRoute.splash);
+    Get.offAllNamed(AppRoute.waktaverseGames);
   }
 }

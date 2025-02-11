@@ -13,4 +13,5 @@ class AppRoute {
   static const String deleteAccount = '/delete-account'; // 회원탈퇴 화면
   static const String event = '/event'; // 이벤트 화면
   static const String desktop = '/desktop'; // 이벤트 화면
+  static const String waktaverseGames = '/waktaverse-games';
 }
