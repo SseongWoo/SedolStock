@@ -16,7 +16,7 @@
 
 ### 📱 Android 버전
 - Google Play 스토어에서 다운로드하세요!  
-<a href="https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME" target="_blank">
+<a href="https://play.google.com/store/apps/details?id=com.sedolstock.app" target="_blank">
   <img src="https://github.com/user-attachments/assets/cef364ec-5f9f-4756-a6c3-49d65bee3ad6" width="30%">
 </a>
 
