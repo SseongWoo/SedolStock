@@ -50,37 +50,24 @@ class SplashScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: screenSize.getHeightPerSize(4),
+                  ),
+                  Visibility(
+                    visible: GetPlatform.isWindows,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenSize.getWidthPerSize(15),
+                      ),
+                      child: Image.asset('assets/image/waktaverseLogo.png'),
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class WaktaverseGames extends StatelessWidget {
-  const WaktaverseGames({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<WaktaverseGamesViewModel>(
-      init: WaktaverseGamesViewModel(), // 뷰모델 초기화
-      builder: (controller) {
-        return Scaffold(
-          backgroundColor: Colors.black, // 검은 배경
-          body: Obx(
-            () => Center(
-              child: AnimatedOpacity(
-                duration: const Duration(seconds: 1), // 애니메이션 지속 시간
-                opacity: controller.opacity.value,
-                child: Image.asset('assets/image/waktaverseLogo.png', width: 200),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

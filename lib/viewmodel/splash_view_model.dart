@@ -27,7 +27,7 @@ class SplashViewModel extends GetxController {
   final ScreenController screenController = Get.find<ScreenController>();
   final MyDataController _myDataController = Get.find<MyDataController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
-  RxString loadingMessage = RxString('로딩'); // 로딩 메시지 상태
+  RxString loadingMessage = RxString('로딩중'); // 로딩 메시지 상태
 
   @override
   void onInit() {
@@ -38,7 +38,7 @@ class SplashViewModel extends GetxController {
   void _goUpdate() {
     GetPlatform.isMobile
         ? StoreRedirect.redirect()
-        : _httpService.openUrl('https://cafe.naver.com/steamindiegame/19096888',
+        : _httpService.openUrl('https://cafe.naver.com/steamindiegame/19324731',
             '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
   }
 
@@ -153,32 +153,6 @@ class SplashViewModel extends GetxController {
   }
 }
 
-class WaktaverseGamesViewModel extends GetxController {
-  RxDouble opacity = 0.0.obs;
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    Future.delayed(const Duration(milliseconds: 100), startAnimation);
-  }
-
-  void startAnimation() async {
-    opacity.value = 1.0;
-
-    await Future.delayed(const Duration(seconds: 1), () {
-      opacity.value = 0.0;
-    });
-
-    Future.delayed(const Duration(seconds: 1), () {
-      goToSplash();
-    });
-  }
-
-  void goToSplash() {
-    Get.offAllNamed(AppRoute.splash); // 홈 화면 이동
-  }
-}
-
 class WindowsViewModel extends GetxController {
   final ScreenController _screenController = Get.find<ScreenController>();
 
@@ -196,6 +170,6 @@ class WindowsViewModel extends GetxController {
     _screenController.windowsMaxSize = getPhysicalScreenSize();
     setWindowsSize(windowsPer ?? 70);
 
-    Get.offAllNamed(AppRoute.waktaverseGames);
+    Get.offAllNamed(AppRoute.splash);
   }
 }

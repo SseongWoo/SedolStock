@@ -93,8 +93,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      //initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.waktaverseGames,
-      initialRoute: AppRoute.waktaverseGames,
+      initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.splash,
       getPages: [
         GetPage(
           name: AppRoute.desktop,
@@ -149,10 +148,6 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoute.event,
           page: () => EventScreen(),
-        ),
-        GetPage(
-          name: AppRoute.waktaverseGames,
-          page: () => WaktaverseGames(),
         ),
       ],
     );
