@@ -82,14 +82,12 @@ class InformationModel {
   }
 
   // 계정 정보 초기화 함수(파산 신청)
-  Future<bool> restartUserData(String uid) async {
+  Future<bool> restartUserData(String uid, int level) async {
     try {
       if (uid == '') {
         throw Exception('uid is empty');
       }
-      final userData = await httpService.putRequest('/users/restart', {
-        'uid': uid,
-      });
+      final userData = await httpService.putRequest('/users/restart', {'uid': uid, 'level': level});
 
       if (userData.statusCode == 201) {
         return true;

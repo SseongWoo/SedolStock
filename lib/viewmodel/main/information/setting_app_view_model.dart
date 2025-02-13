@@ -67,8 +67,9 @@ class SettingAppViewModel extends GetxController {
     EasyLoading.show(status: '초기화 중');
 
     String uid = myDataController.myUid.value;
+    int level = myDataController.myLevel.value;
 
-    bool restart = await _informationModel.restartUserData(uid);
+    bool restart = await _informationModel.restartUserData(uid, level);
 
     if (restart) {
       showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
