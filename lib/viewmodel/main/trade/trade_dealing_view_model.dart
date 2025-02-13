@@ -1,6 +1,7 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:stockpj/constants/route_constants.dart';
 import 'package:stockpj/model/main/trade_model.dart';
 import '../../../data/my_data.dart';
 import '../../../data/public_data.dart';
@@ -252,18 +253,16 @@ class TradeDealingViewModel extends GetxController {
           youtubeDataController.itemPriceDateMap[channelUID]?.channelType ?? 'main',
           tradeType,
           priceAvg);
+      Get.until((route) => Get.currentRoute == AppRoute.tradeDetail);
       if (checkSale == 200) {
         //_audioController.playSound('assets/sound/testsound.wav');
-        Get.back();
         await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
       } else if (checkSale == 201) {
-        Get.back();
         myDataController.myLevel.value++;
         levelUPDialog(screenController.screenSize.value, myDataController.myLevel.value);
         await reflashGetData(false);
       } else {
-        Get.back();
         showSimpleSnackbar(
             '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);
       }

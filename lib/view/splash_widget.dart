@@ -37,7 +37,8 @@ class UpdateDialog extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요\n현재버전 : \n최신버전 : \n',
+                //'게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요\n현재버전 : \n최신버전 : \n',
+                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요',
                 style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
               ),
               const Spacer(),
