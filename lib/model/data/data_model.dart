@@ -100,9 +100,10 @@ class DataModel {
   }
 
   // 사용자의 총 자산을 서버에 업데이트하는 함수
-  Future<bool> updateTotalMoney(String uid, int totalMoney, String fandom, String name) async {
-    final response = await httpService.putRequest(
-        '/users/updatetotalmoney/$uid', {'totalmoney': totalMoney, 'fandom': fandom, 'name': name});
+  Future<bool> updateTotalMoney(
+      String uid, int totalMoney, String fandom, String name, int level) async {
+    final response = await httpService.putRequest('/users/updatetotalmoney/$uid',
+        {'totalmoney': totalMoney, 'fandom': fandom, 'name': name, 'level': level});
 
     if (response.statusCode == 200) {
       return true;

@@ -83,6 +83,7 @@ flutter:
     - assets/image/
     - assets/image/fan/
     - assets/image/ui/
+    - assets/image/level/
     - assets/sound/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

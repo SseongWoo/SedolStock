@@ -14,6 +14,7 @@ void setURL() {
   if (kDebugMode) {
     print('디버그 모드에서 실행 중입니다.');
     //httpURL = dotenv.env['TEST_API_URL'] ?? '';
+    //httpURL = 'http://localhost:3000/api';
   } else {
     print('릴리스 모드에서 실행 중입니다.');
   }

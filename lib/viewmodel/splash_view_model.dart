@@ -17,8 +17,8 @@ import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
 import 'dart:io' show Platform;
 import '../../../utils/web_stub.dart'
-if (dart.library.html) '../../../utils/web_stub.dart'
-if (dart.library.io) '../../../utils/get_windows_size.dart';
+    if (dart.library.html) '../../../utils/web_stub.dart'
+    if (dart.library.io) '../../../utils/get_windows_size.dart';
 
 // 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
@@ -38,7 +38,7 @@ class SplashViewModel extends GetxController {
   void _goUpdate() {
     GetPlatform.isMobile
         ? StoreRedirect.redirect()
-        : _httpService.openUrl('https://cafe.naver.com/steamindiegame/19324731',
+        : _httpService.openUrl('https://waktaverse.games/gameDetail/sedol_stock',
             '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
   }
 

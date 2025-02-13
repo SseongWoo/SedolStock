@@ -9,6 +9,7 @@ import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/audio.dart';
 import '../../../utils/format.dart';
+import '../../../utils/level.dart';
 import '../../../utils/screen_size.dart';
 import '../../../widget/simple_widget.dart';
 import '../../../utils/timer.dart';
@@ -243,7 +244,7 @@ class TradeDealingViewModel extends GetxController {
         priceAvg = myDataController.stockListItem[channelUID]?.stockBuyingPrice ?? 0;
       }
 
-      bool checkSale = await tradeModel.fetchTrySale(
+      int checkSale = await tradeModel.fetchTrySale(
           myDataController.myUid.value,
           price,
           count,
@@ -251,11 +252,16 @@ class TradeDealingViewModel extends GetxController {
           youtubeDataController.itemPriceDateMap[channelUID]?.channelType ?? 'main',
           tradeType,
           priceAvg);
-      if (checkSale) {
+      if (checkSale == 200) {
         //_audioController.playSound('assets/sound/testsound.wav');
         Get.back();
         await reflashGetData(false);
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
+      } else if (checkSale == 201) {
+        Get.back();
+        myDataController.myLevel.value++;
+        levelUPDialog(screenController.screenSize.value, myDataController.myLevel.value);
+        await reflashGetData(false);
       } else {
         Get.back();
         showSimpleSnackbar(

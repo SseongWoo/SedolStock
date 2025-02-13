@@ -4,6 +4,7 @@ import '../../../data/public_data.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/color.dart';
 import '../../../utils/format.dart';
+import '../../../utils/level.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/information/information_view_model.dart';
 import '../../../widget/divider.dart';
@@ -55,11 +56,27 @@ class InformationScreen extends StatelessWidget {
                                   fontSize: screenSize.getHeightPerSize(1.6),
                                   color: fanColorMap[choiceChannel.value]),
                             ),
-                            Text(
-                              _viewModel.myDataController.myName.value,
-                              style: TextStyle(
-                                fontSize: screenSize.getHeightPerSize(2),
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: screenSize.getWidthPerSize(12),
+                                ),
+                                Text(
+                                  _viewModel.myDataController.myName.value,
+                                  style: TextStyle(
+                                    fontSize: screenSize.getHeightPerSize(2),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: screenSize.getWidthPerSize(12),
+                                  child: getLevelImage(_viewModel.myDataController.myLevel.value) !=
+                                          0
+                                      ? Image.asset(
+                                          'assets/image/level/star${getLevelImage(_viewModel.myDataController.myLevel.value)}.png')
+                                      : null,
+                                ),
+                              ],
                             ),
                           ],
                         ),

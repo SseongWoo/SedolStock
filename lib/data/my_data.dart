@@ -14,6 +14,7 @@ class MyDataController extends GetxController {
   final YoutubeDataController _youtubeDataController = Get.find<YoutubeDataController>();
   RxString myUid = ''.obs; // 사용자 정보
   RxString myId = ''.obs; // *
+  RxInt myLevel = 0.obs; // *
   RxString myFirstlogintime = ''.obs; // *
   RxString myName = ''.obs; // *
   RxString myChoicechannel = ''.obs; // *
@@ -129,6 +130,7 @@ class MyDataController extends GetxController {
         myName.value = userData['name'];
         myChoicechannel.value = userData['choicechannel'];
         myMoney.value = userData['money'];
+        myLevel.value = userData['level'] ?? 0;
         return true;
       }
 
@@ -246,7 +248,7 @@ class MyDataController extends GetxController {
       }
 
       final isSuccess = await dataModel.updateTotalMoney(
-          myUid.value, myTotalMoney.value, myChoicechannel.value, myName.value);
+          myUid.value, myTotalMoney.value, myChoicechannel.value, myName.value, myLevel.value);
 
       if (isSuccess) {
         logger.i('updateMyTotalMoney log: Total money updated successfully');

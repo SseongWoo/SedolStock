@@ -20,7 +20,7 @@ int? getRank(List<RankingDataClass> rankList, String myUid) {
   return rankList
       .firstWhere(
         (item) => item.uid == myUid,
-        orElse: () => RankingDataClass('', '', '', 0, 0),
+        orElse: () => RankingDataClass('', '', '', 0, 0, 0),
       )
       .rank;
 }

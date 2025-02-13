@@ -5,6 +5,7 @@ import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/format.dart';
+import '../../../utils/level.dart';
 
 // 랭킹 탭 화면
 class RankingTapScreen extends StatelessWidget {
@@ -150,11 +151,22 @@ class RankingWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AutoSizeText(
-                    rankingData.name,
-                    style: TextStyle(
-                        fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
-                    maxLines: 1,
+                  Row(
+                    children: [
+                      AutoSizeText(
+                        rankingData.name,
+                        style: TextStyle(
+                            fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                      ),
+                      SizedBox(
+                        width: screenSize.getWidthPerSize(12),
+                        child: getLevelImage(rankingData.level) != 0
+                            ? Image.asset(
+                                'assets/image/level/star${getLevelImage(rankingData.level)}.png')
+                            : null,
+                      ),
+                    ],
                   ),
                   Align(
                     alignment: Alignment.centerRight,

@@ -7,6 +7,7 @@ import 'package:stockpj/viewmodel/main/ranking_view_model.dart';
 import '../../../constants/color_constants.dart';
 import '../../../data/public_data.dart';
 import '../../../utils/format.dart';
+import '../../../utils/level.dart';
 import '../../../utils/set_myRank.dart';
 
 // 랭킹 화면
@@ -121,12 +122,26 @@ class RankingScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                _viewModel.myDataController.myName.value,
-                                style: TextStyle(
-                                    fontSize: screenSize.getHeightPerSize(2),
-                                    fontWeight: FontWeight.bold,
-                                    color: myTextColor),
+                              Row(
+                                children: [
+                                  AutoSizeText(
+                                    _viewModel.myDataController.myName.value,
+                                    style: TextStyle(
+                                        fontSize: screenSize.getHeightPerSize(2),
+                                        fontWeight: FontWeight.bold,
+                                        color: myTextColor),
+                                    maxLines: 1,
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.getWidthPerSize(12),
+                                    child: getLevelImage(
+                                                _viewModel.myDataController.myLevel.value) !=
+                                            0
+                                        ? Image.asset(
+                                            'assets/image/level/star${getLevelImage(_viewModel.myDataController.myLevel.value)}.png')
+                                        : null,
+                                  ),
+                                ],
                               ),
                               Align(
                                 alignment: Alignment.centerRight,

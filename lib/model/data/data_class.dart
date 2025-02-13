@@ -91,6 +91,7 @@ class RankingDataClass {
   String fandom;
   int rank;
   int totalMoney;
+  int level;
 
   RankingDataClass(
     this.uid,
@@ -98,6 +99,7 @@ class RankingDataClass {
     this.fandom,
     this.rank,
     this.totalMoney,
+    this.level,
   );
 
   Map<String, dynamic> toJson() => {
@@ -106,6 +108,7 @@ class RankingDataClass {
         'fandom': fandom,
         'rank': rank,
         'totalmoney': totalMoney,
+        'level': level,
       };
 
   // JSON 데이터를 객체로 변환하는 팩토리 생성자
@@ -123,6 +126,7 @@ class RankingDataClass {
       json['fandom']?.toString() ?? '',
       json['rank'] ?? 0,
       totalMoney!,
+      json['level'] ?? 0,
     );
   }
 }
