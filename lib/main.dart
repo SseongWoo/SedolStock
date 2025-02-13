@@ -57,7 +57,7 @@ void startController() {
   Get.put(MyDataController());
   Get.put(TimerController(), permanent: true);
   Get.put(PublicDataController());
-  Get.put(AudioController());
+  //Get.put(AudioController());
 }
 
 class MyApp extends StatelessWidget {

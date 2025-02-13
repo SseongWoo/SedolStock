@@ -25,7 +25,7 @@ class SettingAppViewModel extends GetxController {
   final TimerController _timerController = Get.find<TimerController>();
   final PublicDataController _publicDataController = Get.find<PublicDataController>();
   final ScreenController screenController = Get.find<ScreenController>();
-  final AudioController audioController = Get.find<AudioController>();
+  //final AudioController audioController = Get.find<AudioController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final TextEditingController controllerName = TextEditingController();
   final formKey = GlobalKey<FormState>();

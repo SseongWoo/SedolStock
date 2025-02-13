@@ -8,112 +8,112 @@ import '../../../utils/screen_size.dart';
 import 'dart:io' show Platform;
 import '../../../utils/get_windows_size.dart' if (dart.library.html) '../../../utils/web_stub.dart';
 
-class AudioSettingWidget extends StatelessWidget {
-  final SettingAppViewModel viewModel;
-  const AudioSettingWidget({super.key, required this.viewModel});
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenSize screenSize = viewModel.screenController.screenSize.value;
-    return Column(
-      children: [
-        Container(
-          height: screenSize.getHeightPerSize(8),
-          width: screenSize.getWidthSize(),
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: screenSize.getWidthPerSize(3),
-              right: screenSize.getWidthPerSize(3),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '효과음',
-                      style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
-                    ),
-                    Obx(
-                      () => Text(
-                        viewModel.audioController.onAudio.value ? '사용함' : '사용안함',
-                        style: TextStyle(
-                            fontSize: screenSize.getHeightPerSize(1.2),
-                            color:
-                                viewModel.audioController.onAudio.value ? colorSUB : Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
-                Obx(
-                  () => Switch(
-                    value: viewModel.audioController.onAudio.value,
-                    onChanged: (value) {
-                      viewModel.audioController.onoffAudio();
-                    },
-                    activeColor: colorMAIN,
-                    activeTrackColor: colorSUB,
-                    inactiveThumbColor: colorSUB,
-                    inactiveTrackColor: colorMAIN,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Obx(
-          () => AnimatedCrossFade(
-            duration: const Duration(milliseconds: 300),
-            firstChild: Container(
-              width: screenSize.getWidthSize(),
-              color: Colors.white,
-            ),
-            secondChild: Container(
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: screenSize.getWidthPerSize(3),
-                  right: screenSize.getWidthPerSize(3),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Slider(
-                        value: viewModel.audioController.audioVolume.value,
-                        onChanged: (value) {
-                          viewModel.audioController.audioVolume.value = value;
-                          viewModel.audioController.audioPlayer.setVolume(value);
-                        },
-                        activeColor: colorSUB,
-                        inactiveColor: colorMAIN,
-                        thumbColor: fanColorMap[viewModel.myDataController.myChoicechannel.value],
-                        divisions: 10,
-                        label: '${(viewModel.audioController.audioVolume.value * 100).toInt()}%',
-                        min: 0.0,
-                        max: 1.0,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        viewModel.audioController.playSound('assets/sound/testsound.wav');
-                      },
-                      icon: const Icon(Icons.volume_up),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            crossFadeState: viewModel.audioController.onAudio.value
-                ? CrossFadeState.showSecond // 확장된 상태
-                : CrossFadeState.showFirst, // 숨겨진 상태
-          ),
-        ),
-      ],
-    );
-  }
-}
+// class AudioSettingWidget extends StatelessWidget {
+//   final SettingAppViewModel viewModel;
+//   const AudioSettingWidget({super.key, required this.viewModel});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     ScreenSize screenSize = viewModel.screenController.screenSize.value;
+//     return Column(
+//       children: [
+//         Container(
+//           height: screenSize.getHeightPerSize(8),
+//           width: screenSize.getWidthSize(),
+//           color: Colors.white,
+//           child: Padding(
+//             padding: EdgeInsets.only(
+//               left: screenSize.getWidthPerSize(3),
+//               right: screenSize.getWidthPerSize(3),
+//             ),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Text(
+//                       '효과음',
+//                       style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+//                     ),
+//                     Obx(
+//                       () => Text(
+//                         viewModel.audioController.onAudio.value ? '사용함' : '사용안함',
+//                         style: TextStyle(
+//                             fontSize: screenSize.getHeightPerSize(1.2),
+//                             color:
+//                                 viewModel.audioController.onAudio.value ? colorSUB : Colors.grey),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//                 Obx(
+//                   () => Switch(
+//                     value: viewModel.audioController.onAudio.value,
+//                     onChanged: (value) {
+//                       viewModel.audioController.onoffAudio();
+//                     },
+//                     activeColor: colorMAIN,
+//                     activeTrackColor: colorSUB,
+//                     inactiveThumbColor: colorSUB,
+//                     inactiveTrackColor: colorMAIN,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//         Obx(
+//           () => AnimatedCrossFade(
+//             duration: const Duration(milliseconds: 300),
+//             firstChild: Container(
+//               width: screenSize.getWidthSize(),
+//               color: Colors.white,
+//             ),
+//             secondChild: Container(
+//               color: Colors.white,
+//               child: Padding(
+//                 padding: EdgeInsets.only(
+//                   left: screenSize.getWidthPerSize(3),
+//                   right: screenSize.getWidthPerSize(3),
+//                 ),
+//                 child: Row(
+//                   children: [
+//                     Expanded(
+//                       child: Slider(
+//                         value: viewModel.audioController.audioVolume.value,
+//                         onChanged: (value) {
+//                           viewModel.audioController.audioVolume.value = value;
+//                           viewModel.audioController.audioPlayer.setVolume(value);
+//                         },
+//                         activeColor: colorSUB,
+//                         inactiveColor: colorMAIN,
+//                         thumbColor: fanColorMap[viewModel.myDataController.myChoicechannel.value],
+//                         divisions: 10,
+//                         label: '${(viewModel.audioController.audioVolume.value * 100).toInt()}%',
+//                         min: 0.0,
+//                         max: 1.0,
+//                       ),
+//                     ),
+//                     IconButton(
+//                       onPressed: () {
+//                         viewModel.audioController.playSound('assets/sound/testsound.wav');
+//                       },
+//                       icon: const Icon(Icons.volume_up),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             crossFadeState: viewModel.audioController.onAudio.value
+//                 ? CrossFadeState.showSecond // 확장된 상태
+//                 : CrossFadeState.showFirst, // 숨겨진 상태
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class LogoutDialog extends StatelessWidget {
   final SettingAppViewModel viewModel;

@@ -31,7 +31,7 @@ class SettingAppScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AudioSettingWidget(viewModel: _viewModel),
+            //AudioSettingWidget(viewModel: _viewModel),
             SizedBox(height: screenSize.getHeightPerSize(1)),
             _settingTitle(screenSize, '정보 설정'),
             informationButton('데이터 새로고침', _viewModel.tryGetData, screenSize),

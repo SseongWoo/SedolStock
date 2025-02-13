@@ -16,9 +16,9 @@ import '../utils/screen_size.dart';
 import '../widget/simple_widget.dart';
 import '../model/splash_model.dart';
 import 'dart:io' show Platform;
-import '../../../utils/get_windows_size.dart'
-    if (dart.library.html) '../../../utils/web_stub.dart'
-    if (dart.library.io) '../../../utils/web_stub.dart';
+import '../../../utils/web_stub.dart'
+if (dart.library.html) '../../../utils/web_stub.dart'
+if (dart.library.io) '../../../utils/get_windows_size.dart';
 
 // 로딩 화면 뷰 모델
 class SplashViewModel extends GetxController {
@@ -160,7 +160,10 @@ class WindowsViewModel extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    startGetWindowsSize();
+
+    if (GetPlatform.isWindows) {
+      startGetWindowsSize();
+    }
   }
 
   void startGetWindowsSize() async {

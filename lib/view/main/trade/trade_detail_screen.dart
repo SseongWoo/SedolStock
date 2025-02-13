@@ -233,20 +233,23 @@ class TradeDetailScreen extends StatelessWidget {
                                   trailing: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Text(
+                                      AutoSizeText(
                                         '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
                                         style: TextStyle(
-                                          fontSize: screenSize.getHeightPerSize(1.8),
+                                          fontSize: screenSize.getHeightPerSize(1.6),
                                         ),
                                         textAlign: TextAlign.right,
+                                        maxLines: 1,
                                       ),
                                       AutoSizeText(
                                         _viewModel.setReturnRatio(stockData?.stockProfit ?? 0,
                                             stockData?.stockRatio ?? 0),
                                         style: TextStyle(
-                                            fontSize: screenSize.getHeightPerSize(1.8),
+                                            fontSize: screenSize.getHeightPerSize(1.6),
                                             color: profitAndLossColor(stockData?.stockProfit ?? 0)),
                                         textAlign: TextAlign.right,
+                                        maxLines: 1,
+
                                       ),
                                     ],
                                   ),
