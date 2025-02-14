@@ -25,6 +25,7 @@ class MyDataController extends GetxController {
   RxInt myFandomRank = 0.obs; // *
   RxInt myTotalMoney = 0.obs; // *
   RxInt myReturnMoney = 0.obs; // *
+  bool administrator = false;
   RxDouble myRatioMoney = 0.0.obs; // *
   RxInt myStockCount = 0.obs; // *
   RxInt myStockList = 0.obs; // //
@@ -131,6 +132,7 @@ class MyDataController extends GetxController {
         myChoicechannel.value = userData['choicechannel'];
         myMoney.value = userData['money'];
         myLevel.value = userData['level'] ?? 0;
+        administrator = userData['administrator'] ?? false;
         return true;
       }
 
@@ -247,8 +249,8 @@ class MyDataController extends GetxController {
         }
       }
 
-      final isSuccess = await dataModel.updateTotalMoney(
-          myUid.value, myTotalMoney.value, myChoicechannel.value, myName.value, myLevel.value);
+      final isSuccess = await dataModel.updateTotalMoney(myUid.value, myTotalMoney.value,
+          myChoicechannel.value, myName.value, myLevel.value, administrator);
 
       if (isSuccess) {
         logger.i('updateMyTotalMoney log: Total money updated successfully');
