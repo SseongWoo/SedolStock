@@ -260,8 +260,9 @@ class TradeDealingViewModel extends GetxController {
         showSimpleSnackbar('거래 완료', '거래가 성공적으로 완료되었습니다!', SnackPosition.TOP, Colors.black);
       } else if (checkSale == 201) {
         myDataController.myLevel.value++;
-        levelUPDialog(screenController.screenSize.value, myDataController.myLevel.value);
         await reflashGetData(false);
+        print(myDataController.ownStock.length);
+        levelUPDialog(screenController.screenSize.value, myDataController.myLevel.value);
       } else {
         showSimpleSnackbar(
             '거래 실패', '거래를 처리하는 중 문제가 발생했습니다. 다시 시도해 주세요.', SnackPosition.TOP, Colors.red);

@@ -80,23 +80,4 @@ class InformationModel {
       return false;
     }
   }
-
-  // 계정 정보 초기화 함수(파산 신청)
-  Future<bool> restartUserData(String uid, int level) async {
-    try {
-      if (uid == '') {
-        throw Exception('uid is empty');
-      }
-      final userData = await httpService.putRequest('/users/restart', {'uid': uid, 'level': level});
-
-      if (userData.statusCode == 201) {
-        return true;
-      } else {
-        throw Exception(userData.statusCode);
-      }
-    } catch (e) {
-      logger.e('restartUserData error : $e');
-      return false;
-    }
-  }
 }

@@ -6,6 +6,7 @@ import 'package:stockpj/utils/color.dart';
 import '../../../data/my_data.dart';
 import '../../../model/main/information_model.dart';
 import '../../../utils/change_fandom.dart';
+import '../../../utils/restart.dart';
 import '../../../utils/screen_size.dart';
 
 // 정보 탭 뷰모델
@@ -108,5 +109,11 @@ class InformationViewModel extends GetxController {
   // 파산 확인
   void _checkNotBankruptcy() {
     notBankruptcy.value = myDataController.myTotalMoney.value > 0 ? true : false;
+  }
+
+  // 파산 신청
+  void tryRestart() {
+    restartDialog(screenController.screenSize.value, myDataController.myUid.value,
+        myDataController.myLevel.value);
   }
 }

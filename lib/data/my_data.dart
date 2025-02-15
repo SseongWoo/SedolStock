@@ -148,6 +148,7 @@ class MyDataController extends GetxController {
   // 사용자의 지갑 데이터를 가져오는 함수
   Future<bool> getWalletData() async {
     try {
+      ownStock.clear();
       if (myUid.value.isEmpty) {
         final uid = await getUID();
         if (uid != null) {

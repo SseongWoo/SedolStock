@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/data/public_data.dart';
+import 'package:stockpj/utils/restart.dart';
 import '../../../constants/route_constants.dart';
 import '../../../data/my_data.dart';
 import '../../../data/start_data.dart';
@@ -50,34 +51,6 @@ class SettingAppViewModel extends GetxController {
       showSimpleSnackbar(
           '데이터 수동 갱신 성공', '데이터 갱신이 완료되었습니다. 최신 정보로 업데이트되었습니다!', SnackPosition.TOP, Colors.black);
     }
-  }
-
-  // 파산 신청
-  void restartDialog() {
-    showSimpleDialog3(
-        screenController.screenSize.value,
-        '파산 신청',
-        '파산 신청을 진행하시겠습니까?\n파산을 신청하면 모든 데이터가 초기화되며, 자동으로 로그아웃됩니다. 이 작업은 되돌릴 수 없으니 신중하게 결정해 주세요.',
-        '파산 신청',
-        _restart);
-  }
-
-  // 계정 정보 초기화 함수(파산 신청)
-  void _restart() async {
-    EasyLoading.show(status: '초기화 중');
-
-    String uid = myDataController.myUid.value;
-    int level = myDataController.myLevel.value;
-
-    bool restart = await _informationModel.restartUserData(uid, level);
-
-    if (restart) {
-      showSimpleSnackbar('초기화 성공', '초기화에 성공했습니다. 다시 로그인해주세요.', SnackPosition.TOP, Colors.black);
-      logOut();
-    } else {
-      showSimpleDialog(Get.back, '오류', '오류가 발생했습니다.\n다시 시도해 주세요');
-    }
-    EasyLoading.dismiss();
   }
 
   // 회원 탈퇴
@@ -202,5 +175,10 @@ class SettingAppViewModel extends GetxController {
         ),
       ),
     );
+  }
+
+  void tryRestart() {
+    restartDialog(screenController.screenSize.value, myDataController.myUid.value,
+        myDataController.myLevel.value);
   }
 }

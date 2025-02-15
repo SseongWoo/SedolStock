@@ -41,7 +41,7 @@ class SettingAppScreen extends StatelessWidget {
             informationButton('대표 팬덤 변경', _viewModel.changeFandomDialog, screenSize),
             SizedBox(height: screenSize.getHeightPerSize(1)),
             _settingTitle(screenSize, '계정 설정'),
-            informationButton('파산 신청', _viewModel.restartDialog, screenSize),
+            informationButton('파산 신청', _viewModel.tryRestart, screenSize),
             settingDivider(screenSize),
             informationButton('회원탈퇴', _viewModel.goDeleteAccount, screenSize),
             settingDivider(screenSize),

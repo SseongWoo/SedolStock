@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/constants/color_constants.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import '../../../data/public_data.dart';
 import '../../../model/data/data_class.dart';
@@ -152,19 +153,41 @@ class RankingWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AutoSizeText(
                         rankingData.name,
                         style: TextStyle(
-                            fontSize: screenSize.getHeightPerSize(2), fontWeight: FontWeight.bold),
+                          fontSize: screenSize.getHeightPerSize(2),
+                          fontWeight: FontWeight.bold,
+                          color: rankingData.level > 0 ? colorMAIN : Colors.black,
+                          shadows: rankingData.level > 0
+                              ? [
+                                  const Shadow(color: Colors.black, offset: Offset(-1, -1)),
+                                  const Shadow(color: Colors.black, offset: Offset(1, -1)),
+                                  const Shadow(color: Colors.black, offset: Offset(-1, 1)),
+                                  const Shadow(color: Colors.black, offset: Offset(1, 1)),
+                                ]
+                              : rankingData.totalMoney >= 100000000
+                                  ? [
+                                      const Shadow(color: colorMAIN, offset: Offset(-0.5, -0.5)),
+                                      const Shadow(color: colorMAIN, offset: Offset(0.5, -0.5)),
+                                      const Shadow(color: colorMAIN, offset: Offset(-0.5, 0.5)),
+                                      const Shadow(color: colorMAIN, offset: Offset(0.5, 0.5)),
+                                    ]
+                                  : null,
+                        ),
                         maxLines: 1,
                       ),
-                      SizedBox(
-                        width: screenSize.getWidthPerSize(12),
-                        child: getLevelImage(rankingData.level) != 0
-                            ? Image.asset(
-                                'assets/image/level/star${getLevelImage(rankingData.level)}.png')
-                            : null,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: SizedBox(
+                          width: screenSize.getWidthPerSize(12),
+                          child: getLevelImage(rankingData.level) != 0
+                              ? Image.asset(
+                                  'assets/image/level/star${getLevelImage(rankingData.level)}.png')
+                              : null,
+                        ),
                       ),
                     ],
                   ),
