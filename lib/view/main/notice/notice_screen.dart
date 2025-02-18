@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/data/data_class.dart';
@@ -14,30 +15,44 @@ class NoticeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return KeyboardListener(
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKeyEvent: (value) {
+        // 키보드 이벤트
+        if (value is KeyDownEvent) {
+          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
+              value.logicalKey == LogicalKeyboardKey.backspace ||
+              value.logicalKey == LogicalKeyboardKey.escape) {
+            Get.back();
+          }
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        title: Text(
-          '공지사항',
-          style: TextStyle(fontSize: screenSize.getHeightPerSize(2.5)),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text(
+            '공지사항',
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(2.5)),
+          ),
         ),
-      ),
-      body: Obx(
-        () {
-          final noticeList = _viewModel.publicDataController.noticeList;
-          return noticeList.isNotEmpty
-              ? ListView.builder(
-                  itemCount: noticeList.length,
-                  itemBuilder: (context, index) {
-                    final notice = noticeList[index];
-                    return _noticeListItemWidget(screenSize, notice);
-                  },
-                )
-              : const Center(
-                  child: Text('등록된 공지사항이 없습니다.'),
-                );
-        },
+        body: Obx(
+          () {
+            final noticeList = _viewModel.publicDataController.noticeList;
+            return noticeList.isNotEmpty
+                ? ListView.builder(
+                    itemCount: noticeList.length,
+                    itemBuilder: (context, index) {
+                      final notice = noticeList[index];
+                      return _noticeListItemWidget(screenSize, notice);
+                    },
+                  )
+                : const Center(
+                    child: Text('등록된 공지사항이 없습니다.'),
+                  );
+          },
+        ),
       ),
     );
   }

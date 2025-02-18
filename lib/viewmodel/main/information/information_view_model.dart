@@ -40,10 +40,10 @@ class InformationViewModel extends GetxController {
 
   // 관리 화면으로 이동하는 함수
   void goSetting() {
-    //Get.toNamed(AppRoute.settingApp);
-    Get.offAllNamed(
-      AppRoute.settingApp,
-    );
+    Get.toNamed(AppRoute.settingApp);
+    // Get.offAllNamed(
+    //   AppRoute.settingApp,
+    // );
   }
 
   // 사용자 자산 변동 그래프 데이터 설정

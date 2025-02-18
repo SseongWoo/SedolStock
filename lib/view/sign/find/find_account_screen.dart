@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/find_account_view_model.dart';
 import '../../../constants/color_constants.dart';
@@ -12,70 +13,86 @@ class FindAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('비밀번호 찾기'),
-        backgroundColor: colorMAIN,
-      ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: screenSize.getWidthPerSize(10),
-            right: screenSize.getWidthPerSize(10),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Form(
-                key: _viewModel.formKey,
-                child: TextFormField(
-                  controller: _viewModel.controllerName,
-                  decoration: const InputDecoration(labelText: '이메일', border: OutlineInputBorder()),
-                  maxLines: 1,
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                  validator: _viewModel.validateEmail,
-                ),
-              ),
-              SizedBox(
-                height: screenSize.getHeightPerSize(2),
-              ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.warning,
-                    color: Colors.orange,
+    return KeyboardListener(
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKeyEvent: (value) {
+        // 키보드 이벤트
+        if (value is KeyDownEvent) {
+          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
+              value.logicalKey == LogicalKeyboardKey.backspace ||
+              value.logicalKey == LogicalKeyboardKey.escape) {
+            Get.back();
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('비밀번호 찾기'),
+          backgroundColor: colorMAIN,
+        ),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: screenSize.getWidthPerSize(10),
+              right: screenSize.getWidthPerSize(10),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Form(
+                  key: _viewModel.formKey,
+                  child: TextFormField(
+                    controller: _viewModel.controllerName,
+                    decoration:
+                        const InputDecoration(labelText: '이메일', border: OutlineInputBorder()),
+                    maxLines: 1,
+                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                    validator: _viewModel.validateEmail,
                   ),
-                  Expanded(
-                    child: Text(
-                      '이메일 인증을 완료한 사용자만 비밀번호 찾기 서비스를 이용할 수 있습니다.',
-                      style: TextStyle(
-                        fontSize: screenSize.getHeightPerSize(1.2),
+                ),
+                SizedBox(
+                  height: screenSize.getHeightPerSize(2),
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.warning,
+                      color: Colors.orange,
+                    ),
+                    Expanded(
+                      child: Text(
+                        '이메일 인증을 완료한 사용자만 비밀번호 찾기 서비스를 이용할 수 있습니다.',
+                        style: TextStyle(
+                          fontSize: screenSize.getHeightPerSize(1.2),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: screenSize.getHeightPerSize(2),
-              ),
-              SizedBox(
-                width: screenSize.getWidthSize(),
-                child: ElevatedButton(
-                  onPressed: _viewModel.onPressed,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorSUB,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                  ],
+                ),
+                SizedBox(
+                  height: screenSize.getHeightPerSize(2),
+                ),
+                SizedBox(
+                  width: screenSize.getWidthSize(),
+                  child: ElevatedButton(
+                    onPressed: _viewModel.onPressed,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorSUB,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text(
-                    '비밀번호 찾기',
-                    style: TextStyle(fontSize: screenSize.getHeightPerSize(2), color: Colors.white),
+                    child: Text(
+                      '비밀번호 찾기',
+                      style:
+                          TextStyle(fontSize: screenSize.getHeightPerSize(2), color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
