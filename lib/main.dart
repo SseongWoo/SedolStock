@@ -15,6 +15,7 @@ import 'package:stockpj/view/main/event/event_screen.dart';
 import 'package:stockpj/view/main/information/delete_account_screen.dart';
 import 'package:stockpj/view/main/information/setting_app_screen.dart';
 import 'package:stockpj/view/main/main_screen.dart';
+import 'package:stockpj/view/main/notice/notice_screen.dart';
 import 'package:stockpj/view/main/notification/notification_screen.dart';
 import 'package:stockpj/view/main/trade/trade_dealing_screen.dart';
 import 'package:stockpj/view/main/trade/trade_detail_screen.dart';
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 기본 경로 설정
-      initialRoute: GetPlatform.isDesktop ? AppRoute.desktop : AppRoute.splash,
+      initialRoute: GetPlatform.isWindows ? AppRoute.desktop : AppRoute.splash,
       getPages: [
         GetPage(
           name: AppRoute.desktop,
@@ -148,6 +149,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoute.event,
           page: () => EventScreen(),
+        ),
+        GetPage(
+          name: AppRoute.notice,
+          page: () => NoticeScreen(),
         ),
       ],
     );

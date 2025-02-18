@@ -32,6 +32,8 @@ Future<void> startGetData() async {
   String? date = await getDataDate();
   String today = DateFormat('MM월 dd일 hh시').format(now);
 
+  await publicDataController.getServerData(); // 서버의 상수, 공지사항, 버전 정보를 가져옴
+
   // 오늘 실행된 이력이 있으면 일부 데이터만 가져오고, 없으면 모든 데이터를 가져오도록 동작
   if (date == null || date != today) {
     await fetchDataAndSave(youtubeDataController, today);
@@ -62,7 +64,6 @@ Future<void> startGetData() async {
   }
   publicDataController.setEventCheck();
 
-  await publicDataController.getConstantsData(); // 서버 상수데이터 가져오는 기능
   await youtubeDataController.getYoutubeLiveData(); // 유튜브 가격 데이터 가져오는 함수
   myDataController.setMoneyData(); // 사용자의 자산 데이터 정리
   await myDataController.getTradeHistoryData(); // 사용자의 거래 리스트 데이터 가져오는 함수

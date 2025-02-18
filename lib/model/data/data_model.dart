@@ -306,4 +306,20 @@ class DataModel {
       throw Exception('Fetch constants data error: $e');
     }
   }
+
+  // 이벤트 데이터를 가져오는 함수
+  Future<Map<String, dynamic>> fetchServerData() async {
+    final response = await httpService.getRequest('/server/data');
+
+    try {
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decodedData = jsonDecode(response.body);
+        return decodedData;
+      } else {
+        throw Exception('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Fetch constants data error: $e');
+    }
+  }
 }

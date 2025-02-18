@@ -1,20 +1,25 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:stockpj/constants/route_constants.dart';
+import 'package:stockpj/widget/simple_widget.dart';
 import '../constants/data_constants.dart';
 import '../main.dart';
 import '../model/data/data_class.dart';
 import '../model/data/data_model.dart';
-import '../service/storage_service.dart';
+import '../service/http_service.dart';
+import '../utils/check_list.dart';
 import '../utils/date_time.dart';
-import '../utils/timer.dart';
+import '../utils/format.dart';
+import '../utils/screen_size.dart';
+import '../view/splash_widget.dart';
 
 // 팬덤명 맵 데이터
 final Map<String, String> fanImageMap = Map.fromIterables(fanNameList, fanEnNameList);
 
 class PublicDataController extends GetxController {
   final DataModel dataModel = DataModel();
+  final ScreenController screenController = Get.find<ScreenController>();
   RxString appVersion = ''.obs; // 앱 버전
   RxString appBuild = ''.obs; // 앱 버전
   RxString storeVersion = ''.obs; // 스토어 최신 버전
@@ -28,6 +33,7 @@ class PublicDataController extends GetxController {
   RxMap<String, List<EventClass>> eventMap = <String, List<EventClass>>{}.obs; // 이벤트 데이터
   RxMap<String, double> eventChannelList = <String, double>{}.obs; // 이벤트가 있는 채널 모음
   RxInt manualRefresh = 0.obs; // 수동 새로고침 카운트
+  RxList<NoticeClass> noticeList = <NoticeClass>[].obs;
 
   // 앱의 버전을 가져오는 작업
   Future<void> getAppVersion() async {
@@ -99,5 +105,39 @@ class PublicDataController extends GetxController {
         }
       }
     }
+  }
+
+  // 각종 서버 데이터를 가져오는 함수
+  Future<void> getServerData() async {
+    try {
+      final data = await dataModel.fetchServerData();
+      final Map<String, dynamic> config = data['config'];
+      final Map<String, dynamic> version = data['version'];
+      final List<dynamic> notice = data['notice'];
+
+      // 버전 설정
+      String storeVersionData = version['versionName'];
+      storeBuild.value = version['versionCode'];
+      storeVersion.value = formatVersion(storeVersionData);
+      if (checkVersion(appVersion.value, storeVersion.value)) {
+        showSimpleDialog2(screenController.screenSize.value, '업데이트',
+            '새로운 업데이트가 출시되었습니다!\n최신 버전을 설치한 후 다시 플레이해 주세요.\n업데이트를 위해 게임을 종료합니다.', _closeApp, false);
+      }
+
+      // 공지사항 설정
+      List<NoticeClass> noticeData =
+          notice.map((item) => NoticeClass.fromJson(item as Map<String, dynamic>)).toList();
+      noticeList.value = noticeData;
+
+      // 서버 배율 설정
+      feeConfig.value = FeeConfig.fromJson(config);
+      percentConfig.value = PercentConfig.fromJson(config);
+    } catch (e) {
+      logger.e('Error getServerData: $e');
+    }
+  }
+
+  void _closeApp() {
+    exit(0);
   }
 }

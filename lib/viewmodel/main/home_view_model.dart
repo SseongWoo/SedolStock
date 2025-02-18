@@ -24,6 +24,11 @@ class HomeViewModel extends GetxController {
     Get.toNamed(AppRoute.event);
   }
 
+  // 공지사항 화면 이동
+  void goNotice() {
+    Get.toNamed(AppRoute.notice);
+  }
+
   // 채널 리스트 변경 함수
   List<String> getChannelList() {
     return mainChannelList.value

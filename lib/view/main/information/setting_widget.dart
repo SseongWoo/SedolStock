@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/main/information/setting_app_view_model.dart';
 import 'package:stockpj/widget/button.dart';
@@ -115,35 +116,6 @@ import '../../../utils/get_windows_size.dart' if (dart.library.html) '../../../u
 //   }
 // }
 
-class LogoutDialog extends StatelessWidget {
-  final SettingAppViewModel viewModel;
-
-  const LogoutDialog({super.key, required this.viewModel});
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenSize screenSize = viewModel.screenController.screenSize.value;
-
-    return AlertDialog(
-      title: const Text('로그아웃'),
-      content: Text(
-        '로그아웃하시겠습니까?',
-        style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Get.back(),
-          child: const Text('취소'),
-        ),
-        TextButton(
-          onPressed: viewModel.logout,
-          child: const Text('로그아웃'),
-        ),
-      ],
-    );
-  }
-}
-
 // 이름 변경 다이얼로그
 class NameChangeDialog extends StatelessWidget {
   final SettingAppViewModel viewModel;
@@ -152,104 +124,77 @@ class NameChangeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = viewModel.screenController.screenSize.value;
-    return Center(
-      child: Container(
-        height: screenSize.getHeightPerSize(24),
-        width: screenSize.getWidthPerSize(70),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(screenSize.getHeightPerSize(2)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '이름 변경',
-                style: TextStyle(
-                  fontSize: screenSize.getHeightPerSize(1.8),
-                ),
-              ),
-              Form(
-                key: viewModel.formKey,
-                child: TextFormField(
-                  controller: viewModel.controllerName,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(
-                      viewModel.screenController.screenSize.value.getHeightPerSize(0.5),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+    FocusNode focusNode = FocusNode();
+    focusNode.requestFocus();
+    return KeyboardListener(
+      focusNode: focusNode,
+      onKeyEvent: (value) {
+        if (value is KeyDownEvent) {
+          if (value.logicalKey == LogicalKeyboardKey.enter) {
+            viewModel.nameChange();
+          }
+        }
+      },
+      child: Center(
+        child: Container(
+          height: screenSize.getHeightPerSize(24),
+          width: screenSize.getWidthPerSize(70),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(screenSize.getHeightPerSize(2)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '이름 변경',
+                  style: TextStyle(
+                    fontSize: screenSize.getHeightPerSize(1.8),
                   ),
-                  maxLines: 1,
-                  maxLength: 12,
-                  onTapOutside: (event) => FocusScope.of(Get.context!).unfocus(),
-                  validator: viewModel.validateName,
                 ),
-              ),
-              SizedBox(
-                height: screenSize.getHeightPerSize(4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(child: dialogButton(screenSize, '취소', Colors.white, Get.back)),
-                    SizedBox(
-                      width: screenSize.getHeightPerSize(2),
+                Form(
+                  key: viewModel.formKey,
+                  child: TextFormField(
+                    controller: viewModel.controllerName,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(
+                        viewModel.screenController.screenSize.value.getHeightPerSize(0.5),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
-                    Expanded(
-                        child: dialogButton(screenSize, '변경', colorMAIN, () {
-                      viewModel.nameChange();
-                    })),
-                  ],
+                    maxLines: 1,
+                    maxLength: 12,
+                    onTapOutside: (event) => FocusScope.of(Get.context!).unfocus(),
+                    validator: viewModel.validateName,
+                  ),
                 ),
-              )
-            ],
+                SizedBox(
+                  height: screenSize.getHeightPerSize(4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: dialogButton(screenSize, '취소', Colors.white, Get.back)),
+                      SizedBox(
+                        width: screenSize.getHeightPerSize(2),
+                      ),
+                      Expanded(
+                          child: dialogButton(screenSize, '변경', colorMAIN, () {
+                        viewModel.nameChange();
+                      })),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
-    );
-  }
-}
-
-// 비밀번호 변경 다이얼로그
-class ChangePasswordDialog extends StatelessWidget {
-  final String email;
-  final ScreenSize screenSize;
-
-  const ChangePasswordDialog({
-    super.key,
-    required this.email,
-    required this.screenSize,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('비밀번호 변경'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '비밀번호 변경 안내 이메일이 아래 주소로 발송되었습니다.',
-            style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
-          ),
-          SizedBox(height: screenSize.getHeightPerSize(1)),
-          Text(
-            email,
-            style: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Get.back(),
-          child: const Text('확인'),
-        ),
-      ],
     );
   }
 }
@@ -264,30 +209,53 @@ class WindowsSizeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: screenController.screenSize.value.getWidthPerSize(80),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Obx(
-          () => Column(
-            mainAxisSize: MainAxisSize.min,
-            children: screenController.windowSizeList.map((size) {
-              return RadioListTile(
-                value: size.toString(),
-                groupValue: screenController.sizePer.toString(),
-                title: Text('$size%'),
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    int selectedPercent = int.parse(newValue);
-                    setWindowsSize(selectedPercent);
-                    Get.back();
-                  }
-                },
-              );
-            }).toList(),
+    return KeyboardListener(
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKeyEvent: (value) {
+        // 키보드 이벤트
+        if (value is KeyDownEvent) {
+          final List<int> sizes = screenController.windowSizeList;
+          int currentIndex = sizes.indexOf(screenController.sizePer.value);
+
+          if (value.logicalKey == LogicalKeyboardKey.arrowUp && currentIndex > 0) {
+            screenController.sizePer.value = sizes[currentIndex - 1];
+          }
+          if (value.logicalKey == LogicalKeyboardKey.arrowDown && currentIndex < sizes.length - 1) {
+            screenController.sizePer.value = sizes[currentIndex + 1];
+          }
+
+          if (value.logicalKey == LogicalKeyboardKey.enter) {
+            setWindowsSize(screenController.sizePer.value);
+            Get.back();
+          }
+        }
+      },
+      child: Center(
+        child: Container(
+          width: screenController.screenSize.value.getWidthPerSize(80),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Obx(
+            () => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: screenController.windowSizeList.map((size) {
+                return RadioListTile(
+                  value: size.toString(),
+                  groupValue: screenController.sizePer.toString(),
+                  title: Text('$size%'),
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      int selectedPercent = int.parse(newValue);
+                      setWindowsSize(selectedPercent);
+                      Get.back();
+                    }
+                  },
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import 'package:stockpj/view/main/information/setting_widget.dart';
 import '../../../viewmodel/main/information/setting_app_view_model.dart';
 import '../../../widget/button.dart';
 import '../../../widget/divider.dart';

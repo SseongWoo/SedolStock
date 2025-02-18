@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../utils/level.dart';
@@ -19,10 +20,23 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(screenSize.getWidthPerSize(2)),
           child: Column(
             children: [
+              kDebugMode
+                  ? ElevatedButton(
+                      onPressed: () {
+                        _viewModel.publicDataController.getServerData();
+                      },
+                      child: Text('테스트 버튼'))
+                  : SizedBox.shrink(),
               SizedBox(
                 height: screenSize.getHeightPerSize(1),
               ),
               UserInformationWidget(
+                viewModel: _viewModel,
+              ),
+              SizedBox(
+                height: screenSize.getHeightPerSize(1),
+              ),
+              NoticeWidget(
                 viewModel: _viewModel,
               ),
               SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 // 보유 주식 클래스
 class OwnStock {
@@ -324,5 +325,26 @@ class EventClass {
       'title': title,
       'description': description,
     };
+  }
+}
+
+class NoticeClass {
+  String title; // 내용
+  String content; // 내용
+  String uploadTime; // 공지사항 게시 날짜
+
+  NoticeClass(this.title, this.content, this.uploadTime);
+
+  // JSON 데이터를 NoticeClass로 변환하는 팩토리 메서드
+  factory NoticeClass.fromJson(Map<String, dynamic> json) {
+    List<String> lines = json['content'].split('\n');
+    String content = lines.sublist(1).join('\n');
+    String title = lines.isNotEmpty ? lines[0] : '';
+
+    //날짜변환
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(json['timestamp']);
+    String uploadTime = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(dateTime);
+
+    return NoticeClass(title, content, uploadTime);
   }
 }

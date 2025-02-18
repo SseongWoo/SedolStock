@@ -136,7 +136,7 @@ class SettingAppViewModel extends GetxController {
 
     if (emailSent) {
       showSimpleDialog2(screenController.screenSize.value, '비밀번호 변경',
-          '비밀번호 변경 안내 이메일이 아래 주소로 발송되었습니다.\n\n$email', Get.back);
+          '비밀번호 변경 안내 이메일이 아래 주소로 발송되었습니다.\n\n$email', Get.back, true);
     } else {
       showSimpleDialog(Get.back, '오류', '이메일 전송에 실패했습니다.\n다시 시도해 주세요.');
     }
@@ -154,7 +154,7 @@ class SettingAppViewModel extends GetxController {
   // 앱 버전 확인 다이얼로그 호출
   void showAppVersion() {
     showSimpleDialog2(screenController.screenSize.value, '앱 버전',
-        _publicDataController.appVersion.value, Get.back);
+        _publicDataController.appVersion.value, Get.back, true);
   }
 
   // 라이선스 페이지 이동

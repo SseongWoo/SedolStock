@@ -24,7 +24,6 @@ Size getPhysicalScreenSize() {
 // 데스크탑 모드일시 창 크기를 조절하는 함수
 void setWindowsSize(int percent) async {
   final ScreenController screenController = Get.find<ScreenController>();
-  print('dd');
 
   double targetHeight = screenController.windowsMaxSize.height * (percent / 100);
   double targetWidth = targetHeight * (10 / 19);

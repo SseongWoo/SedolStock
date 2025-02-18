@@ -21,7 +21,7 @@ class UpdateDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: screenSize.getHeightPerSize(24),
+        height: screenSize.getHeightPerSize(28),
         width: screenSize.getWidthPerSize(80),
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
         child: Padding(
@@ -37,8 +37,7 @@ class UpdateDialog extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                //'게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요\n현재버전 : \n최신버전 : \n',
-                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요',
+                '게임이 업데이트 되었습니다.\n최신버전 설치 후 이용해주세요\n현재버전 : $appVersion\n최신버전 : $newVersion\n',
                 style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
               ),
               const Spacer(),

@@ -35,13 +35,6 @@ class SplashViewModel extends GetxController {
     initializeSplash();
   }
 
-  void _goUpdate() {
-    GetPlatform.isMobile
-        ? StoreRedirect.redirect()
-        : _httpService.openUrl('https://waktaverse.games/gameDetail/sedol_stock',
-            '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
-  }
-
   // 로딩
   Future<void> initializeSplash() async {
     loadingMessage.value = '서버 상태 확인중';
@@ -51,17 +44,18 @@ class SplashViewModel extends GetxController {
     if (isServerRunning) {
       loadingMessage.value = '앱 버전 확인중';
       await _publicDataController.getAppVersion();
-      bool needsUpdate = _checkVersion();
+      bool needsUpdate = checkVersion(
+          _publicDataController.appVersion.value, _publicDataController.storeVersion.value);
 
       // 업데이트가 있을경우
       if (needsUpdate) {
         Get.dialog(
           UpdateDialog(
             screenSize: screenController.screenSize.value,
-            onPressedCencle: _closeApp,
-            onPressedUpdate: _goUpdate,
             appVersion: _publicDataController.appVersion.value,
             newVersion: _publicDataController.storeVersion.value,
+            onPressedUpdate: _goUpdate,
+            onPressedCencle: _closeApp,
           ),
         );
       } else {
@@ -77,7 +71,7 @@ class SplashViewModel extends GetxController {
       }
     } else {
       showSimpleDialog2(
-          screenController.screenSize.value, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.', _closeApp);
+          screenController.screenSize.value, '서버 점검중', '서버 점검중입니다.\n앱을 종료합니다.', _closeApp, false);
     }
   }
 
@@ -124,32 +118,15 @@ class SplashViewModel extends GetxController {
     Get.offAllNamed(AppRoute.home);
   }
 
-  // 앱 버전과 최소 요구 버전 비교
-  bool _checkVersion() {
-    final isVersionOutdated = _isVersionLower();
-    // bool isBuildOutdated = false;
-    // if (_publicDataController.appBuild.value.isNotEmpty &&
-    //     _publicDataController.appBuild.value != _publicDataController.appVersion.value) {
-    //   isBuildOutdated = int.parse(_publicDataController.storeBuild.value) >
-    //       int.parse(_publicDataController.appBuild.value);
-    // }
-
-    //return (isVersionOutdated || isBuildOutdated);
-    return isVersionOutdated;
-  }
-
-  bool _isVersionLower() {
-    final appParts = _publicDataController.appVersion.split('.').map(int.parse).toList();
-    final storeParts = _publicDataController.storeVersion.split('.').map(int.parse).toList();
-    for (int i = 0; i < appParts.length; i++) {
-      if (storeParts[i] > appParts[i]) return true; // 현재 버전이 최소 요구 버전보다 낮음
-      if (storeParts[i] < appParts[i]) return false; // 현재 버전이 더 높음
-    }
-    return false; // 버전이 같음
-  }
-
   void _closeApp() {
     exit(0);
+  }
+
+  void _goUpdate() {
+    GetPlatform.isMobile
+        ? StoreRedirect.redirect()
+        : _httpService.openUrl('https://waktaverse.games/gameDetail/sedol_stock',
+            '오류가 발생했습니다. 네트워크 연결을 확인하거나, 다시 시도해주세요.');
   }
 }
 

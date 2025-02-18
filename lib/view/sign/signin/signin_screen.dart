@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/signin_view_model.dart';
 import '../../../constants/color_constants.dart';
@@ -13,136 +14,146 @@ class SigninScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return Scaffold(
-      backgroundColor: colorMAIN,
-      resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: screenSize.getHeightPerSize(18),
-            ),
-            SizedBox(
-              height: screenSize.getHeightPerSize(20),
-              width: screenSize.getWidthPerSize(80),
-              child: Image.asset('assets/image/title.png'),
-            ),
-            SizedBox(
-              height: screenSize.getHeightPerSize(2),
-            ),
-            Container(
-              height: screenSize.getHeightPerSize(40),
-              width: screenSize.getWidthPerSize(94),
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/image/ui/login.png',
-                  ),
-                  fit: BoxFit.fill,
-                ),
+    return KeyboardListener(
+      focusNode: FocusNode(),
+      onKeyEvent: (value) async {
+        if (value is KeyDownEvent) {
+          if (value.logicalKey == LogicalKeyboardKey.enter) {
+            await _viewModel.signin();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: colorMAIN,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: screenSize.getHeightPerSize(18),
               ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    screenSize.getWidthPerSize(8), 0, screenSize.getWidthPerSize(8), 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: screenSize.getHeightPerSize(2),
+              SizedBox(
+                height: screenSize.getHeightPerSize(20),
+                width: screenSize.getWidthPerSize(80),
+                child: Image.asset('assets/image/title.png'),
+              ),
+              SizedBox(
+                height: screenSize.getHeightPerSize(2),
+              ),
+              Container(
+                height: screenSize.getHeightPerSize(40),
+                width: screenSize.getWidthPerSize(94),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/image/ui/login.png',
                     ),
-                    _signinTextField(
-                      _viewModel.controllerEmail,
-                      '아이디',
-                      TextInputType.emailAddress,
-                      false,
-                      screenSize,
-                    ),
-                    SizedBox(
-                      height: screenSize.getHeightPerSize(2),
-                    ),
-                    _signinTextField(
-                      _viewModel.controllerPassword,
-                      '비밀번호',
-                      TextInputType.text,
-                      true,
-                      screenSize,
-                    ),
-                    SizedBox(
-                      height: screenSize.getHeightPerSize(4),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: screenSize.getHeightPerSize(3.5),
-                          child: Image.asset('assets/image/ui/bolt1.png'),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: screenSize.getHeightPerSize(4.5),
-                          width: screenSize.getWidthPerSize(55),
-                          child: ElevatedButton(
-                            onPressed: () async => await _viewModel.signin(),
-                            style: ElevatedButton.styleFrom(backgroundColor: colorIfari),
-                            child: Text(
-                              '로그인',
-                              style: TextStyle(
-                                color: colorSUB,
-                                fontSize: screenSize.getHeightPerSize(3),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      screenSize.getWidthPerSize(8), 0, screenSize.getWidthPerSize(8), 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: screenSize.getHeightPerSize(2),
+                      ),
+                      _signinTextField(
+                        _viewModel.controllerEmail,
+                        '아이디',
+                        TextInputType.emailAddress,
+                        false,
+                        screenSize,
+                      ),
+                      SizedBox(
+                        height: screenSize.getHeightPerSize(2),
+                      ),
+                      _signinTextField(
+                        _viewModel.controllerPassword,
+                        '비밀번호',
+                        TextInputType.text,
+                        true,
+                        screenSize,
+                      ),
+                      SizedBox(
+                        height: screenSize.getHeightPerSize(4),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: screenSize.getHeightPerSize(3.5),
+                            child: Image.asset('assets/image/ui/bolt1.png'),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: screenSize.getHeightPerSize(4.5),
+                            width: screenSize.getWidthPerSize(55),
+                            child: ElevatedButton(
+                              onPressed: () async => await _viewModel.signin(),
+                              style: ElevatedButton.styleFrom(backgroundColor: colorIfari),
+                              child: Text(
+                                '로그인',
+                                style: TextStyle(
+                                  color: colorSUB,
+                                  fontSize: screenSize.getHeightPerSize(3),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: screenSize.getHeightPerSize(3.5),
-                          child: Image.asset('assets/image/ui/bolt2.png'),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenSize.getHeightPerSize(2),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          height: screenSize.getHeightPerSize(4),
-                          child: _signinButton(
-                            _viewModel.goFindPW,
-                            '비밀번호 찾기',
-                            screenSize,
+                          const Spacer(),
+                          SizedBox(
+                            height: screenSize.getHeightPerSize(3.5),
+                            child: Image.asset('assets/image/ui/bolt2.png'),
                           ),
-                        ),
-                        SizedBox(
-                          height: screenSize.getHeightPerSize(4),
-                          child: _signinButton(
-                            _viewModel.goSignup,
-                            '회원가입',
-                            screenSize,
+                        ],
+                      ),
+                      SizedBox(
+                        height: screenSize.getHeightPerSize(2),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            height: screenSize.getHeightPerSize(4),
+                            child: _signinButton(
+                              _viewModel.goFindPW,
+                              '비밀번호 찾기',
+                              screenSize,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(
+                            height: screenSize.getHeightPerSize(4),
+                            child: _signinButton(
+                              _viewModel.goSignup,
+                              '회원가입',
+                              screenSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: screenSize.getWidthPerSize(6),
-              ),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'ver.${_viewModel.publicDataController.appVersion.value}',
-                  style: TextStyle(fontSize: screenSize.getHeightPerSize(2), fontFamily: 'Dot'),
+              Padding(
+                padding: EdgeInsets.only(
+                  right: screenSize.getWidthPerSize(6),
+                ),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    'ver.${_viewModel.publicDataController.appVersion.value}',
+                    style: TextStyle(fontSize: screenSize.getHeightPerSize(2), fontFamily: 'Dot'),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

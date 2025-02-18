@@ -32,3 +32,14 @@ String formatValue(double value) {
     return formatNumber(value); // 그대로 표시
   }
 }
+
+String formatVersion(String version) {
+  RegExp regex = RegExp(r'\(([^)]+)\)');
+  Match? match = regex.firstMatch(version);
+
+  if (match != null) {
+    return match.group(1)!;
+  } else {
+    return '0.0.0';
+  }
+}

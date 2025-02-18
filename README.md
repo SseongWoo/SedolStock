@@ -146,8 +146,8 @@ lib
 │   │   │   ├── ranking_screen.dart
 │   │   │   └── ranking_widget.dart
 │   │   ├── event                                  # 이벤트 화면
-│   │   │   ├── event_screen.dart
-│   │   │   └── event_widget.dart
+│   │   │   ├── notice_screen.dart
+│   │   │   └── notice_widget.dart
 │   │   └── trade                                     # 거래 화면
 │   │       ├── trade_dealing_screen.dart
 │   │       ├── trade_dealing_widget.dart
@@ -296,8 +296,8 @@ lib
 │   │   │   ├── ranking_screen.dart
 │   │   │   └── ranking_widget.dart
 │   │   ├── event                                  # 이벤트 화면
-│   │   │   ├── event_screen.dart
-│   │   │   └── event_widget.dart
+│   │   │   ├── notice_screen.dart
+│   │   │   └── notice_widget.dart
 │   │   └── trade                                     # 거래 화면
 │   │       ├── trade_dealing_screen.dart
 │   │       ├── trade_dealing_widget.dart

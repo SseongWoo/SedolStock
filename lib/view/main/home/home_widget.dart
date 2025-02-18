@@ -82,7 +82,7 @@ class UserInformationWidget extends StatelessWidget {
   }
 }
 
-// 최신영상 리스트 위젯
+// 이벤트 리스트 위젯
 class EventWidget extends StatelessWidget {
   final HomeViewModel viewModel;
   const EventWidget({super.key, required this.viewModel});
@@ -128,17 +128,19 @@ class EventWidget extends StatelessWidget {
                       ? Column(
                           children: eventList.take(3).map((event) {
                             return ListTile(
-                              title: Text(
+                              title: AutoSizeText(
                                 event.title,
                                 style: TextStyle(
                                   fontSize: screenSize.getHeightPerSize(2),
                                 ),
+                                maxLines: 1,
                               ),
                               subtitle: Text(
                                 '${event.eventStart} ~ ${event.eventEnd}',
                                 style: TextStyle(
-                                  fontSize: screenSize.getHeightPerSize(1.6),
+                                  fontSize: screenSize.getHeightPerSize(1.4),
                                 ),
+                                textAlign: TextAlign.right,
                               ),
                               dense: true,
                             );
@@ -148,6 +150,84 @@ class EventWidget extends StatelessWidget {
                           height: screenSize.getHeightPerSize(8),
                           child: const Center(
                             child: Text('진행중인 이벤트가 없습니다.'),
+                          ),
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NoticeWidget extends StatelessWidget {
+  final HomeViewModel viewModel;
+  const NoticeWidget({super.key, required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenSize screenSize = viewModel.screenController.screenSize.value;
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '공지사항',
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(1.8)),
+                ),
+                InkWell(
+                  onTap: () => viewModel.goNotice(),
+                  child: Text(
+                    '더보기',
+                    style: TextStyle(fontSize: screenSize.getHeightPerSize(1.2)),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: screenSize.getHeightPerSize(1),
+            ),
+            Obx(
+              () {
+                final List<NoticeClass> noticeList = viewModel.publicDataController.noticeList;
+                return Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: colorMAIN),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: noticeList.isNotEmpty
+                      ? Column(
+                          children: noticeList.take(3).map((notice) {
+                            return ListTile(
+                              title: AutoSizeText(
+                                notice.title,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: screenSize.getHeightPerSize(2),
+                                ),
+                              ),
+                              subtitle: Text(
+                                notice.uploadTime,
+                                style: TextStyle(
+                                  fontSize: screenSize.getHeightPerSize(1.4),
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                              dense: true,
+                            );
+                          }).toList(),
+                        )
+                      : SizedBox(
+                          height: screenSize.getHeightPerSize(8),
+                          child: const Center(
+                            child: Text('공지사항이 없습니다.'),
                           ),
                         ),
                 );
