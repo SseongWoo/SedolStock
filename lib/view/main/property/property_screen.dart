@@ -11,6 +11,9 @@ class PropertyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _viewModel.screenController.updateScreenSize(context);
+    });
     return DefaultTabController(
       length: 2, // 탭의 개수
       child: Container(

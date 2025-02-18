@@ -6,6 +6,7 @@ import 'package:stockpj/utils/color.dart';
 import 'package:stockpj/utils/format.dart';
 import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/view/main/trade/trade_detail_widget.dart';
+import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 import '../../../utils/timer.dart';
 import '../../../viewmodel/main/trade/trade_detail_view_model.dart';
 
@@ -17,19 +18,7 @@ class TradeDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      autofocus: true,
-      onKeyEvent: (value) {
-        // 키보드 이벤트
-        if (value is KeyDownEvent) {
-          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
-              value.logicalKey == LogicalKeyboardKey.backspace ||
-              value.logicalKey == LogicalKeyboardKey.escape) {
-            Get.back();
-          }
-        }
-      },
+    return keyBoardMouseEvent(
       child: Scaffold(
         appBar: AppBar(
           title: Obx(
@@ -238,36 +227,41 @@ class TradeDetailScreen extends StatelessWidget {
                                     '${stockData?.stockCount ?? 0}주',
                                     1.8,
                                   ),
-                                  ListTile(
-                                    title: Text(
-                                      '총 금액',
-                                      style: TextStyle(
-                                        fontSize: screenSize.getHeightPerSize(1.8),
-                                      ),
+                                  Row(
+                                    children: [
+                              Padding(
+                                padding:  EdgeInsets.all(screenSize.getHeightPerSize(1)),
+                                child: Text(
+                                  '총 금액',
+                                  style: TextStyle(
+                                    fontSize: screenSize.getHeightPerSize(1.8),
+                                  ),
+                                ),
+                              ),
+                                      Expanded(child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  AutoSizeText(
+                                    '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
+                                    style: TextStyle(
+                                      fontSize: screenSize.getHeightPerSize(1.6),
                                     ),
-                                    trailing: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        AutoSizeText(
-                                          '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
-                                          style: TextStyle(
-                                            fontSize: screenSize.getHeightPerSize(1.6),
-                                          ),
-                                          textAlign: TextAlign.right,
-                                          maxLines: 1,
-                                        ),
-                                        AutoSizeText(
-                                          _viewModel.setReturnRatio(stockData?.stockProfit ?? 0,
-                                              stockData?.stockRatio ?? 0),
-                                          style: TextStyle(
-                                              fontSize: screenSize.getHeightPerSize(1.6),
-                                              color:
-                                                  profitAndLossColor(stockData?.stockProfit ?? 0)),
-                                          textAlign: TextAlign.right,
-                                          maxLines: 1,
-                                        ),
-                                      ],
-                                    ),
+                                    textAlign: TextAlign.right,
+                                    maxLines: 1,
+                                  ),
+                                  AutoSizeText(
+                                    _viewModel.setReturnRatio(stockData?.stockProfit ?? 0,
+                                        stockData?.stockRatio ?? 0),
+                                    style: TextStyle(
+                                        fontSize: screenSize.getHeightPerSize(1.6),
+                                        color:
+                                            profitAndLossColor(stockData?.stockProfit ?? 0)),
+                                    textAlign: TextAlign.right,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),),
+                                    ],
                                   )
                                 ],
                               );
@@ -342,6 +336,30 @@ class TradeDetailScreen extends StatelessWidget {
 
   // 상세 정보 커스텀 위젯
   Widget _chartDetailData(ScreenSize screenSize, String title, String trailing, double fontSize) {
+    return Padding(
+      padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: screenSize.getHeightPerSize(fontSize),
+            ),
+          ),
+          Expanded(
+            child: AutoSizeText(
+              trailing,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontSize: screenSize.getHeightPerSize(fontSize),
+              ),
+              maxLines: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+
     return ListTile(
       title: Text(
         title,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/view/sign/signup/signup_widget.dart';
+import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 import '../../../constants/color_constants.dart';
 import '../../../constants/data_constants.dart';
 import '../../../utils/screen_size.dart';
@@ -17,19 +18,7 @@ class SignupScreen extends StatelessWidget {
     //   _viewModel.screenController.updateScreenSize(context);
     // });
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      autofocus: true,
-      onKeyEvent: (value) {
-        // 키보드 이벤트
-        if (value is KeyDownEvent) {
-          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
-              value.logicalKey == LogicalKeyboardKey.backspace ||
-              value.logicalKey == LogicalKeyboardKey.escape) {
-            Get.back();
-          }
-        }
-      },
+    return keyBoardMouseEvent(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

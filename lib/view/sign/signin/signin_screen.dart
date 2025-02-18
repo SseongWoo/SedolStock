@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/sign/signin_view_model.dart';
+import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 import '../../../constants/color_constants.dart';
 import '../../../utils/format.dart';
 import '../../../utils/screen_size.dart';
@@ -14,15 +15,7 @@ class SigninScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      onKeyEvent: (value) async {
-        if (value is KeyDownEvent) {
-          if (value.logicalKey == LogicalKeyboardKey.enter) {
-            await _viewModel.signin();
-          }
-        }
-      },
+    return keyBoardMouseEvent(
       child: Scaffold(
         backgroundColor: colorMAIN,
         resizeToAvoidBottomInset: true,

@@ -55,6 +55,7 @@ class TradeDatailPriceChartWidget extends StatelessWidget {
               ),
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
+                  interval: 1,
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
                     if (value.toInt() >= chartXTitle.length) {

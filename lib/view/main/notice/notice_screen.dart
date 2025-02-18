@@ -1,8 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 import '../../../model/data/data_class.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/notice_view_model.dart';
@@ -15,20 +14,9 @@ class NoticeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      autofocus: true,
-      onKeyEvent: (value) {
-        // 키보드 이벤트
-        if (value is KeyDownEvent) {
-          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
-              value.logicalKey == LogicalKeyboardKey.backspace ||
-              value.logicalKey == LogicalKeyboardKey.escape) {
-            Get.back();
-          }
-        }
-      },
+    return keyBoardMouseEvent(
       child: Scaffold(
+
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,

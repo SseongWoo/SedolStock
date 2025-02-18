@@ -67,9 +67,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _screenController.updateScreenSize(context);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //
-    // });
     return GetMaterialApp(
       builder: (context, child) {
         child = EasyLoading.init()(context, child);

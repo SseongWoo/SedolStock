@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:stockpj/viewmodel/main/information/delete_account_view_model.dart';
+import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 
 // 회원 탈퇴 화면
 class DeleteAccountScreen extends StatelessWidget {
@@ -9,19 +10,7 @@ class DeleteAccountScreen extends StatelessWidget {
   DeleteAccountScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
-      focusNode: FocusNode(),
-      autofocus: true,
-      onKeyEvent: (value) {
-        // 키보드 이벤트
-        if (value is KeyDownEvent) {
-          if (value.physicalKey.usbHidUsage == 0x000700e3 ||
-              value.logicalKey == LogicalKeyboardKey.backspace ||
-              value.logicalKey == LogicalKeyboardKey.escape) {
-            Get.back();
-          }
-        }
-      },
+    return keyBoardMouseEvent(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
