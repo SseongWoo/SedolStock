@@ -4,11 +4,11 @@ import 'package:stockpj/view/main/home/home_screen.dart';
 import 'package:stockpj/view/main/property/property_screen.dart';
 import 'package:stockpj/view/main/ranking/ranking_screen.dart';
 import 'package:stockpj/view/main/trade/trade_screen.dart';
-import 'package:stockpj/view/store/store_screen.dart';
 import '../../constants/route_constants.dart';
 import '../../data/my_data.dart';
 import '../../utils/screen_size.dart';
 import '../../view/main/information/information_screen.dart';
+import '../../view/main/store/store_screen.dart';
 
 // 메인화면 뷰모델
 class MainViewModel extends GetxController {
