@@ -46,46 +46,14 @@ class DataModel {
     if (response.statusCode == 200 || response.statusCode == 404) {
       final jsonData = jsonDecode(response.body);
 
-      if (jsonData is Map<String, dynamic>) {
-        List<String> itemuids = List<String>.from(jsonData['itemuid'] ?? []);
-        List<String> channeltypes = List<String>.from(jsonData['channeltype'] ?? []);
-        List<int> itemcounts = List<int>.from(jsonData['itemcount'] ?? []);
-        List<int> transactionprices = List<int>.from(jsonData['transactionprice'] ?? []);
-        List<String> tradetypes = List<String>.from(jsonData['tradetype'] ?? []);
-        List<String> tradetimes = List<String>.from(jsonData['tradetime'] ?? []);
-        List<int> priceavgs = List<int>.from(jsonData['priceavg'] ?? []);
-        List<int> totalcosts = List<int>.from(jsonData['totalcost'] ?? []);
-        List<int> fees = List<int>.from(jsonData['fee'] ?? []);
+      if (response.statusCode == 200 || response.statusCode == 404) {
+        final jsonData = jsonDecode(response.body);
 
-        if (itemuids.length == channeltypes.length &&
-            itemuids.length == itemcounts.length &&
-            itemuids.length == transactionprices.length &&
-            itemuids.length == tradetypes.length &&
-            itemuids.length == tradetimes.length &&
-            itemuids.length == totalcosts.length &&
-            itemuids.length == fees.length) {
+        if (jsonData is Map<String, dynamic>) {
           List<TradeHistoryClass> tradeHistoryList = [];
-          for (int i = 0; i < itemuids.length; i++) {
-            int tradePrice = transactionprices[i] * itemcounts[i];
-            int profit = (priceavgs[i] - transactionprices[i]) * itemcounts[i];
-            double ratio = profit / (priceavgs[i] * itemcounts[i]) * 100;
 
-            tradeHistoryList.add(
-              TradeHistoryClass(
-                itemuid: itemuids[i],
-                channeltype: channeltypes[i],
-                itemcount: itemcounts[i],
-                transactionprice: transactionprices[i],
-                tradetype: tradetypes[i],
-                tradetime: tradetimes[i],
-                tradeprice: tradePrice,
-                profit: profit,
-                ratio: ratio,
-                totalcost: totalcosts[i],
-                fee: fees[i],
-                saleavgprice: priceavgs[i],
-              ),
-            );
+          for (int i = 0; i < (jsonData['itemuid'] as List).length; i++) {
+            tradeHistoryList.add(TradeHistoryClass.fromJson(jsonData, i));
           }
           return tradeHistoryList;
         } else {
@@ -123,13 +91,7 @@ class DataModel {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['messages'];
-      return jsonData.map((data) {
-        return MessageClass(
-          data['itemUid'] as String,
-          data['stockCount'],
-          data['time'] as String,
-        );
-      }).toList();
+      return jsonData.map((data) => MessageClass.fromJson(data)).toList();
     } else if (response.statusCode == 404) {
       return [];
     } else {

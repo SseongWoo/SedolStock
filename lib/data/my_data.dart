@@ -163,12 +163,11 @@ class MyDataController extends GetxController {
         final jsonData = result['data'] as Map<String, dynamic>;
         final jsonData2 = result['moneyHistory'];
 
-        totalMoneyHistoryList.value = jsonData2['totalmoneyhistory'].map<TotalMoneyDataClass>((e) {
-          return TotalMoneyDataClass(
-            int.tryParse(e['money'].toString()) ?? 0, // 금액 데이터
-            e['date']?.toString() ?? '', // 날짜 데이터
-          );
-        }).toList();
+        List<TotalMoneyDataClass> parseTotalMoneyHistory(List<dynamic> jsonList) {
+          return jsonList.map((e) => TotalMoneyDataClass.fromJson(e)).toList();
+        }
+
+        totalMoneyHistoryList.value = parseTotalMoneyHistory(jsonData2['totalmoneyhistory']);
 
         // 보유 주식 데이터 처리
         myStockCount.value = 0;
@@ -176,11 +175,7 @@ class MyDataController extends GetxController {
 
         if (jsonData.isNotEmpty) {
           jsonData.forEach((key, value) {
-            int roundedStockPrice =
-                (value['stockPrice'] is num) ? (value['stockPrice'] as num).round() : 0; // 기본값 0 설정
-
-            final stock =
-                OwnStock(value['stockCount'] ?? 0, roundedStockPrice, value['delisting'] ?? false);
+            final stock = OwnStock.fromJson(value);
             ownStock[key] = stock;
 
             if (stock.stockCount > 0) {

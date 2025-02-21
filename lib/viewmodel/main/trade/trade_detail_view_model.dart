@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,9 +23,8 @@ class TradeDetailViewModel extends GetxController {
   RxList<String> chartXTitle = <String>[].obs; // 가격 그래프 x축 타이틀
   String channelUID = '';
   RxList<YoutubeVideoDataClass> videoList = <YoutubeVideoDataClass>[].obs;
-  Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData('', '', '').obs; // 초기화 추가
-  Rx<ItemPriceDataClass> itemPriceData =
-      ItemPriceDataClass('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).obs; // 아이템 가격 데이터 클래스
+  Rx<TradeDetailChartData> tradeDetailChartData = TradeDetailChartData.empty().obs; // 초기화 추가
+  Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass.empty().obs; // 아이템 가격 데이터 클래스
   RxBool event = false.obs; // 이벤트 유무
 
   @override

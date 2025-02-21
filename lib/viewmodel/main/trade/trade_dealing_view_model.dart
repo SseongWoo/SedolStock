@@ -8,8 +8,6 @@ import '../../../data/public_data.dart';
 import '../../../data/start_data.dart';
 import '../../../data/youtube_data.dart';
 import '../../../model/data/data_class.dart';
-import '../../../utils/audio.dart';
-import '../../../utils/format.dart';
 import '../../../utils/level.dart';
 import '../../../utils/screen_size.dart';
 import '../../../widget/simple_widget.dart';
@@ -33,20 +31,7 @@ class TradeDealingViewModel extends GetxController {
   RxInt calculatorInt = 0.obs; // 계산기 입력된 값(주식 개수)
   RxInt calculatorSum = 0.obs; // 구매, 판매할 주식의 총 가격
   Rx<OwnStock> ownStock = OwnStock(0, 0, false).obs;
-  Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass(
-    '',
-    '',
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-  ).obs; // 아이템 가격데이터
+  Rx<ItemPriceDataClass> itemPriceData = ItemPriceDataClass.empty().obs; // 아이템 가격데이터
 
   @override
   void onInit() {

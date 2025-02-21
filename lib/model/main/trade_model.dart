@@ -1,34 +1,5 @@
 import '../../main.dart';
 import '../../service/http_service.dart';
-import '../data/data_class.dart';
-
-// TradeItemWidget에 필요한 데이터를 포함하는 클래스
-class TradeItemData {
-  final String title;
-  final String thumbnail;
-  final String priceTitle;
-  final String channelUID;
-  final String type;
-  final ItemPriceDataClass itemPriceDataClass;
-
-  TradeItemData({
-    required this.title,
-    required this.thumbnail,
-    required this.priceTitle,
-    required this.channelUID,
-    required this.type,
-    required this.itemPriceDataClass,
-  });
-}
-
-// 앱바 정보 클래스
-class AppBarTitleDataClass {
-  String title;
-  String price;
-  String retnRatio;
-
-  AppBarTitleDataClass(this.title, this.price, this.retnRatio);
-}
 
 // 차트 제목 클래스
 class TradeDetailChartData {
@@ -36,7 +7,19 @@ class TradeDetailChartData {
   String price;
   String returnRatio;
 
-  TradeDetailChartData(this.title, this.price, this.returnRatio);
+  TradeDetailChartData({
+    required this.title,
+    required this.price,
+    required this.returnRatio,
+  });
+
+  factory TradeDetailChartData.empty() {
+    return TradeDetailChartData(
+      title: 'N/A',
+      price: '0',
+      returnRatio: '0%',
+    );
+  }
 }
 
 // 그래프 데이터 클래스

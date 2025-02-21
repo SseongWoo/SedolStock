@@ -115,24 +115,8 @@ class YoutubeDataController extends GetxController {
 
       // 아이템 가격 데이터 저장
       countMapData.forEach((channelId, videoData) {
-        int diff = (videoData['price'] ?? 0) - (videoData['lastPrice'] ?? 0);
-        double ratio = (diff / (videoData['lastPrice'] ?? 1)) * 100;
-        String channelType = channelIdList.contains(channelId) ? 'main' : 'sub';
-
-        itemPriceDateMap[channelId] = ItemPriceDataClass(
-          channelId,
-          channelType,
-          videoData['price'] ?? 0,
-          videoData['totalViewCount'] ?? 0,
-          videoData['totalLikeCount'] ?? 0,
-          videoData['lastTotalViewCount'] ?? 0,
-          videoData['lastTotalLikeCount'] ?? 0,
-          videoData['lastPrice'] ?? 0,
-          diff,
-          videoData['delisting'] ?? 0,
-          videoData['continuous'] ?? 0,
-          ratio,
-        );
+        itemPriceDateMap[channelId] =
+            ItemPriceDataClass.fromJson(channelId, videoData, channelIdList);
       });
 
       // 차트 데이터 저장
@@ -140,14 +124,15 @@ class YoutubeDataController extends GetxController {
         youtubeChartData[channelId] = convertViewCountToSalesData(
           (videoData['price'] as List<dynamic>?)?.map((e) {
                 if (e is double) {
-                  return e.round(); // double이면 반올림하여 int로 변환
+                  return e.round();
                 } else {
-                  return int.tryParse(e.toString()) ?? 0; // 그 외 값은 int로 변환
+                  return int.tryParse(e.toString()) ?? 0;
                 }
               }).toList() ??
               [0],
         );
       });
+
       logger.i('getYoutubeLiveData log: YouTube Live Data stored successfully.');
     } catch (e) {
       logger.e('getYoutubeLiveData error: $e');

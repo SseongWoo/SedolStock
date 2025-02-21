@@ -4,13 +4,21 @@ import '../../service/http_service.dart';
 class SigninDataClass {
   final String uid;
   final String token;
-  final bool checkemail;
+  final bool checkEmail;
 
   SigninDataClass({
     required this.uid,
     required this.token,
-    required this.checkemail,
+    required this.checkEmail,
   });
+
+  factory SigninDataClass.fromJson(Map<String, dynamic> json) {
+    return SigninDataClass(
+      uid: json['user']['uid'] ?? '',
+      token: json['user']['stsTokenManager']['refreshToken'] ?? '',
+      checkEmail: json['state'] != 'checkemail',
+    );
+  }
 }
 
 class SigninModel {
@@ -26,16 +34,7 @@ class SigninModel {
 
       if (response.statusCode == 201) {
         final jsonData = jsonDecode(response.body);
-
-        final uid = jsonData['user']['uid'] ?? '';
-        final refreshToken = jsonData['user']['stsTokenManager']['refreshToken'] ?? '';
-        final checkEmail = jsonData['state'] != 'checkemail';
-
-        return SigninDataClass(
-          uid: uid,
-          token: refreshToken,
-          checkemail: checkEmail,
-        );
+        return SigninDataClass.fromJson(jsonData);
       } else {
         throw Exception('Login failed with status: ${response.statusCode}');
       }

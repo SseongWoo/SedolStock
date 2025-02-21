@@ -7,7 +7,6 @@ import '../../../utils/format.dart';
 import '../../../utils/level.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/information/information_view_model.dart';
-import '../../../widget/button.dart';
 import '../../../widget/divider.dart';
 import 'information_widget.dart';
 
@@ -254,24 +253,43 @@ class InformationScreen extends StatelessWidget {
                 : Image.asset('assets/image/ui/lose.png'),
           ),
           SizedBox(
-            height: screenSize.getHeightPerSize(4),
+            height: screenSize.getHeightPerSize(2),
           ),
-          SizedBox(
-            width: screenSize.getWidthPerSize(80),
-            child: ElevatedButton(
-              onPressed: _viewModel.tryRestart,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                '파산 신청',
-                style: TextStyle(fontSize: screenSize.getHeightPerSize(2.2), color: Colors.white),
-              ),
-            ),
-          ),
+          _viewModel.myDataController.myMoney < 500000
+              ? Center(
+                  child: Stack(
+                    children: [
+                      Image.asset(
+                        'assets/image/ui/bankruptcyBG.png',
+                        width: screenSize.getWidthPerSize(80),
+                      ),
+                      GestureDetector(
+                        onTap: () => _viewModel.tryRestart(),
+                        child: Image.asset(
+                          'assets/image/ui/bankruptcyBT.png',
+                          width: screenSize.getWidthPerSize(80),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+          // SizedBox(
+          //   width: screenSize.getWidthPerSize(80),
+          //   child: ElevatedButton(
+          //     onPressed: _viewModel.tryRestart,
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: Colors.red,
+          //       shape: RoundedRectangleBorder(
+          //         borderRadius: BorderRadius.circular(10),
+          //       ),
+          //     ),
+          //     child: Text(
+          //       '파산 신청',
+          //       style: TextStyle(fontSize: screenSize.getHeightPerSize(2.2), color: Colors.white),
+          //     ),
+          //   ),
+          // ),
           //informationButton('파산 신청', _viewModel.tryRestart, screenSize),
         ],
       ),
@@ -300,4 +318,40 @@ class InformationScreen extends StatelessWidget {
   //     ],
   //   );
   // }
+}
+
+class StripePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paintYellow = Paint()
+      ..color = Colors.yellow
+      ..style = PaintingStyle.fill;
+    final paintBlack = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+
+    double stripeWidth = 40; // 사선 스트라이프 간격
+
+    for (double i = -size.height; i < size.width; i += stripeWidth * 2) {
+      Path yellowStripe = Path()
+        ..moveTo(i, 0)
+        ..lineTo(i + stripeWidth, 0)
+        ..lineTo(i + stripeWidth + size.height, size.height)
+        ..lineTo(i + size.height, size.height)
+        ..close();
+
+      Path blackStripe = Path()
+        ..moveTo(i + stripeWidth, 0)
+        ..lineTo(i + stripeWidth * 2, 0)
+        ..lineTo(i + stripeWidth * 2 + size.height, size.height)
+        ..lineTo(i + stripeWidth + size.height, size.height)
+        ..close();
+
+      canvas.drawPath(yellowStripe, paintYellow);
+      canvas.drawPath(blackStripe, paintBlack);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

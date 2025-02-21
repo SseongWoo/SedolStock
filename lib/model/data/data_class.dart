@@ -8,6 +8,14 @@ class OwnStock {
   int stockPrice;
   bool delisting;
   OwnStock(this.stockCount, this.stockPrice, this.delisting);
+
+  factory OwnStock.fromJson(Map<String, dynamic> json) {
+    return OwnStock(
+      json['stockCount'] ?? 0,
+      (json['stockPrice'] is num) ? (json['stockPrice'] as num).round() : 0,
+      json['delisting'] ?? false,
+    );
+  }
 }
 
 // 보유 주식 리스트 클래스
@@ -68,21 +76,51 @@ class TradeHistoryClass {
     required this.fee,
     required this.saleavgprice,
   });
+
+  factory TradeHistoryClass.fromJson(Map<String, dynamic> json, int index) {
+    int itemCount = json['itemcount'][index] ?? 0;
+    int transactionPrice = json['transactionprice'][index] ?? 0;
+    int saleAvgPrice = json['priceavg'][index] ?? 0;
+    int totalCost = json['totalcost'][index] ?? 0;
+    int fee = json['fee'][index] ?? 0;
+
+    return TradeHistoryClass(
+      itemuid: json['itemuid'][index] ?? '',
+      channeltype: json['channeltype'][index] ?? '',
+      itemcount: itemCount,
+      transactionprice: transactionPrice,
+      tradetype: json['tradetype'][index] ?? '',
+      tradetime: json['tradetime'][index] ?? '',
+      tradeprice: transactionPrice * itemCount,
+      profit: (saleAvgPrice - transactionPrice) * itemCount,
+      ratio: (saleAvgPrice - transactionPrice) * 100 / (saleAvgPrice * itemCount),
+      totalcost: totalCost,
+      fee: fee,
+      saleavgprice: saleAvgPrice,
+    );
+  }
 }
 
-// 주식 정보 클래스
-class ItemHistoryClass {
-  String itemUID;
-  String itemType;
-  int itemPriceAvg;
-  ItemHistoryClass(this.itemUID, this.itemType, this.itemPriceAvg);
-}
-
+// 메세지 데이터 클래스
 class MessageClass {
-  String itemUID;
-  int stockCount;
-  String time;
-  MessageClass(this.itemUID, this.stockCount, this.time);
+  final String itemUID;
+  final int stockCount;
+  final String time;
+
+  MessageClass({
+    required this.itemUID,
+    required this.stockCount,
+    required this.time,
+  });
+
+  // JSON 데이터를 객체로 변환
+  factory MessageClass.fromJson(Map<String, dynamic> json) {
+    return MessageClass(
+      itemUID: json['itemUid'] as String,
+      stockCount: json['stockCount'] as int,
+      time: json['time'] as String,
+    );
+  }
 }
 
 // 랭킹 데이터 클래스
@@ -210,39 +248,93 @@ class YoutubeChannelDataClass {
 
 // 아이템 정보 클래스
 class ItemPriceDataClass {
-  String uid;
-  String channelType;
-  int price;
-  int totalViewCount;
-  int totalLikeCount;
-  int beforeTotalViewCount;
-  int beforeTotalLikeCount;
-  int beforePrice;
-  int differencePrice;
-  int delisting;
-  int continuous;
-  double ratio;
+  final String uid;
+  final String channelType;
+  final int price;
+  final int totalViewCount;
+  final int totalLikeCount;
+  final int beforeTotalViewCount;
+  final int beforeTotalLikeCount;
+  final int beforePrice;
+  final int differencePrice;
+  final int delisting;
+  final int continuous;
+  final double ratio;
 
-  ItemPriceDataClass(
-      this.uid,
-      this.channelType,
-      this.price,
-      this.totalViewCount,
-      this.totalLikeCount,
-      this.beforeTotalViewCount,
-      this.beforeTotalLikeCount,
-      this.beforePrice,
-      this.differencePrice,
-      this.delisting,
-      this.continuous,
-      this.ratio);
+  ItemPriceDataClass({
+    required this.uid,
+    required this.channelType,
+    required this.price,
+    required this.totalViewCount,
+    required this.totalLikeCount,
+    required this.beforeTotalViewCount,
+    required this.beforeTotalLikeCount,
+    required this.beforePrice,
+    required this.differencePrice,
+    required this.delisting,
+    required this.continuous,
+    required this.ratio,
+  });
+
+  // 빈 객체 생성
+  factory ItemPriceDataClass.empty() {
+    return ItemPriceDataClass(
+      uid: '',
+      channelType: '',
+      price: 0,
+      totalViewCount: 0,
+      totalLikeCount: 0,
+      beforeTotalViewCount: 0,
+      beforeTotalLikeCount: 0,
+      beforePrice: 0,
+      differencePrice: 0,
+      delisting: 0,
+      continuous: 0,
+      ratio: 0.0,
+    );
+  }
+
+  // JSON 데이터를 객체로 변환하는 메서드
+  factory ItemPriceDataClass.fromJson(
+      String channelId, Map<String, dynamic> json, List<String> channelIdList) {
+    int price = json['price'] ?? 0;
+    int lastPrice = json['lastPrice'] ?? 0;
+    int diff = price - lastPrice;
+    double ratio = lastPrice != 0 ? (diff / lastPrice) * 100 : 0.0;
+    String channelType = channelIdList.contains(channelId) ? 'main' : 'sub';
+
+    return ItemPriceDataClass(
+      uid: channelId,
+      channelType: channelType,
+      price: price,
+      totalViewCount: json['totalViewCount'] ?? 0,
+      totalLikeCount: json['totalLikeCount'] ?? 0,
+      beforeTotalViewCount: json['lastTotalViewCount'] ?? 0,
+      beforeTotalLikeCount: json['lastTotalLikeCount'] ?? 0,
+      beforePrice: lastPrice,
+      differencePrice: diff,
+      delisting: json['delisting'] ?? 0,
+      continuous: json['continuous'] ?? 0,
+      ratio: ratio,
+    );
+  }
 }
 
 class TotalMoneyDataClass {
-  int money;
-  String date;
+  final int money;
+  final String date;
 
-  TotalMoneyDataClass(this.money, this.date);
+  TotalMoneyDataClass({
+    required this.money,
+    required this.date,
+  });
+
+  factory TotalMoneyDataClass.fromJson(Map<String, dynamic> json) {
+    return TotalMoneyDataClass(
+      money: int.tryParse(json['money'].toString()) ?? 0,
+      date: json['date']?.toString() ?? '',
+    );
+  }
 }
 
 class FeeConfig {

@@ -4,6 +4,7 @@ import 'package:stockpj/view/main/home/home_screen.dart';
 import 'package:stockpj/view/main/property/property_screen.dart';
 import 'package:stockpj/view/main/ranking/ranking_screen.dart';
 import 'package:stockpj/view/main/trade/trade_screen.dart';
+import 'package:stockpj/view/store/store_screen.dart';
 import '../../constants/route_constants.dart';
 import '../../data/my_data.dart';
 import '../../utils/screen_size.dart';
@@ -38,7 +39,7 @@ class MainViewModel extends GetxController {
   }
 
 // 각각의 탭 이름
-  final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '정보'];
+  final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '상점', '정보'];
 
   // 선택된 탭에 맞는 페이지 가져오기
   final List<Widget> pages = [
@@ -46,17 +47,26 @@ class MainViewModel extends GetxController {
     TradeScreen(),
     RankingScreen(),
     PropertyScreen(),
+    StoreScreen(),
     InformationScreen(),
   ];
 
-  int counvertKeyId(int keyId){
-    switch(keyId){
-      case 49 : return 0;
-      case 50 : return 1;
-      case 51 : return 2;
-      case 52 : return 3;
-      case 53 : return 4;
-      default: return 0;
+  int counvertKeyId(int keyId) {
+    switch (keyId) {
+      case 49:
+        return 0;
+      case 50:
+        return 1;
+      case 51:
+        return 2;
+      case 52:
+        return 3;
+      case 53:
+        return 4;
+      case 54:
+        return 5;
+      default:
+        return 0;
     }
   }
 }

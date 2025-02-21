@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import '../../constants/color_constants.dart';
-import '../../data/my_data.dart';
 import '../../utils/screen_size.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../utils/timer.dart';
@@ -19,15 +18,18 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return KeyboardListener(
-      focusNode: FocusNode(), autofocus: true,onKeyEvent: (value) {
-      // 키보드 이벤트
-      if (!EasyLoading.isShow && value is KeyDownEvent) {
-        if(value.logicalKey.keyId >= LogicalKeyboardKey.digit1.keyId &&
-            value.logicalKey.keyId <= LogicalKeyboardKey.digit5.keyId && _viewModel.counvertKeyId(value.logicalKey.keyId) != _viewModel.selectedIndex.value){
-          _viewModel.changeTabIndex(_viewModel.counvertKeyId(value.logicalKey.keyId));
+      focusNode: FocusNode(),
+      autofocus: true,
+      onKeyEvent: (value) {
+        // 키보드 이벤트
+        if (!EasyLoading.isShow && value is KeyDownEvent) {
+          if (value.logicalKey.keyId >= LogicalKeyboardKey.digit1.keyId &&
+              value.logicalKey.keyId <= LogicalKeyboardKey.digit6.keyId &&
+              _viewModel.counvertKeyId(value.logicalKey.keyId) != _viewModel.selectedIndex.value) {
+            _viewModel.changeTabIndex(_viewModel.counvertKeyId(value.logicalKey.keyId));
+          }
         }
-      }
-    },
+      },
       child: Scaffold(
         appBar: AppBar(
           leading: Obx(
@@ -101,6 +103,12 @@ class MainScreen extends StatelessWidget {
                     size: screenSize.getHeightPerSize(2.8),
                   ),
                   label: '지갑'),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.storefront,
+                    size: screenSize.getHeightPerSize(2.8),
+                  ),
+                  label: '상점'),
               BottomNavigationBarItem(
                   icon: Icon(
                     Icons.info,

@@ -2,27 +2,11 @@ import '../../main.dart';
 import '../../service/http_service.dart';
 import 'package:flutter/material.dart';
 
-// 정보 화면 사용자 자산 변동 그래프를 위한 클래스
-class MyMoneyChartClass {
-  String name;
-  int money;
-
-  MyMoneyChartClass(this.name, this.money);
-}
-
 class RateConfigClass {
   double rate;
   Color rateColor;
 
   RateConfigClass(this.rate, this.rateColor);
-}
-
-// 정보 화면 사용자 자산 변동 그래프를 위한 클래스
-class MoneyChartClass {
-  String name;
-  int money;
-
-  MoneyChartClass(this.name, this.money);
 }
 
 class InformationModel {
