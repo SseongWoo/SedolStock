@@ -12,6 +12,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          echo "API_URL=${{ secrets.API_URL }}" > assets/.env
+          echo "CAFE_URL=${{ secrets.CAFE_URL }}" >> assets/.env
+          echo "CHANNEL_ID_LIST=${{ secrets.CHANNEL_ID_LIST }}" >> assets/.env
+          echo "SUB_CHANNEL_ID_LIST=${{ secrets.SUB_CHANNEL_ID_LIST }}" >> assets/.env
+          echo "PACKAGE_NAME=${{ secrets.PACKAGE_NAME }}" >> assets/.env
+          echo "TEST_API_URL=${{ secrets.TEST_API_URL }}" >> assets/.env
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
