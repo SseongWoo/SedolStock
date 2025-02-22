@@ -3,6 +3,7 @@ name: Deploy Flutter Web to AWS S3
 on:
   release:
     types: [published]  # 새로운 릴리즈가 생성될 때 실행
+  workflow_dispatch:  # 수동 실행 가능하게 설정
 
 jobs:
   deploy:
