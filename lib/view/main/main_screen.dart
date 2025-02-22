@@ -103,12 +103,12 @@ class MainScreen extends StatelessWidget {
                     size: screenSize.getHeightPerSize(2.8),
                   ),
                   label: '지갑'),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.storefront,
-                    size: screenSize.getHeightPerSize(2.8),
-                  ),
-                  label: '상점'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(
+              //       Icons.storefront,
+              //       size: screenSize.getHeightPerSize(2.8),
+              //     ),
+              //     label: '상점'),
               BottomNavigationBarItem(
                   icon: Icon(
                     Icons.info,

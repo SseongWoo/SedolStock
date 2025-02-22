@@ -39,7 +39,8 @@ class MainViewModel extends GetxController {
   }
 
 // 각각의 탭 이름
-  final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '상점', '정보'];
+  //final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '상점', '정보'];
+  final List<String> pagesName = ['홈', '거래', '랭킹', '지갑', '정보'];
 
   // 선택된 탭에 맞는 페이지 가져오기
   final List<Widget> pages = [
@@ -47,7 +48,7 @@ class MainViewModel extends GetxController {
     TradeScreen(),
     RankingScreen(),
     PropertyScreen(),
-    StoreScreen(),
+    //StoreScreen(),
     InformationScreen(),
   ];
 
@@ -63,8 +64,8 @@ class MainViewModel extends GetxController {
         return 3;
       case 53:
         return 4;
-      case 54:
-        return 5;
+      // case 54:
+      //   return 5;
       default:
         return 0;
     }
