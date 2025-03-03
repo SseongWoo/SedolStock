@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:stockpj/model/data/data_class.dart';
 import 'package:stockpj/utils/screen_size.dart';
-import '../../../viewmodel/main/notification_view_model.dart';
 
 // 상장폐지 메세지 위젯
 class NotificationWidget extends StatelessWidget {
-  final NotificationViewModel viewModel;
-  final int index;
-  const NotificationWidget({super.key, required this.viewModel, required this.index});
+  final MessageClass messageData;
+  final VoidCallback onDelete;
+  final ScreenSize screenSize;
+  final String messageContent;
+  final String messageTitle;
+
+  const NotificationWidget({
+    super.key,
+    required this.onDelete,
+    required this.messageData,
+    required this.screenSize,
+    required this.messageContent,
+    required this.messageTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    ScreenSize screenSize = viewModel.screenController.screenSize.value;
     return Padding(
       padding: EdgeInsets.all(screenSize.getWidthPerSize(1)),
       child: Card(
@@ -25,28 +35,27 @@ class NotificationWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '상장폐지 알림',
+                    messageTitle,
                     style: TextStyle(fontSize: screenSize.getHeightPerSize(2)),
                   ),
                   SizedBox(
                     height: screenSize.getHeightPerSize(1),
                   ),
                   Text(
-                    viewModel.convertMessage(viewModel.myDataController.messageList[index].itemUID,
-                        viewModel.myDataController.messageList[index].stockCount),
+                    messageContent,
                     style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
                   ),
                   SizedBox(
                     height: screenSize.getHeightPerSize(1),
                   ),
                   Text(
-                    viewModel.myDataController.messageList[index].time,
+                    messageData.time,
                     style: TextStyle(fontSize: screenSize.getHeightPerSize(1), color: Colors.grey),
                   ),
                 ],
               )),
               IconButton(
-                onPressed: () => viewModel.deleteMessage(index),
+                onPressed: onDelete,
                 icon: const Icon(Icons.close),
               ),
             ],

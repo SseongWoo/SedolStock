@@ -15,7 +15,7 @@ class TradeDetailViewModel extends GetxController {
   final HttpService _httpService = HttpService();
   final ScreenController screenController = Get.find<ScreenController>();
   final YoutubeDataController youtubeDataController = Get.find<YoutubeDataController>();
-  final PublicDataController _publicDataController = Get.find<PublicDataController>();
+  final PublicDataController publicDataController = Get.find<PublicDataController>();
   final MyDataController myDataController = Get.find<MyDataController>();
   final ScrollController scrollController = ScrollController();
   RxDouble opacity = 0.0.obs; // 화면 스크롤 위치 값
@@ -45,7 +45,7 @@ class TradeDetailViewModel extends GetxController {
     setChartData();
     videoList.value = youtubeDataController.youtubeVideoData[channelUID]!;
 
-    event.value = _publicDataController.eventChannelList[channelUID] != null;
+    event.value = publicDataController.eventChannelList[channelUID] != null;
   }
 
   // 주식 매매 화면으로 이동하는 볒변수
@@ -107,6 +107,6 @@ class TradeDetailViewModel extends GetxController {
 
   // 툴팁 설정
   String setToolTip() {
-    return '${_publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
+    return '${publicDataController.eventChannelList[channelUID] ?? '1'}배 이벤트 중';
   }
 }

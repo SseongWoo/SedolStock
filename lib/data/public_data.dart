@@ -27,7 +27,8 @@ class PublicDataController extends GetxController {
   RxMap<String, List<RankingDataClass>> rankingMap = <String, List<RankingDataClass>>{}.obs;
   RxString updateDate = ''.obs; // 랭킹 업데이트 날짜
   Rx<PercentConfig> percentConfig =
-      PercentConfig(delistingTime: 0, firstPrice: 0, percentage: 0).obs;
+      PercentConfig(delistingTime: 0, firstPrice: 0, percentage: 0, dividend_1: 0, dividend_2: 0)
+          .obs;
   Rx<FeeConfig> feeConfig = FeeConfig(buyFeeRate: 0.0, sellFeeRate: 0.0).obs;
   RxString eventDate = ''.obs; // 이벤트 기준 날짜
   RxMap<String, List<EventClass>> eventMap = <String, List<EventClass>>{}.obs; // 이벤트 데이터

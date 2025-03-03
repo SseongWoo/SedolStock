@@ -132,6 +132,7 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
               ),
             ],
           ),
+          const Spacer(),
         ],
       ),
     );
@@ -151,8 +152,8 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
       children: [
         _buildTitleText(screenSize, title),
         Wrap(
-          spacing: screenSize.getWidthPerSize(2),
-          runSpacing: 4.0,
+          spacing: screenSize.getWidthPerSize(1),
+          runSpacing: screenSize.getHeightPerSize(0.5),
           children: itemList.map((filter) {
             return isFilterChip
                 ? FilterChip(
@@ -165,6 +166,7 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
                       fontSize: screenSize.getHeightPerSize(1.6),
                       color: selectedItems.contains(filter) ? Colors.white : Colors.black,
                     ),
+                    checkmarkColor: Colors.white,
                   )
                 : ChoiceChip(
                     label: Text(filter),
@@ -176,6 +178,7 @@ class PropertyHistoryBottomSheet extends StatelessWidget {
                       fontSize: screenSize.getHeightPerSize(1.6),
                       color: selectedItems.contains(filter) ? Colors.white : Colors.black,
                     ),
+                    checkmarkColor: Colors.white,
                   );
           }).toList(),
         ),
@@ -301,7 +304,13 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           alignment: Alignment.center,
           child: tradeHistoryData.tradetype == 'sell'
               ? viewModel.getProfitReturnWidget(tradeHistoryData)
-              : null,
+              : tradeHistoryData.tradetype == 'dividend'
+                  ? Text(
+                      '+${formatToCurrency(tradeHistoryData.totalcost)}\n',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  : null,
         ),
         Container(
           width: screenSize.getWidthPerSize(25),

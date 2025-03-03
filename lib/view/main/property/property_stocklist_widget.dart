@@ -149,8 +149,10 @@ class PropertyStockListItemWidget extends StatelessWidget {
           children: [
             _buildStockDetailColumn(
               screenSize: screenSize,
-              title1: '보유 잔고',
-              value1: stockData.delisting ? '-' : '${stockData.stockCount}주',
+              title1: '보유 개수/기간',
+              value1: stockData.delisting
+                  ? '- / -'
+                  : '${stockData.stockCount}주/${stockData.dividendCount}턴',
               title2: '평가 금액',
               value2: stockData.delisting ? '-' : '${formatToCurrency(stockData.stockTotalPrice)}P',
               color: Colors.black,
@@ -207,7 +209,7 @@ class PropertyStockListItemWidget extends StatelessWidget {
     required Color color,
   }) {
     return SizedBox(
-      width: screenSize.getWidthPerSize(35),
+      width: screenSize.getWidthPerSize(40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

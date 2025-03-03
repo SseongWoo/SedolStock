@@ -282,8 +282,12 @@ Future<bool> loadRankingData() async {
     publicDataController.updateDate.value = updateDateStr ?? '0000-00-00 00:00:00';
 
     DateTime currentTime = DateTime.now();
-    DateTime serverUpdateDate = DateFormat('yyyy년 MM.dd HH:mm')
-        .parse('${currentTime.year}년 ${publicDataController.updateDate.value}');
+    // 저장된 날짜를 DateTime 객체로 변환
+    DateTime serverUpdateDate =
+        DateFormat('yyyy-MM-dd HH:mm:ss').parse(publicDataController.updateDate.value);
+
+    // 변환된 날짜를 yy-MM-dd HH:mm 형식으로 저장 (옵션)
+    publicDataController.updateDate.value = DateFormat('yy-MM-dd HH:mm').format(serverUpdateDate);
 
     return currentTime.difference(serverUpdateDate).inHours >= 1;
   } catch (e) {

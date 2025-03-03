@@ -22,18 +22,15 @@ String formatDateString(String isoString) {
 }
 
 String formatDateString2(String dateString) {
-  DateTime? dateTime;
   try {
-    dateTime = DateTime.tryParse(dateString);
+    // 입력 형식: "yyyy-MM-dd HH:mm:ss"
+    DateTime dateTime = DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateString);
 
-    if (dateTime == null) {
-      dateString = dateString.replaceAll('오전', 'AM').replaceAll('오후', 'PM');
-      dateTime = DateFormat('yyyy. M. d. a h:mm:ss', 'en_US').parse(dateString);
-    }
+    // 출력 형식: "yy-MM-dd HH:mm"
+    return DateFormat('yy-MM-dd HH:mm').format(dateTime);
   } catch (e) {
-    return "날짜 형식 오류"; // 🚨 예외 발생 시 오류 메시지 반환
+    return "00-00-00 00:00"; // 예외 발생 시 오류 메시지 반환
   }
-  return DateFormat('MM.dd HH:mm').format(dateTime);
 }
 
 String formatDateString3(String isoString) {

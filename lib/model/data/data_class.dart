@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 // 보유 주식 클래스
@@ -7,13 +6,15 @@ class OwnStock {
   int stockCount;
   int stockPrice;
   bool delisting;
-  OwnStock(this.stockCount, this.stockPrice, this.delisting);
+  int dividendCount;
+  OwnStock(this.stockCount, this.stockPrice, this.delisting, this.dividendCount);
 
   factory OwnStock.fromJson(Map<String, dynamic> json) {
     return OwnStock(
       json['stockCount'] ?? 0,
       (json['stockPrice'] is num) ? (json['stockPrice'] as num).round() : 0,
       json['delisting'] ?? false,
+      json['dividendCount'] ?? 0,
     );
   }
 }
@@ -31,6 +32,7 @@ class StockListClass {
   String stockChannelType;
   Color color;
   bool delisting;
+  int dividendCount;
 
   StockListClass(
     this.stockUID,
@@ -44,6 +46,7 @@ class StockListClass {
     this.stockChannelType,
     this.color,
     this.delisting,
+    this.dividendCount,
   );
 }
 
@@ -104,21 +107,24 @@ class TradeHistoryClass {
 // 메세지 데이터 클래스
 class MessageClass {
   final String itemUID;
-  final int stockCount;
+  final int number;
   final String time;
+  final String type;
 
   MessageClass({
     required this.itemUID,
-    required this.stockCount,
+    required this.number,
     required this.time,
+    required this.type,
   });
 
   // JSON 데이터를 객체로 변환
   factory MessageClass.fromJson(Map<String, dynamic> json) {
     return MessageClass(
       itemUID: json['itemUid'] as String,
-      stockCount: json['stockCount'] as int,
+      number: (json['number'] as int?) ?? (json['stockCount'] as int?) ?? 0,
       time: json['time'] as String,
+      type: (json['type'] as String?) ?? 'delisting',
     );
   }
 }
@@ -358,11 +364,15 @@ class PercentConfig {
   final int delistingTime;
   final int percentage;
   final int firstPrice;
+  final int dividend_1;
+  final int dividend_2;
 
   PercentConfig({
     required this.delistingTime,
     required this.percentage,
     required this.firstPrice,
+    required this.dividend_1,
+    required this.dividend_2,
   });
 
   factory PercentConfig.fromJson(Map<String, dynamic> json) {
@@ -370,6 +380,8 @@ class PercentConfig {
       delistingTime: json['delistingtime'],
       percentage: json['pricepercentage'],
       firstPrice: json['firstprice'],
+      dividend_1: json['dividend_1'] ?? 10,
+      dividend_2: json['dividend_2'] ?? 25,
     );
   }
 }

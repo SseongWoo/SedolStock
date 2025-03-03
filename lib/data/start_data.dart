@@ -64,7 +64,7 @@ Future<void> startGetData() async {
   }
   publicDataController.setEventCheck();
 
-  await youtubeDataController.getYoutubeLiveData(); // 유튜브 가격 데이터 가져오는 함수
+  await youtubeDataController.getYoutubeLiveData(); // 유튜브 가격 데이터 가져오는 함수ㅋ.
   myDataController.setMoneyData(); // 사용자의 자산 데이터 정리
   await myDataController.getTradeHistoryData(); // 사용자의 거래 리스트 데이터 가져오는 함수
 
@@ -93,10 +93,9 @@ Future<void> reflashGetData(bool timeReFlash) async {
 
   await myDataController.updateMyTotalMoney();
   await myDataController.getWalletData(); // 사용자 자산 데이터 가져오는 기능
-
+  myDataController.setMoneyData();
   // 주식 아이템 구매시에만 실행되는 함수
   if (!timeReFlash) {
-    myDataController.setMoneyData();
     await myDataController.getTradeHistoryData();
   }
 }

@@ -17,7 +17,7 @@ class PropertyHistoryViewModel extends GetxController {
 
   List<String> itemList = ['전체'] + channelNameList; // 채널 필터
   List<String> itemTypeList = ['전체', '메인채널', '서브채널']; // 아이템 타입 필터
-  List<String> saleTypeList = ['전체', '구매', '판매']; // 매매 타입 필터
+  List<String> saleTypeList = ['전체', '구매', '판매', '배당금', '상장폐지']; // 매매 타입 필터
   RxList<String> selectedFilters = <String>['전체'].obs; // 채널 필터 선택 목록 리스트
   RxString selectItemType = '전체'.obs; // 선택한 아이템 필터 타입
   RxString selectSaleType = '전체'.obs; // 선택한 매매 필터 타입
@@ -100,6 +100,8 @@ class PropertyHistoryViewModel extends GetxController {
     final Map<String, String> tradeTypeMapping = {
       '구매': 'buy',
       '판매': 'sell',
+      '배당금': 'dividend',
+      '상장폐지': 'delisting',
       '전체': '전체',
     };
     final Map<String, String> channelTypeMapping = {
@@ -132,14 +134,24 @@ class PropertyHistoryViewModel extends GetxController {
 
   // 필터 바텀시트 생성
   void createBottomSheet() {
-    Get.bottomSheet(PropertyHistoryBottomSheet(
-      viewModel: this,
+    Get.bottomSheet(FractionallySizedBox(
+      heightFactor: 1.2,
+      child: PropertyHistoryBottomSheet(
+        viewModel: this,
+      ),
     ));
   }
 
   String salesTypeText(String salesType) {
-    if (salesType == 'buy') return '구매';
-    if (salesType == 'sell') return '판매';
-    return '상장폐지';
+    switch (salesType) {
+      case 'buy':
+        return '구매';
+      case 'sell':
+        return '판매';
+      case 'dividend':
+        return '배당금';
+      default:
+        return '상장폐지';
+    }
   }
 }

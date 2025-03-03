@@ -209,11 +209,24 @@ class TradeDetailScreen extends StatelessWidget {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '보유 주식',
-                                    style: TextStyle(
-                                      fontSize: screenSize.getHeightPerSize(3),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '보유 주식',
+                                        style: TextStyle(
+                                          fontSize: screenSize.getHeightPerSize(3),
+                                        ),
+                                      ),
+                                      Tooltip(
+                                        message:
+                                            '배당금은 보유 기간이 6턴마다 지급됩니다. 6턴째에는 보유 주식의 현재 가격의 ${_viewModel.publicDataController.percentConfig.value.dividend_1}%가 지급되며, 12턴째에는 ${_viewModel.publicDataController.percentConfig.value.dividend_2}%가 지급됩니다. 이후에는 같은 패턴이 계속 반복됩니다',
+                                        triggerMode: TooltipTriggerMode.tap,
+                                        child: Icon(
+                                          Icons.info_outline,
+                                          size: screenSize.getHeightPerSize(3),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   _chartDetailData(
                                     screenSize,
@@ -227,40 +240,56 @@ class TradeDetailScreen extends StatelessWidget {
                                     '${stockData?.stockCount ?? 0}주',
                                     1.8,
                                   ),
+                                  GestureDetector(
+                                    child: _chartDetailData(
+                                      screenSize,
+                                      '보유 기간',
+                                      '${stockData?.dividendCount ?? 0}턴',
+                                      1.8,
+                                    ),
+                                    onTap: () {
+                                      print(stockData?.dividendCount);
+                                    },
+                                  ),
                                   Row(
                                     children: [
-                              Padding(
-                                padding:  EdgeInsets.all(screenSize.getHeightPerSize(1)),
-                                child: Text(
-                                  '총 금액',
-                                  style: TextStyle(
-                                    fontSize: screenSize.getHeightPerSize(1.8),
-                                  ),
-                                ),
-                              ),
-                                      Expanded(child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  AutoSizeText(
-                                    '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
-                                    style: TextStyle(
-                                      fontSize: screenSize.getHeightPerSize(1.6),
-                                    ),
-                                    textAlign: TextAlign.right,
-                                    maxLines: 1,
-                                  ),
-                                  AutoSizeText(
-                                    _viewModel.setReturnRatio(stockData?.stockProfit ?? 0,
-                                        stockData?.stockRatio ?? 0),
-                                    style: TextStyle(
-                                        fontSize: screenSize.getHeightPerSize(1.6),
-                                        color:
-                                            profitAndLossColor(stockData?.stockProfit ?? 0)),
-                                    textAlign: TextAlign.right,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),),
+                                      Padding(
+                                        padding: EdgeInsets.all(screenSize.getHeightPerSize(1)),
+                                        child: Text(
+                                          '총 금액',
+                                          style: TextStyle(
+                                            fontSize: screenSize.getHeightPerSize(1.8),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            AutoSizeText(
+                                              '${formatToCurrency(stockData?.stockTotalPrice ?? 0)}원',
+                                              style: TextStyle(
+                                                fontSize: screenSize.getHeightPerSize(1.6),
+                                              ),
+                                              textAlign: TextAlign.right,
+                                              maxLines: 1,
+                                            ),
+                                            AutoSizeText(
+                                              stockData?.stockTotalPrice != 0
+                                                  ? _viewModel.setReturnRatio(
+                                                      stockData?.stockProfit ?? 0,
+                                                      stockData?.stockRatio ?? 0)
+                                                  : '0%',
+                                              style: TextStyle(
+                                                  fontSize: screenSize.getHeightPerSize(1.6),
+                                                  color: profitAndLossColor(
+                                                      stockData?.stockProfit ?? 0)),
+                                              textAlign: TextAlign.right,
+                                              maxLines: 1,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   )
                                 ],

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../utils/level.dart';
+import 'package:stockpj/model/data/data_class.dart';
 import '../../../utils/screen_size.dart';
 import '../../../viewmodel/main/home_view_model.dart';
 import 'home_widget.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
               kDebugMode
                   ? ElevatedButton(
                       onPressed: () {
-                        _viewModel.publicDataController.getServerData();
+                        print(_viewModel.myDataController.totalDividendHistory);
                       },
                       child: Text('테스트 버튼'))
                   : SizedBox.shrink(),

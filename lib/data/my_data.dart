@@ -34,6 +34,7 @@ class MyDataController extends GetxController {
   RxList<TradeHistoryClass> tradeHistoryList = <TradeHistoryClass>[].obs; // 거래 내역 리스트 데이터
   //RxMap<String, ItemHistoryClass> itemHistory = <String, ItemHistoryClass>{}.obs; // 주식 정보 맵 데이터
   RxInt totalMoneyHistory = 0.obs; // 거래 내역 정보
+  RxInt totalDividendHistory = 0.obs; // *
   RxInt totalSellHistory = 0.obs; // *
   RxInt totalBuyHistory = 0.obs; // //
   RxList<TotalMoneyDataClass> totalMoneyHistoryList =
@@ -74,7 +75,8 @@ class MyDataController extends GetxController {
               itemPriceData.price,
               itemPriceData.channelType,
               streamerColorMap[itemUid] ?? colorMAIN,
-              value.delisting);
+              value.delisting,
+              value.dividendCount);
         }
       }
     });
@@ -215,16 +217,24 @@ class MyDataController extends GetxController {
         // 총 구매 및 판매 금액 계산
         totalBuyHistory.value = 0;
         totalSellHistory.value = 0;
+        totalDividendHistory.value = 0;
 
         for (var trade in tradeHistoryList) {
-          if (trade.tradetype == 'buy') {
-            totalBuyHistory += trade.totalcost;
-          } else {
-            totalSellHistory += trade.totalcost;
+          switch (trade.tradetype) {
+            case ('buy'):
+              totalBuyHistory += trade.totalcost;
+              break;
+            case ('sell'):
+              totalSellHistory += trade.totalcost;
+              break;
+            case ('dividend'):
+              totalDividendHistory += trade.totalcost;
+              break;
           }
         }
         // 총 수익 계산
-        totalMoneyHistory.value = totalSellHistory.value - totalBuyHistory.value;
+        totalMoneyHistory.value =
+            (totalSellHistory.value - totalBuyHistory.value) + totalDividendHistory.value;
       }
 
       logger.i('getTradeHistoryData log: getData successfully');

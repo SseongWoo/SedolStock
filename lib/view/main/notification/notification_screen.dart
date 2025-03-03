@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:stockpj/model/data/data_class.dart';
+import 'package:stockpj/utils/screen_size.dart';
 import 'package:stockpj/viewmodel/main/notification_view_model.dart';
 import 'package:stockpj/widget/KeyBoardMouseEvent.dart';
 import 'notification_widget.dart';
@@ -11,13 +12,13 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenSize screenSize = _viewModel.screenController.screenSize.value;
     return keyBoardMouseEvent(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
             '알림',
-            style: TextStyle(
-                fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(2.5)),
+            style: TextStyle(fontSize: screenSize.getHeightPerSize(2.5)),
           ),
           actions: [
             TextButton(
@@ -26,8 +27,7 @@ class NotificationScreen extends StatelessWidget {
                 },
                 child: Text(
                   '알림 지우기',
-                  style: TextStyle(
-                      fontSize: _viewModel.screenController.screenSize.value.getHeightPerSize(2.2)),
+                  style: TextStyle(fontSize: screenSize.getHeightPerSize(2.2)),
                 ))
           ],
         ),
@@ -36,9 +36,13 @@ class NotificationScreen extends StatelessWidget {
               ? ListView.builder(
                   itemCount: _viewModel.myDataController.messageList.length,
                   itemBuilder: (context, index) {
+                    MessageClass messageData = _viewModel.myDataController.messageList[index];
                     return NotificationWidget(
-                      index: index,
-                      viewModel: _viewModel,
+                      screenSize: screenSize,
+                      messageData: messageData,
+                      messageTitle: _viewModel.convertMessageTitle(messageData),
+                      messageContent: _viewModel.convertMessageContent(messageData),
+                      onDelete: () => _viewModel.deleteMessage(index),
                     );
                   })
               : const Center(
