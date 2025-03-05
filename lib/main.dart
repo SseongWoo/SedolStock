@@ -28,6 +28,7 @@ import 'package:stockpj/view/splash_screen.dart';
 import 'constants/route_constants.dart';
 import 'data/public_data.dart';
 import 'data/youtube_data.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 var logger = Logger(); // 로그를 나타내기 위한 변수
 
@@ -38,6 +39,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await initializeDateFormatting('ko_KR', null); // 한국어 날짜 형식 초기화
 
   await GetStorage.init();
 

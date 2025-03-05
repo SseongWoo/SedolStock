@@ -277,14 +277,15 @@ Future<bool> loadRankingData() async {
       );
     }
 
-    // 저장된 날짜 가져오기
+    // 저장된 날짜 가져오기 (기본값: "0000-00-00 00:00:00")
     final String? updateDateStr = await box.read('rankingDataDate');
     publicDataController.updateDate.value = updateDateStr ?? '0000-00-00 00:00:00';
 
     DateTime currentTime = DateTime.now();
+
     // 저장된 날짜를 DateTime 객체로 변환
     DateTime serverUpdateDate =
-        DateFormat('yyyy-MM-dd HH:mm:ss').parse(publicDataController.updateDate.value);
+        DateFormat('yyyy-MM-dd HH:00:00').parse(publicDataController.updateDate.value);
 
     // 변환된 날짜를 yy-MM-dd HH:mm 형식으로 저장 (옵션)
     publicDataController.updateDate.value = DateFormat('yy-MM-dd HH:mm').format(serverUpdateDate);

@@ -50,7 +50,7 @@ class PublicDataController extends GetxController {
       final rankingData = await dataModel.fetchRankingData();
       final Map<String, List<RankingDataClass>> rankings = rankingData['ranking'];
 
-      updateDate.value = formatDateString2(rankingData['updatedate']);
+      updateDate.value = rankingData['updatedate'];
       rankingMap.value = rankings;
     } catch (e) {
       logger.e('getRankData error : $e');

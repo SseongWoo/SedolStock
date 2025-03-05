@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
@@ -249,8 +250,9 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
   // 데이터 테이블 1번째 줄 위젯
   Widget _generateFirstColumnRow(BuildContext context, int index) {
     TradeHistoryClass tradeHistoryData = viewModel.historyList[index];
+
     return Container(
-      width: screenSize.getWidthPerSize(40),
+      width: screenSize.getWidthPerSize(44),
       height: 52,
       padding: EdgeInsets.fromLTRB(screenSize.getWidthPerSize(2), 0, 0, 0),
       alignment: Alignment.center,
@@ -260,13 +262,18 @@ class _StockHistoryDataTableWidgetState extends State<PropertyHistoryDataTableWi
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              formatDateString2(tradeHistoryData.tradetime),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
+            GestureDetector(
+              onTap: () {
+                print(tradeHistoryData.tradetime);
+              },
+              child: AutoSizeText(
+                formatDateString2(tradeHistoryData.tradetime),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: screenSize.getHeightPerSize(1.6)),
+              ),
             ),
-            Text(
+            AutoSizeText(
               viewModel.youtubeDataController.youtubeChannelData[tradeHistoryData.itemuid]?.title ??
                   '채널명',
               maxLines: 1,

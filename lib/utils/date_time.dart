@@ -23,13 +23,14 @@ String formatDateString(String isoString) {
 
 String formatDateString2(String dateString) {
   try {
-    // 입력 형식: "yyyy-MM-dd HH:mm:ss"
-    DateTime dateTime = DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateString);
+    dateString = dateString.replaceAll('오전', 'AM').replaceAll('오후', 'PM');
+    // '오전/오후'를 포함한 한국어 날짜 파싱
+    DateTime dateTime = DateFormat('yyyy. M. d. a h:mm:ss', 'en_US').parse(dateString);
 
-    // 출력 형식: "yy-MM-dd HH:mm"
-    return DateFormat('yy-MM-dd HH:mm').format(dateTime);
+    // 원하는 형식으로 변환하여 반환
+    return DateFormat('MM.dd HH:mm:ss').format(dateTime);
   } catch (e) {
-    return "00-00-00 00:00"; // 예외 발생 시 오류 메시지 반환
+    return "00-00-00 00:00:00"; // 오류 발생 시 기본값 반환
   }
 }
 
